@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@myndpm/dyn-forms/*": ["libs/forms/*"],
+      "@myndpm/dyn-forms": ["libs/forms/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
