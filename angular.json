@@ -5,17 +5,6 @@
   },
   "defaultProject": "demos",
   "schematics": {
-    "@nrwl/angular": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      },
-      "storybook-configuration": {
-        "linter": "eslint"
-      }
-    },
     "@nrwl/angular:application": {
       "style": "styl",
       "linter": "eslint",
@@ -28,8 +17,12 @@
       "unitTestRunner": "jest",
       "strict": true
     },
+    "@nrwl/angular:storybook-configuration": {
+      "linter": "eslint"
+    },
     "@nrwl/angular:component": {
-      "style": "styl"
+      "style": "styl",
+      "changeDetection": "OnPush"
     }
   },
   "projects": {
