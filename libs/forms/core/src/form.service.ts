@@ -40,11 +40,11 @@ export class DynFormService {
   ): T {
     // fail-safe validation
     if (!parent.control) {
-      throw new Error(`03: the ControlContainer doesn't have a control`);
+      throw new Error(`The parent ControlContainer doesn't have a control`);
     }
     if (instance !== config.instance) {
       throw new Error(
-        `04: Inconsistent [${config.control}] control instance "${instance}" for a config with "${config.instance}"`
+        `Inconsistent [${config.control}] control instance "${instance}" for a config with "${config.instance}"`
       );
     }
 
@@ -56,7 +56,7 @@ export class DynFormService {
 
     control = this.build(instance as any, config, recursively);
     if (!control) {
-      throw new Error(`05: Could not build a control for ${instance}`);
+      throw new Error(`Could not build a control for ${instance}`);
     }
 
     if (config.name) {

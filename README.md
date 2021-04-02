@@ -10,4 +10,4 @@ This is the home of the open-source Angular Libraries by [Mynd.co](https://mynd.
 [![npm downloads](https://img.shields.io/npm/dm/@myndpm/dyn-forms.svg?style=flat)](https://npmcharts.com/compare/@myndpm/dyn-forms?minimal=true)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/dyn-forms)](https://bundlephobia.com/result?p=@myndpm/dyn-forms)
 
-Abstract layer to easily generate Dynamic Forms on Angular.
+Abstract layer to easily generate Dynamic Forms for Angular.

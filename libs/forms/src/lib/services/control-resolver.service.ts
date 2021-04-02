@@ -19,7 +19,7 @@ export class ControlResolverService {
     );
 
     if (!resolved) {
-      throw new Error(`Error 01: Control '${dynControl}' not provided!`);
+      throw new Error(`Control '${dynControl}' not provided!`);
     }
 
     if (isLazyControl(resolved)) {
