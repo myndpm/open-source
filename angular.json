@@ -44,7 +44,7 @@
             "assets": ["apps/demos/src/favicon.ico", "apps/demos/src/assets"],
             "styles": [
               "./node_modules/normalize.css/normalize.css",
-              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/demos/src/styles.styl"
             ],
             "scripts": []

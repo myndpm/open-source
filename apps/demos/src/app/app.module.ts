@@ -9,6 +9,11 @@ import { PagesModule } from './pages/pages.module';
 
 const routes: Routes = [
   {
+    path: 'demos',
+    loadChildren: () =>
+      import('./demos/demos.module').then((m) => m.DemosModule),
+  },
+  {
     path: '**',
     component: LayoutWrapperComponent,
     children: [

@@ -1,0 +1,16 @@
+<section class="w-container">
+  <ng-container *ngFor="let item of items">
+    <div class="item" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+
+      <a [routerLink]="item.link">
+        <img [src]="item.image || '//via.placeholder.com/333x222'" alt="img">
+      </a>
+
+      <div class="item-body">
+        <h2><a [routerLink]="item.link">{{ item.title }}</a></h2>
+        <p *ngIf="item.description">{{ item.description }}</p>
+      </div>
+
+    </div>
+  </ng-container>
+</section>

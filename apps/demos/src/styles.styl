@@ -12,19 +12,43 @@ app-root {
   height: 100%;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+.mat-typography {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
 
-h2 {
-  color: #0a253a;
-  font-family: Poppins,sans-serif;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 36px;
+  h2 {
+    color: #0a253a;
+    font-family: Poppins,sans-serif;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+
+  h3 {
+    border-bottom: 4px #000;
+    color: #0a253a;
+    font-family: Poppins,sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+
+    &:after {
+      content: '';
+      display: block;
+      width: 124px;
+      height: 8px;
+      margin: 12px auto 20px;
+      background-color: #38b87c;
+      text-align: left;
+    }
+  }
 }
 
 p {
@@ -35,9 +59,44 @@ p {
   margin-bottom: 16px;
 }
 
+var {
+  background: lightpink;
+  color: purple;
+  font-style: normal;
+  padding: 0 2px;
+}
+
+form {
+  width: 100%;
+}
+
 /* LAYOUT */
 .w-container {
   margin-left: auto;
   margin-right: auto;
   max-width: 940px;
+}
+
+section.w-container {
+  padding: 42px 0;
+  position: relative;
+
+  .badges {
+    margin-bottom: 15px;
+
+    > * {
+      margin-right: 10px;
+    }
+  }
+
+  .section-actions {
+    display: block;
+    position: absolute;
+    top: 42px;
+    right: 15px;
+  }
+}
+
+.hidden {
+  display: none !important;
 }
