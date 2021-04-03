@@ -40,7 +40,7 @@ const routes: Routes = [
       useValue: {
         appearance: 'outline',
         hideRequiredMarker: true,
-        floatLabel: 'always',
+        floatLabel: 'auto',
       },
     },
   ],
