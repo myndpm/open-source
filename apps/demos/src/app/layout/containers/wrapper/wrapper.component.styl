@@ -3,7 +3,27 @@
   flex-direction: column;
   height: 100%;
 
-  .wrapper-body {
+  .container {
     flex: 1;
+
+    ::ng-deep section {
+      padding: 42px 0;
+      position: relative;
+
+      .badges {
+        margin-bottom: 15px;
+
+        > * {
+          margin-right: 10px;
+        }
+      }
+
+      .section-actions {
+        display: block;
+        position: absolute;
+        top: 42px;
+        right: 15px;
+      }
+    }
   }
 }
