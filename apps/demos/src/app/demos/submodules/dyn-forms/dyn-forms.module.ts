@@ -4,6 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/material';
@@ -26,9 +27,10 @@ const routes: Routes = [
     CommonModule,
     FlexLayoutModule,
     RouterModule.forChild(routes),
-    DynFormsMaterialModule,
+    DynFormsMaterialModule.forFeature(),
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
     MatTooltipModule,
   ],
   declarations: [

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -26,7 +26,19 @@ import { DynSelectComponent } from './components/select/select.component';
     MatInputModule,
     MatRadioModule,
     MatSelectModule,
-    DynFormsModule.forFeature({
+    DynFormsModule,
+  ],
+  declarations: [
+    DynArrayComponent,
+    DynCardComponent,
+    DynInputComponent,
+    DynRadioComponent,
+    DynSelectComponent,
+  ],
+})
+export class DynFormsMaterialModule {
+  static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
+    return DynFormsModule.forFeature({
       controls: [
         {
           control: DynArrayComponent.dynControl,
@@ -49,18 +61,6 @@ import { DynSelectComponent } from './components/select/select.component';
           component: DynSelectComponent,
         },
       ],
-    })
-  ],
-  declarations: [
-    DynArrayComponent,
-    DynCardComponent,
-    DynInputComponent,
-    DynRadioComponent,
-    DynSelectComponent,
-  ],
-  exports: [
-    MatSelectModule,
-    DynFormsModule,
-  ],
-})
-export class DynFormsMaterialModule {}
+    });
+  }
+}
