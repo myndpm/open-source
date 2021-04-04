@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { CustomBreakPointsProvider } from './bootstrap-breakpoints';
 import { LayoutModule, LayoutWrapperComponent } from './layout';
 import { NotFoundComponent } from './pages/components/not-found/not-found.component';
 import { PagesModule } from './pages/pages.module';
@@ -36,7 +37,7 @@ const routes: Routes = [
     LayoutModule,
     PagesModule,
   ],
-  providers: [],
+  providers: [CustomBreakPointsProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
