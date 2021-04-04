@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'web-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss'],
+  styleUrls: ['./index.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent {

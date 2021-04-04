@@ -20,7 +20,7 @@
     "@nrwl/angular:storybook-configuration": {
       "linter": "eslint"
     },
-    "@nrwl/angular:component": {
+    "@schematics/angular:component": {
       "style": "styl",
       "changeDetection": "OnPush"
     }

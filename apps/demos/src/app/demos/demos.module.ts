@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, Routes } from '@angular/router';
-import { LayoutWrapperComponent } from '../layout';
+import { LayoutModule, LayoutWrapperComponent } from '../layout';
 import { IndexComponent } from './components/index/index.component';
 
 const routes: Routes = [
@@ -31,6 +31,7 @@ const routes: Routes = [
     CommonModule,
     FlexLayoutModule,
     RouterModule.forChild(routes),
+    LayoutModule,
   ],
   declarations: [IndexComponent],
   schemas: [NO_ERRORS_SCHEMA],

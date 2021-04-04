@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/material';
+import { LayoutModule } from '../../../layout';
 import { SimpleComponent } from './components/simple/simple.component';
 
 const routes: Routes = [
@@ -28,10 +26,8 @@ const routes: Routes = [
     FlexLayoutModule,
     RouterModule.forChild(routes),
     DynFormsMaterialModule.forFeature(),
-    MatButtonModule,
-    MatIconModule,
     MatSelectModule,
-    MatTooltipModule,
+    LayoutModule,
   ],
   declarations: [
     SimpleComponent,
@@ -46,6 +42,5 @@ const routes: Routes = [
       },
     },
   ],
-  schemas: [NO_ERRORS_SCHEMA],
 })
 export class DemoFormsModule {}
