@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
-import { DynFormControls } from '@myndpm/dyn-forms/core';
+import { DynFormConfig } from './form.config';
 
 @Component({
   selector: 'dyn-form',
@@ -8,6 +8,7 @@ import { DynFormControls } from '@myndpm/dyn-forms/core';
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    // avoid an exception in the first level of children
     {
       provide: ControlContainer,
       useValue: {},
@@ -16,5 +17,5 @@ import { DynFormControls } from '@myndpm/dyn-forms/core';
 })
 export class FormComponent {
   @Input() form = new FormGroup({});
-  @Input() controls: DynFormControls = [];
+  @Input() config!: DynFormConfig;
 }

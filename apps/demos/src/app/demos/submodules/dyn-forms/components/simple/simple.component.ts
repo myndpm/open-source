@@ -57,7 +57,7 @@ export class SimpleComponent implements OnInit, AfterViewInit {
   });
 
   // dyn-form inputs
-  controls = simpleForm(this.profileCard);
+  config = simpleForm(this.profileCard);
   form = new FormGroup({});
 
   ngOnInit(): void {
