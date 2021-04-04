@@ -23,7 +23,6 @@ export class DynRadioComponent
     return {
       ...partial,
       control: DynRadioComponent.dynControl,
-      instance: DynRadioComponent.dynInstance,
     };
   }
 

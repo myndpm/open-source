@@ -19,7 +19,7 @@ export abstract class DynFormContainer<
     super.ngOnInit();
 
     if (this.config.name) {
-      this.control = this._form.register(
+      this.control = this._fform.register(
         DynInstanceType.Container,
         this.config,
         this.parent

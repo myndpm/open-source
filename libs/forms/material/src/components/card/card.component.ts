@@ -23,7 +23,6 @@ export class DynCardComponent
     return {
       ...partial,
       control: DynCardComponent.dynControl,
-      instance: DynCardComponent.dynInstance,
     };
   }
 

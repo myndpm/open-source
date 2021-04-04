@@ -23,7 +23,6 @@ export class DynInputComponent
     return {
       ...partial,
       control: DynInputComponent.dynControl,
-      instance: DynInputComponent.dynInstance,
     };
   }
 

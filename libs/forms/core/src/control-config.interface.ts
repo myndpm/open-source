@@ -1,15 +1,14 @@
 import { AbstractControlOptions } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlParams } from './control-params.interface';
-import { DynControlType, DynInstanceType } from './control.types';
+import { DynControlType } from './control.types';
 
 export interface DynControlConfig<P extends DynControlParams = DynControlParams> {
   // config
   control: DynControlType;
-  instance: DynInstanceType;
+  options?: AbstractControlOptions;
   // customizations
   params?: P | Observable<P>;
-  options?: AbstractControlOptions;
   // factory?: { cssClass, colSpan }
   // errorHandler: (errors: ValidationErrors) => string
   /* context customization via functions

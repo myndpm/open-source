@@ -11,8 +11,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { DynBaseConfig } from '@myndpm/dyn-forms/core';
-import { ControlResolverService } from '../../services/control-resolver.service';
+import { DynBaseConfig, DynFormRegistry } from '@myndpm/dyn-forms/core';
 
 @Component({
   selector: 'dyn-factory',
@@ -35,14 +34,14 @@ export class FactoryComponent implements OnInit {
   }
 
   constructor(
-    private injector: Injector,
     private appRef: ApplicationRef,
     private resolver: ComponentFactoryResolver,
-    private controls: ControlResolverService
+    private injector: Injector,
+    private registry: DynFormRegistry,
   ) {}
 
   ngOnInit(): void {
-    const control = this.controls.resolve(this.config.control);
+    const control = this.registry.resolve(this.config.control);
     const factory = this.resolver.resolveComponentFactory(control.component);
 
     const ref = this.container.createComponent<any>(

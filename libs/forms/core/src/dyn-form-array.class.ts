@@ -22,7 +22,7 @@ export abstract class DynFormArray<
 
     super.ngOnInit();
 
-    this.control = this._form.register(
+    this.control = this._fform.register(
       DynInstanceType.Array,
       this.config,
       this.parent
@@ -31,7 +31,7 @@ export abstract class DynFormArray<
 
   addItem(): void {
     this.control.push(
-      this._form.build(DynInstanceType.Group, this.config, true)
+      this._fform.build(DynInstanceType.Group, this.config, true)
     );
   }
 

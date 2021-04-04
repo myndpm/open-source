@@ -19,6 +19,6 @@ P extends DynControlParams = DynControlParams
 
 export type DynPartialControlConfig<
 P extends DynControlParams = DynControlParams
-> = Omit<DynConfig<P>, 'control' | 'instance'>;
+> = Omit<DynConfig<P>, 'control'>;
 
 export type DynFormControls = Array<DynBaseConfig | DynConfig>;

@@ -19,7 +19,7 @@ export abstract class DynFormGroup<
     super.ngOnInit();
 
     if (this.config.name) {
-      this.control = this._form.register(
+      this.control = this._fform.register(
         DynInstanceType.Group,
         this.config,
         this.parent

@@ -7,12 +7,11 @@ import {
 } from '@angular/forms';
 import { DynBaseConfig } from './config.interfaces';
 import { DynControlParent, DynInstanceType } from './control.types';
+import { DynFormRegistry } from './form.registry';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class DynFormService {
-  constructor() {}
+@Injectable()
+export class DynFormFactory {
+  constructor(private registry: DynFormRegistry) {}
 
   /**
    * Adds a control (via config) to the given parent.
@@ -44,11 +43,6 @@ export class DynFormService {
     // fail-safe validation
     if (!parent.control) {
       throw new Error(`The parent ControlContainer doesn't have a control`);
-    }
-    if (instance !== config.instance) {
-      throw new Error(
-        `Inconsistent [${config.control}] control instance "${instance}" for a config with "${config.instance}"`
-      );
     }
 
     // return any existing control with this name
@@ -120,7 +114,7 @@ export class DynFormService {
       if (item.name) {
         parent.addControl(
           item.name,
-          this.build(item.instance as any, item, true)
+          this.build(this.registry.getInstanceFor(item.control) as any, item, true)
         );
       } else {
         this.buildControls(parent, item);

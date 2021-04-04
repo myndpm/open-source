@@ -15,7 +15,7 @@ import {
   DynControlType,
   DynInstanceType,
 } from './control.types';
-import { DynFormService } from './form.service';
+import { DynFormFactory } from './form.factory';
 
 @Directive()
 export abstract class DynControl<
@@ -36,7 +36,7 @@ export abstract class DynControl<
   control!: TControl; // built from the config by the abstract classes
   params!: TParams; // values available for the concrete Component instance
 
-  protected _form: DynFormService;
+  protected _fform: DynFormFactory;
   protected _ref: ChangeDetectorRef;
   protected _unsubscribe = new Subject<void>();
 
@@ -46,7 +46,7 @@ export abstract class DynControl<
     } catch (e) {
       throw new Error(`No parent ControlContainer found.`); // TODO debug trace
     }
-    this._form = injector.get(DynFormService);
+    this._fform = injector.get(DynFormFactory);
     this._ref = injector.get(ChangeDetectorRef);
   }
 

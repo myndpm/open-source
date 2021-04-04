@@ -32,7 +32,6 @@ export class DynArrayComponent
     return {
       ...partial,
       control: DynArrayComponent.dynControl,
-      instance: DynArrayComponent.dynInstance,
     };
   }
 

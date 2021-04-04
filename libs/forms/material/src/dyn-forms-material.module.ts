@@ -42,22 +42,27 @@ export class DynFormsMaterialModule {
       controls: [
         {
           control: DynArrayComponent.dynControl,
+          instance: DynArrayComponent.dynInstance,
           component: DynArrayComponent,
         },
         {
           control: DynCardComponent.dynControl,
+          instance: DynCardComponent.dynInstance,
           component: DynCardComponent,
         },
         {
           control: DynInputComponent.dynControl,
+          instance: DynInputComponent.dynInstance,
           component: DynInputComponent,
         },
         {
           control: DynRadioComponent.dynControl,
+          instance: DynRadioComponent.dynInstance,
           component: DynRadioComponent,
         },
         {
           control: DynSelectComponent.dynControl,
+          instance: DynSelectComponent.dynInstance,
           component: DynSelectComponent,
         },
       ],

@@ -22,7 +22,7 @@ export abstract class DynFormControl<
 
     super.ngOnInit();
 
-    this.control = this._form.register(
+    this.control = this._fform.register(
       DynInstanceType.Control,
       this.config,
       this.parent

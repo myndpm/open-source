@@ -1,4 +1,4 @@
-import { DynTree } from "./tree.interface";
+import { DynTree } from './tree.interface';
 
 export interface DynOption<T = unknown> {
   text: string;

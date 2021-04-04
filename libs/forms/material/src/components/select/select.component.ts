@@ -24,7 +24,6 @@ export class DynSelectComponent
     return {
       ...partial,
       control: DynSelectComponent.dynControl,
-      instance: DynSelectComponent.dynInstance,
     };
   }
 
