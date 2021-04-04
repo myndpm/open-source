@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+
+$dark-primary-text: rgba(black, 0.95);
+$light-primary-text: white;
+
+// Palette
+$mynd-primary: (
+  100: #71ebab,
+  500: #38b87c,
+  900: #00874f,
+  contrast: (
+    100: $dark-primary-text,
+    500: $light-primary-text,
+    900: $light-primary-text,
+  )
+);
+
+$mynd-secondary: (
+  100: #B9D8EF,
+  500: #80BDEB,
+  900: #5A88AA,
+  contrast: (
+    100: $dark-primary-text,
+    500: $light-primary-text,
+    900: $light-primary-text,
+  )
+);
+
+$mynd-negative: (
+  100: #FFB5B6,
+  500: #FC595B,
+  900: #D9394E,
+  contrast: (
+    100: $dark-primary-text,
+    500: $light-primary-text,
+    900: $light-primary-text,
+  )
+);
+
+
+// Material
+$mynd-typography: mat-typography-config(
+  $font-family: 'Roboto, monospace',
+);
+
+@include mat-core($mynd-typography);
+
+$color-primary: mat-palette($mynd-primary);
+$color-accent:  mat-palette($mynd-secondary);
+$color-warn:    mat-palette($mynd-negative);
+
+$mynd-theme: mat-light-theme((
+  color: (
+    primary: $color-primary,
+    accent: $color-accent,
+    warn: $color-warn,
+  )
+));
+
+@include angular-material-theme($mynd-theme);

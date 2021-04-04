@@ -43,8 +43,8 @@
             "aot": true,
             "assets": ["apps/demos/src/favicon.jpg", "apps/demos/src/assets"],
             "styles": [
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "apps/demos/src/material.scss",
               "apps/demos/src/styles.styl"
             ],
             "scripts": [
