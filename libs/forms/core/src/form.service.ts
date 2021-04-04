@@ -14,6 +14,9 @@ import { DynControlParent, DynInstanceType } from './control.types';
 export class DynFormService {
   constructor() {}
 
+  /**
+   * Adds a control (via config) to the given parent.
+   */
   register(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
@@ -66,6 +69,9 @@ export class DynFormService {
     return control as T;
   }
 
+  /**
+   * Build the corresponding form control instance for a given config.
+   */
   build(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
@@ -91,14 +97,7 @@ export class DynFormService {
       case DynInstanceType.Group:
         const control = new FormGroup({}, config.options);
         if (recursively) {
-          config.controls?.forEach((item) => {
-            if (item.name) {
-              control.addControl(
-                item.name,
-                this.build(item.instance as any, item, recursively)
-              );
-            }
-          });
+          this.buildControls(control, config);
         }
         return (control as unknown) as T;
 
@@ -110,6 +109,28 @@ export class DynFormService {
     }
   }
 
+  /**
+   * Recursively build the child controls and attach them to a given parent.
+   */
+  buildControls(
+    parent: FormGroup,
+    config: DynBaseConfig,
+  ): void {
+    config.controls?.forEach((item) => {
+      if (item.name) {
+        parent.addControl(
+          item.name,
+          this.build(item.instance as any, item, true)
+        );
+      } else {
+        this.buildControls(parent, item);
+      }
+    });
+  }
+
+  /**
+   * Append a control to a given parent in the specified name.
+   */
   append(parent: DynControlParent, name: string, control: AbstractControl) {
     // only FormGroup can be extended
     if (parent.control instanceof FormGroup) {
