@@ -2,9 +2,11 @@
   <section-badges [badges]="badges"></section-badges>
   <section-actions [actions]="actions"></section-actions>
 
-  <div>
+  <form>
     <h3>Simple Dynamic Form</h3>
 
     <dyn-form [controls]="controls" [form]="form"></dyn-form>
-  </div>
+
+    <button type="button" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+  </form>
 </section>

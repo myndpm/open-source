@@ -55,7 +55,7 @@ export class DynArrayComponent
     return {
       ...params,
       addButton: params.addButton || 'Add Item',
-      addColor: params.addColor || 'primary',
+      addColor: params.addColor || 'accent',
       removeButton: params.removeButton || 'Remove',
       removeColor: params.removeColor || '',
     };

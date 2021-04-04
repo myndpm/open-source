@@ -14,11 +14,11 @@
       <dyn-group [group]="item" [controls]="config.controls"></dyn-group>
 
       <button
-        mat-raised-button
+        mat-icon-button
         [color]="params.removeColor"
         (click)="removeItem(i)"
       >
-        {{ params.removeButton }}
+        <mat-icon>close</mat-icon>
       </button>
     </div>
   </mat-card-content>

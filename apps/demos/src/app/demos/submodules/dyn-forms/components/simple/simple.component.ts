@@ -78,4 +78,8 @@ export class SimpleComponent implements OnInit, AfterViewInit {
       });
     });
   }
+
+  onSubmit(): void {
+    console.log(this.form.value);
+  }
 }

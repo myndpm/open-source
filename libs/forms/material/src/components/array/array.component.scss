@@ -13,4 +13,8 @@ mat-card-header ::ng-deep > :first-child {
     display: flex;
     flex: 1;
   }
+
+  .mat-icon-button {
+    margin-bottom: 20px;
+  }
 }
