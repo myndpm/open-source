@@ -5,7 +5,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { DynBaseConfig } from './control-config.interface';
+import { DynBaseConfig } from './config.interface';
 import { DynControlParent, DynInstanceType } from './control.types';
 
 @Injectable({

@@ -8,7 +8,7 @@ import {
 import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
 import { isObservable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DynBaseConfig } from './control-config.interface';
+import { DynBaseConfig } from './config.interface';
 import { DynControlParams } from './control-params.interface';
 import {
   DynControlParent,

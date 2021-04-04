@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  DynControlConfig,
+  DynConfig,
   DynFormArray,
   DynInstanceType,
   DynPartialControlConfig,
@@ -20,7 +20,7 @@ import { DynArrayParams } from './array.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynArrayComponent
-  extends DynFormArray<DynArrayParams, DynControlConfig>
+  extends DynFormArray<DynArrayParams, DynConfig>
   implements OnInit, AfterViewInit {
   static dynControl: 'ARRAY' = 'ARRAY';
 
@@ -28,7 +28,7 @@ export class DynArrayComponent
 
   static createConfig(
     partial: DynPartialControlConfig<DynArrayParams>
-  ): DynControlConfig<DynArrayParams> {
+  ): DynConfig<DynArrayParams> {
     return {
       ...partial,
       control: DynArrayComponent.dynControl,

@@ -1,6 +1,6 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { DynControlConfig } from './control-config.interface';
+import { DynConfig } from './config.interface';
 import { DynControlParams } from './control-params.interface';
 import { DynInstanceType } from './control.types';
 import { DynControl } from './dyn-control.class';
@@ -8,7 +8,7 @@ import { DynControl } from './dyn-control.class';
 @Directive()
 export abstract class DynFormArray<
     TParams extends DynControlParams = DynControlParams,
-    TConfig extends DynControlConfig<TParams> = DynControlConfig<TParams>
+    TConfig extends DynConfig<TParams> = DynConfig<TParams>
   >
   extends DynControl<TParams, TConfig, FormArray>
   implements OnInit {

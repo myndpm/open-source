@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import {
-  DynControlConfig,
+  DynConfig,
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -20,7 +20,7 @@ export class DynSelectComponent
 
   static createConfig(
     partial: DynPartialControlConfig<DynSelectParams>
-  ): DynControlConfig {
+  ): DynConfig {
     return {
       ...partial,
       control: DynSelectComponent.dynControl,

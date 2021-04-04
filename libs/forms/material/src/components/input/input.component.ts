@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
-  DynControlConfig,
+  DynConfig,
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -19,7 +19,7 @@ export class DynInputComponent
 
   static createConfig(
     partial: DynPartialControlConfig<DynInputParams>
-  ): DynControlConfig {
+  ): DynConfig {
     return {
       ...partial,
       control: DynInputComponent.dynControl,

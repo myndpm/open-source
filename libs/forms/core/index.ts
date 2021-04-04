@@ -1,3 +1,4 @@
+export * from './src/config.interface';
 export * from './src/control-config.interface';
 export * from './src/control-params.interface';
 export * from './src/control-provider.interface';

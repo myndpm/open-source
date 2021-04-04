@@ -1,5 +1,5 @@
 import {
-  DynControlConfig,
+  DynConfig,
   DynControlType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -20,29 +20,29 @@ import { DynSelectParams } from './components/select/select.component.params';
 export function createConfig(
   type: typeof DynArrayComponent.dynControl,
   partial: DynPartialControlConfig<Partial<DynArrayParams>>
-): DynControlConfig;
+): DynConfig;
 export function createConfig(
   type: typeof DynCardComponent.dynControl,
   partial: DynPartialControlConfig<Partial<DynCardParams>>
-): DynControlConfig;
+): DynConfig;
 export function createConfig(
   type: typeof DynInputComponent.dynControl,
   partial: DynPartialControlConfig<Partial<DynInputParams>>
-): DynControlConfig;
+): DynConfig;
 export function createConfig(
   type: typeof DynRadioComponent.dynControl,
   partial: DynPartialControlConfig<Partial<DynRadioParams>>
-): DynControlConfig;
+): DynConfig;
 export function createConfig(
   type: typeof DynSelectComponent.dynControl,
   partial: DynPartialControlConfig<Partial<DynSelectParams>>
-): DynControlConfig;
+): DynConfig;
 
 // factory
 export function createConfig(
   type: DynControlType,
   partial: DynPartialControlConfig<any>
-): DynControlConfig {
+): DynConfig {
   switch (type) {
     // containers
     case DynArrayComponent.dynControl:

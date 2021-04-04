@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
-import { DynControlConfig } from '@myndpm/dyn-forms/core';
+import { DynConfig } from '@myndpm/dyn-forms/core';
 
 @Component({
   selector: 'dyn-group',
@@ -13,7 +13,7 @@ import { DynControlConfig } from '@myndpm/dyn-forms/core';
  */
 export class GroupComponent {
   @Input() group!: FormGroup;
-  @Input() controls?: DynControlConfig[];
+  @Input() controls?: DynConfig[];
 
   constructor(public parent: ControlContainer) {}
 }
