@@ -16,7 +16,6 @@ import { DynBaseConfig, DynFormRegistry } from '@myndpm/dyn-forms/core';
 @Component({
   selector: 'dyn-factory',
   templateUrl: './factory.component.html',
-  styleUrls: ['./factory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FactoryComponent implements OnInit {

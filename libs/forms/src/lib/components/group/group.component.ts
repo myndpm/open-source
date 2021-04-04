@@ -5,7 +5,6 @@ import { DynConfig } from '@myndpm/dyn-forms/core';
 @Component({
   selector: 'dyn-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
