@@ -6,7 +6,8 @@ P extends DynControlParams = DynControlParams
 > extends DynControlConfig<P> {
   // form/data hierarchy
   name?: string; // optional fieldName
-  controls?: DynConfig[];
+  controls?: DynBaseConfig[];
+  // contexts: { [display|table|filter]: DynControlConfig }
 }
 
 export interface DynConfig<

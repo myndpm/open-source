@@ -1,7 +1,7 @@
-import { AbstractControlOptions } from "@angular/forms";
+import { AbstractControlOptions } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { DynControlParams } from "./control-params.interface";
-import { DynControlType, DynInstanceType } from "./control.types";
+import { DynControlParams } from './control-params.interface';
+import { DynControlType, DynInstanceType } from './control.types';
 
 export interface DynControlConfig<P extends DynControlParams = DynControlParams> {
   // config
@@ -12,5 +12,9 @@ export interface DynControlConfig<P extends DynControlParams = DynControlParams>
   options?: AbstractControlOptions;
   // factory?: { cssClass, colSpan }
   // errorHandler: (errors: ValidationErrors) => string
-  // contextHandlers: { display: { dynControl, dynParams }, table: ... }
+  /* context customization via functions
+  dynFns: DynStrategyClass {
+    abstract getValue(form, config) => T
+    getRequestValue?
+  } */
 }

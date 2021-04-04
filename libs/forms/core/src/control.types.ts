@@ -9,7 +9,8 @@ export enum DynInstanceType { // Form Control Type
   Container = 'CONTAINER',
 }
 
-export interface DynControlParent<T extends AbstractControl = FormGroup>
-  extends ControlContainer {
+export interface DynControlParent<
+  T extends AbstractControl = FormGroup
+> extends ControlContainer {
   control: T;
 }

@@ -5,7 +5,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { DynBaseConfig } from './config.interface';
+import { DynBaseConfig } from './config.interfaces';
 import { DynControlParent, DynInstanceType } from './control.types';
 
 @Injectable({
@@ -92,10 +92,12 @@ export class DynFormService {
         const control = new FormGroup({}, config.options);
         if (recursively) {
           config.controls?.forEach((item) => {
-            control.addControl(
-              item.name,
-              this.build(item.instance as any, item, recursively)
-            );
+            if (item.name) {
+              control.addControl(
+                item.name,
+                this.build(item.instance as any, item, recursively)
+              );
+            }
           });
         }
         return (control as unknown) as T;

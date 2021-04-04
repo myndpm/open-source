@@ -1,5 +1,5 @@
 import { Provider } from '@angular/core';
-import { ControlProvider, LazyControl } from './control-provider.interface';
+import { ControlProvider, LazyControl } from './control-provider.interfaces';
 import { DYN_CONTROLS_TOKEN } from './controls.token';
 
 export function isLazyControl(
