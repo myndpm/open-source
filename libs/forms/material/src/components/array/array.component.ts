@@ -56,8 +56,8 @@ export class DynArrayComponent
       ...params,
       addButton: params.addButton || 'Add Item',
       addColor: params.addColor || 'accent',
-      removeButton: params.removeButton || 'Remove',
-      removeColor: params.removeColor || '',
+      removeIcon: params.removeIcon || 'close',
+      removeColor: params.removeColor || 'accent',
     };
   }
 }

@@ -6,6 +6,7 @@ export interface DynArrayParams extends DynControlParams {
   initItem?: boolean;
   addButton?: string;
   addColor?: string;
-  removeButton?: string;
+  removeIcon?: string;
   removeColor?: string;
+  rowClass?: string;
 }
