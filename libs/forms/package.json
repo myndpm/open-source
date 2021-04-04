@@ -18,7 +18,6 @@
     "@angular/common": ">=11.0.0",
     "@angular/core": ">=11.0.0",
     "@angular/forms": ">=11.0.0",
-    "@angular/material": ">=11.0.0",
     "rxjs": "*"
   },
   "dependencies": {
