@@ -8,7 +8,6 @@ import {
   Injector,
   Input,
   OnInit,
-  SimpleChanges,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -17,7 +16,9 @@ import {
   DynControlContext,
   DynFormContext,
   DynFormRegistry,
+  DYN_CONTEXT,
 } from '@myndpm/dyn-forms/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'dyn-factory',
@@ -27,7 +28,6 @@ import {
 export class FactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
   @Input() injector?: Injector;
-  @Input() context?: DynControlContext;
 
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
@@ -38,6 +38,7 @@ export class FactoryComponent implements OnInit {
   }
 
   private _injector!: Injector;
+  private _context$!: BehaviorSubject<DynControlContext>;
   private _formContext!: DynFormContext;
 
   constructor(
@@ -47,16 +48,15 @@ export class FactoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // resolve the injector to use and g et providers
     this._injector = this.injector ?? this.parent;
+    this._context$ = this._injector.get(DYN_CONTEXT);
     this._formContext = this._injector.get(DynFormContext);
-    this.createFrom(this.config);
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.context && !changes.context.firstChange) {
+    this._context$.subscribe(() => {
       this.container.clear();
-      this.createFrom(this._formContext.getContextConfig(this.config, this.context))
-    }
+      this.createFrom(this._formContext.getContextConfig(this.config));
+    });
   }
 
   private createFrom(config: DynBaseConfig): void {
