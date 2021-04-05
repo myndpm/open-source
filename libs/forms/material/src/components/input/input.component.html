@@ -7,6 +7,11 @@
       [formControlName]="config.name"
       [placeholder]="params.placeholder"
     />
+
+    <mat-icon *ngIf="params.iconPrefix" matPrefix>{{ params.iconPrefix }}</mat-icon>
+    <mat-icon *ngIf="params.iconSuffix" matSuffix>{{ params.iconSuffix }}</mat-icon>
+    <span *ngIf="params.textSuffix" matSuffix>{{ params.textSuffix }}</span>
+
     <mat-hint *ngIf="params.hint">{{ params.hint }}</mat-hint>
   </mat-form-field>
 </ng-container>

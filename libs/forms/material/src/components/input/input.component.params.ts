@@ -5,4 +5,7 @@ export interface DynInputParams extends DynControlParams {
   label?: string;
   placeholder: string;
   hint?: string;
+  iconPrefix?: string;
+  iconSuffix?: string;
+  textSuffix?: string;
 }
