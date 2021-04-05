@@ -14,5 +14,3 @@ export interface DynControlParent<
 > extends ControlContainer {
   control: T;
 }
-
-export type DynControlContext = string; // Context ID

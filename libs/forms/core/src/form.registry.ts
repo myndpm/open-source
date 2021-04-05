@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ControlProvider, InjectedControl, isLazyControl } from './control-provider.interfaces';
 import { DynControlType, DynInstanceType } from './control.types';
-import { DYN_CONTROLS_TOKEN } from './controls.token';
+import { DYN_CONTROLS_TOKEN } from './form.tokens';
 
 @Injectable()
 export class DynFormRegistry {

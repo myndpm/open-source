@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { DynControlConfig } from './control-config.interface';
+import { DynControlContext } from './control-contexts.interfaces';
 import { ControlProvider } from './control-provider.interfaces';
-import { DynControlContext } from './control.types';
 
 export const DYN_CONTROLS_TOKEN = new InjectionToken<ControlProvider[]>(
   '@myndpm/dyn-forms/dyn-controls'
