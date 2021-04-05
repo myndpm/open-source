@@ -11,6 +11,7 @@ import { DynFormConfig } from './form.config';
 export class FormComponent {
   @Input() form = new FormGroup({});
   @Input() config!: DynFormConfig;
+  @Input() context?: DynControlContext;
 
   injector?: Injector;
 

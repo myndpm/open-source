@@ -5,7 +5,7 @@
   <form [formGroup]="form">
     <h3>Simple Dynamic Form</h3>
 
-    <dyn-form [config]="config" [form]="form"></dyn-form>
+    <dyn-form [config]="config" [context]="context" [form]="form"></dyn-form>
 
     <button type="button" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
   </form>

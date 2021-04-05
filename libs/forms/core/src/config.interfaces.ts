@@ -1,4 +1,5 @@
 import { DynControlConfig } from './control-config.interface';
+import { DynControlContexts } from './control-contexts.interfaces';
 import { DynControlParams } from './control-params.interfaces';
 
 export interface DynBaseConfig<
@@ -7,7 +8,7 @@ P extends DynControlParams = DynControlParams
   // form/data hierarchy
   name?: string; // optional fieldName
   controls?: DynBaseConfig[];
-  // contexts: { [display|table|filter]: DynControlConfig }
+  contexts?: DynControlContexts;
 }
 
 export interface DynConfig<
