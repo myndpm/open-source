@@ -1,5 +1,4 @@
 import {
-  ApplicationRef,
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
@@ -7,7 +6,6 @@ import {
   Injector,
   Input,
   OnInit,
-  TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -21,9 +19,6 @@ import { DynBaseConfig, DynFormRegistry } from '@myndpm/dyn-forms/core';
 export class FactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
 
-  @ViewChild(TemplateRef, { static: true })
-  content!: TemplateRef<any>;
-
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
 
@@ -33,7 +28,6 @@ export class FactoryComponent implements OnInit {
   }
 
   constructor(
-    private appRef: ApplicationRef,
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
     private registry: DynFormRegistry,
@@ -46,18 +40,10 @@ export class FactoryComponent implements OnInit {
     const ref = this.container.createComponent<any>(
       factory,
       undefined,
-      this.injector
-      // hierarchy: each group must call the factory to resolve the right parent
-      // this.ngContent()
+      this.injector,
     );
     ref.instance.config = this.config;
 
     ref.hostView.detectChanges();
-  }
-
-  protected ngContent(): any[][] {
-    const viewRef = this.content.createEmbeddedView(null);
-    this.appRef.attachView(viewRef);
-    return [viewRef.rootNodes];
   }
 }

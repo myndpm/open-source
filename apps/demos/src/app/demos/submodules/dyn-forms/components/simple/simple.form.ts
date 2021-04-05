@@ -16,29 +16,30 @@ export function simpleForm(
         controls: [
           createConfig('INPUT', {
             name: 'firstName',
+            options: { validators: [Validators.required] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'First Name *' },
-            options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'lastName',
+            options: { validators: [Validators.required] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Last Name *' },
-            options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'address1',
-            factory: { cssClass: 'col-12 col-md-9' },
-            params: { label: 'Address Line 1 *' },
             options: { validators: [Validators.required] },
+            factory: { cssClass: 'col-12 col-md-10' },
+            params: { label: 'Address Line 1 *' },
           }),
           createConfig('INPUT', {
             name: 'address2',
-            factory: { cssClass: 'col-12 col-md-9' },
+            factory: { cssClass: 'col-12 col-md-10' },
             params: { label: 'Address Line 2' },
           }),
           createConfig('SELECT', {
             name: 'country',
+            options: { validators: [Validators.required] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: {
               label: 'Country',
@@ -51,13 +52,12 @@ export function simpleForm(
                 { text: 'Other', value: 'XX' },
               ],
             },
-            options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'zipCode',
+            options: { validators: [Validators.required, Validators.min(0)] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Postal Code *' },
-            options: { validators: [Validators.required, Validators.min(0)] },
           }),
         ],
       }),
@@ -81,15 +81,15 @@ export function simpleForm(
         controls: [
           createConfig('INPUT', {
             name: 'product',
+            options: { validators: [Validators.required] },
             factory: { cssClass: 'col-6 col-md-8' },
             params: { label: 'Product Name *' },
-            options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'quantity',
-            factory: { cssClass: 'col-3' },
-            params: { label: 'Quantity *', type: 'number' },
             options: { validators: [Validators.required, Validators.min(1)] },
+            factory: { cssClass: 'col-5 col-md-3' },
+            params: { label: 'Quantity *', type: 'number' },
           }),
         ],
       }),
