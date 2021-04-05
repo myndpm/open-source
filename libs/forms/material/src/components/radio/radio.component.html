@@ -3,6 +3,7 @@
     <mat-radio-button
       *ngFor="let option of params.options"
       [value]="option.value"
+      [disabled]="params.readonly"
     >
       {{ option.text }}
     </mat-radio-button>

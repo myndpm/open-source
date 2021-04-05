@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   OnInit,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -37,6 +38,11 @@ export class DynArrayComponent
 
   get items(): FormGroup[] {
     return this.control.controls as FormGroup[];
+  }
+
+  @HostBinding('class.readonly')
+  get isReadonly(): boolean {
+    return Boolean(this.params.readonly);
   }
 
   ngOnInit(): void {

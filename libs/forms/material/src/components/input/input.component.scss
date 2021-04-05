@@ -4,4 +4,11 @@
   .mat-form-field {
     width: 100%;
   }
+
+  &.readonly ::ng-deep {
+    .mat-form-field-outline,
+    input {
+      display: none;
+    }
+  }
 }

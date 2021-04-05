@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
 import {
   DynConfig,
   DynFormControl,
@@ -26,6 +26,11 @@ export class DynInputComponent
     };
   }
 
+  @HostBinding('class.readonly')
+  get isReadonly(): boolean {
+    return Boolean(this.params.readonly);
+  }
+
   ngOnInit(): void {
     super.ngOnInit();
   }
@@ -33,6 +38,7 @@ export class DynInputComponent
   completeParams(params: Partial<DynInputParams>): DynInputParams {
     return {
       ...params,
+      floatLabel: params.floatLabel || 'auto',
       type: params.type || 'text',
       placeholder: params.placeholder || '',
     };

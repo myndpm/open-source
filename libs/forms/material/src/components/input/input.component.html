@@ -1,5 +1,5 @@
 <ng-container [formGroup]="parent.control">
-  <mat-form-field>
+  <mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
     <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
     <input
       matInput
@@ -7,6 +7,9 @@
       [formControlName]="config.name"
       [placeholder]="params.placeholder"
     />
+    <span *ngIf="params.readonly">
+      {{ (params.getValue ? params.getValue(params, control.value) : control.value) || '-' }}
+    </span>
 
     <mat-icon *ngIf="params.iconPrefix" matPrefix>{{ params.iconPrefix }}</mat-icon>
     <mat-icon *ngIf="params.iconSuffix" matSuffix>{{ params.iconSuffix }}</mat-icon>

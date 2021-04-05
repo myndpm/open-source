@@ -18,3 +18,9 @@ mat-card-header ::ng-deep > :first-child {
     margin-bottom: 20px;
   }
 }
+
+:host {
+  &.readonly button {
+    visibility: hidden;
+  }
+}
