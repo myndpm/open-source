@@ -11,29 +11,35 @@ export function simpleForm(
     controls: [
       createConfig('CARD', {
         name: 'billing',
+        factory: { cssClass: 'row' },
         params: obsParams,
         controls: [
           createConfig('INPUT', {
             name: 'firstName',
+            factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'First Name *' },
             options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'lastName',
+            factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Last Name *' },
             options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'address1',
+            factory: { cssClass: 'col-12 col-md-9' },
             params: { label: 'Address Line 1 *' },
             options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'address2',
+            factory: { cssClass: 'col-12 col-md-9' },
             params: { label: 'Address Line 2' },
           }),
           createConfig('SELECT', {
             name: 'country',
+            factory: { cssClass: 'col-sm-6 col-md-4' },
             params: {
               label: 'Country',
               options: [
@@ -49,6 +55,7 @@ export function simpleForm(
           }),
           createConfig('INPUT', {
             name: 'zipCode',
+            factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Postal Code *' },
             options: { validators: [Validators.required, Validators.min(0)] },
           }),
@@ -65,6 +72,7 @@ export function simpleForm(
       }),
       createConfig('ARRAY', {
         name: 'products',
+        factory: { cssClass: 'row' },
         params: {
           title: 'Products',
           subtitle: 'Items to checkout',
@@ -73,11 +81,13 @@ export function simpleForm(
         controls: [
           createConfig('INPUT', {
             name: 'product',
+            factory: { cssClass: 'col-8' },
             params: { label: 'Product Name *' },
             options: { validators: [Validators.required] },
           }),
           createConfig('INPUT', {
             name: 'quantity',
+            factory: { cssClass: 'col-3' },
             params: { label: 'Quantity *', type: 'number' },
             options: { validators: [Validators.required, Validators.min(1)] },
           }),

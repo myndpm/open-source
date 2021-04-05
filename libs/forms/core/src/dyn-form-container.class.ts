@@ -1,7 +1,7 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynBaseConfig } from './config.interfaces';
-import { DynControlParams } from './control-params.interface';
+import { DynControlParams } from './control-params.interfaces';
 import { DynInstanceType } from './control.types';
 import { DynControl } from './dyn-control.class';
 

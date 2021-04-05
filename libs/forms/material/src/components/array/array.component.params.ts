@@ -8,5 +8,4 @@ export interface DynArrayParams extends DynControlParams {
   addColor?: string;
   removeIcon?: string;
   removeColor?: string;
-  rowClass?: string;
 }

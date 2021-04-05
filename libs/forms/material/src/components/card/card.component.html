@@ -10,6 +10,6 @@
   </mat-card-header>
 
   <mat-card-content>
-    <dyn-group [group]="control" [controls]="config.controls"></dyn-group>
+    <dyn-group [class]="config.factory?.cssClass" [group]="control" [controls]="config.controls"></dyn-group>
   </mat-card-content>
 </mat-card>

@@ -1,5 +1,5 @@
 import { DynControlConfig } from './control-config.interface';
-import { DynControlParams } from './control-params.interface';
+import { DynControlParams } from './control-params.interfaces';
 
 export interface DynBaseConfig<
 P extends DynControlParams = DynControlParams

@@ -29,7 +29,7 @@ export class FactoryComponent implements OnInit {
 
   @HostBinding('class')
   get cssClass(): string {
-    return this.config?.name ? `dyn-field-${this.config?.name}` : '';
+    return this.config?.factory?.cssClass || '';
   }
 
   constructor(
