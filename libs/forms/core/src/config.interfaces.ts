@@ -17,6 +17,7 @@ P extends DynControlParams = DynControlParams
   name: string; // mandatory fieldName
 }
 
+// useful for Factory Method partial params
 export type DynPartialControlConfig<
 P extends DynControlParams = DynControlParams
 > = Omit<DynConfig<P>, 'control'>;

@@ -19,7 +19,7 @@ import { simpleForm } from './simple.form';
   encapsulation: ViewEncapsulation.None,
 })
 export class SimpleComponent implements OnInit, AfterViewInit {
-  // related links
+  // ref links
   badges: SectionBadge[] = [
     {
       link: "https://github.com/Mynd-Management/open-source/tree/master/libs/forms",

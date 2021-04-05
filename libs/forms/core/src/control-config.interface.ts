@@ -11,7 +11,7 @@ export interface DynControlConfig<P extends DynControlParams = DynControlParams>
   params?: P | Observable<P>;
   // factory?: { cssClass, colSpan }
   // errorHandler: (errors: ValidationErrors) => string
-  /* context customization via functions
+  /* customized lifecycle functions
   dynFns: DynStrategyClass {
     abstract getValue(form, config) => T
     getRequestValue?
