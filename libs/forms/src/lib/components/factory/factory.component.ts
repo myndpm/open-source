@@ -3,6 +3,8 @@ import {
   Component,
   ComponentFactoryResolver,
   HostBinding,
+  Inject,
+  INJECTOR,
   Injector,
   Input,
   OnInit,
@@ -18,6 +20,7 @@ import { DynBaseConfig, DynFormRegistry } from '@myndpm/dyn-forms/core';
 })
 export class FactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
+  @Input() injector?: Injector;
 
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
@@ -28,8 +31,8 @@ export class FactoryComponent implements OnInit {
   }
 
   constructor(
+    @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
-    private injector: Injector,
     private registry: DynFormRegistry,
   ) {}
 
@@ -40,7 +43,7 @@ export class FactoryComponent implements OnInit {
     const ref = this.container.createComponent<any>(
       factory,
       undefined,
-      this.injector,
+      this.injector ?? this.parent,
     );
     ref.instance.config = this.config;
 

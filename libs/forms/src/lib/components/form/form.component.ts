@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, INJECTOR, Injector, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { DynControlConfig, DYN_CONTEXT_DEFAULTS } from '@myndpm/dyn-forms/core';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -10,4 +11,25 @@ import { DynFormConfig } from './form.config';
 export class FormComponent {
   @Input() form = new FormGroup({});
   @Input() config!: DynFormConfig;
+
+  injector?: Injector;
+
+  constructor(@Inject(INJECTOR) private parent: Injector) {}
+
+  ngOnInit() {
+    this.injector = Injector.create({
+      providers: [
+        {
+          provide: DYN_CONTEXT_DEFAULTS,
+          useValue: this.getContextDefaults(),
+        },
+      ],
+      parent: this.parent
+    });
+  }
+
+  getContextDefaults(): Map<string, DynControlConfig> {
+    // TODO map this.config.contexts
+    return new Map([]);
+  }
 }

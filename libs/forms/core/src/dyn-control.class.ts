@@ -44,7 +44,10 @@ export abstract class DynControl<
     try {
       this.parent = injector.get(ControlContainer) as DynControlParent;
     } catch (e) {
-      throw new Error(`No parent ControlContainer found.`); // TODO debug trace
+      throw new Error(
+        'No parent ControlContainer found. ' +
+        'Please provide a [formGroup]'
+      ); // TODO debug trace
     }
     this._fform = injector.get(DynFormFactory);
     this._ref = injector.get(ChangeDetectorRef);

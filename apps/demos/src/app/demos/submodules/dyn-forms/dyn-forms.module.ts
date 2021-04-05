@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -25,6 +26,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FlexLayoutModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
     DynFormsMaterialModule.forFeature(),
     MatButtonModule,
