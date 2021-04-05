@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, INJECTOR, Injector, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynControlConfig, DYN_CONTEXT_DEFAULTS } from '@myndpm/dyn-forms/core';
+import { DynControlConfig, DynControlContext, DYN_CONTEXT_DEFAULTS } from '@myndpm/dyn-forms/core';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -28,7 +28,7 @@ export class FormComponent {
     });
   }
 
-  getContextDefaults(): Map<string, DynControlConfig> {
+  getContextDefaults(): Map<DynControlContext, DynControlConfig> {
     // TODO map this.config.contexts
     return new Map([]);
   }
