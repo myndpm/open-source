@@ -16,5 +16,6 @@ export * from './src/dyn-form-group.class';
 export * from './src/module.providers';
 export * from './src/form.tokens';
 
+export * from './src/form.context';
 export * from './src/form.registry';
 export * from './src/form.factory';

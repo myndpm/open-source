@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, INJECTOR, Injector, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynControlConfig, DynControlContext, DYN_CONTEXT_DEFAULTS } from '@myndpm/dyn-forms/core';
+import { DynControlConfig, DynControlContext, DynFormContext, DYN_CONTEXT_DEFAULTS } from '@myndpm/dyn-forms/core';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -24,6 +24,10 @@ export class FormComponent {
           provide: DYN_CONTEXT_DEFAULTS,
           useValue: this.getContextDefaults(),
         },
+        {
+          provide: DynFormContext,
+          useClass: DynFormContext,
+        }
       ],
       parent: this.parent
     });

@@ -7,6 +7,8 @@
 
     <dyn-form [config]="config" [context]="context" [form]="form"></dyn-form>
 
-    <button type="button" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    <button type="button" mat-raised-button color="primary" (click)="toggleContext()">
+      {{ context === 'edit' ? 'Save' : 'Edit '}}
+    </button>
   </form>
 </section>

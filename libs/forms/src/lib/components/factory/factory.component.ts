@@ -12,7 +12,12 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { DynBaseConfig, DynControlContext, DynFormRegistry } from '@myndpm/dyn-forms/core';
+import {
+  DynBaseConfig,
+  DynControlContext,
+  DynFormContext,
+  DynFormRegistry,
+} from '@myndpm/dyn-forms/core';
 
 @Component({
   selector: 'dyn-factory',
@@ -32,6 +37,9 @@ export class FactoryComponent implements OnInit {
     return this.config?.factory?.cssClass || '';
   }
 
+  private _injector!: Injector;
+  private _formContext!: DynFormContext;
+
   constructor(
     @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
@@ -39,11 +47,16 @@ export class FactoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._injector = this.injector ?? this.parent;
+    this._formContext = this._injector.get(DynFormContext);
     this.createFrom(this.config);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log({ changes })
+    if (changes.context && !changes.context.firstChange) {
+      this.container.clear();
+      this.createFrom(this._formContext.getContextConfig(this.config, this.context))
+    }
   }
 
   private createFrom(config: DynBaseConfig): void {
@@ -53,7 +66,7 @@ export class FactoryComponent implements OnInit {
     const ref = this.container.createComponent<any>(
       factory,
       undefined,
-      this.injector ?? this.parent,
+      this._injector,
     );
     ref.instance.config = config;
 
