@@ -18,6 +18,10 @@ P extends DynControlParams = DynControlParams
 }
 
 // useful for Factory Method partial params
+export type DynPartialGroupConfig<
+P extends DynControlParams = DynControlParams
+> = Omit<DynBaseConfig<P>, 'control'>;
+
 export type DynPartialControlConfig<
 P extends DynControlParams = DynControlParams
 > = Omit<DynConfig<P>, 'control'>;

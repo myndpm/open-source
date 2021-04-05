@@ -2,6 +2,7 @@ import {
   DynConfig,
   DynControlType,
   DynPartialControlConfig,
+  DynPartialGroupConfig,
 } from '@myndpm/dyn-forms/core';
 import {
   DynCardComponent,
@@ -11,6 +12,8 @@ import {
 } from './components';
 import { DynArrayComponent } from './components/array/array.component';
 import { DynArrayParams } from './components/array/array.component.params';
+import { DynDividerComponent } from './components/divider/divider.component';
+import { DynDividerParams } from './components/divider/divider.component.params';
 import { DynRadioComponent } from './components/radio/radio.component';
 import { DynRadioParams } from './components/radio/radio.component.params';
 import { DynSelectComponent } from './components/select/select.component';
@@ -23,7 +26,11 @@ export function createConfig(
 ): DynConfig;
 export function createConfig(
   type: typeof DynCardComponent.dynControl,
-  partial: DynPartialControlConfig<Partial<DynCardParams>>
+  partial: DynPartialGroupConfig<Partial<DynCardParams>>
+): DynConfig;
+export function createConfig(
+  type: typeof DynDividerComponent.dynControl,
+  partial: DynPartialGroupConfig<Partial<DynDividerParams>>
 ): DynConfig;
 export function createConfig(
   type: typeof DynInputComponent.dynControl,
@@ -39,10 +46,7 @@ export function createConfig(
 ): DynConfig;
 
 // factory
-export function createConfig(
-  type: DynControlType,
-  partial: DynPartialControlConfig<any>
-): DynConfig {
+export function createConfig(type: DynControlType, partial: any): DynConfig {
   switch (type) {
     // containers
     case DynArrayComponent.dynControl:
@@ -50,6 +54,9 @@ export function createConfig(
 
     case DynCardComponent.dynControl:
       return DynCardComponent.createConfig(partial);
+
+    case DynDividerComponent.dynControl:
+      return DynDividerComponent.createConfig(partial);
 
     // controls
     case DynSelectComponent.dynControl:

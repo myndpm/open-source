@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynArrayComponent } from './components/array/array.component';
 import { DynCardComponent } from './components/card/card.component';
+import { DynDividerComponent } from './components/divider/divider.component';
 import { DynInputComponent } from './components/input/input.component';
 import { DynRadioComponent } from './components/radio/radio.component';
 import { DynSelectComponent } from './components/select/select.component';
@@ -21,6 +23,7 @@ import { DynSelectComponent } from './components/select/select.component';
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -31,6 +34,7 @@ import { DynSelectComponent } from './components/select/select.component';
   declarations: [
     DynArrayComponent,
     DynCardComponent,
+    DynDividerComponent,
     DynInputComponent,
     DynRadioComponent,
     DynSelectComponent,
@@ -49,6 +53,11 @@ export class DynFormsMaterialModule {
           control: DynCardComponent.dynControl,
           instance: DynCardComponent.dynInstance,
           component: DynCardComponent,
+        },
+        {
+          control: DynDividerComponent.dynControl,
+          instance: DynDividerComponent.dynInstance,
+          component: DynDividerComponent,
         },
         {
           control: DynInputComponent.dynControl,

@@ -26,16 +26,22 @@ export function simpleForm(
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Last Name *' },
           }),
+          createConfig('DIVIDER', {
+            params: { invisible: true },
+          }),
           createConfig('INPUT', {
             name: 'address1',
             options: { validators: [Validators.required] },
-            factory: { cssClass: 'col-12 col-md-10' },
+            factory: { cssClass: 'col-12 col-md-8' },
             params: { label: 'Address Line 1 *' },
           }),
           createConfig('INPUT', {
             name: 'address2',
-            factory: { cssClass: 'col-12 col-md-10' },
+            factory: { cssClass: 'col-12 col-md-8' },
             params: { label: 'Address Line 2' },
+          }),
+          createConfig('DIVIDER', {
+            params: { invisible: true },
           }),
           createConfig('SELECT', {
             name: 'country',
