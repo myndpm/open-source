@@ -1,6 +1,4 @@
-<div class="section-actions"
-fxLayout="row-reverse" fxLayout.lt-md="column-reverse"
-fxLayoutGap="4px">
+<div class="section-actions" fxLayout="row-reverse" fxLayoutGap="4px">
   <a *ngFor="let action of actions" mat-icon-button
   [matTooltip]="action.tooltip"
   [href]="action.link" target="_blank">
