@@ -81,7 +81,7 @@ export function simpleForm(
         controls: [
           createConfig('INPUT', {
             name: 'product',
-            factory: { cssClass: 'col-8' },
+            factory: { cssClass: 'col-6 col-md-8' },
             params: { label: 'Product Name *' },
             options: { validators: [Validators.required] },
           }),
