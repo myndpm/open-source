@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "github-pages": "ng build demos --prod --base-href /open-source/ --output-path docs",
     "npm:publish": "npm publish --access=public",
-    "npm:dyn-forms": "run-s 'build -- forms --prod' 'tools:post-build libs/forms' 'npm:publish dist/libs/forms' 'tools:tag libs/forms'",
+    "npm:dyn-forms": "run-s 'build -- forms --prod' 'tools:postbuild libs/forms' 'npm:publish dist/libs/forms' 'tools:tag libs/forms'",
     "tools:postbuild": "ts-node tools/scripts/post-build",
     "tools:tag": "ts-node tools/scripts/git-tag",
     "affected:apps": "nx affected:apps",

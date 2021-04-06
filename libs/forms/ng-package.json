@@ -2,6 +2,11 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/libs/forms",
   "lib": {
-    "entryFile": "src/index.ts"
-  }
+    "entryFile": "src/index.ts",
+    "umdModuleIds": {
+      "fast-deep-equal": "equal",
+      "merge": "merge"
+    }
+  },
+  "allowedNonPeerDependencies": ["fast-deep-equal", "merge"]
 }
