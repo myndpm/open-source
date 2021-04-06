@@ -3,6 +3,10 @@
 
   .mat-form-field {
     width: 100%;
+
+    ::ng-deep .mat-input-element {
+      line-height: 1.2em;
+    }
   }
 
   &.readonly ::ng-deep {

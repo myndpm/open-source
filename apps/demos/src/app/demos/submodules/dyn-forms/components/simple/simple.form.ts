@@ -4,6 +4,28 @@ import { createConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 
+export const simpleData = {
+  billing: {
+    firstName: 'Mynd',
+    lastName: 'Management',
+    address1: '1611 Telegraph Ave',
+    address2: 'Suite 1200',
+    country: 'US',
+    zipCode: '94612',
+  },
+  account: 'GUEST',
+  products: [
+    {
+      product: 'Product 1',
+      quantity: 8,
+    },
+    {
+      product: 'Product 2',
+      quantity: 4,
+    },
+  ]
+};
+
 export function simpleForm(
   obsParams: Observable<DynControlParams>
 ): DynFormConfig<'display'> { // typed mode

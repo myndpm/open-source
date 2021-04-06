@@ -7,8 +7,14 @@
 
     <dyn-form [config]="config" [form]="form" [mode]="mode"></dyn-form>
 
-    <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
-      {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
-    </button>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
+        {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
+      </button>
+
+      <button type="button" mat-raised-button color="accent" (click)="loadData()">
+        Load Data
+      </button>
+    </div>
   </form>
 </section>

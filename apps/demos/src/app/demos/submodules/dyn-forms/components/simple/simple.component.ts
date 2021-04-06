@@ -9,7 +9,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SectionAction, SectionBadge } from 'apps/demos/src/app/layout';
 import { BehaviorSubject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { simpleForm } from './simple.form';
+import { simpleData, simpleForm } from './simple.form';
 
 @Component({
   selector: 'web-form-simple',
@@ -78,6 +78,10 @@ export class SimpleComponent implements OnInit, AfterViewInit {
             : 'Billing information complete',
       });
     });
+  }
+
+  loadData(): void {
+    this.form.patchValue(simpleData);
   }
 
   toggleMode(): void {
