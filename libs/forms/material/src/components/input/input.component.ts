@@ -18,9 +18,9 @@ export class DynMatInputComponent
   implements OnInit {
   static dynControl: 'INPUT' = 'INPUT';
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatInputParams>
-  ): DynConfig<C> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatInputParams>
+  ): DynConfig<M> {
     return {
       ...partial,
       control: DynMatInputComponent.dynControl,

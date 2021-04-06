@@ -21,36 +21,36 @@ import { DynMatSelectComponent } from './components/select/select.component';
 import { DynMatSelectParams } from './components/select/select.component.params';
 
 // type overloads
-export function createConfig<C extends DynControlMode>(
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatArrayComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynMatArrayParams>>
-): DynConfig<C>;
-export function createConfig<C extends DynControlMode>(
+  partial: DynPartialControlConfig<M, Partial<DynMatArrayParams>>
+): DynConfig<M>;
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatCardComponent.dynControl,
-  partial: DynPartialGroupConfig<C, Partial<DynMatCardParams>>
-): DynConfig<C>;
-export function createConfig<C extends DynControlMode>(
+  partial: DynPartialGroupConfig<M, Partial<DynMatCardParams>>
+): DynConfig<M>;
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatDividerComponent.dynControl,
-  partial: DynPartialGroupConfig<C, Partial<DynMatDividerParams>>
-): DynConfig<C>;
-export function createConfig<C extends DynControlMode>(
+  partial: DynPartialGroupConfig<M, Partial<DynMatDividerParams>>
+): DynConfig<M>;
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatInputComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynMatInputParams>>
-): DynConfig<C>;
-export function createConfig<C extends DynControlMode>(
+  partial: DynPartialControlConfig<M, Partial<DynMatInputParams>>
+): DynConfig<M>;
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatRadioComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynMatRadioParams>>
-): DynConfig<C>;
-export function createConfig<C extends DynControlMode>(
+  partial: DynPartialControlConfig<M, Partial<DynMatRadioParams>>
+): DynConfig<M>;
+export function createConfig<M extends DynControlMode>(
   type: typeof DynMatSelectComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynMatSelectParams>>
-): DynConfig<C>;
+  partial: DynPartialControlConfig<M, Partial<DynMatSelectParams>>
+): DynConfig<M>;
 
 // factory
-export function createConfig<C extends DynControlMode>(
+export function createConfig<M extends DynControlMode>(
   type: DynControlType,
   partial: any,
-): DynConfig<C> {
+): DynConfig<M> {
   switch (type) {
     // containers
     case DynMatArrayComponent.dynControl:

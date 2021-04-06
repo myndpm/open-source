@@ -28,9 +28,9 @@ export class DynMatArrayComponent
 
   dynInstanceType = DynInstanceType;
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatArrayParams>
-  ): DynConfig<C, DynMatArrayParams> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatArrayParams>
+  ): DynConfig<M, DynMatArrayParams> {
     return {
       ...partial,
       control: DynMatArrayComponent.dynControl,

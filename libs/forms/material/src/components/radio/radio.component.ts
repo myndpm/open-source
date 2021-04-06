@@ -18,9 +18,9 @@ export class DynMatRadioComponent
   implements OnInit {
   static dynControl: 'RADIO' = 'RADIO';
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatRadioParams>
-  ): DynConfig<C> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatRadioParams>
+  ): DynConfig<M> {
     return {
       ...partial,
       control: DynMatRadioComponent.dynControl,

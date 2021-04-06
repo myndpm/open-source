@@ -19,9 +19,9 @@ export class DynMatSelectComponent
   implements OnInit {
   static dynControl: 'SELECT' = 'SELECT';
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatSelectParams>
-  ): DynConfig<C> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatSelectParams>
+  ): DynConfig<M> {
     return {
       ...partial,
       control: DynMatSelectComponent.dynControl,

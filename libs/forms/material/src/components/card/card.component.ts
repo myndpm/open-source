@@ -18,9 +18,9 @@ export class DynMatCardComponent
   implements OnInit {
   static dynControl: 'CARD' = 'CARD';
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatCardParams>
-  ): DynConfig<C, DynMatCardParams> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatCardParams>
+  ): DynConfig<M, DynMatCardParams> {
     return {
       ...partial,
       control: DynMatCardComponent.dynControl,

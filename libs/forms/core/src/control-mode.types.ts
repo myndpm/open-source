@@ -5,16 +5,16 @@ import { DynControlParams } from './control-params.types';
 export type DynControlMode = string; // Mode ID
 
 // config overrides per mode, handled by DynFormMode
-export type DynControlModes<T extends string = DynControlMode> = {
-  [K in T]: Partial<DynControlConfig>;
+export type DynControlModes<M extends string = DynControlMode> = {
+  [K in M]: Partial<DynControlConfig>;
 }
 
 // general params overrides per mode, handled by DynFormMode
-export type DynModeParams<T extends string = DynControlMode> = {
-  [K in T]: Partial<DynControlParams>;
+export type DynModeParams<M extends string = DynControlMode> = {
+  [K in M]: Partial<DynControlParams>;
 }
 
 // general config overrides per mode+control, handled by DynFormMode
-export type DynModeControls<T extends string = DynControlMode> = {
-  [K in T]: DynControlConfig[];
+export type DynModeControls<M extends string = DynControlMode> = {
+  [K in M]: DynControlConfig[];
 }

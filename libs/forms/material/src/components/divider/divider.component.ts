@@ -12,9 +12,9 @@ export class DynMatDividerComponent
   extends DynFormContainer<DynControlMode, DynMatDividerParams> {
   static dynControl: 'DIVIDER' = 'DIVIDER';
 
-  static createConfig<C extends DynControlMode>(
-    partial: DynPartialControlConfig<C, DynMatDividerParams>
-  ): DynConfig<C> {
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, DynMatDividerParams>
+  ): DynConfig<M> {
     return {
       ...partial,
       control: DynMatDividerComponent.dynControl,
