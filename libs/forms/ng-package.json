@@ -4,8 +4,7 @@
   "lib": {
     "entryFile": "src/index.ts",
     "umdModuleIds": {
-      "fast-deep-equal": "equal",
-      "merge": "merge"
+      "fast-deep-equal": "equal"
     }
   },
   "allowedNonPeerDependencies": ["fast-deep-equal", "merge"]
