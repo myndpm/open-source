@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
-import { createConfig, DynSelectParams } from '@myndpm/dyn-forms/material';
+import { createConfig, DynRadioParams, DynSelectParams } from '@myndpm/dyn-forms/material';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 
@@ -88,6 +88,17 @@ export function simpleForm(
             { text: 'Create Account', value: 'CREATE' },
             { text: 'Checkout as a Guest', value: 'GUEST' },
           ],
+        },
+        contexts: {
+          display: {
+            control: 'INPUT',
+            params: {
+              getValue: (params: DynRadioParams, value: string) => {
+                const option = params.options.find(o => o.value === value);
+                return value && option ? option.text : value;
+              },
+            },
+          },
         },
       }),
       createConfig('ARRAY', {
