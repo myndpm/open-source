@@ -1,4 +1,5 @@
 import { DynControlConfig } from './control-config.interface';
+import { DynControlParams } from './control-params.interfaces';
 
 // edit|display|table|filter
 export type DynControlContext = string; // Context IDs
@@ -8,10 +9,12 @@ export type DynControlContexts<T extends string = DynControlContext> = {
   [K in T]: Partial<DynControlConfig>;
 }
 
-// general config overrides per context/control handled by DynFormContext
-export type DynConfigContexts<T extends string = DynControlContext> = {
-  [K in T]: DynControlConfig[];
+// general params overrides per context handled by DynFormContext
+export type DynContextParams<T extends string = DynControlContext> = {
+  [K in T]: Partial<DynControlParams>;
 }
 
-// general config options organized in a Map
-export type DynMappedContexts = Map<DynControlContext, DynControlConfig[]>;
+// general config overrides per context/control handled by DynFormContext
+export type DynContextControls<T extends string = DynControlContext> = {
+  [K in T]: DynControlConfig[];
+}

@@ -1,6 +1,12 @@
-import { DynBaseConfig, DynConfig, DynConfigContexts } from '@myndpm/dyn-forms/core';
+import {
+  DynBaseConfig,
+  DynConfig,
+  DynContextControls,
+  DynContextParams,
+} from '@myndpm/dyn-forms/core';
 
 export interface DynFormConfig {
-  contexts?: DynConfigContexts; // default values per context/control
+  contextParams?: DynContextParams; // default params per context
+  contexts?: DynContextControls; // default config per context+control
   controls: Array<DynBaseConfig | DynConfig>;
 }

@@ -14,8 +14,8 @@ import { FormGroup } from '@angular/forms';
 import {
   DynControlContext,
   DynFormContext,
-  DynMappedContexts,
   DYN_CONTEXT,
+  DYN_CONTEXT_CONTROL_DEFAULTS,
   DYN_CONTEXT_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
 import { BehaviorSubject } from 'rxjs';
@@ -48,7 +48,11 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         },
         {
           provide: DYN_CONTEXT_DEFAULTS,
-          useValue: this.getContextDefaults(),
+          useValue: this.config.contextParams,
+        },
+        {
+          provide: DYN_CONTEXT_CONTROL_DEFAULTS,
+          useValue: this.config.contexts,
         },
         {
           provide: DynFormContext,
@@ -66,11 +70,5 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.context$.complete();
-  }
-
-  getContextDefaults(): DynMappedContexts {
-    return new Map(
-      this.config.contexts ? Object.entries(this.config.contexts) : []
-    );
   }
 }

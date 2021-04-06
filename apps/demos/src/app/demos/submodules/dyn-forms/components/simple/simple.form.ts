@@ -8,21 +8,8 @@ export function simpleForm(
   obsParams: Observable<DynControlParams>
 ): DynFormConfig {
   return {
-    contexts: {
-      display: [
-        {
-          control: 'ARRAY',
-          params: { readonly: true },
-        },
-        {
-          control: 'INPUT',
-          params: { readonly: true },
-        },
-        {
-          control: 'RADIO',
-          params: { readonly: true },
-        },
-      ],
+    contextParams: {
+      display: { readonly: true },
     },
     controls: [
       createConfig('CARD', {
