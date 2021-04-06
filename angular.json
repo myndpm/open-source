@@ -125,7 +125,8 @@
           "options": {
             "baseHref": "/open-source/",
             "name": "Mynd Frontend Team",
-            "email": "eng.frontend@mynd.co"
+            "email": "eng.frontend@mynd.co",
+            "cname": "false"
           }
         }
       }
