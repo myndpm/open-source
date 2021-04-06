@@ -21,6 +21,7 @@ import {
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import deepEqual from 'fast-deep-equal';
+import isCallable from 'is-callable';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -84,6 +85,29 @@ export class DynFactoryComponent implements OnInit {
         config = newConfig;
       }
     });
+  }
+
+  callHook(hook: string, payload: any, plainPayload = false): void {
+    const dynControl = this.component.instance as any;
+
+    // call the hook in the parent (if it exists)
+    const method = dynControl[`hook${hook}`];
+    if (isCallable(method)) {
+      method.bind(dynControl)(payload);
+    }
+
+    // propagate to its childs (if supported)
+    const handler = dynControl['callHook'];
+    if (isCallable(handler)) {
+      const fieldName = dynControl.config.name;
+      handler.bind(dynControl)(
+        hook,
+        !plainPayload && fieldName && payload.hasOwnProperty(fieldName)
+          ? payload[fieldName]
+          : payload,
+        plainPayload,
+      );
+    }
   }
 
   private createFrom(config: DynBaseConfig): void {

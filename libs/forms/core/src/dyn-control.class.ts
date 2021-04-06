@@ -82,5 +82,12 @@ export abstract class DynControl<
     }
   }
 
+  // complete a partial specification of the required parameters
+  // ensuring that all will be present in the template
   abstract completeParams(params: Partial<TParams>): TParams;
+
+  // support and propagate hook calls to inner components
+  // this should be implemented by containers/groups/arrays
+  // concrete hooks will receive the parent data if they define no config.name
+  // callHook(hook: string, payload: any[], plainPayload = false): void
 }

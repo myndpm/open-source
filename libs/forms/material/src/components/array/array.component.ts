@@ -4,6 +4,8 @@ import {
   Component,
   HostBinding,
   OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -13,6 +15,7 @@ import {
   DynInstanceType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
+import { DynGroupComponent } from '@myndpm/dyn-forms';
 import { DynMatArrayParams } from './array.component.params';
 
 @Component({
@@ -46,6 +49,9 @@ export class DynMatArrayComponent
     return Boolean(this.params.readonly);
   }
 
+  @ViewChildren(DynGroupComponent)
+  dynGroups!: QueryList<DynGroupComponent>;
+
   ngOnInit(): void {
     super.ngOnInit();
   }
@@ -65,5 +71,31 @@ export class DynMatArrayComponent
       removeIcon: params.removeIcon || 'close',
       removeColor: params.removeColor || 'accent',
     };
+  }
+
+  callHook(hook: string, payload: any[], plainPayload = false): void {
+    this.dynGroups.forEach((group, i) => {
+      if (plainPayload || payload.length >= i-1) {
+        group.callHook(
+          hook,
+          !plainPayload ? payload[i] : payload,
+          plainPayload,
+        );
+      }
+    });
+  }
+
+  hookPrePatch(payload: any[]): void {
+    const numItems = this.control.controls.length;
+    // matches the incoming quantity with the existing ones
+    for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
+      if (i > numItems) {
+        this.addItem();
+      } else if (i > payload.length) {
+        this.removeItem(i);
+      }
+    }
+    // required to refresh ViewChildren
+    this._ref.detectChanges();
   }
 }

@@ -8,7 +8,9 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  QueryList,
   SimpleChanges,
+  ViewChildren,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -19,6 +21,7 @@ import {
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
 import { BehaviorSubject } from 'rxjs';
+import { DynFactoryComponent } from '../factory/factory.component';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -30,6 +33,9 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form = new FormGroup({});
   @Input() config!: DynFormConfig;
   @Input() mode?: DynControlMode;
+
+  @ViewChildren(DynFactoryComponent)
+  factories!: QueryList<DynFactoryComponent>;
 
   injector?: Injector;
 
@@ -70,5 +76,26 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.mode$.complete();
+  }
+
+  // notify the dynControls about the incoming data
+  patchValue(value: any): void {
+    this.callHook('PrePatch', value);
+    this.form.patchValue(value);
+    this.callHook('PostPatch', value);
+  }
+
+  // call a hook in the dynControls using plain/hierarchical data
+  callHook(hook: string, payload: any, plainPayload = false): void {
+    this.factories.forEach(factory => {
+      const fieldName = factory.config.name;
+      factory.callHook(
+        hook,
+        !plainPayload && fieldName && payload.hasOwnProperty(fieldName)
+          ? payload[fieldName]
+          : payload,
+        plainPayload,
+      );
+    });
   }
 }

@@ -3,9 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { DynFormComponent } from '@myndpm/dyn-forms';
 import { SectionAction, SectionBadge } from 'apps/demos/src/app/layout';
 import { BehaviorSubject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -61,6 +63,9 @@ export class SimpleComponent implements OnInit, AfterViewInit {
   form = new FormGroup({});
   mode = 'edit';
 
+  @ViewChild(DynFormComponent, { static: true })
+  dynForm: DynFormComponent;
+
   ngOnInit(): void {
     // logs each change in the console just to demo
     this.form.valueChanges.subscribe(console.log);
@@ -81,7 +86,8 @@ export class SimpleComponent implements OnInit, AfterViewInit {
   }
 
   loadData(): void {
-    this.form.patchValue(simpleData);
+    // we can load data AfterViewInit
+    this.dynForm.patchValue(simpleData);
   }
 
   toggleMode(): void {
