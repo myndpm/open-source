@@ -64,7 +64,7 @@ export class DynFormContext {
     // do not override an existing observable (because of contextParams)
     if (context.params && !isObservable(config.params)) {
       config.params = !isObservable(context.params)
-        ? merge.recursive(true, config.params, context.params)
+        ? merge(true, config.params, context.params)
         : context.params;
     }
 
