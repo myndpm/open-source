@@ -40,7 +40,7 @@ $mynd-negative: (
 
 // Material
 $mynd-typography: mat-typography-config(
-  $font-family: 'Roboto, monospace',
+  $font-family: 'Inter, monospace',
 );
 
 @include mat-core($mynd-typography);
