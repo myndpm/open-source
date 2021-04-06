@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import merge from 'merge';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, isObservable } from 'rxjs';
 import { DynBaseConfig } from './config.interfaces';
 import { DynControlConfig } from './control-config.interface';
 import { DynControlContext, DynMappedContexts } from './control-contexts.interfaces';
@@ -26,7 +26,7 @@ export class DynFormContext {
 
     if (config.contexts && config.contexts[context]) {
       // overrides any control context set
-      result = merge.recursive(true, result, config.contexts[context]);
+      result = this.mergeConfigs(result, config.contexts[context]);
     }
 
     const formContext = this.contexts.get(context);
@@ -34,7 +34,7 @@ export class DynFormContext {
       const control = this.getControl(result.control, formContext);
       if (control) {
         // overrides any form context set
-        result = merge.recursive(true, result, control);
+        result = this.mergeConfigs(result, control);
       }
     }
 
@@ -43,5 +43,27 @@ export class DynFormContext {
 
   getControl(id: DynControlType, controls: DynControlConfig[]): DynControlConfig | undefined {
     return controls.find(({ control }) => control === id);
+  }
+
+  mergeConfigs(config: DynBaseConfig, context: Partial<DynControlConfig>): DynBaseConfig {
+    // custom merge strategy for DynControlConfig
+    if (context.control) {
+      config.control = context.control;
+    }
+    if (context.hasOwnProperty('options')) {
+      config.options = context.options;
+    }
+    if (context.hasOwnProperty('factory')) {
+      config.factory = context.factory;
+    }
+    if (context.params) {
+      if (!isObservable(context.params) && !isObservable(config.params)) {
+        config.params = merge.recursive(true, config.params, context.params);
+      } else {
+        config.params = context.params;
+      }
+    }
+
+    return config;
   }
 }
