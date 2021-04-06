@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SectionAction, SectionBadge } from 'apps/demos/src/app/layout';
 import { BehaviorSubject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -82,5 +82,23 @@ export class SimpleComponent implements OnInit, AfterViewInit {
 
   toggleContext(): void {
     this.context = (this.context === 'edit') ? 'display' : 'edit';
+
+    if (this.context === 'display') {
+      // reset invalid styles on display markAllAsPristine
+      this.markAsUntouched(this.form);
+    }
+  }
+
+  private markAsUntouched(group: FormGroup | FormArray) {
+    group.markAsUntouched();
+
+    Object.keys(group.controls).map((field) => {
+      const control = group.get(field);
+      if (control instanceof FormControl) {
+        control.markAsUntouched();
+      } else if (control instanceof FormGroup) {
+        this.markAsUntouched(control);
+      }
+    });
   }
 }

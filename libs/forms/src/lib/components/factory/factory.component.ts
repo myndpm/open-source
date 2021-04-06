@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
+  ComponentRef,
   HostBinding,
   Inject,
   INJECTOR,
@@ -12,12 +13,14 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
+  AbstractDynControl,
   DynBaseConfig,
   DynControlContext,
   DynFormContext,
   DynFormRegistry,
   DYN_CONTEXT,
 } from '@myndpm/dyn-forms/core';
+import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -37,6 +40,8 @@ export class FactoryComponent implements OnInit {
     return this.config?.factory?.cssClass || '';
   }
 
+  private component!: ComponentRef<AbstractDynControl>
+
   private _injector!: Injector;
   private _context$!: BehaviorSubject<DynControlContext>;
   private _formContext!: DynFormContext;
@@ -53,9 +58,29 @@ export class FactoryComponent implements OnInit {
     this._context$ = this._injector.get(DYN_CONTEXT);
     this._formContext = this._injector.get(DynFormContext);
 
+    // create the dynamic component with each context trigger
+    let config: DynBaseConfig;
     this._context$.subscribe(() => {
-      this.container.clear();
-      this.createFrom(this._formContext.getContextConfig(this.config));
+      const newConfig = this._formContext.getContextConfig(this.config);
+
+      // do not recreate the control if the config is the same
+      if (!deepEqual(config, newConfig)) {
+        // check if the params are the only changed
+        if (
+          config?.control === newConfig.control &&
+          deepEqual(config?.factory, newConfig.factory) &&
+          deepEqual(config?.options, newConfig.options)
+        ) {
+          if (newConfig.params) {
+            this.component.instance.setParams(newConfig.params);
+          }
+        } else {
+          // new config
+          this.container.clear();
+          this.createFrom(newConfig);
+        }
+        config = newConfig;
+      }
     });
   }
 
@@ -63,13 +88,13 @@ export class FactoryComponent implements OnInit {
     const control = this.registry.resolve(config.control);
     const factory = this.resolver.resolveComponentFactory(control.component);
 
-    const ref = this.container.createComponent<any>(
+    this.component = this.container.createComponent<AbstractDynControl>(
       factory,
       undefined,
       this._injector,
     );
-    ref.instance.config = config;
+    this.component.instance.config = config;
 
-    ref.hostView.detectChanges();
+    this.component.hostView.detectChanges();
   }
 }

@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
-import { isObservable, Subject } from 'rxjs';
+import { isObservable, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.interfaces';
 import { DynControlParams } from './control-params.interfaces';
@@ -39,6 +39,7 @@ export abstract class DynControl<
   protected _fform: DynFormFactory;
   protected _ref: ChangeDetectorRef;
   protected _unsubscribe = new Subject<void>();
+  private _paramsChanged = new Subject<void>();
 
   constructor(injector: Injector) {
     try {
@@ -55,24 +56,31 @@ export abstract class DynControl<
 
   ngOnInit(): void {
     // assign incoming parameters
-    if (this.config.params) {
-      if (!isObservable(this.config.params)) {
-        this.params = this.completeParams(this.config.params || {});
-      } else {
-        // emulates the async pipe
-        this.config.params.pipe(takeUntil(this._unsubscribe)).subscribe({
-          next: (params) => {
-            this.params = this.completeParams(params);
-            this._ref.markForCheck();
-          },
-        });
-      }
-    }
+    this.setParams(this.config.params);
   }
 
   ngOnDestroy(): void {
+    this._paramsChanged.next();
+    this._paramsChanged.complete();
     this._unsubscribe.next();
     this._unsubscribe.complete();
+  }
+
+  setParams(params?: Partial<TParams> | Observable<Partial<TParams>>): void {
+    this._paramsChanged.next();
+
+    if (!isObservable(params)) {
+      this.params = this.completeParams(params || {});
+      this._ref.markForCheck();
+    } else {
+      // emulates the async pipe
+      params.pipe(takeUntil(this._paramsChanged)).subscribe({
+        next: (values) => {
+          this.params = this.completeParams(values);
+          this._ref.markForCheck();
+        },
+      });
+    }
   }
 
   abstract completeParams(params: Partial<TParams>): TParams;
