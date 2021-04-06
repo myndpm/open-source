@@ -20,7 +20,8 @@ import {
   DYN_MODE_CONTROL_DEFAULTS,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { DynFactoryComponent } from '../factory/factory.component';
 import { DynFormConfig } from './form.config';
 
@@ -38,6 +39,13 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   factories!: QueryList<DynFactoryComponent>;
 
   injector?: Injector;
+
+  // works fine AfterViewInit
+  valueChanges(time: number = 100): Observable<any> {
+    // this omit the consecutive changes while patching a Form Array
+    // the more complex the form is, the more debounce would be needed
+    return this.form.valueChanges.pipe(debounceTime(time));
+  }
 
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);

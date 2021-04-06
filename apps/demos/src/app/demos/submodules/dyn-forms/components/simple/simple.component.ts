@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -20,7 +19,7 @@ import { simpleData, simpleForm } from './simple.form';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class SimpleComponent implements OnInit, AfterViewInit {
+export class SimpleComponent implements AfterViewInit {
   // ref links
   badges: SectionBadge[] = [
     {
@@ -52,7 +51,7 @@ export class SimpleComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  // reactive parameters of the billing CARD
+  // reactive parameters for the billing CARD
   profileCard = new BehaviorSubject({
     title: 'Billing Address',
     subtitle: 'Please fill the required fields',
@@ -66,12 +65,10 @@ export class SimpleComponent implements OnInit, AfterViewInit {
   @ViewChild(DynFormComponent, { static: true })
   dynForm: DynFormComponent;
 
-  ngOnInit(): void {
-    // logs each change in the console just to demo
-    this.form.valueChanges.subscribe(console.log);
-  }
-
   ngAfterViewInit(): void {
+    // logs each change in the console just to demo
+    this.dynForm.valueChanges().subscribe(console.log);
+
     // simple example of how we can trigger changes into the params
     const group = this.form.get('billing') as FormGroup;
     group.statusChanges.pipe(startWith(group.status)).subscribe((status) => {
