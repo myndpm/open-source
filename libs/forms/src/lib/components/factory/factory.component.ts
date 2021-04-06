@@ -28,7 +28,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './factory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FactoryComponent implements OnInit {
+export class DynFactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
   @Input() injector?: Injector;
 

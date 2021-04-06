@@ -10,7 +10,7 @@ import { DynBaseConfig } from '@myndpm/dyn-forms/core';
 /**
  * This component just wraps the incoming controls in a FormGroup.
  */
-export class GroupComponent {
+export class DynGroupComponent {
   @Input() group!: FormGroup;
   @Input() controls?: DynBaseConfig[];
 }

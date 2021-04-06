@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { getModuleProviders } from '@myndpm/dyn-forms/core';
-import { FactoryComponent, FormComponent, GroupComponent } from './components';
+import { DynFactoryComponent, DynFormComponent, DynGroupComponent } from './components';
 import { DynFormsModuleArgs } from './dyn-forms.module.interface';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
-  declarations: [FactoryComponent, FormComponent, GroupComponent],
-  exports: [FactoryComponent, FormComponent, GroupComponent],
+  declarations: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
+  exports: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
 })
 export class DynFormsModule {
   static forFeature(

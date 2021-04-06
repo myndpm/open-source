@@ -26,7 +26,7 @@ import { DynFormConfig } from './form.config';
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormComponent implements OnInit, OnChanges, OnDestroy {
+export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form = new FormGroup({});
   @Input() config!: DynFormConfig;
   @Input() mode?: DynControlMode;
