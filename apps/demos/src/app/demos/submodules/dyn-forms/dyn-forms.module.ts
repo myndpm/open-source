@@ -42,7 +42,7 @@ const routes: Routes = [
       useValue: {
         appearance: 'outline',
         hideRequiredMarker: true,
-        floatLabel: 'auto',
+        floatLabel: 'auto', // also set in INPUT.params.floatLabel
       },
     },
   ],
