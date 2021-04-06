@@ -12,11 +12,11 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  DynControlContext,
-  DynFormContext,
-  DYN_CONTEXT,
-  DYN_CONTEXT_CONTROL_DEFAULTS,
-  DYN_CONTEXT_DEFAULTS,
+  DynControlMode,
+  DynFormMode,
+  DYN_MODE,
+  DYN_MODE_CONTROL_DEFAULTS,
+  DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
 import { BehaviorSubject } from 'rxjs';
 import { DynFormConfig } from './form.config';
@@ -29,12 +29,12 @@ import { DynFormConfig } from './form.config';
 export class FormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form = new FormGroup({});
   @Input() config!: DynFormConfig;
-  @Input() context?: DynControlContext;
+  @Input() mode?: DynControlMode;
 
   injector?: Injector;
 
-  // stream context events via DYN_CONTEXT
-  protected context$ = new BehaviorSubject<DynControlContext | undefined>(undefined);
+  // stream mode changes via DYN_MODE
+  protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
   constructor(@Inject(INJECTOR) private parent: Injector) {}
 
@@ -43,32 +43,32 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
       parent: this.parent,
       providers: [
         {
-          provide: DYN_CONTEXT,
-          useValue: this.context$,
+          provide: DYN_MODE,
+          useValue: this.mode$,
         },
         {
-          provide: DYN_CONTEXT_DEFAULTS,
-          useValue: this.config.contextParams,
+          provide: DYN_MODE_DEFAULTS,
+          useValue: this.config.modeParams,
         },
         {
-          provide: DYN_CONTEXT_CONTROL_DEFAULTS,
-          useValue: this.config.contexts,
+          provide: DYN_MODE_CONTROL_DEFAULTS,
+          useValue: this.config.modes,
         },
         {
-          provide: DynFormContext,
-          useClass: DynFormContext,
+          provide: DynFormMode,
+          useClass: DynFormMode,
         }
       ],
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.context) {
-      this.context$.next(this.context);
+    if (changes.mode) {
+      this.mode$.next(this.mode);
     }
   }
 
   ngOnDestroy(): void {
-    this.context$.complete();
+    this.mode$.complete();
   }
 }

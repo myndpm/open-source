@@ -58,8 +58,8 @@ export class SimpleComponent implements OnInit, AfterViewInit {
 
   // dyn-form inputs
   config = simpleForm(this.profileCard);
-  context = 'edit';
   form = new FormGroup({});
+  mode = 'edit';
 
   ngOnInit(): void {
     // logs each change in the console just to demo
@@ -80,10 +80,10 @@ export class SimpleComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleContext(): void {
-    this.context = (this.context === 'edit') ? 'display' : 'edit';
+  toggleMode(): void {
+    this.mode = (this.mode === 'edit') ? 'display' : 'edit';
 
-    if (this.context === 'display') {
+    if (this.mode === 'display') {
       // reset invalid styles on display markAllAsPristine
       this.markAsUntouched(this.form);
     }

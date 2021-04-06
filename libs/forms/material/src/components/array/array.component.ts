@@ -8,7 +8,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import {
   DynConfig,
-  DynControlContext,
+  DynControlMode,
   DynFormArray,
   DynInstanceType,
   DynPartialControlConfig,
@@ -22,13 +22,13 @@ import { DynMatArrayParams } from './array.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatArrayComponent
-  extends DynFormArray<DynControlContext, DynMatArrayParams, DynConfig>
+  extends DynFormArray<DynControlMode, DynMatArrayParams, DynConfig>
   implements OnInit, AfterViewInit {
   static dynControl: 'ARRAY' = 'ARRAY';
 
   dynInstanceType = DynInstanceType;
 
-  static createConfig<C extends DynControlContext>(
+  static createConfig<C extends DynControlMode>(
     partial: DynPartialControlConfig<C, DynMatArrayParams>
   ): DynConfig<C, DynMatArrayParams> {
     return {

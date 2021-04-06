@@ -3,42 +3,42 @@ import merge from 'merge';
 import { BehaviorSubject, isObservable } from 'rxjs';
 import { DynBaseConfig } from './config.interfaces';
 import { DynControlConfig } from './control-config.interface';
-import { DynContextControls, DynContextParams, DynControlContext } from './control-contexts.interfaces';
+import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
 import { DynControlType } from './control.types';
-import { DYN_CONTEXT, DYN_CONTEXT_CONTROL_DEFAULTS, DYN_CONTEXT_DEFAULTS } from './form.tokens';
+import { DYN_MODE, DYN_MODE_CONTROL_DEFAULTS, DYN_MODE_DEFAULTS } from './form.tokens';
 
 @Injectable()
-export class DynFormContext {
+export class DynFormMode {
   constructor(
-    @Inject(DYN_CONTEXT) private context$: BehaviorSubject<DynControlContext>,
-    @Inject(DYN_CONTEXT_DEFAULTS) private contexts?: DynContextParams,
-    @Inject(DYN_CONTEXT_CONTROL_DEFAULTS) private controls?: DynContextControls,
+    @Inject(DYN_MODE) private mode$: BehaviorSubject<DynControlMode>,
+    @Inject(DYN_MODE_DEFAULTS) private modes?: DynModeParams,
+    @Inject(DYN_MODE_CONTROL_DEFAULTS) private controls?: DynModeControls,
   ) {}
 
   // resolves the config to be used by dyn-factory
-  // this algorithm decides how to override the main config with context data
-  getContextConfig(config: DynBaseConfig): DynBaseConfig {
-    const context = this.context$.getValue();
-    let result: DynBaseConfig = { ...config, contexts: undefined };
+  // this algorithm decides how to override the main config with mode customizations
+  getModeConfig(config: DynBaseConfig): DynBaseConfig {
+    const mode = this.mode$.getValue();
+    let result: DynBaseConfig = { ...config, modes: undefined };
 
-    if (!context) {
+    if (!mode) {
       return result;
     }
 
-    if (this.contexts?.hasOwnProperty(context)) {
-      // overrides any params set in the contextParams
-      result = this.mergeConfigs(result, { params: this.contexts[context] });
+    if (this.modes?.hasOwnProperty(mode)) {
+      // overrides any params set in the form.modeParams[mode]
+      result = this.mergeConfigs(result, { params: this.modes[mode] });
     }
 
-    if (config.contexts && config.contexts[context]) {
-      // overrides any control context set
-      result = this.mergeConfigs(result, config.contexts[context]);
+    if (config.modes && config.modes[mode]) {
+      // overrides any customization set in control.modes[mode]
+      result = this.mergeConfigs(result, config.modes[mode]);
     }
 
-    if (this.controls?.hasOwnProperty(context)) {
-      const control = this.getControl(result.control, this.controls[context]);
+    if (this.controls?.hasOwnProperty(mode)) {
+      const control = this.getControl(result.control, this.controls[mode]);
       if (control) {
-        // overrides any form context set
+        // overrides any customization set in form.modes[mode][control]
         result = this.mergeConfigs(result, control);
       }
     }
@@ -50,22 +50,22 @@ export class DynFormContext {
     return controls.find(({ control }) => control === id);
   }
 
-  mergeConfigs(config: DynBaseConfig, context: Partial<DynControlConfig>): DynBaseConfig {
+  mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {
     // custom merge strategy for DynControlConfig
-    if (context.control) {
-      config.control = context.control;
+    if (mode.control) {
+      config.control = mode.control;
     }
-    if (context.hasOwnProperty('options')) {
-      config.options = context.options;
+    if (mode.hasOwnProperty('options')) {
+      config.options = mode.options;
     }
-    if (context.hasOwnProperty('factory')) {
-      config.factory = context.factory;
+    if (mode.hasOwnProperty('factory')) {
+      config.factory = mode.factory;
     }
-    // do not override an existing observable (because of contextParams)
-    if (context.params && !isObservable(config.params)) {
-      config.params = !isObservable(context.params)
-        ? merge(true, config.params, context.params)
-        : context.params;
+    // do not override an existing observable (because of modeParams)
+    if (mode.params && !isObservable(config.params)) {
+      config.params = !isObservable(mode.params)
+        ? merge(true, config.params, mode.params)
+        : mode.params;
     }
 
     return config;

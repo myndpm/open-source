@@ -15,10 +15,10 @@ import {
 import {
   AbstractDynControl,
   DynBaseConfig,
-  DynControlContext,
-  DynFormContext,
+  DynControlMode,
+  DynFormMode,
   DynFormRegistry,
-  DYN_CONTEXT,
+  DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject } from 'rxjs';
@@ -43,8 +43,8 @@ export class FactoryComponent implements OnInit {
   private component!: ComponentRef<AbstractDynControl>
 
   private _injector!: Injector;
-  private _context$!: BehaviorSubject<DynControlContext>;
-  private _formContext!: DynFormContext;
+  private _mode$!: BehaviorSubject<DynControlMode>;
+  private _formMode!: DynFormMode;
 
   constructor(
     @Inject(INJECTOR) private parent: Injector,
@@ -55,13 +55,13 @@ export class FactoryComponent implements OnInit {
   ngOnInit(): void {
     // resolve the injector to use and g et providers
     this._injector = this.injector ?? this.parent;
-    this._context$ = this._injector.get(DYN_CONTEXT);
-    this._formContext = this._injector.get(DynFormContext);
+    this._mode$ = this._injector.get(DYN_MODE);
+    this._formMode = this._injector.get(DynFormMode);
 
-    // create the dynamic component with each context trigger
+    // create the dynamic component with each mode change
     let config: DynBaseConfig;
-    this._context$.subscribe(() => {
-      const newConfig = this._formContext.getContextConfig(this.config);
+    this._mode$.subscribe(() => {
+      const newConfig = this._formMode.getModeConfig(this.config);
 
       // do not recreate the control if the config is the same
       if (!deepEqual(config, newConfig)) {

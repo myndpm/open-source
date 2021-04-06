@@ -4,12 +4,12 @@
 
 - Components provided via `forFeature` (via `DYN_CONTROLS_TOKEN`) ✓
 - Provide config for appearance (theme, full-width, inline)
-- Extensible handlers for context (panel, filter, table-cell, mobile?)
+- Extensible handlers for different modes (panel, filter, table-cell, mobile?)
 - How to add form options? (clear, label, defaultValue, fieldName, placeholder, tooltip, cssClass)
 - How to add the filter options? (config, control, cleanseForUrl, apiFieldName)
 - How to have reactive behavior? (readonly, immutable, visible, business-logic)
   - Custom behaviors for groups, like isVisible$
-- Context Strategy to Display/Filter/Table
+- Mode Strategy to Display/Filter/Table
   - Support display mode (config displayHandler, displayParams)
 - Customizable error handler
 - How to style the controls consistently? (calling mod non-encapsulated styles?)

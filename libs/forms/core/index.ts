@@ -1,6 +1,6 @@
 export * from './src/config.interfaces';
 export * from './src/control-config.interface';
-export * from './src/control-contexts.interfaces';
+export * from './src/control-mode.types';
 export * from './src/control-params.interfaces';
 export * from './src/control-provider.interfaces';
 export * from './src/control.types';

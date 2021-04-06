@@ -5,10 +5,10 @@
   <form [formGroup]="form">
     <h3>Simple Dynamic Form</h3>
 
-    <dyn-form [config]="config" [context]="context" [form]="form"></dyn-form>
+    <dyn-form [config]="config" [form]="form" [mode]="mode"></dyn-form>
 
-    <button type="button" mat-raised-button color="primary" (click)="toggleContext()">
-      {{ context === 'edit' ? 'Switch to Display Context' : 'Switch to Edit Context' }}
+    <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
+      {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
     </button>
   </form>
 </section>

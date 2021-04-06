@@ -1,13 +1,13 @@
 import {
   DynBaseConfig,
   DynConfig,
-  DynContextControls,
-  DynContextParams,
-  DynControlContext,
+  DynModeControls,
+  DynModeParams,
+  DynControlMode,
 } from '@myndpm/dyn-forms/core';
 
-export interface DynFormConfig<C extends DynControlContext = DynControlContext> {
-  contextParams?: DynContextParams<C>; // default params per context
-  contexts?: DynContextControls<C>; // default config per context+control
+export interface DynFormConfig<C extends DynControlMode = DynControlMode> {
+  modeParams?: DynModeParams<C>; // default params per mode
+  modes?: DynModeControls<C>; // default config per mode+control
   controls: Array<DynBaseConfig<C> | DynConfig<C>>;
 }

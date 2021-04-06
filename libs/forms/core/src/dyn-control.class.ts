@@ -9,7 +9,7 @@ import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
 import { isObservable, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.interfaces';
-import { DynControlContext } from './control-contexts.interfaces';
+import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.interfaces';
 import {
   DynControlParent,
@@ -20,9 +20,9 @@ import { DynFormFactory } from './form.factory';
 
 @Directive()
 export abstract class DynControl<
-  TContext extends DynControlContext = DynControlContext,
+  TMode extends DynControlMode = DynControlMode,
   TParams extends DynControlParams = DynControlParams,
-  TConfig extends DynBaseConfig<TContext, TParams> = DynBaseConfig<TContext, TParams>,
+  TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendly and most-common default
 > implements OnInit, OnDestroy {
   // central place to define the provided Type

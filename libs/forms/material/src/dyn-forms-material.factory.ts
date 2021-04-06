@@ -1,6 +1,6 @@
 import {
   DynConfig,
-  DynControlContext,
+  DynControlMode,
   DynControlType,
   DynPartialControlConfig,
   DynPartialGroupConfig,
@@ -21,33 +21,33 @@ import { DynMatSelectComponent } from './components/select/select.component';
 import { DynMatSelectParams } from './components/select/select.component.params';
 
 // type overloads
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatArrayComponent.dynControl,
   partial: DynPartialControlConfig<C, Partial<DynMatArrayParams>>
 ): DynConfig<C>;
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatCardComponent.dynControl,
   partial: DynPartialGroupConfig<C, Partial<DynMatCardParams>>
 ): DynConfig<C>;
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatDividerComponent.dynControl,
   partial: DynPartialGroupConfig<C, Partial<DynMatDividerParams>>
 ): DynConfig<C>;
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatInputComponent.dynControl,
   partial: DynPartialControlConfig<C, Partial<DynMatInputParams>>
 ): DynConfig<C>;
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatRadioComponent.dynControl,
   partial: DynPartialControlConfig<C, Partial<DynMatRadioParams>>
 ): DynConfig<C>;
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: typeof DynMatSelectComponent.dynControl,
   partial: DynPartialControlConfig<C, Partial<DynMatSelectParams>>
 ): DynConfig<C>;
 
 // factory
-export function createConfig<C extends DynControlContext>(
+export function createConfig<C extends DynControlMode>(
   type: DynControlType,
   partial: any,
 ): DynConfig<C> {

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 
 export function simpleForm(
   obsParams: Observable<DynControlParams>
-): DynFormConfig<'display'> { // typed supported context
+): DynFormConfig<'display'> { // typed mode
   return {
-    contextParams: {
+    modeParams: {
       display: { readonly: true },
     },
     controls: [
@@ -61,7 +61,7 @@ export function simpleForm(
                 { text: 'Other', value: 'XX' },
               ],
             },
-            contexts: {
+            modes: {
               display: {
                 control: 'INPUT',
                 params: {
@@ -89,7 +89,7 @@ export function simpleForm(
             { text: 'Checkout as a Guest', value: 'GUEST' },
           ],
         },
-        contexts: {
+        modes: {
           display: {
             control: 'INPUT',
             params: {
