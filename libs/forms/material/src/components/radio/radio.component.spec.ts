@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynRadioComponent } from './radio.component';
+import { DynMatRadioComponent } from './radio.component';
 
-describe('DynRadioComponent', () => {
-  let component: DynRadioComponent;
-  let fixture: ComponentFixture<DynRadioComponent>;
+describe('DynMatRadioComponent', () => {
+  let component: DynMatRadioComponent;
+  let fixture: ComponentFixture<DynMatRadioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynRadioComponent],
+      declarations: [DynMatRadioComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynRadioComponent);
+    fixture = TestBed.createComponent(DynMatRadioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

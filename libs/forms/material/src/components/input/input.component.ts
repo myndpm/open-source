@@ -5,7 +5,7 @@ import {
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { DynInputParams } from './input.component.params';
+import { DynMatInputParams } from './input.component.params';
 
 @Component({
   selector: 'dyn-mat-input',
@@ -13,17 +13,17 @@ import { DynInputParams } from './input.component.params';
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynInputComponent
-  extends DynFormControl<DynControlContext, DynInputParams>
+export class DynMatInputComponent
+  extends DynFormControl<DynControlContext, DynMatInputParams>
   implements OnInit {
   static dynControl: 'INPUT' = 'INPUT';
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynInputParams>
+    partial: DynPartialControlConfig<C, DynMatInputParams>
   ): DynConfig<C> {
     return {
       ...partial,
-      control: DynInputComponent.dynControl,
+      control: DynMatInputComponent.dynControl,
     };
   }
 
@@ -36,7 +36,7 @@ export class DynInputComponent
     super.ngOnInit();
   }
 
-  completeParams(params: Partial<DynInputParams>): DynInputParams {
+  completeParams(params: Partial<DynMatInputParams>): DynMatInputParams {
     return {
       ...params,
       floatLabel: params.floatLabel || 'auto',

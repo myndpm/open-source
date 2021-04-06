@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core';
 import { DynConfig, DynControlContext, DynFormContainer, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
-import { DynDividerParams } from './divider.component.params';
+import { DynMatDividerParams } from './divider.component.params';
 
 @Component({
   selector: 'dyn-mat-divider',
@@ -8,16 +8,16 @@ import { DynDividerParams } from './divider.component.params';
   styleUrls: ['./divider.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynDividerComponent
-  extends DynFormContainer<DynControlContext, DynDividerParams> {
+export class DynMatDividerComponent
+  extends DynFormContainer<DynControlContext, DynMatDividerParams> {
   static dynControl: 'DIVIDER' = 'DIVIDER';
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynDividerParams>
+    partial: DynPartialControlConfig<C, DynMatDividerParams>
   ): DynConfig<C> {
     return {
       ...partial,
-      control: DynDividerComponent.dynControl,
+      control: DynMatDividerComponent.dynControl,
     };
   }
 
@@ -26,7 +26,7 @@ export class DynDividerComponent
     return Boolean(this.params.invisible);
   }
 
-  completeParams(params: Partial<DynDividerParams>): DynDividerParams {
+  completeParams(params: Partial<DynMatDividerParams>): DynMatDividerParams {
     return params;
   }
 }

@@ -13,7 +13,7 @@ import {
   DynInstanceType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { DynArrayParams } from './array.component.params';
+import { DynMatArrayParams } from './array.component.params';
 
 @Component({
   selector: 'dyn-mat-array',
@@ -21,19 +21,19 @@ import { DynArrayParams } from './array.component.params';
   styleUrls: ['./array.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynArrayComponent
-  extends DynFormArray<DynControlContext, DynArrayParams, DynConfig>
+export class DynMatArrayComponent
+  extends DynFormArray<DynControlContext, DynMatArrayParams, DynConfig>
   implements OnInit, AfterViewInit {
   static dynControl: 'ARRAY' = 'ARRAY';
 
   dynInstanceType = DynInstanceType;
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynArrayParams>
-  ): DynConfig<C, DynArrayParams> {
+    partial: DynPartialControlConfig<C, DynMatArrayParams>
+  ): DynConfig<C, DynMatArrayParams> {
     return {
       ...partial,
-      control: DynArrayComponent.dynControl,
+      control: DynMatArrayComponent.dynControl,
     };
   }
 
@@ -57,7 +57,7 @@ export class DynArrayComponent
     }
   }
 
-  completeParams(params: Partial<DynArrayParams>): DynArrayParams {
+  completeParams(params: Partial<DynMatArrayParams>): DynMatArrayParams {
     return {
       ...params,
       addButton: params.addButton || 'Add Item',

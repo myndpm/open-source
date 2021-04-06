@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynArrayComponent } from './array.component';
+import { DynMatArrayComponent } from './array.component';
 
-describe('DynArrayComponent', () => {
-  let component: DynArrayComponent;
-  let fixture: ComponentFixture<DynArrayComponent>;
+describe('DynMatArrayComponent', () => {
+  let component: DynMatArrayComponent;
+  let fixture: ComponentFixture<DynMatArrayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynArrayComponent],
+      declarations: [DynMatArrayComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynArrayComponent);
+    fixture = TestBed.createComponent(DynMatArrayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

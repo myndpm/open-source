@@ -1,5 +1,5 @@
 import { DynControlParams } from '@myndpm/dyn-forms/core';
 
-export interface DynDividerParams extends DynControlParams {
+export interface DynMatDividerParams extends DynControlParams {
   invisible?: boolean;
 }

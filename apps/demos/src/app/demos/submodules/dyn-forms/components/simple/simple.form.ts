@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
-import { createConfig, DynRadioParams, DynSelectParams } from '@myndpm/dyn-forms/material';
+import { createConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn-forms/material';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 
@@ -65,7 +65,7 @@ export function simpleForm(
               display: {
                 control: 'INPUT',
                 params: {
-                  getValue: (params: DynSelectParams, value: string) => {
+                  getValue: (params: DynMatSelectParams, value: string) => {
                     const option = params.options.find(o => o.value === value);
                     return value && option ? option.text : value;
                   },
@@ -93,7 +93,7 @@ export function simpleForm(
           display: {
             control: 'INPUT',
             params: {
-              getValue: (params: DynRadioParams, value: string) => {
+              getValue: (params: DynMatRadioParams, value: string) => {
                 const option = params.options.find(o => o.value === value);
                 return value && option ? option.text : value;
               },

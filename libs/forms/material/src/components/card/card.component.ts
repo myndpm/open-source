@@ -5,7 +5,7 @@ import {
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynFormContainer } from '@myndpm/dyn-forms/core';
-import { DynCardParams } from './card.component.params';
+import { DynMatCardParams } from './card.component.params';
 
 @Component({
   selector: 'dyn-mat-card',
@@ -13,17 +13,17 @@ import { DynCardParams } from './card.component.params';
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynCardComponent
-  extends DynFormContainer<DynControlContext, DynCardParams, DynConfig>
+export class DynMatCardComponent
+  extends DynFormContainer<DynControlContext, DynMatCardParams, DynConfig>
   implements OnInit {
   static dynControl: 'CARD' = 'CARD';
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynCardParams>
-  ): DynConfig<C, DynCardParams> {
+    partial: DynPartialControlConfig<C, DynMatCardParams>
+  ): DynConfig<C, DynMatCardParams> {
     return {
       ...partial,
-      control: DynCardComponent.dynControl,
+      control: DynMatCardComponent.dynControl,
     };
   }
 
@@ -31,7 +31,7 @@ export class DynCardComponent
     super.ngOnInit();
   }
 
-  completeParams(params: Partial<DynCardParams>): DynCardParams {
+  completeParams(params: Partial<DynMatCardParams>): DynMatCardParams {
     return params;
   }
 }

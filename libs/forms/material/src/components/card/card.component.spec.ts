@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynCardComponent } from './card.component';
+import { DynMatCardComponent } from './card.component';
 
-describe('DynCardComponent', () => {
-  let component: DynCardComponent;
-  let fixture: ComponentFixture<DynCardComponent>;
+describe('DynMatCardComponent', () => {
+  let component: DynMatCardComponent;
+  let fixture: ComponentFixture<DynMatCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynCardComponent],
+      declarations: [DynMatCardComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynCardComponent);
+    fixture = TestBed.createComponent(DynMatCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

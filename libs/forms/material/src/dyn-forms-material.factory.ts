@@ -6,44 +6,44 @@ import {
   DynPartialGroupConfig,
 } from '@myndpm/dyn-forms/core';
 import {
-  DynCardComponent,
-  DynCardParams,
-  DynInputComponent,
-  DynInputParams,
+  DynMatCardComponent,
+  DynMatCardParams,
+  DynMatInputComponent,
+  DynMatInputParams,
 } from './components';
-import { DynArrayComponent } from './components/array/array.component';
-import { DynArrayParams } from './components/array/array.component.params';
-import { DynDividerComponent } from './components/divider/divider.component';
-import { DynDividerParams } from './components/divider/divider.component.params';
-import { DynRadioComponent } from './components/radio/radio.component';
-import { DynRadioParams } from './components/radio/radio.component.params';
-import { DynSelectComponent } from './components/select/select.component';
-import { DynSelectParams } from './components/select/select.component.params';
+import { DynMatArrayComponent } from './components/array/array.component';
+import { DynMatArrayParams } from './components/array/array.component.params';
+import { DynMatDividerComponent } from './components/divider/divider.component';
+import { DynMatDividerParams } from './components/divider/divider.component.params';
+import { DynMatRadioComponent } from './components/radio/radio.component';
+import { DynMatRadioParams } from './components/radio/radio.component.params';
+import { DynMatSelectComponent } from './components/select/select.component';
+import { DynMatSelectParams } from './components/select/select.component.params';
 
 // type overloads
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynArrayComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynArrayParams>>
+  type: typeof DynMatArrayComponent.dynControl,
+  partial: DynPartialControlConfig<C, Partial<DynMatArrayParams>>
 ): DynConfig<C>;
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynCardComponent.dynControl,
-  partial: DynPartialGroupConfig<C, Partial<DynCardParams>>
+  type: typeof DynMatCardComponent.dynControl,
+  partial: DynPartialGroupConfig<C, Partial<DynMatCardParams>>
 ): DynConfig<C>;
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynDividerComponent.dynControl,
-  partial: DynPartialGroupConfig<C, Partial<DynDividerParams>>
+  type: typeof DynMatDividerComponent.dynControl,
+  partial: DynPartialGroupConfig<C, Partial<DynMatDividerParams>>
 ): DynConfig<C>;
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynInputComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynInputParams>>
+  type: typeof DynMatInputComponent.dynControl,
+  partial: DynPartialControlConfig<C, Partial<DynMatInputParams>>
 ): DynConfig<C>;
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynRadioComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynRadioParams>>
+  type: typeof DynMatRadioComponent.dynControl,
+  partial: DynPartialControlConfig<C, Partial<DynMatRadioParams>>
 ): DynConfig<C>;
 export function createConfig<C extends DynControlContext>(
-  type: typeof DynSelectComponent.dynControl,
-  partial: DynPartialControlConfig<C, Partial<DynSelectParams>>
+  type: typeof DynMatSelectComponent.dynControl,
+  partial: DynPartialControlConfig<C, Partial<DynMatSelectParams>>
 ): DynConfig<C>;
 
 // factory
@@ -53,24 +53,24 @@ export function createConfig<C extends DynControlContext>(
 ): DynConfig<C> {
   switch (type) {
     // containers
-    case DynArrayComponent.dynControl:
-      return DynArrayComponent.createConfig(partial);
+    case DynMatArrayComponent.dynControl:
+      return DynMatArrayComponent.createConfig(partial);
 
-    case DynCardComponent.dynControl:
-      return DynCardComponent.createConfig(partial);
+    case DynMatCardComponent.dynControl:
+      return DynMatCardComponent.createConfig(partial);
 
-    case DynDividerComponent.dynControl:
-      return DynDividerComponent.createConfig(partial);
+    case DynMatDividerComponent.dynControl:
+      return DynMatDividerComponent.createConfig(partial);
 
     // controls
-    case DynSelectComponent.dynControl:
-      return DynSelectComponent.createConfig(partial);
+    case DynMatSelectComponent.dynControl:
+      return DynMatSelectComponent.createConfig(partial);
 
-    case DynRadioComponent.dynControl:
-      return DynRadioComponent.createConfig(partial);
+    case DynMatRadioComponent.dynControl:
+      return DynMatRadioComponent.createConfig(partial);
 
-    case DynInputComponent.dynControl:
+    case DynMatInputComponent.dynControl:
     default:
-      return DynInputComponent.createConfig(partial);
+      return DynMatInputComponent.createConfig(partial);
   }
 }

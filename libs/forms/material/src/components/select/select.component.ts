@@ -6,7 +6,7 @@ import {
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { DynSelectParams } from './select.component.params';
+import { DynMatSelectParams } from './select.component.params';
 
 @Component({
   selector: 'dyn-mat-select',
@@ -14,17 +14,17 @@ import { DynSelectParams } from './select.component.params';
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynSelectComponent
-  extends DynFormControl<DynControlContext, DynSelectParams>
+export class DynMatSelectComponent
+  extends DynFormControl<DynControlContext, DynMatSelectParams>
   implements OnInit {
   static dynControl: 'SELECT' = 'SELECT';
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynSelectParams>
+    partial: DynPartialControlConfig<C, DynMatSelectParams>
   ): DynConfig<C> {
     return {
       ...partial,
-      control: DynSelectComponent.dynControl,
+      control: DynMatSelectComponent.dynControl,
     };
   }
 
@@ -32,7 +32,7 @@ export class DynSelectComponent
     super.ngOnInit();
   }
 
-  completeParams(params: Partial<DynSelectParams>): DynSelectParams {
+  completeParams(params: Partial<DynMatSelectParams>): DynMatSelectParams {
     function compareWith(o1: any, o2: any): boolean {
       // tslint:disable-next-line: triple-equals
       return o1 == o2;

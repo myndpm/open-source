@@ -10,12 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynArrayComponent } from './components/array/array.component';
-import { DynCardComponent } from './components/card/card.component';
-import { DynDividerComponent } from './components/divider/divider.component';
-import { DynInputComponent } from './components/input/input.component';
-import { DynRadioComponent } from './components/radio/radio.component';
-import { DynSelectComponent } from './components/select/select.component';
+import { DynMatArrayComponent } from './components/array/array.component';
+import { DynMatCardComponent } from './components/card/card.component';
+import { DynMatDividerComponent } from './components/divider/divider.component';
+import { DynMatInputComponent } from './components/input/input.component';
+import { DynMatRadioComponent } from './components/radio/radio.component';
+import { DynMatSelectComponent } from './components/select/select.component';
 
 @NgModule({
   imports: [
@@ -32,12 +32,12 @@ import { DynSelectComponent } from './components/select/select.component';
     DynFormsModule,
   ],
   declarations: [
-    DynArrayComponent,
-    DynCardComponent,
-    DynDividerComponent,
-    DynInputComponent,
-    DynRadioComponent,
-    DynSelectComponent,
+    DynMatArrayComponent,
+    DynMatCardComponent,
+    DynMatDividerComponent,
+    DynMatInputComponent,
+    DynMatRadioComponent,
+    DynMatSelectComponent,
   ],
 })
 export class DynFormsMaterialModule {
@@ -45,34 +45,34 @@ export class DynFormsMaterialModule {
     return DynFormsModule.forFeature({
       controls: [
         {
-          control: DynArrayComponent.dynControl,
-          instance: DynArrayComponent.dynInstance,
-          component: DynArrayComponent,
+          control: DynMatArrayComponent.dynControl,
+          instance: DynMatArrayComponent.dynInstance,
+          component: DynMatArrayComponent,
         },
         {
-          control: DynCardComponent.dynControl,
-          instance: DynCardComponent.dynInstance,
-          component: DynCardComponent,
+          control: DynMatCardComponent.dynControl,
+          instance: DynMatCardComponent.dynInstance,
+          component: DynMatCardComponent,
         },
         {
-          control: DynDividerComponent.dynControl,
-          instance: DynDividerComponent.dynInstance,
-          component: DynDividerComponent,
+          control: DynMatDividerComponent.dynControl,
+          instance: DynMatDividerComponent.dynInstance,
+          component: DynMatDividerComponent,
         },
         {
-          control: DynInputComponent.dynControl,
-          instance: DynInputComponent.dynInstance,
-          component: DynInputComponent,
+          control: DynMatInputComponent.dynControl,
+          instance: DynMatInputComponent.dynInstance,
+          component: DynMatInputComponent,
         },
         {
-          control: DynRadioComponent.dynControl,
-          instance: DynRadioComponent.dynInstance,
-          component: DynRadioComponent,
+          control: DynMatRadioComponent.dynControl,
+          instance: DynMatRadioComponent.dynInstance,
+          component: DynMatRadioComponent,
         },
         {
-          control: DynSelectComponent.dynControl,
-          instance: DynSelectComponent.dynInstance,
-          component: DynSelectComponent,
+          control: DynMatSelectComponent.dynControl,
+          instance: DynMatSelectComponent.dynInstance,
+          component: DynMatSelectComponent,
         },
       ],
     });

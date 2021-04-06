@@ -5,7 +5,7 @@ import {
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { DynRadioParams } from './radio.component.params';
+import { DynMatRadioParams } from './radio.component.params';
 
 @Component({
   selector: 'dyn-mat-radio',
@@ -13,17 +13,17 @@ import { DynRadioParams } from './radio.component.params';
   styleUrls: ['./radio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynRadioComponent
-  extends DynFormControl<DynControlContext, DynRadioParams>
+export class DynMatRadioComponent
+  extends DynFormControl<DynControlContext, DynMatRadioParams>
   implements OnInit {
   static dynControl: 'RADIO' = 'RADIO';
 
   static createConfig<C extends DynControlContext>(
-    partial: DynPartialControlConfig<C, DynRadioParams>
+    partial: DynPartialControlConfig<C, DynMatRadioParams>
   ): DynConfig<C> {
     return {
       ...partial,
-      control: DynRadioComponent.dynControl,
+      control: DynMatRadioComponent.dynControl,
     };
   }
 
@@ -31,7 +31,7 @@ export class DynRadioComponent
     super.ngOnInit();
   }
 
-  completeParams(params: Partial<DynRadioParams>): DynRadioParams {
+  completeParams(params: Partial<DynMatRadioParams>): DynMatRadioParams {
     return {
       ...params,
       options: params.options || [],

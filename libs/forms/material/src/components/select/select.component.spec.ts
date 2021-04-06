@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynSelectComponent } from './select.component';
+import { DynMatSelectComponent } from './select.component';
 
-describe('DynSelectComponent', () => {
-  let component: DynSelectComponent;
-  let fixture: ComponentFixture<DynSelectComponent>;
+describe('DynMatSelectComponent', () => {
+  let component: DynMatSelectComponent;
+  let fixture: ComponentFixture<DynMatSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynSelectComponent],
+      declarations: [DynMatSelectComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynSelectComponent);
+    fixture = TestBed.createComponent(DynMatSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
