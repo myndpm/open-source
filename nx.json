@@ -12,12 +12,11 @@
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+      "options": { "cacheableOperations": ["build", "lint", "test"] }
     }
   },
   "projects": {
     "demos": { "tags": [] },
-    "demos-e2e": { "tags": [], "implicitDependencies": ["demos"] },
     "forms": { "tags": ["shared"] }
   }
 }
