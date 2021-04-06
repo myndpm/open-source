@@ -126,7 +126,8 @@
             "baseHref": "/open-source/",
             "name": "Mynd Frontend Team",
             "email": "eng.frontend@mynd.co",
-            "cname": "false"
+            "cname": "false",
+            "message": "build: github pages ci release"
           }
         }
       }
