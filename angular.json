@@ -41,7 +41,10 @@
             "polyfills": "apps/demos/src/polyfills.ts",
             "tsConfig": "apps/demos/tsconfig.app.json",
             "aot": true,
-            "assets": ["apps/demos/src/favicon.jpg", "apps/demos/src/assets"],
+            "assets": [
+              "apps/demos/src/favicon.jpg",
+              "apps/demos/src/assets"
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "apps/demos/src/material.scss",
@@ -109,10 +112,20 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/demos"],
+          "outputs": [
+            "coverage/apps/demos"
+          ],
           "options": {
             "jestConfig": "apps/demos/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/open-source/",
+            "name": "Mynd Frontend Team",
+            "email": "eng.frontend@mynd.co"
           }
         }
       }
@@ -138,7 +151,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/demos-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/demos-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -172,7 +187,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/forms"],
+          "outputs": [
+            "coverage/libs/forms"
+          ],
           "options": {
             "jestConfig": "libs/forms/jest.config.js",
             "passWithNoTests": true

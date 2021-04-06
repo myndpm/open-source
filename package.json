@@ -72,6 +72,7 @@
     "@types/shelljs": "~0.8.8",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
+    "angular-cli-ghpages": "~1.0.0-rc.1",
     "cypress": "^6.0.1",
     "dotenv": "8.2.0",
     "eslint": "7.10.0",
