@@ -2,15 +2,16 @@ import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
 
 export type DynControlType = string; // Control ID
 
-export enum DynInstanceType { // Form Control Type
+// Form Control Type
+export enum DynInstanceType {
   Group = 'GROUP',
   Array = 'ARRAY',
   Control = 'CONTROL',
   Container = 'CONTAINER',
 }
 
-export interface DynControlParent<
-  T extends AbstractControl = FormGroup
-> extends ControlContainer {
+// typed ControlContainer
+export interface DynControlParent<T extends AbstractControl = FormGroup>
+extends ControlContainer {
   control: T;
 }

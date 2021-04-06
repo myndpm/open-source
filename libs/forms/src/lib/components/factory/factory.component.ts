@@ -37,11 +37,13 @@ export class FactoryComponent implements OnInit {
 
   @HostBinding('class')
   get cssClass(): string {
+    // TODO add a default class?
     return this.config?.factory?.cssClass || '';
   }
 
   private component!: ComponentRef<AbstractDynControl>
 
+  // retrieved from the proper injector
   private _injector!: Injector;
   private _mode$!: BehaviorSubject<DynControlMode>;
   private _formMode!: DynFormMode;
@@ -63,7 +65,7 @@ export class FactoryComponent implements OnInit {
     this._mode$.subscribe(() => {
       const newConfig = this._formMode.getModeConfig(this.config);
 
-      // do not recreate the control if the config is the same
+      // do not re-create the control if the config is the same
       if (!deepEqual(config, newConfig)) {
         // check if the params are the only changed
         if (

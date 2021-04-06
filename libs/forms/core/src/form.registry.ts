@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ControlProvider, InjectedControl, isLazyControl } from './control-provider.interfaces';
+import { ControlProvider, InjectedControl, isLazyControl } from './control-provider.types';
 import { DynControlType, DynInstanceType } from './control.types';
 import { DYN_CONTROLS_TOKEN } from './form.tokens';
 
@@ -10,9 +10,7 @@ export class DynFormRegistry {
   ) {}
 
   get(dynControl: DynControlType): ControlProvider {
-    const provided = this.controls.find(
-      ({ control }) => dynControl === control
-    );
+    const provided = this.controls.find(({ control }) => dynControl === control);
 
     if (!provided) {
       throw new Error(`Control '${dynControl}' not provided!`);
@@ -25,7 +23,7 @@ export class DynFormRegistry {
     const resolved = this.get(dynControl);
 
     if (isLazyControl(resolved)) {
-      // TODO resolve provider.component
+      // TODO dynamically load provider.component with useFactory
     }
 
     return {

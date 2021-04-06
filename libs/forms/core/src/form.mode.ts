@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import merge from 'merge';
 import { BehaviorSubject, isObservable } from 'rxjs';
-import { DynBaseConfig } from './config.interfaces';
-import { DynControlConfig } from './control-config.interface';
+import { DynBaseConfig } from './config.types';
+import { DynControlConfig } from './control-config.types';
 import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
 import { DynControlType } from './control.types';
 import { DYN_MODE, DYN_MODE_CONTROL_DEFAULTS, DYN_MODE_DEFAULTS } from './form.tokens';
 
 @Injectable()
+// provided by the dyn-form component next to the internal tokens
 export class DynFormMode {
   constructor(
     @Inject(DYN_MODE) private mode$: BehaviorSubject<DynControlMode>,
@@ -62,6 +63,7 @@ export class DynFormMode {
       config.factory = mode.factory;
     }
     // do not override an existing observable (because of modeParams)
+    // an observable will need to take in account the mode changes inside
     if (mode.params && !isObservable(config.params)) {
       config.params = !isObservable(mode.params)
         ? merge(true, config.params, mode.params)

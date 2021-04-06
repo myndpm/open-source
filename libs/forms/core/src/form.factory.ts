@@ -5,7 +5,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { DynBaseConfig } from './config.interfaces';
+import { DynBaseConfig } from './config.types';
 import { DynControlParent, DynInstanceType } from './control.types';
 import { DynFormRegistry } from './form.registry';
 

@@ -8,14 +8,10 @@ import {
 import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
 import { isObservable, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DynBaseConfig } from './config.interfaces';
+import { DynBaseConfig } from './config.types';
 import { DynControlMode } from './control-mode.types';
-import { DynControlParams } from './control-params.interfaces';
-import {
-  DynControlParent,
-  DynControlType,
-  DynInstanceType,
-} from './control.types';
+import { DynControlParams } from './control-params.types';
+import { DynControlParent, DynControlType, DynInstanceType } from './control.types';
 import { DynFormFactory } from './form.factory';
 
 @Directive()
@@ -30,6 +26,7 @@ export abstract class DynControl<
   // central place to define the provided Instance
   static dynInstance: DynInstanceType = DynInstanceType.Group;
 
+  // optional method for modules providing a typed factory method
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
   parent: DynControlParent;
@@ -40,8 +37,8 @@ export abstract class DynControl<
 
   protected _fform: DynFormFactory;
   protected _ref: ChangeDetectorRef;
+  protected _paramsChanged = new Subject<void>();
   protected _unsubscribe = new Subject<void>();
-  private _paramsChanged = new Subject<void>();
 
   constructor(injector: Injector) {
     try {
