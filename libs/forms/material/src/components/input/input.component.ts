@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
 import {
   DynConfig,
+  DynControlContext,
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -13,13 +14,13 @@ import { DynInputParams } from './input.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynInputComponent
-  extends DynFormControl<DynInputParams>
+  extends DynFormControl<DynControlContext, DynInputParams>
   implements OnInit {
   static dynControl: 'INPUT' = 'INPUT';
 
-  static createConfig(
-    partial: DynPartialControlConfig<DynInputParams>
-  ): DynConfig {
+  static createConfig<C extends DynControlContext>(
+    partial: DynPartialControlConfig<C, DynInputParams>
+  ): DynConfig<C> {
     return {
       ...partial,
       control: DynInputComponent.dynControl,

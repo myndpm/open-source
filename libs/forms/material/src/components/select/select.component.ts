@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import {
   DynConfig,
+  DynControlContext,
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -14,13 +15,13 @@ import { DynSelectParams } from './select.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynSelectComponent
-  extends DynFormControl<DynSelectParams>
+  extends DynFormControl<DynControlContext, DynSelectParams>
   implements OnInit {
   static dynControl: 'SELECT' = 'SELECT';
 
-  static createConfig(
-    partial: DynPartialControlConfig<DynSelectParams>
-  ): DynConfig {
+  static createConfig<C extends DynControlContext>(
+    partial: DynPartialControlConfig<C, DynSelectParams>
+  ): DynConfig<C> {
     return {
       ...partial,
       control: DynSelectComponent.dynControl,

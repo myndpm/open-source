@@ -1,5 +1,6 @@
 import {
   DynConfig,
+  DynControlContext,
   DynControlType,
   DynPartialControlConfig,
   DynPartialGroupConfig,
@@ -20,33 +21,36 @@ import { DynSelectComponent } from './components/select/select.component';
 import { DynSelectParams } from './components/select/select.component.params';
 
 // type overloads
-export function createConfig(
+export function createConfig<C extends DynControlContext>(
   type: typeof DynArrayComponent.dynControl,
-  partial: DynPartialControlConfig<Partial<DynArrayParams>>
-): DynConfig;
-export function createConfig(
+  partial: DynPartialControlConfig<C, Partial<DynArrayParams>>
+): DynConfig<C>;
+export function createConfig<C extends DynControlContext>(
   type: typeof DynCardComponent.dynControl,
-  partial: DynPartialGroupConfig<Partial<DynCardParams>>
-): DynConfig;
-export function createConfig(
+  partial: DynPartialGroupConfig<C, Partial<DynCardParams>>
+): DynConfig<C>;
+export function createConfig<C extends DynControlContext>(
   type: typeof DynDividerComponent.dynControl,
-  partial: DynPartialGroupConfig<Partial<DynDividerParams>>
-): DynConfig;
-export function createConfig(
+  partial: DynPartialGroupConfig<C, Partial<DynDividerParams>>
+): DynConfig<C>;
+export function createConfig<C extends DynControlContext>(
   type: typeof DynInputComponent.dynControl,
-  partial: DynPartialControlConfig<Partial<DynInputParams>>
-): DynConfig;
-export function createConfig(
+  partial: DynPartialControlConfig<C, Partial<DynInputParams>>
+): DynConfig<C>;
+export function createConfig<C extends DynControlContext>(
   type: typeof DynRadioComponent.dynControl,
-  partial: DynPartialControlConfig<Partial<DynRadioParams>>
-): DynConfig;
-export function createConfig(
+  partial: DynPartialControlConfig<C, Partial<DynRadioParams>>
+): DynConfig<C>;
+export function createConfig<C extends DynControlContext>(
   type: typeof DynSelectComponent.dynControl,
-  partial: DynPartialControlConfig<Partial<DynSelectParams>>
-): DynConfig;
+  partial: DynPartialControlConfig<C, Partial<DynSelectParams>>
+): DynConfig<C>;
 
 // factory
-export function createConfig(type: DynControlType, partial: any): DynConfig {
+export function createConfig<C extends DynControlContext>(
+  type: DynControlType,
+  partial: any,
+): DynConfig<C> {
   switch (type) {
     // containers
     case DynArrayComponent.dynControl:

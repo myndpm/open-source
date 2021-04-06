@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core';
-import { DynConfig, DynFormContainer, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
+import { DynConfig, DynControlContext, DynFormContainer, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { DynDividerParams } from './divider.component.params';
 
 @Component({
@@ -8,12 +8,13 @@ import { DynDividerParams } from './divider.component.params';
   styleUrls: ['./divider.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynDividerComponent extends DynFormContainer<DynDividerParams> {
+export class DynDividerComponent
+  extends DynFormContainer<DynControlContext, DynDividerParams> {
   static dynControl: 'DIVIDER' = 'DIVIDER';
 
-  static createConfig(
-    partial: DynPartialControlConfig<DynDividerParams>
-  ): DynConfig {
+  static createConfig<C extends DynControlContext>(
+    partial: DynPartialControlConfig<C, DynDividerParams>
+  ): DynConfig<C> {
     return {
       ...partial,
       control: DynDividerComponent.dynControl,

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 export function simpleForm(
   obsParams: Observable<DynControlParams>
-): DynFormConfig {
+): DynFormConfig<'display'> { // typed supported context
   return {
     contextParams: {
       display: { readonly: true },
