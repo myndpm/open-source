@@ -69,7 +69,7 @@ export class SimpleComponent implements AfterViewInit {
     }
   }
 
-  private markAsUntouched(group: FormGroup | FormArray) {
+  private markAsUntouched(group: FormGroup | FormArray): void {
     group.markAsUntouched();
 
     Object.keys(group.controls).map((field) => {
