@@ -71,6 +71,11 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
         {
           provide: DynFormMode,
           useClass: DynFormMode,
+          deps: [
+            DYN_MODE,
+            DYN_MODE_DEFAULTS,
+            DYN_MODE_CONTROL_DEFAULTS,
+          ],
         }
       ],
     });
