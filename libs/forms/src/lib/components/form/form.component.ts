@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
   INJECTOR,
@@ -50,7 +51,10 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
-  constructor(@Inject(INJECTOR) private parent: Injector) {}
+  constructor(
+    @Inject(INJECTOR) private parent: Injector,
+    private _ref: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     this.injector = Injector.create({
@@ -79,6 +83,9 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
         }
       ],
     });
+
+    // prevent ExpressionChangedAfterItHasBeenCheckedError
+    this._ref.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
