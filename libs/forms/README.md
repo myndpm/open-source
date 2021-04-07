@@ -99,20 +99,20 @@ The `DynFormsMaterialModule` provides a typed _Factory Method_ to easily create
 the config objects corresponding to its DynControls; for example:
 
 ```typescript
-import { createConfig } from '@myndpm/dyn-forms/material';
+import { createMatConfig } from '@myndpm/dyn-forms/material';
 
 export class MyFormComponent {
   controls: DynFormControls = [
-    createConfig('CARD', {
+    createMatConfig('CARD', {
       name: 'group',
       params: { title: 'My Card' },
       controls: [
-        createConfig('INPUT', {
+        createMatConfig('INPUT', {
           name: 'firstName',
           params: { label: 'First Name' },
           options: { validators: [Validators.required] },
         }),
-        createConfig('INPUT', {
+        createMatConfig('INPUT', {
           name: 'lastName',
           params: { label: 'Last Name' },
           options: { validators: [Validators.required] },
@@ -142,18 +142,15 @@ From there, we have the required tools for the component to provide any control 
 ## Extending
 
 You can check out the example [source code of @myndpm/dyn-forms/material](https://github.com/matheo/angular/tree/master/libs/forms/material/src).
-Basically your custom controls need to extend the respective `abstract class`
-(`DynFormControl`, `DynFormArray`, `DynFormGroup` or `DynFormContainer`).
+Basically your custom controls need to extend the respective `Abstract Dynamic Control`
+(`DynFormControl`, `DynFormArray`, `DynFormGroup` or `DynFormContainer`) which register the corresponding Form Control into the hierarchy specified in the nested Config Object.
 
-Those abstract classes build the Form Control hierarchy as specified in the nexted Config Object,
-and compose the `AbstractFormControl` in the `control` property.
-
-You just need to implement the `completeParams` method, which is useful to ensure that any
-configured parameters will have any required fields and the component won't break.
+You just need to implement `static dynControl` property which is the unique place where you define your control identificator,
+and the `completeParams` method, which is useful to ensure that any partially configured parameters will have the required fields and the template won't be broken.
 Also, if you implement OnInit be sure to call the base class too, with `super.ngOnInit()`.
 
 As mentioned in the _Installation_ section, you can provide your controls with the useful
-`DynFormsModule.forFeature({ controls })` to avoid boilerplate.
+`DynFormsModule.forFeature({ providers, controls })` to avoid boilerplate.
 
 ## Share your Feedback
 
