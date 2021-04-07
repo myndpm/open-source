@@ -6,7 +6,7 @@ With this library we are able to dynamically create the Form Controls hierarchy 
 
 Each nested field configuration supports the default options from Angular's form framework, while avoiding boilerplate.
 
-The general overview is shown at this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation.
+The general overview is shown at this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, and you can play live in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts).
 
 ## Installation
 

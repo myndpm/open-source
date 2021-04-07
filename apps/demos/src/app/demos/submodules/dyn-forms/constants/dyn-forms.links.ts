@@ -1,4 +1,4 @@
-import { SectionAction, SectionBadge } from 'apps/demos/src/app/layout';
+import { SectionAction, SectionBadge } from '../../../../layout';
 
 export const badges: SectionBadge[] = [
   {
@@ -20,13 +20,18 @@ export const badges: SectionBadge[] = [
 
 export const actions: SectionAction[] = [
   {
+    link: "https://stackblitz.com/edit/myndpm-dyn-forms",
+    ionicon: 'logo-angular',
+    tooltip: 'Stackblitz',
+  },
+  {
     link: "https://github.com/Mynd-Management/open-source/blob/master/apps/demos/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
     icon: 'code',
     tooltip: 'See source code',
   },
   {
     link: "https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/",
-    icon: 'preview',
+    ionicon: 'easel-outline',
     tooltip: 'Prezi',
   },
 ];
