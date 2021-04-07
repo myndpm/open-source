@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule, MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynMatArrayComponent } from './components/array/array.component';
 import { DynMatCardComponent } from './components/card/card.component';
@@ -55,6 +55,9 @@ import { DynMatSelectComponent } from './components/select/select.component';
 export class DynFormsMaterialModule {
   static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
     return DynFormsModule.forFeature({
+      providers: [
+        MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+      ],
       controls: [
         {
           control: DynMatArrayComponent.dynControl,

@@ -16,7 +16,7 @@ export class DynFormsModule {
   ): ModuleWithProviders<DynFormsModule> {
     return {
       ngModule: DynFormsModule,
-      providers: getModuleProviders(args?.controls),
+      providers: getModuleProviders(args?.controls, args?.providers),
     };
   }
 }
