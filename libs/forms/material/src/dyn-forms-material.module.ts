@@ -39,6 +39,18 @@ import { DynMatSelectComponent } from './components/select/select.component';
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
+  // @deprecated added just for stackblitz
+  entryComponents: [
+    DynMatArrayComponent,
+    DynMatCardComponent,
+    DynMatDividerComponent,
+    DynMatInputComponent,
+    DynMatRadioComponent,
+    DynMatSelectComponent,
+  ],
+  exports: [
+    DynFormsModule, // reduce the boilerplate
+  ]
 })
 export class DynFormsMaterialModule {
   static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
