@@ -75,7 +75,7 @@ export class DynMatArrayComponent
 
   callHook(hook: string, payload: any[], plainPayload = false): void {
     this.dynGroups.forEach((group, i) => {
-      if (plainPayload || payload.length >= i-1) {
+      if (plainPayload || payload?.length >= i-1) {
         group.callHook(
           hook,
           !plainPayload ? payload[i] : payload,
@@ -86,16 +86,18 @@ export class DynMatArrayComponent
   }
 
   hookPrePatch(payload: any[]): void {
-    const numItems = this.control.controls.length;
-    // matches the incoming quantity with the existing ones
-    for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
-      if (i > numItems) {
-        this.addItem();
-      } else if (i > payload.length) {
-        this.removeItem(i);
+    if (Array.isArray(payload)) {
+      const numItems = this.control.controls.length;
+      // matches the incoming quantity with the existing ones
+      for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
+        if (i > numItems) {
+          this.addItem();
+        } else if (i >= payload.length) {
+          this.removeItem(i);
+        }
       }
+      // required to refresh ViewChildren
+      this._ref.detectChanges();
     }
-    // required to refresh ViewChildren
-    this._ref.detectChanges();
   }
 }

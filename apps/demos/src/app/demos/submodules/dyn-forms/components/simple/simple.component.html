@@ -5,7 +5,11 @@
   <form [formGroup]="form">
     <h3>Simple Dynamic Form</h3>
 
-    <dyn-form [config]="config" [form]="form" [mode]="mode"></dyn-form>
+    <dyn-form
+      [config]="config"
+      [form]="form"
+      [mode]="mode"
+    ></dyn-form>
 
     <div class="form-actions" fxLayout="row" fxLayoutGap="10px">
       <button type="button" mat-raised-button color="primary" (click)="toggleMode()">

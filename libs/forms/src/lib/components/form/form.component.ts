@@ -111,7 +111,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
       const fieldName = factory.config.name;
       factory.callHook(
         hook,
-        !plainPayload && fieldName && payload.hasOwnProperty(fieldName)
+        !plainPayload && fieldName && payload?.hasOwnProperty(fieldName)
           ? payload[fieldName]
           : payload,
         plainPayload,

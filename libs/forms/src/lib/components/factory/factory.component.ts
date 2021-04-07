@@ -102,7 +102,7 @@ export class DynFactoryComponent implements OnInit {
       const fieldName = dynControl.config.name;
       handler.bind(dynControl)(
         hook,
-        !plainPayload && fieldName && payload.hasOwnProperty(fieldName)
+        !plainPayload && fieldName && payload?.hasOwnProperty(fieldName)
           ? payload[fieldName]
           : payload,
         plainPayload,
