@@ -7,7 +7,7 @@
 
     <dyn-form [config]="config" [form]="form" [mode]="mode"></dyn-form>
 
-    <div fxLayout="row" fxLayoutGap="10px">
+    <div class="form-actions" fxLayout="row" fxLayoutGap="10px">
       <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
         {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
       </button>
