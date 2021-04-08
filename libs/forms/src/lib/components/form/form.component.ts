@@ -32,7 +32,7 @@ import { DynFormConfig } from './form.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() form = new FormGroup({});
+  @Input() form!: FormGroup;
   @Input() config!: DynFormConfig;
   @Input() mode?: DynControlMode;
 
@@ -57,6 +57,10 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
+    if (!this.form) {
+      throw new Error(`Please provide a [form] to <dyn-form>`);
+    }
+
     this.injector = Injector.create({
       parent: this.parent,
       providers: [
