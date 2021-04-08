@@ -2,7 +2,7 @@ import { SectionAction, SectionBadge } from '../../../../layout';
 
 export const badges: SectionBadge[] = [
   {
-    link: "https://github.com/Mynd-Management/open-source/tree/master/libs/forms",
+    link: "https://github.com/myndpm/open-source/tree/master/libs/forms",
     img: "https://img.shields.io/badge/%40myndpm-dyn--forms-brightgreen",
     alt: "Package",
   },
@@ -25,7 +25,7 @@ export const actions: SectionAction[] = [
     tooltip: 'Stackblitz',
   },
   {
-    link: "https://github.com/Mynd-Management/open-source/blob/master/apps/demos/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
+    link: "https://github.com/myndpm/open-source/blob/master/apps/demos/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
     icon: 'code',
     tooltip: 'See source code',
   },

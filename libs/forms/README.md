@@ -47,8 +47,8 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
     }),
 ```
 
-where [SelectComponent](https://github.com/Mynd-Management/open-source/blob/master/libs/forms/material/src/components/select/select.component.ts)
-and [InputComponent](https://github.com/Mynd-Management/open-source/blob/master/libs/forms/material/src/components/input/input.component.ts)
+where [SelectComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/material/src/components/select/select.component.ts)
+and [InputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/material/src/components/input/input.component.ts)
 are already implemented in `DynFormsMaterialModule`.
 
 Then with the provided controls you could use them in a Config like this:
@@ -155,9 +155,9 @@ As mentioned in the _Installation_ section, you can provide your controls with t
 ## Share your Feedback
 
 Please share your experience and ideas!  
-Impressions, sugestions, improvements, use cases are welcome at [GitHub Discussions](https://github.com/Mynd-Management/open-source/discussions).  
-As usual, please report any [Issue](https://github.com/Mynd-Management/open-source/issues/new?labels=bug&template=bug-report.md)
-or request a [Feature](https://github.com/Mynd-Management/open-source/issues/new?labels=enhancement&template=feature-request.md).
+Impressions, sugestions, improvements, use cases are welcome at [GitHub Discussions](https://github.com/myndpm/open-source/discussions).  
+As usual, please report any [Issue](https://github.com/myndpm/open-source/issues/new?labels=bug&template=bug-report.md)
+or request a [Feature](https://github.com/myndpm/open-source/issues/new?labels=enhancement&template=feature-request.md).
 
 Enjoy!
 

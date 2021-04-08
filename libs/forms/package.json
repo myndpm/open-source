@@ -8,10 +8,10 @@
     "forms"
   ],
   "license": "MIT",
-  "homepage": "https://mynd-management.github.io/open-source/demos/dyn-forms",
+  "homepage": "https://myndpm.github.io/open-source/demos/dyn-forms",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mynd-Management/open-source.git",
+    "url": "git@github.com:myndpm/open-source.git",
     "directory": "libs/forms"
   },
   "peerDependencies": {
