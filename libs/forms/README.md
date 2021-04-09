@@ -149,7 +149,7 @@ You just need to implement `static dynControl` property which is the unique plac
 and the `completeParams` method, which is useful to ensure that any partially configured parameters will have the required fields and the template won't be broken.
 Also, if you implement OnInit be sure to call the base class too, with `super.ngOnInit()`.
 
-As mentioned in the _Installation_ section, you can provide your controls with the useful
+As mentioned in the [Installation](#installation) section, you can provide your controls with the useful
 `DynFormsModule.forFeature({ providers, controls })` to avoid boilerplate.
 
 ## Share your Feedback

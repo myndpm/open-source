@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'layout-wrapper',
@@ -6,10 +6,4 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./wrapper.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayoutWrapperComponent implements OnInit {
-
-  constructor() {}
-
-  ngOnInit(): void {}
-
-}
+export class LayoutWrapperComponent {}

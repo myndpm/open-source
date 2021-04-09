@@ -17,7 +17,7 @@ export interface LazyControl {
   control: DynControlType;
   instance: DynInstanceType;
   useFactory: Function;
-  // resolved in control-resolver.service
+  // resolved in DynFormRegistry
   component?: Type<AbstractDynControl>;
 }
 
