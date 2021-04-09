@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "matheo",
+      "name": "Mateo Tibaquirá",
+      "avatar_url": "https://avatars.githubusercontent.com/u/260185?v=4",
+      "profile": "http://matheo.co",
+      "contributions": [
+        "ideas",
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "open-source",
+  "projectOwner": "myndpm",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
