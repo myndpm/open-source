@@ -32,7 +32,7 @@ Thanks goes to these wonderful people:
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://matheo.co"><img src="https://avatars.githubusercontent.com/u/260185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mateo Tibaquirá</b></sub></a><br /><a href="#ideas-matheo" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Code">💻</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://matheo.co"><img src="https://avatars.githubusercontent.com/u/260185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mateo Tibaquirá</b></sub></a><br /><a href="#projectManagement-matheo" title="Project Management">📆</a> <a href="#example-matheo" title="Examples">💡</a> <a href="#ideas-matheo" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Code">💻</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Documentation">📖</a></td>
   </tr>
 </table>
 
@@ -41,6 +41,6 @@ Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
 
 [![MIT badge](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
