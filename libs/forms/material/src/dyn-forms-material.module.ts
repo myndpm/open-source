@@ -39,7 +39,7 @@ import { DynMatSelectComponent } from './components/select/select.component';
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
-  // @deprecated added just for stackblitz
+  // @deprecated added for stackblitz
   entryComponents: [
     DynMatArrayComponent,
     DynMatCardComponent,

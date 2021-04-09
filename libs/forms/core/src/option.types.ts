@@ -1,6 +1,6 @@
 import { DynTree } from './tree.types';
 
-// generic type for selectors
+// generic type for selectors/radios/etc
 export interface DynOption<T = any> {
   text: string;
   value: T;
