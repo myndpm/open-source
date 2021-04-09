@@ -48,3 +48,18 @@ Fill a DataSource with a Dynamically generated Form.
 
 - Inheritance of DynControls
 - Composition of FormControls
+
+## Check the approach of similar projects
+
+Invite some authors to discuss:
+
+- <https://github.com/ngx-formly/ngx-formly> the oldest dynamic-forms project
+- <https://github.com/dynamic-forms/dynamic-forms> check its object structure
+- <https://github.com/gms1/angular-dynaform> consider its form actions
+- <https://github.com/udos86/ng-dynamic-forms>
+- <https://github.com/formio/angular>
+- <https://github.com/anand-kashyap/angular-auth> check its rx-form component
+- <https://github.com/trufla-technology/ngx-tru-forms> based on JSON Schemas
+- <https://github.com/teradata/covalent> completely dynamic layout
+- <https://github.com/FalconSoft/ngx-dynamic-components> check its loading strategy
+- <https://github.com/IndigoSoft/ngxd> claims to execute lifecycle hooks better than ComponentFactoryResolver
