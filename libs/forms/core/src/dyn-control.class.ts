@@ -13,6 +13,7 @@ import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlParent, DynControlType, DynInstanceType } from './control.types';
 import { DynFormFactory } from './form.factory';
+import { DynFormNode } from './form.node';
 
 @Directive()
 export abstract class DynControl<
@@ -29,7 +30,8 @@ export abstract class DynControl<
   // optional method for modules providing a typed factory method
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
-  parent: DynControlParent;
+  node: DynFormNode; // node service
+  parent: DynControlParent; // typed ControlContainer
 
   config!: TConfig; // passed down in the hierarchy
   control!: TControl; // built from the config by the abstract classes
@@ -41,6 +43,7 @@ export abstract class DynControl<
   protected _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
+    this.node = injector.get(DynFormNode);
     try {
       this.parent = injector.get(ControlContainer) as DynControlParent;
     } catch (e) {

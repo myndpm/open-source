@@ -17,6 +17,7 @@ import {
   DynBaseConfig,
   DynControlMode,
   DynFormMode,
+  DynFormNode,
   DynFormRegistry,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
@@ -28,6 +29,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'dyn-factory',
   templateUrl: './factory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DynFormNode],
 })
 export class DynFactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
@@ -53,10 +55,14 @@ export class DynFactoryComponent implements OnInit {
     @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
     private registry: DynFormRegistry,
+    private node: DynFormNode,
   ) {}
 
   ngOnInit(): void {
-    // resolve the injector to use and g et providers
+    // initialize the form node
+    this.node.init(this.config);
+
+    // resolve the injector to use and get providers
     this._injector = this.injector ?? this.parent;
     this._mode$ = this._injector.get(DYN_MODE);
     this._formMode = this._injector.get(DynFormMode);

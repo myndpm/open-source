@@ -22,12 +22,14 @@ export abstract class DynFormControl<
       throw new Error(`No config.name provided for ${this.config.control}`);
     }
 
-    super.ngOnInit();
-
+    // register the control first
     this.control = this._fform.register(
       DynInstanceType.Control,
       this.config,
       this.parent
     );
+
+    // provide the parameters second
+    super.ngOnInit();
   }
 }

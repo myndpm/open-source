@@ -17,6 +17,7 @@ import { FormGroup } from '@angular/forms';
 import {
   DynControlMode,
   DynFormMode,
+  DynFormNode,
   DYN_MODE,
   DYN_MODE_CONTROL_DEFAULTS,
   DYN_MODE_DEFAULTS,
@@ -30,6 +31,7 @@ import { DynFormConfig } from './form.config';
   selector: 'dyn-form',
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DynFormNode],
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form!: FormGroup;
@@ -39,6 +41,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren(DynFactoryComponent)
   factories!: QueryList<DynFactoryComponent>;
 
+  // internal injector with config values
   injector?: Injector;
 
   // works fine AfterViewInit
@@ -53,13 +56,16 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     @Inject(INJECTOR) private parent: Injector,
-    private _ref: ChangeDetectorRef,
+    private ref: ChangeDetectorRef,
+    private root: DynFormNode,
   ) {}
 
   ngOnInit() {
     if (!this.form) {
       throw new Error(`Please provide a [form] to <dyn-form>`);
     }
+
+    this.root.init({});
 
     this.injector = Injector.create({
       parent: this.parent,
@@ -89,7 +95,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     // prevent ExpressionChangedAfterItHasBeenCheckedError
-    this._ref.detectChanges();
+    this.ref.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

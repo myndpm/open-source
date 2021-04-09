@@ -7,6 +7,7 @@ import { DynInstanceType } from './control.types';
 import { DynControl } from './dyn-control.class';
 
 @Directive()
+// concrete arrays need to provide DynFormNode
 export abstract class DynFormArray<
     TMode extends DynControlMode = DynControlMode,
     TParams extends DynControlParams = DynControlParams,
@@ -22,13 +23,18 @@ export abstract class DynFormArray<
       throw new Error(`No config.name provided for ${this.config.control}`);
     }
 
-    super.ngOnInit();
-
+    // register the control first
     this.control = this._fform.register(
       DynInstanceType.Array,
       this.config,
       this.parent
     );
+
+    // provide the parameters second
+    super.ngOnInit();
+
+    // initialize the node at the end
+    this.node.init(this.config);
   }
 
   addItem(): void {

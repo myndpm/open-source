@@ -11,7 +11,12 @@
 
   <mat-card-content>
     <div class="array-item" *ngFor="let item of items; index as i">
-      <dyn-group [class]="config.factory?.cssClass" [group]="item" [controls]="config.controls"></dyn-group>
+      <dyn-group
+        [class]="config.factory?.cssClass"
+        [name]="i.toString()"
+        [group]="item"
+        [controls]="config.controls"
+      ></dyn-group>
 
       <button
       mat-icon-button type="button"
