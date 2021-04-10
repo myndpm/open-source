@@ -20,7 +20,7 @@ export abstract class DynFormArray<
   // auto-register in the form hierarchy
   ngOnInit(): void {
     if (!this.config.name) {
-      throw new Error(`No config.name provided for ${this.config.control}`);
+      throw this._logger.unnamedArray(this.config.control);
     }
 
     // register the control first

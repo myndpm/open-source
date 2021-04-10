@@ -6,7 +6,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynBaseConfig, DynFormNode } from '@myndpm/dyn-forms/core';
+import { DynBaseConfig, DynFormNode, DynLogger } from '@myndpm/dyn-forms/core';
 import { DynFactoryComponent } from '../factory/factory.component';
 
 @Component({
@@ -26,11 +26,15 @@ export class DynGroupComponent {
   @ViewChildren(DynFactoryComponent) factories!: QueryList<DynFactoryComponent>;
 
   constructor(
+    private logger: DynLogger,
     private node: DynFormNode,
   ) {}
 
   ngOnInit(): void {
     this.node.init({ name: this.name });
+
+    // log the successful initialization
+    this.logger.nodeInit('dyn-group', this.node.path);
   }
 
   callHook(hook: string, payload: any, plainPayload = false): void {

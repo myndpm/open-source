@@ -9,7 +9,7 @@ import { DynLog } from './log.interface';
 @Injectable()
 export class DynLogDriver {
   logFatal = (event: DynLog) => {
-    console.error(...this.format(event));
+    return new Error(event.message);
   }
 
   logError = (event: DynLog) => {
@@ -50,14 +50,14 @@ export class DynLogDriver {
     @Inject(DYN_LOG_LEVEL) private level: DynLogLevel,
   ) {}
 
-  log(event: DynLog): void {
+  log(event: DynLog): any {
     // do not log anything on production
     // or below the configured limit
     if (!isDevMode() || event.level < this.level) {
       return;
     }
 
-    this.loggers[event.level](event);
+    return this.loggers[event.level](event);
   }
 
   private format(event: DynLog): any[] {

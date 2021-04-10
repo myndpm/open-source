@@ -14,6 +14,7 @@ import { DynControlParams } from './control-params.types';
 import { DynControlParent, DynControlType, DynInstanceType } from './control.types';
 import { DynFormFactory } from './form.factory';
 import { DynFormNode } from './form.node';
+import { DynLogger } from './logger';
 
 @Directive()
 export abstract class DynControl<
@@ -37,21 +38,22 @@ export abstract class DynControl<
   control!: TControl; // built from the config by the abstract classes
   params!: TParams; // values available for the concrete Component instance
 
+  protected _logger: DynLogger;
   protected _fform: DynFormFactory;
   protected _ref: ChangeDetectorRef;
   protected _paramsChanged = new Subject<void>();
   protected _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
+    this._logger = injector.get(DynLogger);
+
     this.node = injector.get(DynFormNode);
     try {
       this.parent = injector.get(ControlContainer) as DynControlParent;
     } catch (e) {
-      throw new Error(
-        'No parent ControlContainer found. ' +
-        'Please provide a [formGroup]'
-      ); // TODO debug trace
+      throw this._logger.orphanControl();
     }
+
     this._fform = injector.get(DynFormFactory);
     this._ref = injector.get(ChangeDetectorRef);
   }

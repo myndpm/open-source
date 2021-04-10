@@ -19,6 +19,7 @@ import {
   DynFormMode,
   DynFormNode,
   DynFormRegistry,
+  DynLogger,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import deepEqual from 'fast-deep-equal';
@@ -54,6 +55,7 @@ export class DynFactoryComponent implements OnInit {
   constructor(
     @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
+    private logger: DynLogger,
     private registry: DynFormRegistry,
     private node: DynFormNode,
   ) {}
@@ -61,6 +63,9 @@ export class DynFactoryComponent implements OnInit {
   ngOnInit(): void {
     // initialize the form node
     this.node.init(this.config);
+
+    // log the successful initialization
+    this.logger.nodeInit('dyn-factory', this.node.path, this.config.control);
 
     // resolve the injector to use and get providers
     this._injector = this.injector ?? this.parent;
