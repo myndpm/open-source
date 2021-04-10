@@ -9,15 +9,6 @@ export class DynLogger {
     private driver: DynLogDriver,
   ) {}
 
-  orphanControl(): Error {
-    return this.driver.log({
-      level: DynLogLevel.Fatal,
-      message:
-        'No parent ControlContainer found. ' +
-        'Please provide a [formGroup]',
-    });
-  }
-
   unnamedArray(control: string): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,

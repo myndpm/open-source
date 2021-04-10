@@ -23,10 +23,10 @@ export abstract class DynFormControl<
     }
 
     // register the control
-    this.control = this._fform.register(
+    this.control = this._formFactory.register(
       DynInstanceType.Control,
       this.config,
-      this.parent
+      this.node.parent,
     );
 
     // provide the parameters

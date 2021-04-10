@@ -20,14 +20,14 @@ export abstract class DynFormContainer<
   ngOnInit(): void {
     // register the control
     if (this.config.name) {
-      this.control = this._fform.register(
+      this.control = this._formFactory.register(
         DynInstanceType.Container,
         this.config,
-        this.parent
+        this.node.parent,
       );
     } else if (!this.control) {
       // fallback to the parent control
-      this.control = this.parent.control;
+      this.control = this.node.parent.control;
     }
 
     // provide the parameters

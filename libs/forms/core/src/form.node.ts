@@ -1,5 +1,5 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
 import { DynLogger } from './logger';
 
@@ -20,7 +20,7 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   constructor(
     private logger: DynLogger,
     // parent node should be set for all except the root
-    @Optional() @SkipSelf() private parent?: DynFormNode,
+    @Optional() @SkipSelf() public parent: DynFormNode,
   ) {}
 
   init(config: Partial<DynBaseConfig>, control: TControl): void {

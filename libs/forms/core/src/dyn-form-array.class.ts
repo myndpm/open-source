@@ -23,10 +23,10 @@ export abstract class DynFormArray<
     }
 
     // register the control
-    this.control = this._fform.register(
+    this.control = this._formFactory.register(
       DynInstanceType.Array,
       this.config,
-      this.parent
+      this.node.parent,
     );
 
     // provide the parameters
@@ -41,7 +41,7 @@ export abstract class DynFormArray<
 
   addItem(): void {
     this.control.push(
-      this._fform.build(DynInstanceType.Group, this.config, true)
+      this._formFactory.build(DynInstanceType.Group, this.config, true)
     );
   }
 
