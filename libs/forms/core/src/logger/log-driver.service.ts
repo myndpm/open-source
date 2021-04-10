@@ -8,6 +8,44 @@ import { DynLog } from './log.interface';
  */
 @Injectable()
 export class DynLogDriver {
+  logFatal = (event: DynLog) => {
+    console.error(...this.format(event));
+  }
+
+  logError = (event: DynLog) => {
+    console.error(...this.format(event));
+  }
+
+  logWarning = (event: DynLog) => {
+    console.warn(...this.format(event));
+  }
+
+  logInfo = (event: DynLog) => {
+    console.log(...this.format(event));
+  }
+
+  logDebug = (event: DynLog) => {
+    console.log(...this.format(event));
+  }
+
+  logTrace = (event: DynLog) => {
+    console.log(...this.format(event));
+  }
+
+  logVerbose = (event: DynLog) => {
+    console.log(...this.format(event));
+  }
+
+  loggers = {
+    [DynLogLevel.Fatal]: this.logFatal,
+    [DynLogLevel.Error]: this.logError,
+    [DynLogLevel.Warning]: this.logWarning,
+    [DynLogLevel.Info]: this.logInfo,
+    [DynLogLevel.Debug]: this.logDebug,
+    [DynLogLevel.Trace]: this.logTrace,
+    [DynLogLevel.Verbose]: this.logVerbose,
+  }
+
   constructor(
     @Inject(DYN_LOG_LEVEL) private level: DynLogLevel,
   ) {}
@@ -19,67 +57,33 @@ export class DynLogDriver {
       return;
     }
 
-    switch (event.level) {
-      case DynLogLevel.Fatal:
-        this.logFatal(event);
-        break;
-
-      case DynLogLevel.Error:
-        this.logError(event);
-        break;
-
-      case DynLogLevel.Warning:
-        this.logWarning(event);
-        break;
-
-      case DynLogLevel.Info:
-        this.logInfo(event);
-        break;
-
-      case DynLogLevel.Debug:
-        this.logDebug(event);
-        break;
-
-      case DynLogLevel.Trace:
-        this.logTrace(event);
-        break;
-
-      case DynLogLevel.Verbose:
-        this.logVerbose(event);
-        break;
-    }
-  }
-
-  logFatal(event: DynLog): void {
-    console.error(...this.format(event));
-  }
-
-  logError(event: DynLog): void {
-    console.error(...this.format(event));
-  }
-
-  logWarning(event: DynLog): void {
-    console.warn(...this.format(event));
-  }
-
-  logInfo(event: DynLog): void {
-    console.log(...this.format(event));
-  }
-
-  logDebug(event: DynLog): void {
-    console.log(...this.format(event));
-  }
-
-  logTrace(event: DynLog): void {
-    console.log(...this.format(event));
-  }
-
-  logVerbose(event: DynLog): void {
-    console.log(...this.format(event));
+    this.loggers[event.level](event);
   }
 
   private format(event: DynLog): any[] {
-    const result = [dynLogLevels.get(event.level), event.message];
+    const result = [...this.colorify(event.level), event.message];
     return event.payload ? [...result, event.payload] : result;
+  }
+
+  private colorify(
+    level: DynLogLevel,
+    text = `%c[${dynLogLevels.get(level)}]`
+  ): string[] {
+    switch (level) {
+      case DynLogLevel.Fatal:
+        return [text, `color: #dc3545`];
+      case DynLogLevel.Error:
+        return [text, `color: #dc3545`];
+      case DynLogLevel.Warning:
+        return [text, `color: #fd7e14`];
+      case DynLogLevel.Info:
+        return [text, `color: #0d6efd`];
+      case DynLogLevel.Debug:
+        return [text, `color: #6f42c1`];
+      case DynLogLevel.Trace:
+        return [text, `color: #20c997`];
+      case DynLogLevel.Verbose:
+        return [text, `color: #adb5bd`];
+    }
   }
 }

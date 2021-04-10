@@ -1,3 +1,4 @@
+
 export enum DynLogLevel {
   Fatal = 7,
   Error = 6,
@@ -8,7 +9,6 @@ export enum DynLogLevel {
   Verbose = 1,
 }
 
-// TODO reduce this to a colored letter?
 export const dynLogLevels = new Map<number, string>([
   [7, 'FATAL'],
   [6, 'ERROR'],
