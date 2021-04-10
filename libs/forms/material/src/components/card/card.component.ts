@@ -3,7 +3,6 @@ import {
   DynConfig,
   DynControlMode,
   DynFormContainer,
-  DynFormNode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynGroupComponent } from '@myndpm/dyn-forms';
@@ -14,7 +13,6 @@ import { DynMatCardParams } from './card.component.params';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormNode],
 })
 export class DynMatCardComponent
   extends DynFormContainer<DynControlMode, DynMatCardParams, DynConfig>

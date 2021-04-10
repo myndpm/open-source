@@ -31,7 +31,7 @@ export abstract class DynControl<
   // optional method for modules providing a typed factory method
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
-  node: DynFormNode; // node service
+  node: DynFormNode<TControl>; // node service
   parent: DynControlParent; // typed ControlContainer
 
   config!: TConfig; // passed down in the hierarchy

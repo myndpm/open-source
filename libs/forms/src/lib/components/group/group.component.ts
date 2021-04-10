@@ -31,7 +31,7 @@ export class DynGroupComponent {
   ) {}
 
   ngOnInit(): void {
-    this.node.init({ name: this.name });
+    this.node.init({ name: this.name }, this.group);
 
     // log the successful initialization
     this.logger.nodeInit('dyn-group', this.node.path);

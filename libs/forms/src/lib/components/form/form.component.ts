@@ -67,7 +67,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
       throw new Error(`Please provide a [form] to <dyn-form>`);
     }
 
-    this.root.init({});
+    this.root.init({}, this.form);
     this.logger.nodeInit('dyn-form', this.root.path);
 
     this.injector = Injector.create({

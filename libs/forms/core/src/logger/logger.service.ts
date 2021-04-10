@@ -37,9 +37,9 @@ export class DynLogger {
   nodeInit(origin: string, path: string[], control?: string): void {
     this.driver.log({
       level: DynLogLevel.Verbose,
-      message: !path.join('.')
+      message: control === undefined && !path.join('.')
         ? `[${origin}] Root node initialized`
-        : `[${origin}] Node '${path.join('.')}' initialized ${control ? `(${control})` : ''}`,
+        : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
     });
   }
 }
