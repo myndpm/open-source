@@ -1,6 +1,7 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, ControlContainer, FormGroupDirective } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
+import { DynLogger } from './logger';
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
@@ -22,7 +23,8 @@ export class DynFormNode {
   }
 
   constructor(
-    public container: ControlContainer,
+    private container: ControlContainer,
+    private logger: DynLogger,
     // parent node should be set for all except the root
     @Optional() @SkipSelf() private parent?: DynFormNode,
   ) {}
@@ -30,16 +32,14 @@ export class DynFormNode {
   init(config: Partial<DynBaseConfig>): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
-      console.error(
-        `Control ${config.control} need to provide its own DynFormNode. `,
-        `It is consuming the parent Node and that will cause unexpected effects.`
-      );
-      return;
+      return this.logger.nodeFailed(config.control);
     }
 
     // construct the path
     this.name = config.name ?? '';
 
     // TODO initialize control validators from name:args, on AfterViewInit?
+
+    this.logger.nodeInit(this.path, config.control);
   }
 }
