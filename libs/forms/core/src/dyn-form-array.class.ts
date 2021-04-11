@@ -1,6 +1,7 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DynConfig } from './config.types';
+import { DynControlHook } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynInstanceType } from './control.types';
@@ -37,6 +38,23 @@ export abstract class DynFormArray<
 
     // log the successful initialization
     this._logger.nodeLoaded('dyn-form-array', this.node.path, this.config.control);
+  }
+
+  // hook propagated to child DynControls
+  callChildHooks({ hook, payload, plain }: DynControlHook): void {
+    if (!plain && !Array.isArray(payload)) {
+      return;
+    }
+
+    this.node.children.forEach((node, i) => {
+      if (plain || payload?.length >= i - 1) {
+        node.callHook({
+          hook,
+          payload: !plain ? payload[i] : payload,
+          plain,
+        });
+      }
+    });
   }
 
   addItem(): void {

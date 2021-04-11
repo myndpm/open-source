@@ -12,6 +12,7 @@ import { DynBaseConfig } from './config.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
+import { DynControlEvents } from './dyn-control-events.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormNode } from './form-node.service';
 import { DynLogger } from './logger';
@@ -22,7 +23,8 @@ export abstract class DynControl<
   TParams extends DynControlParams = DynControlParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
-> implements OnInit, OnDestroy {
+> extends DynControlEvents<TControl> implements OnInit, OnDestroy {
+
   // central place to define the provided Type
   static dynControl: DynControlType = '';
   // central place to define the provided Instance
@@ -44,6 +46,8 @@ export abstract class DynControl<
   protected _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
+    super();
+
     this._logger = injector.get(DynLogger);
     this._formFactory = injector.get(DynFormFactory);
     this._ref = injector.get(ChangeDetectorRef);
@@ -51,9 +55,18 @@ export abstract class DynControl<
     this.node = injector.get(DynFormNode);
   }
 
+  // complete a partial specification of the required parameters
+  // ensuring that all will be present in the template
+  abstract completeParams(params: Partial<TParams>): TParams;
+
   ngOnInit(): void {
     // assign incoming parameters
     this.setParams(this.config.params);
+
+    // listen hook calls
+    this.node.hook$
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe(hook => this.callHook(hook));
   }
 
   ngOnDestroy(): void {
@@ -81,13 +94,4 @@ export abstract class DynControl<
       });
     }
   }
-
-  // complete a partial specification of the required parameters
-  // ensuring that all will be present in the template
-  abstract completeParams(params: Partial<TParams>): TParams;
-
-  // support and propagate hook calls to inner components
-  // this should be implemented by containers/groups/arrays
-  // concrete hooks will receive the parent data if they define no config.name
-  // callHook(hook: string, payload: any[], plainPayload = false): void
 }

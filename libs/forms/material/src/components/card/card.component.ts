@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
   DynFormContainer,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { DynGroupComponent } from '@myndpm/dyn-forms';
 import { DynMatCardParams } from './card.component.params';
 
 @Component({
@@ -28,18 +27,11 @@ export class DynMatCardComponent
     };
   }
 
-  @ViewChild(DynGroupComponent, { static: true })
-  dynGroup!: DynGroupComponent;
-
   ngOnInit(): void {
     super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatCardParams>): DynMatCardParams {
     return params;
-  }
-
-  callHook(hook: string, payload: any, plainPayload = false): void {
-    this.dynGroup.callHook(hook, payload, plainPayload);
   }
 }

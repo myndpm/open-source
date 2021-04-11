@@ -2,6 +2,7 @@
 
 ## Form Controls
 
+- Check FormDirectives responsibilities to apply in DynFormNode if the validators doesn't work
 - Components provided via `forFeature` (via `DYN_CONTROLS_TOKEN`) ✓
 - Provide config for appearance (theme, full-width, inline)
 - Extensible handlers for different modes (panel, filter, table-cell, mobile?)
@@ -60,6 +61,7 @@ Invite some authors to discuss:
 - <https://github.com/formio/angular>
 - <https://github.com/anand-kashyap/angular-auth> check its rx-form component
 - <https://github.com/trufla-technology/ngx-tru-forms> based on JSON Schemas
+- <https://github.com/ngspot/ngx-errors> interesting configuration for errors
 - <https://github.com/teradata/covalent> completely dynamic layout
 - <https://github.com/FalconSoft/ngx-dynamic-components> check its loading strategy
 - <https://github.com/IndigoSoft/ngxd> claims to execute lifecycle hooks better than ComponentFactoryResolver

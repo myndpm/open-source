@@ -34,4 +34,12 @@ export class DynLogger {
       payload,
     });
   }
+
+  hookCalled(hook: string, path: string, payload?: any): void {
+    this.driver.log({
+      level: DynLogLevel.Debug,
+      message: `[hook] '${hook}' called on '${path}' with`,
+      payload,
+    });
+  }
 }

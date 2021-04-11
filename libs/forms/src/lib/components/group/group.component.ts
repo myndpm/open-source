@@ -1,13 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynBaseConfig, DynFormNode, DynLogger } from '@myndpm/dyn-forms/core';
-import { DynFactoryComponent } from '../factory/factory.component';
 
 @Component({
   selector: 'dyn-group',
@@ -23,8 +16,6 @@ export class DynGroupComponent {
   @Input() group!: FormGroup;
   @Input() controls?: DynBaseConfig[];
 
-  @ViewChildren(DynFactoryComponent) factories!: QueryList<DynFactoryComponent>;
-
   constructor(
     private logger: DynLogger,
     private node: DynFormNode,
@@ -35,18 +26,5 @@ export class DynGroupComponent {
 
     // log the successful initialization
     this.logger.nodeLoaded('dyn-group', this.node.path);
-  }
-
-  callHook(hook: string, payload: any, plainPayload = false): void {
-    this.factories.forEach(factory => {
-      const fieldName = factory.config.name;
-      factory.callHook(
-        hook,
-        !plainPayload && fieldName && payload?.hasOwnProperty(fieldName)
-          ? payload[fieldName]
-          : payload,
-        plainPayload,
-      );
-    });
   }
 }

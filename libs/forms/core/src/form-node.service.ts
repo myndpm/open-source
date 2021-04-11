@@ -1,6 +1,8 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { DynBaseConfig } from './config.types';
+import { DynControlHook } from './control-events.types';
 import { DynLogger } from './logger';
 
 @Injectable()
@@ -10,6 +12,8 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   name?: string;
   control!: TControl;
   children: DynFormNode[] = [];
+
+  hook$ = new Subject<DynControlHook>();
 
   get path(): string[] {
     return [
@@ -44,6 +48,8 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
     // TODO test unload with routed forms
 
     this.parent?.removeChild(this);
+
+    this.hook$.complete();
   }
 
   /**
@@ -61,5 +67,14 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
     });
 
     // TODO update validators
+  }
+
+  /**
+   * Feature methods
+   */
+  callHook(event: DynControlHook): void {
+    this.logger.hookCalled(event.hook, this.path.join('.'), event.payload);
+
+    this.hook$.next(event);
   }
 }

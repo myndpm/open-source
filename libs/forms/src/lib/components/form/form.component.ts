@@ -9,12 +9,11 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  QueryList,
   SimpleChanges,
-  ViewChildren,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  DynControlHook,
   DynControlMode,
   DynFormMode,
   DynFormNode,
@@ -25,7 +24,6 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DynFactoryComponent } from '../factory/factory.component';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -38,9 +36,6 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form!: FormGroup;
   @Input() config!: DynFormConfig;
   @Input() mode?: DynControlMode;
-
-  @ViewChildren(DynFactoryComponent)
-  factories!: QueryList<DynFactoryComponent>;
 
   // internal injector with config values
   injector?: Injector;
@@ -119,16 +114,16 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload: any, plainPayload = false): void {
-    this.factories.forEach(factory => {
-      const fieldName = factory.config.name;
-      factory.callHook(
+  callHook(hook: string, payload: any, plain = false): void {
+    this.root.children.forEach(node => {
+      const fieldName = node.name;
+      node.callHook({
         hook,
-        !plainPayload && fieldName && payload?.hasOwnProperty(fieldName)
+        payload: !plain && fieldName && payload?.hasOwnProperty(fieldName)
           ? payload[fieldName]
           : payload,
-        plainPayload,
-      );
+        plain,
+      });
     });
   }
 }
