@@ -1,4 +1,4 @@
-<ng-container [formGroup]="parent.control">
+<ng-container [formGroup]="node.parent.control">
   <mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
     <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
     <input

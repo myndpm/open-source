@@ -29,7 +29,6 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'dyn-factory',
   templateUrl: './factory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormNode],
 })
 export class DynFactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
@@ -55,17 +54,24 @@ export class DynFactoryComponent implements OnInit {
     @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
     private registry: DynFormRegistry,
-    private node: DynFormNode,
   ) {}
 
   ngOnInit(): void {
-    // initialize the form node
-    this.node.init(this.config);
-
     // resolve the injector to use and get providers
-    this._injector = this.injector ?? this.parent;
-    this._mode$ = this._injector.get(DYN_MODE);
-    this._formMode = this._injector.get(DynFormMode);
+    const injector = this.injector ?? this.parent;
+    this._mode$ = injector.get(DYN_MODE);
+    this._formMode = injector.get(DynFormMode);
+
+    this._injector = Injector.create({
+      providers: [
+        // abstract classes has its own DynFormNode
+        {
+          provide: DynFormNode,
+          useClass: DynFormNode,
+        },
+      ],
+      parent: injector,
+    });
 
     // create the dynamic component with each mode change
     let config: DynBaseConfig;

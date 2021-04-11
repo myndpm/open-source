@@ -7,7 +7,6 @@ import { DynInstanceType } from './control.types';
 import { DynControl } from './dyn-control.class';
 
 @Directive()
-// concrete arrays need to provide DynFormNode
 export abstract class DynFormArray<
     TMode extends DynControlMode = DynControlMode,
     TParams extends DynControlParams = DynControlParams,
@@ -20,26 +19,29 @@ export abstract class DynFormArray<
   // auto-register in the form hierarchy
   ngOnInit(): void {
     if (!this.config.name) {
-      throw new Error(`No config.name provided for ${this.config.control}`);
+      throw this._logger.unnamedArray(this.config.control);
     }
 
-    // register the control first
-    this.control = this._fform.register(
+    // register the control
+    this.control = this._formFactory.register(
       DynInstanceType.Array,
       this.config,
-      this.parent
+      this.node.parent,
     );
 
-    // provide the parameters second
+    // provide the parameters
     super.ngOnInit();
 
-    // initialize the node at the end
-    this.node.init(this.config);
+    // initialize the node
+    this.node.init(this.config, this.control);
+
+    // log the successful initialization
+    this._logger.nodeInit('dyn-form-array', this.node.path, this.config.control);
   }
 
   addItem(): void {
     this.control.push(
-      this._fform.build(DynInstanceType.Group, this.config, true)
+      this._formFactory.build(DynInstanceType.Group, this.config, true)
     );
   }
 

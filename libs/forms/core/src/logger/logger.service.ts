@@ -9,21 +9,28 @@ export class DynLogger {
     private driver: DynLogDriver,
   ) {}
 
-  nodeFailed(control?: string): void {
-    this.driver.log({
+  unnamedArray(control: string): Error {
+    return this.driver.log({
       level: DynLogLevel.Fatal,
-      message:
-        `Control '${control}' need to provide its own DynFormNode. ` +
-        `It is consuming the parent Node and that will cause unexpected effects.`
+      message: `No config.name provided for ${control}`,
     });
   }
 
-  nodeInit(path: string[], control?: string): void {
+  nodeFailed(control?: string): void {
+    this.driver.log({
+      level: DynLogLevel.Error,
+      message:
+        `Control '${control}' need to provide its own DynFormNode. ` +
+        `It is consuming the parent Node and that will cause unexpected effects.`,
+    });
+  }
+
+  nodeInit(origin: string, path: string[], control?: string): void {
     this.driver.log({
       level: DynLogLevel.Verbose,
-      message: !path.join('.')
-        ? `Root node initialized`
-        : `Node '${path.join('.')}' initialized ${control ? `(${control})` : ''}`,
+      message: control === undefined && !path.join('.')
+        ? `[${origin}] Root node initialized`
+        : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
     });
   }
 }

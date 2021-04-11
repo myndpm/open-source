@@ -18,22 +18,25 @@ export abstract class DynFormContainer<
 
   // auto-register in the form hierarchy
   ngOnInit(): void {
-    // register the control first
+    // register the control
     if (this.config.name) {
-      this.control = this._fform.register(
+      this.control = this._formFactory.register(
         DynInstanceType.Container,
         this.config,
-        this.parent
+        this.node.parent,
       );
     } else if (!this.control) {
       // fallback to the parent control
-      this.control = this.parent.control;
+      this.control = this.node.parent.control;
     }
 
-    // provide the parameters second
+    // provide the parameters
     super.ngOnInit();
 
-    // initialize the node at the end
-    this.node.init(this.config);
+    // initialize the node
+    this.node.init(this.config, this.control);
+
+    // log the successful initialization
+    this._logger.nodeInit('dyn-form-container', this.node.path, this.config.control);
   }
 }

@@ -12,7 +12,6 @@ import {
   DynConfig,
   DynControlMode,
   DynFormArray,
-  DynFormNode,
   DynInstanceType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -24,7 +23,6 @@ import { DynMatArrayParams } from './array.component.params';
   templateUrl: './array.component.html',
   styleUrls: ['./array.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormNode],
 })
 export class DynMatArrayComponent
   extends DynFormArray<DynControlMode, DynMatArrayParams, DynConfig>

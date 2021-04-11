@@ -6,7 +6,8 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
-import { DynControlParent, DynInstanceType } from './control.types';
+import { DynInstanceType } from './control.types';
+import { DynFormNode } from './form.node';
 import { DynFormRegistry } from './form.registry';
 
 @Injectable()
@@ -19,25 +20,25 @@ export class DynFormFactory {
   register(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
-    parent: DynControlParent,
+    parent: DynFormNode,
     recursively?: boolean
   ): FormGroup;
   register(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
-    parent: DynControlParent,
+    parent: DynFormNode,
     recursively?: boolean
   ): FormArray;
   register(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
-    parent: DynControlParent,
+    parent: DynFormNode,
     recursively?: boolean
   ): FormControl;
   register<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
-    parent: DynControlParent,
+    parent: DynFormNode,
     recursively = false
   ): T {
     // fail-safe validation
@@ -125,7 +126,7 @@ export class DynFormFactory {
   /**
    * Append a control to a given parent in the specified name.
    */
-  append(parent: DynControlParent, name: string, control: AbstractControl) {
+  append(parent: DynFormNode, name: string, control: AbstractControl): void {
     // only FormGroup can be extended
     if (parent.control instanceof FormGroup) {
       parent.control.addControl(name, control);

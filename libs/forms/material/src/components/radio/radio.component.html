@@ -1,4 +1,4 @@
-<ng-container [formGroup]="parent.control">
+<ng-container [formGroup]="node.parent.control">
   <mat-radio-group [formControlName]="config.name">
     <mat-radio-button
       *ngFor="let option of params.options"

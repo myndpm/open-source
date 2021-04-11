@@ -5,15 +5,16 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { isObservable, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
-import { DynControlParent, DynControlType, DynInstanceType } from './control.types';
+import { DynControlType, DynInstanceType } from './control.types';
 import { DynFormFactory } from './form.factory';
 import { DynFormNode } from './form.node';
+import { DynLogger } from './logger';
 
 @Directive()
 export abstract class DynControl<
@@ -30,30 +31,24 @@ export abstract class DynControl<
   // optional method for modules providing a typed factory method
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
-  node: DynFormNode; // node service
-  parent: DynControlParent; // typed ControlContainer
+  node: DynFormNode<TControl>; // corresponding node
 
   config!: TConfig; // passed down in the hierarchy
   control!: TControl; // built from the config by the abstract classes
   params!: TParams; // values available for the concrete Component instance
 
-  protected _fform: DynFormFactory;
+  protected _logger: DynLogger;
+  protected _formFactory: DynFormFactory;
   protected _ref: ChangeDetectorRef;
   protected _paramsChanged = new Subject<void>();
   protected _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
-    this.node = injector.get(DynFormNode);
-    try {
-      this.parent = injector.get(ControlContainer) as DynControlParent;
-    } catch (e) {
-      throw new Error(
-        'No parent ControlContainer found. ' +
-        'Please provide a [formGroup]'
-      ); // TODO debug trace
-    }
-    this._fform = injector.get(DynFormFactory);
+    this._logger = injector.get(DynLogger);
+    this._formFactory = injector.get(DynFormFactory);
     this._ref = injector.get(ChangeDetectorRef);
+
+    this.node = injector.get(DynFormNode);
   }
 
   ngOnInit(): void {
