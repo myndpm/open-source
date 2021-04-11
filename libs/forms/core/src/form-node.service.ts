@@ -9,6 +9,7 @@ import { DynLogger } from './logger';
 export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   name?: string;
   control!: TControl;
+  children: DynFormNode[] = [];
 
   get path(): string[] {
     return [
@@ -23,7 +24,7 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
     @Optional() @SkipSelf() public parent: DynFormNode,
   ) {}
 
-  init(config: Partial<DynBaseConfig>, control: TControl): void {
+  load(config: Partial<DynBaseConfig>, control: TControl): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       return this.logger.nodeFailed(config.control);
@@ -34,5 +35,31 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
 
     // register the control created by the FormFactory
     this.control = control;
+
+    // register the node with its parent
+    this.parent?.addChild(this);
+  }
+
+  unload(): void {
+    // TODO test unload with routed forms
+
+    this.parent?.removeChild(this);
+  }
+
+  /**
+   * Hierarchy methods
+   */
+  addChild(node: DynFormNode<any>): void {
+    this.children.push(node);
+
+    // TODO setup validators
+  }
+
+  removeChild(node: DynFormNode<any>): void {
+    this.children.some((child, i) => {
+      return (child === node) ? this.children.splice(i, 1) : false;
+    });
+
+    // TODO update validators
   }
 }

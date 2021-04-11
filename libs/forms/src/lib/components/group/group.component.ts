@@ -31,10 +31,10 @@ export class DynGroupComponent {
   ) {}
 
   ngOnInit(): void {
-    this.node.init({ name: this.name }, this.group);
+    this.node.load({ name: this.name }, this.group);
 
     // log the successful initialization
-    this.logger.nodeInit('dyn-group', this.node.path);
+    this.logger.nodeLoaded('dyn-group', this.node.path);
   }
 
   callHook(hook: string, payload: any, plainPayload = false): void {

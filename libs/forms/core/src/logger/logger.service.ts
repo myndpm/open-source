@@ -25,12 +25,13 @@ export class DynLogger {
     });
   }
 
-  nodeInit(origin: string, path: string[], control?: string): void {
+  nodeLoaded(origin: string, path: string[], control?: string, payload?: any): void {
     this.driver.log({
       level: DynLogLevel.Verbose,
       message: control === undefined && !path.join('.')
         ? `[${origin}] Root node initialized`
         : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
+      payload,
     });
   }
 }

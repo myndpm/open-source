@@ -61,6 +61,8 @@ export abstract class DynControl<
     this._paramsChanged.complete();
     this._unsubscribe.next();
     this._unsubscribe.complete();
+
+    this.node.unload();
   }
 
   setParams(params?: Partial<TParams> | Observable<Partial<TParams>>): void {

@@ -33,9 +33,9 @@ export abstract class DynFormControl<
     super.ngOnInit();
 
     // initialize the node
-    this.node.init(this.config, this.control);
+    this.node.load(this.config, this.control);
 
     // log the successful initialization
-    this._logger.nodeInit('dyn-form-control', this.node.path, this.config.control);
+    this._logger.nodeLoaded('dyn-form-control', this.node.path, this.config.control);
   }
 }
