@@ -3,6 +3,7 @@ import { DynControlParams } from '@myndpm/dyn-forms/core';
 export interface DynMatArrayParams extends DynControlParams {
   title?: string;
   subtitle?: string;
+  avatar?: string;
   initItem?: boolean;
   addButton?: string;
   addColor?: string;

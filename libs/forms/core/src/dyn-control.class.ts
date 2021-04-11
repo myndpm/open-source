@@ -23,7 +23,9 @@ export abstract class DynControl<
   TParams extends DynControlParams = DynControlParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
-> extends DynControlEvents<TControl> implements OnInit, OnDestroy {
+>
+extends DynControlEvents<TControl>
+implements OnInit, OnDestroy {
 
   // central place to define the provided Type
   static dynControl: DynControlType = '';

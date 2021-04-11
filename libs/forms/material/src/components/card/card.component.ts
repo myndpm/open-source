@@ -14,8 +14,9 @@ import { DynMatCardParams } from './card.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatCardComponent
-  extends DynFormContainer<DynControlMode, DynMatCardParams, DynConfig>
-  implements OnInit {
+extends DynFormContainer<DynControlMode, DynMatCardParams, DynConfig>
+implements OnInit {
+
   static dynControl: 'CARD' = 'CARD';
 
   static createConfig<M extends DynControlMode>(

@@ -9,7 +9,8 @@ import { DynMatDividerParams } from './divider.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynMatDividerComponent
-  extends DynFormContainer<DynControlMode, DynMatDividerParams> {
+extends DynFormContainer<DynControlMode, DynMatDividerParams> {
+
   static dynControl: 'DIVIDER' = 'DIVIDER';
 
   static createConfig<M extends DynControlMode>(

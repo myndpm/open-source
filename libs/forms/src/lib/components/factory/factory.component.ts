@@ -42,6 +42,7 @@ export class DynFactoryComponent implements OnInit {
     return this.config?.factory?.cssClass || '';
   }
 
+  // DynControl
   private component!: ComponentRef<AbstractDynControl>
 
   // retrieved from the proper injector

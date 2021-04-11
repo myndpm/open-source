@@ -22,8 +22,9 @@ import { DynMatArrayParams } from './array.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatArrayComponent
-  extends DynFormArray<DynControlMode, DynMatArrayParams, DynConfig>
-  implements OnInit, AfterViewInit {
+extends DynFormArray<DynControlMode, DynMatArrayParams, DynConfig>
+implements OnInit, AfterViewInit {
+
   static dynControl: 'ARRAY' = 'ARRAY';
 
   dynInstanceType = DynInstanceType;
@@ -67,10 +68,10 @@ export class DynMatArrayComponent
     };
   }
 
+  // matches the incoming quantity of items with the existing controls
   hookPrePatch(payload: any[]): void {
     if (Array.isArray(payload)) {
       const numItems = this.control.controls.length;
-      // matches the incoming quantity with the existing ones
       for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
         if (i > numItems) {
           this.addItem();
@@ -78,8 +79,6 @@ export class DynMatArrayComponent
           this.removeItem(i);
         }
       }
-      // required to refresh ViewChildren
-      this._ref.detectChanges();
     }
   }
 }

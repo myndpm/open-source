@@ -8,12 +8,13 @@ import { DynControl } from './dyn-control.class';
 
 @Directive()
 export abstract class DynFormContainer<
-    TMode extends DynControlMode = DynControlMode,
-    TParams extends DynControlParams = DynControlParams,
-    TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>
-  >
-  extends DynControl<TMode, TParams, TConfig, FormGroup>
-  implements OnInit {
+  TMode extends DynControlMode = DynControlMode,
+  TParams extends DynControlParams = DynControlParams,
+  TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>
+>
+extends DynControl<TMode, TParams, TConfig, FormGroup>
+implements OnInit {
+
   static dynInstance = DynInstanceType.Container;
 
   // auto-register in the form hierarchy

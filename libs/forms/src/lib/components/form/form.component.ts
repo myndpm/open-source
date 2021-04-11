@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  DynControlHook,
   DynControlMode,
   DynFormMode,
   DynFormNode,
@@ -40,7 +39,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   // internal injector with config values
   injector?: Injector;
 
-  // works fine AfterViewInit
+  // works in AfterViewInit
   valueChanges(time: number = 100): Observable<any> {
     // this omit the consecutive changes while patching a Form Array
     // the more complex the form is, the more debounce would be needed
@@ -59,7 +58,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     if (!this.form) {
-      throw new Error(`Please provide a [form] to <dyn-form>`);
+      throw this.logger.rootForm();
     }
 
     this.root.load({}, this.form);

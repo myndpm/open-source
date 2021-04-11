@@ -9,8 +9,7 @@ describe('DynFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DynFormComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

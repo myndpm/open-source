@@ -9,6 +9,13 @@ export class DynLogger {
     private driver: DynLogDriver,
   ) {}
 
+  rootForm(): Error {
+    return this.driver.log({
+      level: DynLogLevel.Fatal,
+      message: `Please provide a [form] to <dyn-form>`,
+    });
+  }
+
   unnamedArray(control: string): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,

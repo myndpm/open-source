@@ -15,8 +15,9 @@ import { DynMatSelectParams } from './select.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatSelectComponent
-  extends DynFormControl<DynControlMode, DynMatSelectParams>
-  implements OnInit {
+extends DynFormControl<DynControlMode, DynMatSelectParams>
+implements OnInit {
+
   static dynControl: 'SELECT' = 'SELECT';
 
   static createConfig<M extends DynControlMode>(

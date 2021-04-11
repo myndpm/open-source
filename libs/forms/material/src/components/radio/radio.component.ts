@@ -14,8 +14,9 @@ import { DynMatRadioParams } from './radio.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatRadioComponent
-  extends DynFormControl<DynControlMode, DynMatRadioParams>
-  implements OnInit {
+extends DynFormControl<DynControlMode, DynMatRadioParams>
+implements OnInit {
+
   static dynControl: 'RADIO' = 'RADIO';
 
   static createConfig<M extends DynControlMode>(

@@ -9,12 +9,13 @@ import { DynControl } from './dyn-control.class';
 
 @Directive()
 export abstract class DynFormArray<
-    TMode extends DynControlMode = DynControlMode,
-    TParams extends DynControlParams = DynControlParams,
-    TConfig extends DynConfig<TMode, TParams> = DynConfig<TMode, TParams>
-  >
-  extends DynControl<TMode, TParams, TConfig, FormArray>
-  implements OnInit {
+  TMode extends DynControlMode = DynControlMode,
+  TParams extends DynControlParams = DynControlParams,
+  TConfig extends DynConfig<TMode, TParams> = DynConfig<TMode, TParams>
+>
+extends DynControl<TMode, TParams, TConfig, FormArray>
+implements OnInit {
+
   static dynInstance = DynInstanceType.Array;
 
   // auto-register in the form hierarchy

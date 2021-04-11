@@ -14,8 +14,9 @@ import { DynMatInputParams } from './input.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatInputComponent
-  extends DynFormControl<DynControlMode, DynMatInputParams>
-  implements OnInit {
+extends DynFormControl<DynControlMode, DynMatInputParams>
+implements OnInit {
+
   static dynControl: 'INPUT' = 'INPUT';
 
   static createConfig<M extends DynControlMode>(
