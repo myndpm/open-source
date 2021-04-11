@@ -1,7 +1,7 @@
 import { Provider } from '@angular/core';
 import { ControlProvider } from './control-provider.types';
-import { DynFormFactory } from './form.factory';
-import { DynFormRegistry } from './form.registry';
+import { DynFormFactory } from './form-factory.service';
+import { DynFormRegistry } from './form-registry.service';
 import { DYN_CONTROLS_TOKEN } from './form.tokens';
 import { DynLogDriver, DynLogger, DynLogLevel, DYN_LOG_LEVEL } from './logger';
 

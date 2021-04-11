@@ -12,8 +12,8 @@ import { DynBaseConfig } from './config.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
-import { DynFormFactory } from './form.factory';
-import { DynFormNode } from './form.node';
+import { DynFormFactory } from './form-factory.service';
+import { DynFormNode } from './form-node.service';
 import { DynLogger } from './logger';
 
 @Directive()

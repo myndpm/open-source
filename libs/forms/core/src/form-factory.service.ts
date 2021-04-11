@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
 import { DynInstanceType } from './control.types';
-import { DynFormNode } from './form.node';
-import { DynFormRegistry } from './form.registry';
+import { DynFormNode } from './form-node.service';
+import { DynFormRegistry } from './form-registry.service';
 
 @Injectable()
 export class DynFormFactory {
