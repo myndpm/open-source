@@ -43,7 +43,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
   // works in AfterViewInit
-  valueChanges(time: number = 100): Observable<any> {
+  valueChanges = (time: number = 100): Observable<any> => {
     // this omit the consecutive changes while patching a Form Array
     // the more complex the form is, the more debounce would be needed
     return this.form.valueChanges.pipe(debounceTime(time));
