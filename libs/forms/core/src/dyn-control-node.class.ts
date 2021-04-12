@@ -1,13 +1,37 @@
-import { Directive } from '@angular/core';
+import { Directive, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './control-events.types';
 import { DynFormNode } from './form-node.service';
 
 @Directive()
-export abstract class DynControlEvents<TControl extends AbstractControl> {
+export abstract class DynControlNode<TControl extends AbstractControl>
+implements OnInit, OnDestroy {
 
-  node!: DynFormNode<TControl>; // corresponding node
+  node!: DynFormNode<TControl>; // corresponding node in th e hierarchy
+
+  protected _unsubscribe = new Subject<void>();
+
+  constructor(injector: Injector) {
+    this.node = injector.get(DynFormNode);
+  }
+
+  ngOnInit(): void {
+    // listen hook calls
+    this.node.hook$
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe(hook => this.callHook(hook));
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+
+    // remove it from the hierarchy
+    this.node.unload();
+  }
 
   // propagate hook calls from the top to the bottom of the DynControls tree
   // note: concrete hooks will receive the parent data if they define no config.name
