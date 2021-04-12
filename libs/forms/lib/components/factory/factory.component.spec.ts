@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { DynFormRegistry } from '@myndpm/dyn-forms/core';
+import { MockProvider } from 'ng-mocks';
 import { DynFactoryComponent } from './factory.component';
 
 describe('DynFactoryComponent', () => {
@@ -9,6 +10,9 @@ describe('DynFactoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DynFactoryComponent],
+      providers: [
+        MockProvider(DynFormRegistry),
+      ],
     }).compileComponents();
   });
 

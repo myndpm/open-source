@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatCardModule } from '@angular/material/card';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
+import { DynFormsModule } from '@myndpm/dyn-forms';
+import { DynFormNode, DYN_CONTROLS_TOKEN } from '@myndpm/dyn-forms/core';
+import { MockProvider } from 'ng-mocks';
 import { DynMatArrayComponent } from './array.component';
 
 describe('DynMatArrayComponent', () => {
@@ -8,7 +12,20 @@ describe('DynMatArrayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        DynFormsModule.forFeature(),
+        MatCardModule,
+      ],
       declarations: [DynMatArrayComponent],
+      providers: [
+        MockProvider(DynLogger),
+        MockProvider(DynFormNode),
+        {
+          provide: DYN_CONTROLS_TOKEN,
+          useValue: {},
+          multi: true,
+        },
+      ],
     }).compileComponents();
   });
 

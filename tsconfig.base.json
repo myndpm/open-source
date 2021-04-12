@@ -16,8 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@myndpm/dyn-forms/*": ["libs/forms/*"],
-      "@myndpm/dyn-forms": ["libs/forms/index.ts"]
+      "@myndpm/dyn-forms": ["libs/forms/index.ts"],
+      "@myndpm/dyn-forms/*": ["libs/forms/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
