@@ -16,7 +16,7 @@ export type AbstractDynControl = DynControl<
 export interface LazyControl {
   control: DynControlType;
   instance: DynInstanceType;
-  useFactory: Function;
+  useFactory: () => Type<AbstractDynControl>;
   // resolved in DynFormRegistry
   component?: Type<AbstractDynControl>;
 }
@@ -35,5 +35,5 @@ export type ControlProvider = LazyControl | InjectedControl;
 export function isLazyControl(
   provider: ControlProvider
 ): provider is LazyControl {
-  return provider.hasOwnProperty('useFactory');
+  return Object.prototype.hasOwnProperty.call(provider, 'useFactory');
 }

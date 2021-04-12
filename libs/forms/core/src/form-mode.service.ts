@@ -26,7 +26,7 @@ export class DynFormMode {
       return result;
     }
 
-    if (this.modes?.hasOwnProperty(mode)) {
+    if (this.modes && Object.prototype.hasOwnProperty.call(this.modes, mode)) {
       // overrides any params set in the form.modeParams[mode]
       result = this.mergeConfigs(result, { params: this.modes[mode] });
     }
@@ -36,7 +36,7 @@ export class DynFormMode {
       result = this.mergeConfigs(result, config.modes[mode]);
     }
 
-    if (this.controls?.hasOwnProperty(mode)) {
+    if (this.controls && Object.prototype.hasOwnProperty.call(this.controls, mode)) {
       const control = this.getControl(result.control, this.controls[mode]);
       if (control) {
         // overrides any customization set in form.modes[mode][control]
@@ -56,10 +56,10 @@ export class DynFormMode {
     if (mode.control) {
       config.control = mode.control;
     }
-    if (mode.hasOwnProperty('options')) {
+    if (Object.prototype.hasOwnProperty.call(mode, 'options')) {
       config.options = mode.options;
     }
-    if (mode.hasOwnProperty('factory')) {
+    if (Object.prototype.hasOwnProperty.call(mode, 'factory')) {
       config.factory = mode.factory;
     }
     // do not override an existing observable (because of modeParams)

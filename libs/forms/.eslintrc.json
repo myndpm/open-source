@@ -17,7 +17,10 @@
         "@angular-eslint/component-selector": [
           "error",
           { "type": "element", "prefix": "dyn", "style": "kebab-case" }
-        ]
+        ],
+        "@angular-eslint/directive-class-suffix": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-explicit-any": 0
       }
     },
     {

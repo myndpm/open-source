@@ -36,6 +36,7 @@ export class DynLogDriver {
     console.log(...this.format(event));
   }
 
+  /* eslint @typescript-eslint/member-ordering: 0 */
   loggers = {
     [DynLogLevel.Fatal]: this.logFatal,
     [DynLogLevel.Error]: this.logError,

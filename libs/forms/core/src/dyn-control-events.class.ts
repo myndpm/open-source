@@ -28,7 +28,7 @@ export abstract class DynControlEvents<TControl extends AbstractControl> {
       const fieldName = node.name;
       node.callHook({
         hook,
-        payload: !plain && fieldName && payload?.hasOwnProperty(fieldName)
+        payload: !plain && fieldName && Object.prototype.hasOwnProperty.call(payload, fieldName)
           ? payload[fieldName]
           : payload,
         plain,

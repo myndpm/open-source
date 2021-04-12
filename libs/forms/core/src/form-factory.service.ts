@@ -89,18 +89,19 @@ export class DynFormFactory {
   ): T {
     switch (instance) {
       case DynInstanceType.Container:
-      case DynInstanceType.Group:
+      case DynInstanceType.Group: {
         const control = new FormGroup({}, config.options);
         if (recursively) {
           this.buildControls(control, config);
         }
         return (control as unknown) as T;
-
-      case DynInstanceType.Array:
+      }
+      case DynInstanceType.Array: {
         return (new FormArray([], config.options) as unknown) as T;
-
-      case DynInstanceType.Control:
+      }
+      case DynInstanceType.Control: {
         return (new FormControl(null, config.options) as unknown) as T;
+      }
     }
   }
 

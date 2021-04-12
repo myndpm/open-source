@@ -11,5 +11,5 @@ export interface DynMatInputParams extends DynControlParams {
   iconSuffix?: string;
   textSuffix?: string;
   readonly?: boolean;
-  getValue?: Function;
+  getValue?: (params: DynMatInputParams, value: any) => any;
 }

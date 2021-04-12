@@ -39,15 +39,15 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   // internal injector with config values
   injector?: Injector;
 
+  // stream mode changes via DYN_MODE
+  protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
+
   // works in AfterViewInit
   valueChanges(time: number = 100): Observable<any> {
     // this omit the consecutive changes while patching a Form Array
     // the more complex the form is, the more debounce would be needed
     return this.form.valueChanges.pipe(debounceTime(time));
   }
-
-  // stream mode changes via DYN_MODE
-  protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
   constructor(
     @Inject(INJECTOR) private parent: Injector,
@@ -118,7 +118,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
       const fieldName = node.name;
       node.callHook({
         hook,
-        payload: !plain && fieldName && payload?.hasOwnProperty(fieldName)
+        payload: !plain && fieldName && Object.prototype.hasOwnProperty.call(payload, fieldName)
           ? payload[fieldName]
           : payload,
         plain,
