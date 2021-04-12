@@ -47,8 +47,8 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
     }),
 ```
 
-where [SelectComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/material/src/components/select/select.component.ts)
-and [InputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/material/src/components/input/input.component.ts)
+where [SelectComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/components/select/select.component.ts)
+and [InputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/components/input/input.component.ts)
 are already implemented in `DynFormsMaterialModule`.
 
 Then with the provided controls you could use them in a Config like this:
@@ -141,7 +141,7 @@ From there, we have the required tools for the component to provide any control 
 
 ## Extending
 
-You can check out the example [source code of @myndpm/dyn-forms/ui-material](https://github.com/matheo/angular/tree/master/libs/forms/material/src).
+You can check out the example [source code of @myndpm/dyn-forms/ui-material](https://github.com/myndpm/open-source/tree/master/libs/forms/ui-material/src).
 Basically your custom controls need to extend the respective `Abstract Dynamic Control`
 (`DynFormControl`, `DynFormArray`, `DynFormGroup` or `DynFormContainer`) which register the corresponding Form Control into the hierarchy specified in the nested Config Object.
 

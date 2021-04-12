@@ -153,8 +153,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/forms/src/**/*.ts",
-              "libs/forms/src/**/*.html"
+              "libs/forms/**/*.ts",
+              "libs/forms/**/*.html"
             ]
           }
         },

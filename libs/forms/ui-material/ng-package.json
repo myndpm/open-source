@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/libs/forms/material",
+  "dest": "../../dist/libs/forms/ui-material",
   "lib": {
     "entryFile": "./index.ts"
   }

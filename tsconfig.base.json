@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@myndpm/dyn-forms/*": ["libs/forms/*"],
-      "@myndpm/dyn-forms": ["libs/forms/src/index.ts"]
+      "@myndpm/dyn-forms": ["libs/forms/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
