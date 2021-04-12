@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { isObservable, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
@@ -15,7 +16,6 @@ import { DynControlType, DynInstanceType } from './control.types';
 import { DynControlEvents } from './dyn-control-events.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormNode } from './form-node.service';
-import { DynLogger } from './logger';
 
 @Directive()
 export abstract class DynControl<

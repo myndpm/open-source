@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynBaseConfig, DynFormNode, DynLogger } from '@myndpm/dyn-forms/core';
+import { DynBaseConfig, DynFormNode } from '@myndpm/dyn-forms/core';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
 
 @Component({
   selector: 'dyn-group',

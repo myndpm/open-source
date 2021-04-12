@@ -1,5 +1,3 @@
-export * from './src/logger';
-
 export * from './src/config.types';
 export * from './src/control-config.types';
 export * from './src/control-events.types';

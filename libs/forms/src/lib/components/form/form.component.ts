@@ -16,11 +16,11 @@ import {
   DynControlMode,
   DynFormMode,
   DynFormNode,
-  DynLogger,
   DYN_MODE,
   DYN_MODE_CONTROL_DEFAULTS,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
