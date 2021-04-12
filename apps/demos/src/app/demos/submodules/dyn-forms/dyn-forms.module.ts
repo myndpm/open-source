@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RouterModule, Routes } from '@angular/router';
 import { DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn-forms/logger';
-import { DynFormsMaterialModule } from '@myndpm/dyn-forms/material';
+import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 import { LayoutModule } from '../../../layout';
 import { SimpleComponent } from './components/simple/simple.component';
 

@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
-import { createMatConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn-forms/material';
+import { createMatConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn-forms/ui-material';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 

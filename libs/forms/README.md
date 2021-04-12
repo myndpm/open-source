@@ -16,10 +16,10 @@ Add this library to your Angular project:
 npm install @myndpm/dyn-forms
 ```
 
-and import the Dynamic-Form-Material module with:
+and import the Dynamic-Forms-Material module with:
 
 ```typescript
-import { DynFormsMaterialModule } from '@myndpm/dyn-forms/material';
+import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 
 @NgModule({
   imports: [
@@ -99,7 +99,7 @@ The `DynFormsMaterialModule` provides a typed _Factory Method_ to easily create
 the config objects corresponding to its DynControls; for example:
 
 ```typescript
-import { createMatConfig } from '@myndpm/dyn-forms/material';
+import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 
 export class MyFormComponent {
   controls: DynFormControls = [
@@ -141,7 +141,7 @@ From there, we have the required tools for the component to provide any control 
 
 ## Extending
 
-You can check out the example [source code of @myndpm/dyn-forms/material](https://github.com/matheo/angular/tree/master/libs/forms/material/src).
+You can check out the example [source code of @myndpm/dyn-forms/ui-material](https://github.com/matheo/angular/tree/master/libs/forms/material/src).
 Basically your custom controls need to extend the respective `Abstract Dynamic Control`
 (`DynFormControl`, `DynFormArray`, `DynFormGroup` or `DynFormContainer`) which register the corresponding Form Control into the hierarchy specified in the nested Config Object.
 
