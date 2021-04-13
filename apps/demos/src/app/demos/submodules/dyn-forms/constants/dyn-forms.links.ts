@@ -34,4 +34,9 @@ export const actions: SectionAction[] = [
     ionicon: 'easel-outline',
     tooltip: 'Prezi',
   },
+  {
+    link: "https://matheo.medium.com/a-new-approach-to-have-dynamic-forms-in-angular-683a2c417661",
+    ionicon: 'logo-medium',
+    tooltip: 'Medium',
+  },
 ];
