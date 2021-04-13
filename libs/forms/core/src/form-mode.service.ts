@@ -26,20 +26,20 @@ export class DynFormMode {
       return result;
     }
 
+    // overrides any params set in the form.modeParams[mode]
     if (this.modes && Object.prototype.hasOwnProperty.call(this.modes, mode)) {
-      // overrides any params set in the form.modeParams[mode]
       result = this.mergeConfigs(result, { params: this.modes[mode] });
     }
 
-    if (config.modes && config.modes[mode]) {
-      // overrides any customization set in control.modes[mode]
+    // overrides any customization set in control.modes[mode]
+    if (config.modes?.[mode]) {
       result = this.mergeConfigs(result, config.modes[mode]);
     }
 
+    // overrides any customization set in form.modes[mode][control]
     if (this.controls && Object.prototype.hasOwnProperty.call(this.controls, mode)) {
       const control = this.getControl(result.control, this.controls[mode]);
       if (control) {
-        // overrides any customization set in form.modes[mode][control]
         result = this.mergeConfigs(result, control);
       }
     }
