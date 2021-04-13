@@ -1,3 +1,4 @@
+import { ThemePalette } from '@angular/material/core';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
 
 export interface DynMatArrayParams extends DynControlParams {
@@ -6,8 +7,8 @@ export interface DynMatArrayParams extends DynControlParams {
   avatar?: string;
   initItem?: boolean;
   addButton?: string;
-  addColor?: string;
+  addColor?: ThemePalette;
   removeIcon?: string;
-  removeColor?: string;
+  removeColor?: ThemePalette;
   readonly?: boolean;
 }

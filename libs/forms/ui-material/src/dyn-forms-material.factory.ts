@@ -6,19 +6,21 @@ import {
   DynPartialGroupConfig,
 } from '@myndpm/dyn-forms/core';
 import {
+  DynMatArrayComponent,
+  DynMatArrayParams,
   DynMatCardComponent,
   DynMatCardParams,
+  DynMatCheckboxComponent,
+  DynMatCheckboxParams,
+  DynMatDividerComponent,
+  DynMatDividerParams,
   DynMatInputComponent,
   DynMatInputParams,
+  DynMatRadioComponent,
+  DynMatRadioParams,
+  DynMatSelectComponent,
+  DynMatSelectParams,
 } from './components';
-import { DynMatArrayComponent } from './components/array/array.component';
-import { DynMatArrayParams } from './components/array/array.component.params';
-import { DynMatDividerComponent } from './components/divider/divider.component';
-import { DynMatDividerParams } from './components/divider/divider.component.params';
-import { DynMatRadioComponent } from './components/radio/radio.component';
-import { DynMatRadioParams } from './components/radio/radio.component.params';
-import { DynMatSelectComponent } from './components/select/select.component';
-import { DynMatSelectParams } from './components/select/select.component.params';
 
 // type overloads
 export function createMatConfig<M extends DynControlMode>(
@@ -28,6 +30,10 @@ export function createMatConfig<M extends DynControlMode>(
 export function createMatConfig<M extends DynControlMode>(
   type: typeof DynMatCardComponent.dynControl,
   partial: DynPartialGroupConfig<M, Partial<DynMatCardParams>>
+): DynConfig<M>;
+export function createMatConfig<M extends DynControlMode>(
+  type: typeof DynMatCheckboxComponent.dynControl,
+  partial: DynPartialGroupConfig<M, Partial<DynMatCheckboxParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
   type: typeof DynMatDividerComponent.dynControl,
@@ -63,6 +69,9 @@ export function createMatConfig<M extends DynControlMode>(
       return DynMatDividerComponent.createConfig(partial);
 
     // controls
+    case DynMatCheckboxComponent.dynControl:
+      return DynMatCheckboxComponent.createConfig(partial);
+
     case DynMatSelectComponent.dynControl:
       return DynMatSelectComponent.createConfig(partial);
 

@@ -70,17 +70,17 @@ export class DynFormFactory {
   build(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
-    recursively: boolean
+    recursively?: boolean
   ): FormGroup;
   build(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
-    recursively: boolean
+    recursively?: boolean
   ): FormArray;
   build(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
-    recursively: boolean
+    recursively?: boolean
   ): FormControl;
   build<T extends AbstractControl>(
     instance: DynInstanceType,

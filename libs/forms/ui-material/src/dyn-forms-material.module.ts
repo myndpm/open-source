@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,12 +11,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule, MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynMatArrayComponent } from './components/array/array.component';
-import { DynMatCardComponent } from './components/card/card.component';
-import { DynMatDividerComponent } from './components/divider/divider.component';
-import { DynMatInputComponent } from './components/input/input.component';
-import { DynMatRadioComponent } from './components/radio/radio.component';
-import { DynMatSelectComponent } from './components/select/select.component';
+import {
+  DynMatArrayComponent,
+  DynMatCardComponent,
+  DynMatCheckboxComponent,
+  DynMatDividerComponent,
+  DynMatInputComponent,
+  DynMatRadioComponent,
+  DynMatSelectComponent,
+} from './components';
 
 @NgModule({
   imports: [
@@ -23,6 +27,7 @@ import { DynMatSelectComponent } from './components/select/select.component';
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
@@ -34,6 +39,7 @@ import { DynMatSelectComponent } from './components/select/select.component';
   declarations: [
     DynMatArrayComponent,
     DynMatCardComponent,
+    DynMatCheckboxComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
     DynMatRadioComponent,
@@ -43,6 +49,7 @@ import { DynMatSelectComponent } from './components/select/select.component';
   entryComponents: [
     DynMatArrayComponent,
     DynMatCardComponent,
+    DynMatCheckboxComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
     DynMatRadioComponent,
@@ -68,6 +75,11 @@ export class DynFormsMaterialModule {
           control: DynMatCardComponent.dynControl,
           instance: DynMatCardComponent.dynInstance,
           component: DynMatCardComponent,
+        },
+        {
+          control: DynMatCheckboxComponent.dynControl,
+          instance: DynMatCheckboxComponent.dynInstance,
+          component: DynMatCheckboxComponent,
         },
         {
           control: DynMatDividerComponent.dynControl,

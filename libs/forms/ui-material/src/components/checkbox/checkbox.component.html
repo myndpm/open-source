@@ -1,0 +1,9 @@
+<ng-container [formGroup]="node.parent.control">
+  <!-- design decision to force the always-floating-label on display-mode -->
+  <mat-checkbox
+    [formControlName]="config.name"
+    [indeterminate]="params.indeterminate"
+    [labelPosition]="params.labelPosition">
+    {{ params.label }}
+  </mat-checkbox>
+</ng-container>
