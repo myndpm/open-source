@@ -82,7 +82,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
         {
           provide: DynFormMode,
           useClass: DynFormMode,
-          deps: [
+          deps: [ // FIXME stackblitz only
             DYN_MODE,
             DYN_MODE_DEFAULTS,
             DYN_MODE_CONTROL_DEFAULTS,

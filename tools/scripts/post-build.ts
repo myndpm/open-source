@@ -4,7 +4,7 @@ import { echo, exit, test } from 'shelljs';
 const [lib] = process.argv.slice(2)
 
 if (!lib || !test('-f', `${lib}/package.json`)) {
-  echo('npm-peer-deps: invalid library path');
+  echo('post-build: invalid library path');
   exit(1);
 }
 

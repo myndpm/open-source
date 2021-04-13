@@ -20,7 +20,7 @@ export const badges: SectionBadge[] = [
 
 export const actions: SectionAction[] = [
   {
-    link: "https://stackblitz.com/edit/myndpm-dyn-forms",
+    link: "https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts",
     ionicon: 'logo-angular',
     tooltip: 'Stackblitz',
   },
