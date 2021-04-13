@@ -43,6 +43,11 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
+  // easier <dyn-form #dyn> and dyn.control.*
+  get control() {
+    return this.node.control;
+  }
+
   // works in AfterViewInit
   valueChanges = (time: number = 100): Observable<any> => {
     // this omit the consecutive changes while patching a Form Array
