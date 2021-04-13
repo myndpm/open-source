@@ -9,6 +9,8 @@ import { DynControlHook } from './control-events.types';
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynControl* classes
 export class DynFormNode<TControl extends AbstractControl = FormGroup>{
+  isolated: boolean = false;
+
   name?: string;
   control!: TControl;
   children: DynFormNode[] = [];
@@ -28,26 +30,38 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
     @Optional() @SkipSelf() public parent: DynFormNode,
   ) {}
 
-  load(config: Partial<DynBaseConfig>, control: TControl): void {
+  load(config: Partial<DynBaseConfig>, control?: TControl): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       return this.logger.nodeFailed(config.control);
     }
 
+    // disconnect this node from any parent
+    this.isolated = Boolean(config.isolated);
+
     // register the name to build the form path
     this.name = config.name ?? '';
 
-    // register the control created by the FormFactory
-    this.control = control;
+    // register the incoming control created by the FormFactory
+    // or takes the parent control without registering it as child
+    this.control = control ?? this.parent.control as unknown as TControl;
 
-    // register the node with its parent
-    this.parent?.addChild(this);
+    if (!this.control) {
+      throw this.logger.nodeWithoutControl();
+    }
+
+    if (!this.isolated && control) {
+      // register the node with its parent
+      this.parent?.addChild(this);
+    }
   }
 
   unload(): void {
     // TODO test unload with routed forms
 
-    this.parent?.removeChild(this);
+    if (!this.isolated) {
+      this.parent?.removeChild(this);
+    }
 
     this.hook$.complete();
   }
@@ -66,7 +80,8 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
       return (child === node) ? this.children.splice(i, 1) : false;
     });
 
-    // TODO update validators
+    // TODO what happen to the data if we remove the control
+    // TODO update validators if not isolated
   }
 
   /**

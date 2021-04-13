@@ -33,11 +33,12 @@ import { DynFormConfig } from './form.config';
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form!: FormGroup;
-  @Input() config!: DynFormConfig;
+  @Input() config?: DynFormConfig;
   @Input() mode?: DynControlMode;
+  @Input() isolated: boolean = false;
 
   // internal injector with config values
-  injector?: Injector;
+  configLayer?: Injector;
 
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
@@ -50,34 +51,42 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   constructor(
-    @Inject(INJECTOR) private parent: Injector,
+    @Inject(INJECTOR) private injector: Injector,
     private ref: ChangeDetectorRef,
     private logger: DynLogger,
-    private root: DynFormNode,
+    private node: DynFormNode,
   ) {}
 
   ngOnInit() {
-    if (!this.form) {
-      throw this.logger.rootForm();
+    if (!this.isolated && !this.form) {
+      // attempt to link a parent DynNode
+      this.node.load({});
+    } else {
+      // incoming form is mandatory
+      if (!(this.form instanceof FormGroup)) {
+        throw this.logger.rootForm();
+      }
+
+      this.node.load({ isolated: Boolean(this.isolated) }, this.form);
     }
 
-    this.root.load({}, this.form);
-    this.logger.nodeLoaded('dyn-form', this.root.path);
+    this.logger.nodeLoaded('dyn-form', this.node.path);
 
-    this.injector = Injector.create({
-      parent: this.parent,
+    this.configLayer = Injector.create({
+      parent: this.injector,
       providers: [
         {
           provide: DYN_MODE,
           useValue: this.mode$,
         },
+        // TODO merge with parent values
         {
           provide: DYN_MODE_DEFAULTS,
-          useValue: this.config.modeParams,
+          useValue: this.config?.modeParams,
         },
         {
           provide: DYN_MODE_CONTROL_DEFAULTS,
-          useValue: this.config.modes,
+          useValue: this.config?.modes,
         },
         {
           provide: DynFormMode,
@@ -114,7 +123,7 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
 
   // call a hook in the dynControls using plain/hierarchical data
   callHook(hook: string, payload: any, plain = false): void {
-    this.root.children.forEach(node => {
+    this.node.children.forEach(node => {
       const fieldName = node.name;
       node.callHook({
         hook,

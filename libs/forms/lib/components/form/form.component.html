@@ -1,5 +1,9 @@
-<dyn-factory
-  *ngFor="let control of config.controls"
-  [config]="control"
-  [injector]="injector"
-></dyn-factory>
+<ng-container *ngIf="config">
+  <dyn-factory
+    *ngFor="let control of config.controls"
+    [config]="control"
+    [injector]="configLayer"
+  ></dyn-factory>
+</ng-container>
+
+<ng-content></ng-content>

@@ -32,11 +32,19 @@ export class DynLogger {
     });
   }
 
+  nodeWithoutControl(): void {
+    this.driver.log({
+      level: DynLogLevel.Fatal,
+      message:
+        `Could not resolve a control for the Node .`,
+    });
+  }
+
   nodeLoaded(origin: string, path: string[], control?: string, payload?: any): void {
     this.driver.log({
       level: DynLogLevel.Verbose,
       message: control === undefined && !path.join('.')
-        ? `[${origin}] Root node initialized`
+        ? `[${origin}] node initialized`
         : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
       payload,
     });

@@ -11,6 +11,7 @@ P extends DynControlParams = DynControlParams
   name?: string; // optional fieldName
   controls?: DynBaseConfig<M>[];
   modes?: DynControlModes<M>;
+  isolated?: boolean; // not part of the form hierarchy
 }
 
 // single form control config
