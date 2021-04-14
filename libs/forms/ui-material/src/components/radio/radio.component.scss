@@ -1,5 +1,12 @@
 :host {
   display: block;
+  margin: .25em 0;
+  padding-bottom: 1.34375em; // spacing for mat-error
+
+  mat-label {
+    display: block;
+    margin-bottom: .5em;
+  }
 
   .mat-radio-button {
     margin-right: 1em;

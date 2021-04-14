@@ -3,7 +3,7 @@ import { DynControlParams } from '@myndpm/dyn-forms/core';
 
 export interface DynMatInputParams extends DynControlParams {
   floatLabel: FloatLabelType; // readonly mode uses 'always' floating label
-  type: string;
+  type: 'email' | 'number' | 'password' | 'tel' | 'text' | 'url' | 'textarea';
   placeholder: string;
   label?: string;
   hint?: string;
@@ -11,5 +11,6 @@ export interface DynMatInputParams extends DynControlParams {
   iconSuffix?: string;
   textSuffix?: string;
   readonly?: boolean;
+  rows?: number; // for textarea type
   getValue?: (params: DynMatInputParams, value: any) => any;
 }

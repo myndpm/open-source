@@ -43,6 +43,7 @@ implements OnInit {
       floatLabel: params.floatLabel || 'auto',
       type: params.type || 'text',
       placeholder: params.placeholder || '',
+      rows: params.rows || 3
     };
   }
 }

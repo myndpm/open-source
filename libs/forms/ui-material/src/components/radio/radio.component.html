@@ -1,3 +1,5 @@
+<mat-label *ngIf="params.label">{{ params.label }}</mat-label>
+
 <ng-container [formGroup]="node.parent.control">
   <mat-radio-group [formControlName]="config.name">
     <mat-radio-button

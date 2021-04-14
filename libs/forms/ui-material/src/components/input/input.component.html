@@ -2,12 +2,27 @@
   <!-- design decision to force the always-floating-label on display-mode -->
   <mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
     <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
-    <input
-      matInput
-      [type]="params.type"
-      [formControlName]="config.name"
-      [placeholder]="params.placeholder"
-    />
+
+    <ng-container
+      *ngIf="params.type === 'textarea' then textareaControl else inputControl"
+    ></ng-container>
+    <ng-template #inputControl>
+      <input
+        matInput
+        [type]="params.type"
+        [formControlName]="config.name"
+        [placeholder]="params.placeholder"
+      />
+    </ng-template>
+    <ng-template #textareaControl>
+      <textarea
+        matInput
+        [formControlName]="config.name"
+        [placeholder]="params.placeholder"
+        [rows]="params.rows"
+      ></textarea>
+    </ng-template>
+
     <span *ngIf="params.readonly">
       {{ (params.getValue ? params.getValue(params, control.value) : control.value) || '-' }}
     </span>

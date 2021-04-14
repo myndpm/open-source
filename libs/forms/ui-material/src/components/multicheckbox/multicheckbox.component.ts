@@ -12,7 +12,7 @@ import {
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { DynMatMulticheckboxParams } from './multicheckbox.component.params';
 
 @Component({
@@ -64,7 +64,11 @@ implements OnInit, OnChanges {
     });
 
     // listen the internal controls to sync the high-order control value
-    combineLatest(this.controls.map(({ valueChanges }) => valueChanges))
+    combineLatest(
+      this.controls.map(({ value, valueChanges }) => {
+        return valueChanges.pipe(startWith(value));
+      })
+    )
       .pipe(takeUntil(this._paramsChanged))
       .subscribe((values: boolean[]) => {
         this._internalValueChange = true;
