@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'layout-header',
+  selector: 'app-layout-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush

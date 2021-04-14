@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { SectionAction } from './section-action.interface';
 
 @Component({
-  selector: 'section-actions',
+  selector: 'app-section-actions',
   templateUrl: './section-actions.component.html',
   styleUrls: ['./section-actions.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush

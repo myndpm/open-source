@@ -13,7 +13,7 @@ import { actions, badges } from '../../constants/dyn-forms.links';
 import { simpleData, simpleForm } from './simple.form';
 
 @Component({
-  selector: 'web-form-simple',
+  selector: 'app-form-simple',
   templateUrl: './simple.component.html',
   styleUrls: ['./simple.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush,
