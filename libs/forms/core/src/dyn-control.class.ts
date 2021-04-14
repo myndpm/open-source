@@ -2,8 +2,11 @@ import {
   ChangeDetectorRef,
   Directive,
   Injector,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChange,
+  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -24,7 +27,7 @@ export abstract class DynControl<
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
 extends DynControlNode<TControl>
-implements OnInit, OnDestroy {
+implements OnInit, OnChanges, OnDestroy {
 
   // central place to define the provided Type
   static dynControl: DynControlType = '';
@@ -62,6 +65,10 @@ implements OnInit, OnDestroy {
     this.setParams(this.config.params);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // emulated while assigning the params
+  }
+
   ngOnDestroy(): void {
     this._paramsChanged.next();
     this._paramsChanged.complete();
@@ -70,18 +77,26 @@ implements OnInit, OnDestroy {
   }
 
   setParams(params?: Partial<TParams> | Observable<Partial<TParams>>): void {
+    const updateParams = (newParams: Partial<TParams>): void => {
+      // emulates ngOnChanges
+      const change = new SimpleChange(this.params, this.completeParams(newParams), !this.params);
+      this.params = change.currentValue;
+      this.ngOnChanges({ params: change });
+
+      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
+
+      // emulates the async pipe
+      this._ref.markForCheck();
+    }
+
     this._paramsChanged.next();
 
+    // update params
     if (!isObservable(params)) {
-      this.params = this.completeParams(params || {});
-      this._ref.markForCheck();
+      updateParams(params || {});
     } else {
-      // emulates the async pipe
       params.pipe(takeUntil(this._paramsChanged)).subscribe({
-        next: (values) => {
-          this.params = this.completeParams(values);
-          this._ref.markForCheck();
-        },
+        next: (values) => updateParams(values),
       });
     }
   }

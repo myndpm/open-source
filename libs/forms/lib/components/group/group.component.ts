@@ -13,8 +13,8 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
  * This component just wraps the incoming controls in a FormGroup.
  */
 export class DynGroupComponent implements OnInit {
-  @Input() name?: string;
   @Input() group!: FormGroup;
+  @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
 
   constructor(

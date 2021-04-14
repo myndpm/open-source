@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DynControlParams } from '@myndpm/dyn-forms/core';
 import { DynLogDriver } from './log-driver.service';
 import { DynLogLevel } from './log-levels.constant';
 
@@ -46,6 +47,14 @@ export class DynLogger {
       message: control === undefined && !path.join('.')
         ? `[${origin}] node initialized`
         : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
+      payload,
+    });
+  }
+
+  nodeParamsUpdated(origin: string, payload: DynControlParams): void {
+    this.driver.log({
+      level: DynLogLevel.Verbose,
+      message: `[${origin}] updating params`,
       payload,
     });
   }
