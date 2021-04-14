@@ -17,6 +17,7 @@ import {
   DynMatCheckboxComponent,
   DynMatDividerComponent,
   DynMatInputComponent,
+  DynMatMulticheckboxComponent,
   DynMatRadioComponent,
   DynMatSelectComponent,
 } from './components';
@@ -42,6 +43,7 @@ import {
     DynMatCheckboxComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
+    DynMatMulticheckboxComponent,
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
@@ -52,6 +54,7 @@ import {
     DynMatCheckboxComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
+    DynMatMulticheckboxComponent,
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
@@ -90,6 +93,11 @@ export class DynFormsMaterialModule {
           control: DynMatInputComponent.dynControl,
           instance: DynMatInputComponent.dynInstance,
           component: DynMatInputComponent,
+        },
+        {
+          control: DynMatMulticheckboxComponent.dynControl,
+          instance: DynMatMulticheckboxComponent.dynInstance,
+          component: DynMatMulticheckboxComponent,
         },
         {
           control: DynMatRadioComponent.dynControl,
