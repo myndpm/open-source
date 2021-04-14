@@ -1,0 +1,7 @@
+<mat-label *ngIf="params.label">{{ params.label }}</mat-label>
+
+<div class="multicleck-option" *ngFor="let option of params.options; index as i">
+  <mat-checkbox [formControl]="controls[i]">
+    {{ option.text }}
+  </mat-checkbox>
+</div>
