@@ -11,6 +11,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/260185?v=4",
       "profile": "http://matheo.co",
       "contributions": [
+        "projectManagement",
+        "example",
         "ideas",
         "code",
         "doc"

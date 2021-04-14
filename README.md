@@ -1,7 +1,6 @@
-# Mynd Open Source
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+# Mynd.co Open Source
+
+[![MIT badge](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 This is the home of the open-source Angular Libraries by [Mynd.co](https://mynd.co).
 
@@ -14,6 +13,8 @@ This is the home of the open-source Angular Libraries by [Mynd.co](https://mynd.
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/dyn-forms)](https://bundlephobia.com/result?p=@myndpm/dyn-forms)
 
 Abstract layer to easily generate Dynamic Forms for Angular.
+
+[Library README](https://github.com/myndpm/open-source/blob/master/libs/forms/README.md)
 
 ## How can I contribute?
 
@@ -42,5 +43,3 @@ Thanks goes to these wonderful people:
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
-
-[![MIT badge](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
