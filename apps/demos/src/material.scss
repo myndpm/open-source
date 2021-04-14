@@ -5,9 +5,9 @@ $light-primary-text: white;
 
 // Palette
 $mynd-primary: (
-  100: #71ebab,
-  500: #38b87c,
-  900: #00874f,
+  100: #B7EFD5,
+  500: #38B87C,
+  900: #084E2D,
   contrast: (
     100: $dark-primary-text,
     500: $light-primary-text,
@@ -16,9 +16,9 @@ $mynd-primary: (
 );
 
 $mynd-secondary: (
-  100: #B9D8EF,
-  500: #80BDEB,
-  900: #5A88AA,
+  100: #B0DDFD,
+  500: #2495E5,
+  900: #004576,
   contrast: (
     100: $dark-primary-text,
     500: $light-primary-text,
@@ -27,9 +27,9 @@ $mynd-secondary: (
 );
 
 $mynd-negative: (
-  100: #FFB5B6,
+  100: #FFCDCE,
   500: #FC595B,
-  900: #D9394E,
+  900: #5D0B0C,
   contrast: (
     100: $dark-primary-text,
     500: $light-primary-text,

@@ -24,7 +24,7 @@ export function step1Form(): DynFormConfig {
           createMatConfig('INPUT', {
             name: 'phone',
             options: { validators: [Validators.pattern(/^[+]?\d*$/)] },
-            factory: { cssClass: 'col-sm-6' },
+            factory: { cssClass: 'col-md-6' },
             params: {
               label: 'Phone',
               type: 'tel',
@@ -33,7 +33,7 @@ export function step1Form(): DynFormConfig {
           }),
           createMatConfig('INPUT', {
             name: 'birthdate',
-            factory: { cssClass: 'col-sm-6' },
+            factory: { cssClass: 'col-md-6' },
             params: { label: 'Birth Date', placeholder: 'TODO DATEPICKER' },
           }),
           createMatConfig('SELECT', {

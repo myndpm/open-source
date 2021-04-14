@@ -11,7 +11,7 @@ export class IndexComponent {
     {
       title: 'Simple Dynamic Form',
       link: './dyn-forms/simple-form',
-      description: 'Simple dyn-forms demo.',
+      description: 'Simple dyn-forms demo with display mode.',
     },
     {
       title: 'Dynamic Stepper Form',

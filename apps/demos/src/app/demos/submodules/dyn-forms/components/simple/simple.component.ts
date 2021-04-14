@@ -22,7 +22,14 @@ import { simpleData, simpleForm } from './simple.form';
 export class SimpleComponent implements AfterViewInit {
   // ref links
   badges = badges;
-  actions = actions;
+  actions = [
+    {
+      link: "https://github.com/myndpm/open-source/blob/master/apps/demos/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
+      icon: 'code',
+      tooltip: 'See source code',
+    },
+    ...actions,
+  ];
 
   // reactive parameters for the billing CARD
   profileCard = new BehaviorSubject({

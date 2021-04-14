@@ -11,8 +11,15 @@ import { actions, badges } from '../../constants/dyn-forms.links';
 })
 export class StepperComponent implements AfterViewInit {
   // ref links
-  actions = actions;
   badges = badges;
+  actions = [
+    {
+      link: "https://github.com/myndpm/open-source/tree/master/apps/demos/src/app/demos/submodules/dyn-forms/components/stepper",
+      icon: 'code',
+      tooltip: 'See source code',
+    },
+    ...actions,
+  ];
 
   form = new FormGroup({});
 

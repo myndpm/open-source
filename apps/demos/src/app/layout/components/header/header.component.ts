@@ -9,8 +9,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 export class HeaderComponent {
   menu = [
     {
-      title: 'Dynamic Forms',
-      link: '/demos/dyn-forms',
+      title: 'Dynamic Forms Demos',
+      link: '/demos',
     },
   ];
 }
