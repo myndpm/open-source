@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'web-index',
+  selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,7 +11,12 @@ export class IndexComponent {
     {
       title: 'Simple Dynamic Form',
       link: './dyn-forms/simple-form',
-      description: 'Simple Dynamic Forms Demo.',
+      description: 'Simple dyn-forms demo.',
+    },
+    {
+      title: 'Dynamic Stepper Form',
+      link: './dyn-forms/stepper-form',
+      description: 'Demo of dyn-forms under different router-outlets.',
     },
   ];
 }

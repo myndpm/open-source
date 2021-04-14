@@ -1,0 +1,15 @@
+<h4>Traveler Information</h4>
+
+<div class="form-body">
+  <dyn-form [config]="config" #dyn></dyn-form>
+
+  <div class="form-actions">
+    <button mat-raised-button color="accent" routerLink="../step-1">
+      Back
+    </button>
+
+    <button mat-raised-button color="primary" [disabled]="!dyn.control.valid" routerLink="../summary">
+      Submit
+    </button>
+  </div>
+</div>

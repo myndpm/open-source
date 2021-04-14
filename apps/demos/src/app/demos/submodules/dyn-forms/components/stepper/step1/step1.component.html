@@ -1,0 +1,13 @@
+<h4>Personal Information</h4>
+
+<div class="form-body">
+  <dyn-form [config]="config" #dyn></dyn-form>
+
+  <div class="form-actions">
+    <span>&nbsp;</span>
+
+    <button mat-raised-button color="primary" [disabled]="!dyn.control.valid" routerLink="../step-2">
+      Next
+    </button>
+  </div>
+</div>

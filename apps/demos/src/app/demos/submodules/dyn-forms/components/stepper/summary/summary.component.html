@@ -1,0 +1,15 @@
+<h4>Summary</h4>
+
+<div class="form-body">
+  <dyn-form #dyn></dyn-form>
+
+  <p>Filled information:</p>
+
+  <pre>{{ dyn.control.value | json }}</pre>
+
+  <div class="form-actions">
+    <button mat-raised-button color="accent" routerLink="../step-2">
+      Back
+    </button>
+  </div>
+</div>

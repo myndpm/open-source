@@ -1,0 +1,20 @@
+<section>
+  <section-badges [badges]="badges"></section-badges>
+  <section-actions [actions]="actions"></section-actions>
+
+  <fieldset>
+    <h3>Dynamic Stepper Form</h3>
+
+    <blockquote class="blockquote">
+      Inspired from the talk
+      "<a href="https://www.youtube.com/watch?v=Ovpm8qZYvQY" target="_blank">The ControlContainer and I</a>"
+      by Jennifer Wadella
+    </blockquote>
+
+    <form [formGroup]="form">
+      <dyn-form [form]="form">
+        <router-outlet></router-outlet>
+      </dyn-form>
+    </form>
+  </fieldset>
+</section>
