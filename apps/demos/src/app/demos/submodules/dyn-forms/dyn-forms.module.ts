@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RouterModule, Routes } from '@angular/router';
 import { DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn-forms/logger';
@@ -57,6 +58,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     DynFormsMaterialModule.forFeature(),
     MatButtonModule,
+    MatNativeDateModule,
     LayoutModule,
   ],
   declarations: [

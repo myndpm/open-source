@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +17,7 @@ import {
   DynMatArrayComponent,
   DynMatCardComponent,
   DynMatCheckboxComponent,
+  DynMatDatepickerComponent,
   DynMatDividerComponent,
   DynMatInputComponent,
   DynMatMulticheckboxComponent,
@@ -29,6 +32,8 @@ import {
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
@@ -41,6 +46,7 @@ import {
     DynMatArrayComponent,
     DynMatCardComponent,
     DynMatCheckboxComponent,
+    DynMatDatepickerComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
     DynMatMulticheckboxComponent,
@@ -52,6 +58,7 @@ import {
     DynMatArrayComponent,
     DynMatCardComponent,
     DynMatCheckboxComponent,
+    DynMatDatepickerComponent,
     DynMatDividerComponent,
     DynMatInputComponent,
     DynMatMulticheckboxComponent,
@@ -59,7 +66,9 @@ import {
     DynMatSelectComponent,
   ],
   exports: [
-    DynFormsModule, // reduce the boilerplate
+    // reduce the boilerplate
+    DynFormsModule,
+    MatDialogModule,
   ]
 })
 export class DynFormsMaterialModule {
@@ -83,6 +92,11 @@ export class DynFormsMaterialModule {
           control: DynMatCheckboxComponent.dynControl,
           instance: DynMatCheckboxComponent.dynInstance,
           component: DynMatCheckboxComponent,
+        },
+        {
+          control: DynMatDatepickerComponent.dynControl,
+          instance: DynMatDatepickerComponent.dynInstance,
+          component: DynMatDatepickerComponent,
         },
         {
           control: DynMatDividerComponent.dynControl,
