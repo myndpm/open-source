@@ -15,7 +15,7 @@ import { FormGroup } from '@angular/forms';
 import {
   DynControlMode,
   DynFormMode,
-  DynFormNode,
+  DynFormTreeNode,
   DYN_MODE,
   DYN_MODE_CONTROL_DEFAULTS,
   DYN_MODE_DEFAULTS,
@@ -29,7 +29,7 @@ import { DynFormConfig } from './form.config';
   selector: 'dyn-form',
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormNode],
+  providers: [DynFormTreeNode],
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isolated: boolean = false;
@@ -58,8 +58,8 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     @Inject(INJECTOR) private injector: Injector,
     private ref: ChangeDetectorRef,
+    private node: DynFormTreeNode,
     private logger: DynLogger,
-    private node: DynFormNode,
   ) {}
 
   ngOnInit() {

@@ -17,7 +17,7 @@ import {
   DynBaseConfig,
   DynControlMode,
   DynFormMode,
-  DynFormNode,
+  DynFormTreeNode,
   DynFormRegistry,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
@@ -70,10 +70,10 @@ export class DynFactoryComponent implements OnInit {
     this._newLayer = Injector.create({
       providers: [
         // new form-hierarchy sublevel
-        // DynControls has its own DynFormNode
+        // DynControls has its own DynFormTreeNode
         {
-          provide: DynFormNode,
-          useClass: DynFormNode,
+          provide: DynFormTreeNode,
+          useClass: DynFormTreeNode,
         },
       ],
       parent: injector,
@@ -117,7 +117,7 @@ export class DynFactoryComponent implements OnInit {
       this._newLayer,
     );
     this.component.instance.config = config;
-    // we let the corresponding DynFormNode to initialize the control
+    // we let the corresponding DynFormTreeNode to initialize the control
     // and register itself in the Form Tree in the lifecycle methods
 
     this.component.hostView.detectChanges();

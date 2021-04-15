@@ -27,7 +27,7 @@ export class DynLogger {
     this.driver.log({
       level: DynLogLevel.Error,
       message:
-        `Control '${control}' need to provide its own DynFormNode. ` +
+        `Control '${control}' need to provide its own DynFormTreeNode. ` +
         `It is consuming the parent Node and that will cause unexpected effects.`,
     });
   }

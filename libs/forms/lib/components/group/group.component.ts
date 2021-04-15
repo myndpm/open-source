@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynBaseConfig, DynFormNode } from '@myndpm/dyn-forms/core';
+import { DynBaseConfig, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 
 @Component({
   selector: 'dyn-group',
   templateUrl: './group.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormNode],
+  providers: [DynFormTreeNode],
 })
 /**
  * This component just wraps the incoming controls in a FormGroup.
@@ -19,7 +19,7 @@ export class DynGroupComponent implements OnInit {
 
   constructor(
     private logger: DynLogger,
-    private node: DynFormNode,
+    private node: DynFormTreeNode,
   ) {}
 
   ngOnInit(): void {

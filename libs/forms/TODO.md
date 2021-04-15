@@ -2,7 +2,7 @@
 
 ## Form Controls
 
-- Check FormDirectives responsibilities to apply in DynFormNode if the validators doesn't work
+- Check FormDirectives responsibilities to apply in DynFormTreeNode if the validators doesn't work
 - Components provided via `forFeature` (via `DYN_CONTROLS_TOKEN`) ✓
 - Provide config for appearance (theme, full-width, inline)
 - Extensible handlers for different modes (panel, filter, table-cell, mobile?)

@@ -8,12 +8,12 @@ import { DynControlHook } from './control-events.types';
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
-export class DynFormNode<TControl extends AbstractControl = FormGroup>{
-  isolated: boolean = false;
+export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
+  isolated = false;
 
   name?: string;
   control!: TControl;
-  children: DynFormNode[] = [];
+  children: DynFormTreeNode[] = [];
 
   hook$ = new Subject<DynControlHook>();
 
@@ -27,7 +27,7 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   constructor(
     private logger: DynLogger,
     // parent node should be set for all except the root
-    @Optional() @SkipSelf() public parent: DynFormNode,
+    @Optional() @SkipSelf() public parent: DynFormTreeNode,
   ) {}
 
   load(config: Partial<DynBaseConfig>, control?: TControl): void {
@@ -69,13 +69,13 @@ export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   /**
    * Hierarchy methods
    */
-  addChild(node: DynFormNode<any>): void {
+  addChild(node: DynFormTreeNode<any>): void {
     this.children.push(node);
 
     // TODO setup validators
   }
 
-  removeChild(node: DynFormNode<any>): void {
+  removeChild(node: DynFormTreeNode<any>): void {
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynFormNode, DYN_CONTROLS_TOKEN } from '@myndpm/dyn-forms/core';
+import { DynFormTreeNode, DYN_CONTROLS_TOKEN } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynMatCardComponent } from './card.component';
@@ -19,7 +19,7 @@ describe('DynMatCardComponent', () => {
       declarations: [DynMatCardComponent],
       providers: [
         MockProvider(DynLogger),
-        MockProvider(DynFormNode),
+        MockProvider(DynFormTreeNode),
         {
           provide: DYN_CONTROLS_TOKEN,
           useValue: {},

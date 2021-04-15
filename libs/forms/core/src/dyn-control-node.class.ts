@@ -4,18 +4,18 @@ import isCallable from 'is-callable';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './control-events.types';
-import { DynFormNode } from './form-node.service';
+import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()
 export abstract class DynControlNode<TControl extends AbstractControl>
 implements OnInit, OnDestroy {
 
-  node!: DynFormNode<TControl>; // corresponding node in th e hierarchy
+  node!: DynFormTreeNode<TControl>; // corresponding node in the form hierarchy
 
   protected _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
-    this.node = injector.get(DynFormNode);
+    this.node = injector.get(DynFormTreeNode);
   }
 
   ngOnInit(): void {

@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
 import { DynInstanceType } from './control.types';
-import { DynFormNode } from './form-node.service';
 import { DynFormRegistry } from './form-registry.service';
+import { DynFormTreeNode } from './form-tree-node.service';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls
@@ -21,25 +21,25 @@ export class DynFormFactory {
   register(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
-    parent: DynFormNode,
+    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormGroup;
   register(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
-    parent: DynFormNode,
+    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormArray;
   register(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
-    parent: DynFormNode,
+    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormControl;
   register<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
-    parent: DynFormNode<AbstractControl>,
+    parent: DynFormTreeNode<AbstractControl>,
     recursively = false
   ): T {
     // fail-safe validation
@@ -130,7 +130,7 @@ export class DynFormFactory {
   /**
    * Append a control to a given parent in the specified name.
    */
-  append(parent: DynFormNode<AbstractControl>, name: string, control: AbstractControl): void {
+  append(parent: DynFormTreeNode<AbstractControl>, name: string, control: AbstractControl): void {
     // only FormGroup can be extended
     if (parent.control instanceof FormGroup) {
       parent.control.addControl(name, control);
