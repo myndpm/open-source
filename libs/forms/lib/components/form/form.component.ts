@@ -56,10 +56,10 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   constructor(
-    @Inject(INJECTOR) private injector: Injector,
-    private ref: ChangeDetectorRef,
-    private node: DynFormTreeNode,
-    private logger: DynLogger,
+    @Inject(INJECTOR) private readonly injector: Injector,
+    private readonly ref: ChangeDetectorRef,
+    private readonly node: DynFormTreeNode,
+    private readonly logger: DynLogger,
   ) {}
 
   ngOnInit() {

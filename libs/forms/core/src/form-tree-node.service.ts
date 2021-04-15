@@ -15,38 +15,44 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
   isolated = false;
   children: DynFormTreeNode[] = [];
 
+  // reactive events
+  hook$ = new Subject<DynControlHook>();
+
   // control config
-  instance!: DynInstanceType;
-  name?: string;
+  get name(): string|undefined {
+    return this._name;
+  }
+  get instance(): DynInstanceType {
+    return this._instance;
+  }
   get control(): TControl {
     return this._control;
   }
-
-  // reactive events
-  hook$ = new Subject<DynControlHook>();
 
   // control.path relative to the root
   get path(): string[] {
     return [
       ...(!this.isolated ? this.parent?.path ?? [] : []),
-      this.name ?? '',
+      this._name ?? '',
     ].filter(Boolean);
   }
 
+  private _name?: string;
+  private _instance!: DynInstanceType;
   private _control!: TControl;
 
   constructor(
-    private formFactory: DynFormFactory,
-    private logger: DynLogger,
+    private readonly formFactory: DynFormFactory,
+    private readonly logger: DynLogger,
     // parent node should be set for all except the root
-    @Optional() @SkipSelf() public parent: DynFormTreeNode,
+    @Optional() @SkipSelf() public readonly parent: DynFormTreeNode,
   ) {}
 
   setControl(control: TControl, instance = DynInstanceType.Group): void {
     this.logger.nodeControl();
 
     // manual setup with no wiring nor config validation
-    this.instance = instance;
+    this._instance = instance;
     this._control = control;
   }
 
@@ -57,7 +63,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
     }
 
     // register the instance type for the childs to know
-    this.instance = instance;
+    this._instance = instance;
 
     if (config.name) {
       // register the control into the parent
@@ -76,15 +82,15 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
   }
 
   load(config: Partial<DynBaseConfig>): void {
+    if (!this._control) {
+      throw this.logger.nodeWithoutControl();
+    }
+
     // disconnect this node from any parent DynControl
     this.isolated = Boolean(config.isolated);
 
     // register the name to build the form path
-    this.name = config.name ?? '';
-
-    if (!this._control) {
-      throw this.logger.nodeWithoutControl();
-    }
+    this._name = config.name ?? '';
 
     if (!this.isolated) {
       // register the node with its parent

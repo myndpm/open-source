@@ -6,7 +6,7 @@ import { DynLogLevel } from './log-levels.constant';
 // collector of all log messages of the library
 export class DynLogger {
   constructor(
-    private driver: DynLogDriver,
+    private readonly driver: DynLogDriver,
   ) {}
 
   rootForm(): Error {

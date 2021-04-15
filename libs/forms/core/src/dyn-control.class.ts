@@ -43,10 +43,10 @@ implements OnInit, OnChanges, OnDestroy {
     return this.node.control;
   }
 
-  protected _logger: DynLogger;
-  protected _formFactory: DynFormFactory;
-  protected _ref: ChangeDetectorRef;
-  protected _paramsChanged = new Subject<void>();
+  protected readonly _logger: DynLogger;
+  protected readonly _formFactory: DynFormFactory;
+  protected readonly _ref: ChangeDetectorRef;
+  protected readonly _paramsChanged = new Subject<void>();
 
   constructor(injector: Injector) {
     super(injector);

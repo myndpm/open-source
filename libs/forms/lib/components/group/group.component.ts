@@ -19,8 +19,8 @@ export class DynGroupComponent implements OnInit {
   @Input() controls?: DynBaseConfig[];
 
   constructor(
-    private logger: DynLogger,
-    private node: DynFormTreeNode,
+    private readonly logger: DynLogger,
+    private readonly node: DynFormTreeNode,
   ) {}
 
   ngOnInit(): void {

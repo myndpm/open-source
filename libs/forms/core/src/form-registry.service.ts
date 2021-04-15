@@ -6,7 +6,7 @@ import { DYN_CONTROLS_TOKEN } from './form.tokens';
 @Injectable()
 export class DynFormRegistry {
   constructor(
-    @Inject(DYN_CONTROLS_TOKEN) private controls: ControlProvider[]
+    @Inject(DYN_CONTROLS_TOKEN) private readonly controls: ControlProvider[]
   ) {}
 
   get(dynControl: DynControlType): ControlProvider {

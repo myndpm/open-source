@@ -11,9 +11,9 @@ import { DYN_MODE, DYN_MODE_CONTROL_DEFAULTS, DYN_MODE_DEFAULTS } from './form.t
 // provided by the dyn-form component next to the internal tokens
 export class DynFormMode {
   constructor(
-    @Inject(DYN_MODE) private mode$: BehaviorSubject<DynControlMode>,
-    @Inject(DYN_MODE_DEFAULTS) private modes?: DynModeParams,
-    @Inject(DYN_MODE_CONTROL_DEFAULTS) private controls?: DynModeControls,
+    @Inject(DYN_MODE) private readonly mode$: BehaviorSubject<DynControlMode>,
+    @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynModeParams,
+    @Inject(DYN_MODE_CONTROL_DEFAULTS) private readonly controls?: DynModeControls,
   ) {}
 
   // resolves the config to be used by dyn-factory

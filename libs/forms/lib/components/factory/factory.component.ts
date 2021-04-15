@@ -55,10 +55,10 @@ export class DynFactoryComponent implements OnInit {
   private _formMode!: DynFormMode;
 
   constructor(
-    @Inject(INJECTOR) private parent: Injector,
-    private resolver: ComponentFactoryResolver,
-    private registry: DynFormRegistry,
-    private logger: DynLogger,
+    @Inject(INJECTOR) private readonly parent: Injector,
+    private readonly resolver: ComponentFactoryResolver,
+    private readonly registry: DynFormRegistry,
+    private readonly logger: DynLogger,
   ) {}
 
   ngOnInit(): void {
