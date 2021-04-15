@@ -1,0 +1,26 @@
+:host {
+  display: block;
+
+  .mat-form-field {
+    width: 100%;
+
+    ::ng-deep .mat-input-element {
+      line-height: 1.2em;
+    }
+  }
+
+  &.readonly ::ng-deep {
+    .mat-form-field-outline,
+    input {
+      display: none;
+    }
+
+    .mat-form-field-underline {
+      visibility: hidden;
+    }
+
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+      background: transparent;
+    }
+  }
+}

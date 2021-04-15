@@ -4,6 +4,8 @@ export * from './card/card.component';
 export * from './card/card.component.params';
 export * from './checkbox/checkbox.component';
 export * from './checkbox/checkbox.component.params';
+export * from './datepicker/datepicker.component';
+export * from './datepicker/datepicker.component.params';
 export * from './divider/divider.component';
 export * from './divider/divider.component.params';
 export * from './input/input.component';

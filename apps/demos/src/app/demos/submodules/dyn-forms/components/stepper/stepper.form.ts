@@ -31,10 +31,10 @@ export function step1Form(): DynFormConfig {
               hint: 'only numbers allowed with Validators.pattern',
             },
           }),
-          createMatConfig('INPUT', {
+          createMatConfig('DATEPICKER', {
             name: 'birthdate',
             factory: { cssClass: 'col-md-6' },
-            params: { label: 'Birth Date', placeholder: 'TODO DATEPICKER' },
+            params: { label: 'Birth Date' },
           }),
           createMatConfig('SELECT', {
             name: 'birthPlace',
