@@ -27,6 +27,11 @@ implements OnInit, OnChanges {
 
   static dynControl: 'MULTICHECK' = 'MULTICHECK';
 
+  controls: FormControl[] = [];
+
+  // avoids infinite loop emiting valueChange
+  private _internalValueChange = false;
+
   static createConfig<M extends DynControlMode>(
     partial: DynPartialControlConfig<M, DynMatMulticheckboxParams>
   ): DynConfig<M, DynMatMulticheckboxParams> {
@@ -35,11 +40,6 @@ implements OnInit, OnChanges {
       control: DynMatMulticheckboxComponent.dynControl,
     };
   }
-
-  controls: FormControl[] = [];
-
-  // avoids infinite loop emiting valueChange
-  private _internalValueChange = false;
 
   ngOnInit(): void {
     super.ngOnInit();

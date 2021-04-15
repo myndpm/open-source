@@ -32,7 +32,7 @@ import { DynFormConfig } from './form.config';
   providers: [DynFormTreeNode],
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isolated: boolean = false;
+  @Input() isolated = false;
   @Input() form!: FormGroup;
   @Input() config?: DynFormConfig;
   @Input() mode?: DynControlMode;

@@ -65,8 +65,9 @@ implements OnInit, OnChanges, OnDestroy {
     this.setParams(this.config.params);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // emulated while assigning the params
+  /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
+  ngOnChanges(changes?: SimpleChanges): void {
+    // emulated while assigning the params as DynControls has no Inputs
   }
 
   ngOnDestroy(): void {

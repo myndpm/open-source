@@ -35,7 +35,6 @@ implements OnInit {
 
   completeParams(params: Partial<DynMatSelectParams>): DynMatSelectParams {
     function compareWith(o1: any, o2: any): boolean {
-      // tslint:disable-next-line: triple-equals
       return o1 == o2;
     }
 
