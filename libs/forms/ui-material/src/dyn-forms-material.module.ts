@@ -110,6 +110,6 @@ export class DynFormsMaterialModule {
           component: DynMatSelectComponent,
         },
       ],
-    });
+    }, DynFormsMaterialModule);
   }
 }

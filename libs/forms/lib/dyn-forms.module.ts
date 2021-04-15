@@ -12,10 +12,11 @@ import { DynFormsModuleArgs } from './dyn-forms.module.interface';
 })
 export class DynFormsModule {
   static forFeature(
-    args?: DynFormsModuleArgs
+    args?: DynFormsModuleArgs,
+    ngModule = DynFormsModule,
   ): ModuleWithProviders<DynFormsModule> {
     return {
-      ngModule: DynFormsModule,
+      ngModule,
       providers: getModuleProviders(args?.controls, args?.providers),
     };
   }
