@@ -11,6 +11,7 @@ import { DynFormNode } from './form-node.service';
 import { DynFormRegistry } from './form-registry.service';
 
 @Injectable()
+// injected in the DynControls to build their AbstractControls
 export class DynFormFactory {
   constructor(private registry: DynFormRegistry) {}
 
@@ -38,7 +39,7 @@ export class DynFormFactory {
   register<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
-    parent: DynFormNode,
+    parent: DynFormNode<AbstractControl>,
     recursively = false
   ): T {
     // fail-safe validation
@@ -47,6 +48,8 @@ export class DynFormFactory {
     }
 
     // return any existing control with this name
+    // TODO check if we have a parent FormArray
+    // assumes a parent FormGroup
     let control = config.name ? parent.control.get(config.name) : null;
     if (control) {
       return control as T;
@@ -127,10 +130,12 @@ export class DynFormFactory {
   /**
    * Append a control to a given parent in the specified name.
    */
-  append(parent: DynFormNode, name: string, control: AbstractControl): void {
+  append(parent: DynFormNode<AbstractControl>, name: string, control: AbstractControl): void {
     // only FormGroup can be extended
     if (parent.control instanceof FormGroup) {
       parent.control.addControl(name, control);
+    } else if (parent.control instanceof FormArray) {
+      parent.control.push(control);
     }
   }
 }

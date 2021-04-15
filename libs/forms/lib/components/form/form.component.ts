@@ -32,10 +32,10 @@ import { DynFormConfig } from './form.config';
   providers: [DynFormNode],
 })
 export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() isolated: boolean = false;
   @Input() form!: FormGroup;
   @Input() config?: DynFormConfig;
   @Input() mode?: DynControlMode;
-  @Input() isolated: boolean = false;
 
   // internal injector with config values
   configLayer?: Injector;
@@ -63,9 +63,10 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (!this.isolated && !this.form) {
-      // attempt to link a parent DynNode
+    if (!this.isolated && !this.form && this.node.parent) {
+      // use the parent DynNode
       this.node.load({});
+      this.form = this.node.parent.control;
     } else {
       // incoming form is mandatory
       if (!(this.form instanceof FormGroup)) {
@@ -96,11 +97,6 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
         {
           provide: DynFormMode,
           useClass: DynFormMode,
-          deps: [ // FIXME stackblitz only
-            DYN_MODE,
-            DYN_MODE_DEFAULTS,
-            DYN_MODE_CONTROL_DEFAULTS,
-          ],
         }
       ],
     });

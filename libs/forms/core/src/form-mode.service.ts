@@ -47,11 +47,11 @@ export class DynFormMode {
     return result;
   }
 
-  getControl(id: DynControlType, controls: DynControlConfig[]): DynControlConfig | undefined {
+  private getControl(id: DynControlType, controls: DynControlConfig[]): DynControlConfig | undefined {
     return controls.find(({ control }) => control === id);
   }
 
-  mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {
+  private mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {
     // custom merge strategy for DynControlConfig
     if (mode.control) {
       config.control = mode.control;

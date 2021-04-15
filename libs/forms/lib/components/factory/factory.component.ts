@@ -21,6 +21,7 @@ import {
   DynFormRegistry,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject } from 'rxjs';
 
@@ -38,15 +39,18 @@ export class DynFactoryComponent implements OnInit {
 
   @HostBinding('class')
   get cssClass(): string {
-    // TODO add a default class?
-    return this.config?.factory?.cssClass || '';
+    return [
+      this.config?.factory?.cssClass,
+      // add a default class based on the name
+      this.config.name ? `dyn-control-${this.config.name}` : null,
+    ].filter(Boolean).join(' ');
   }
 
   // DynControl
   private component!: ComponentRef<AbstractDynControl>
 
   // retrieved from the proper injector
-  private _injector!: Injector;
+  private _newLayer!: Injector;
   private _mode$!: BehaviorSubject<DynControlMode>;
   private _formMode!: DynFormMode;
 
@@ -54,6 +58,7 @@ export class DynFactoryComponent implements OnInit {
     @Inject(INJECTOR) private parent: Injector,
     private resolver: ComponentFactoryResolver,
     private registry: DynFormRegistry,
+    private logger: DynLogger,
   ) {}
 
   ngOnInit(): void {
@@ -62,9 +67,10 @@ export class DynFactoryComponent implements OnInit {
     this._mode$ = injector.get(DYN_MODE);
     this._formMode = injector.get(DynFormMode);
 
-    this._injector = Injector.create({
+    this._newLayer = Injector.create({
       providers: [
-        // abstract classes has its own DynFormNode
+        // new form-hierarchy sublevel
+        // DynControls has its own DynFormNode
         {
           provide: DynFormNode,
           useClass: DynFormNode,
@@ -73,14 +79,14 @@ export class DynFactoryComponent implements OnInit {
       parent: injector,
     });
 
-    // create the dynamic component with each mode change
+    // process the dynamic component with each mode change
     let config: DynBaseConfig;
     this._mode$.subscribe(() => {
       const newConfig = this._formMode.getModeConfig(this.config);
 
       // do not re-create the control if the config is the same
       if (!deepEqual(config, newConfig)) {
-        // check if the params are the only changed
+        // check if the params are the only changed ones
         if (
           config?.control === newConfig.control &&
           deepEqual(config?.factory, newConfig.factory) &&
@@ -91,6 +97,8 @@ export class DynFactoryComponent implements OnInit {
           }
         } else {
           // new config
+          this.logger.controlInstance(newConfig);
+
           this.container.clear();
           this.createFrom(newConfig);
         }
@@ -106,9 +114,11 @@ export class DynFactoryComponent implements OnInit {
     this.component = this.container.createComponent<AbstractDynControl>(
       factory,
       undefined,
-      this._injector,
+      this._newLayer,
     );
     this.component.instance.config = config;
+    // we let the corresponding DynFormNode to initialize the control
+    // and register itself in the Form Tree in the lifecycle methods
 
     this.component.hostView.detectChanges();
   }

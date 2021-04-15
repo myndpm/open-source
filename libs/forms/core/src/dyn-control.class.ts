@@ -61,7 +61,7 @@ implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     super.ngOnInit();
 
-    // assign incoming parameters
+    // assign incoming parameters after the control is ready
     this.setParams(this.config.params);
   }
 

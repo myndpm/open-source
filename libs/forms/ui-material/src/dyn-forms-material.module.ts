@@ -47,7 +47,7 @@ import {
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
-  // @deprecated added for stackblitz
+  // FIXME added for stackblitz
   entryComponents: [
     DynMatArrayComponent,
     DynMatCardComponent,

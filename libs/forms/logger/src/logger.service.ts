@@ -42,7 +42,7 @@ export class DynLogger {
 
   nodeLoaded(origin: string, path: string[], control?: string, payload?: any): void {
     this.driver.log({
-      level: DynLogLevel.Verbose,
+      level: DynLogLevel.Info,
       message: control === undefined && !path.join('.')
         ? `[${origin}] node initialized`
         : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
@@ -54,6 +54,14 @@ export class DynLogger {
     this.driver.log({
       level: DynLogLevel.Verbose,
       message: `[${origin}] updating params`,
+      payload,
+    });
+  }
+
+  controlInstance(payload: any): void {
+    this.driver.log({
+      level: DynLogLevel.Verbose,
+      message: `[dyn-factory] instantiating dynamic control`,
       payload,
     });
   }

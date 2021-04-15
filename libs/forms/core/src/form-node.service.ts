@@ -7,7 +7,7 @@ import { DynControlHook } from './control-events.types';
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
-// and the abstract DynControl* classes
+// and the abstract DynForm* classes
 export class DynFormNode<TControl extends AbstractControl = FormGroup>{
   isolated: boolean = false;
 

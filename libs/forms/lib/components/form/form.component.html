@@ -1,3 +1,6 @@
+
+<ng-content></ng-content>
+
 <ng-container *ngIf="config">
   <dyn-factory
     *ngFor="let control of config.controls"
@@ -5,5 +8,3 @@
     [injector]="configLayer"
   ></dyn-factory>
 </ng-container>
-
-<ng-content></ng-content>
