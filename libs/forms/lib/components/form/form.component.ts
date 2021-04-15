@@ -63,19 +63,20 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // figure out the control to use
     if (!this.isolated && !this.form && this.node.parent) {
-      // use the parent DynNode
-      this.node.load({});
+      // use the parent DynFormTreeNode control
       this.form = this.node.parent.control;
     } else {
       // incoming form is mandatory
       if (!(this.form instanceof FormGroup)) {
         throw this.logger.rootForm();
       }
-
-      this.node.load({ isolated: Boolean(this.isolated) }, this.form);
     }
 
+    // manually register the node
+    this.node.setControl(this.form)
+    this.node.load({ isolated: Boolean(this.isolated) });
     this.logger.nodeLoaded('dyn-form', this.node.path);
 
     this.configLayer = Injector.create({

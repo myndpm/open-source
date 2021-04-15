@@ -38,8 +38,10 @@ implements OnInit, OnChanges, OnDestroy {
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
   config!: TConfig; // passed down in the hierarchy
-  control!: TControl; // built from the config by the abstract classes
   params!: TParams; // values available for the concrete Component instance
+  get control(): TControl { // built from the config in the DynFormTreeNode
+    return this.node.control;
+  }
 
   protected _logger: DynLogger;
   protected _formFactory: DynFormFactory;

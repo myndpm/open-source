@@ -4,59 +4,95 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { Subject } from 'rxjs';
 import { DynBaseConfig } from './config.types';
 import { DynControlHook } from './control-events.types';
+import { DynInstanceType } from './control.types';
+import { DynFormFactory } from './form-factory.service';
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
 export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
+  // form hierarchy
   isolated = false;
-
-  name?: string;
-  control!: TControl;
   children: DynFormTreeNode[] = [];
 
+  // control config
+  instance!: DynInstanceType;
+  name?: string;
+  get control(): TControl {
+    return this._control;
+  }
+
+  // reactive events
   hook$ = new Subject<DynControlHook>();
 
+  // control.path relative to the root
   get path(): string[] {
     return [
-      ...(this.parent?.path ?? []),
+      ...(!this.isolated ? this.parent?.path ?? [] : []),
       this.name ?? '',
     ].filter(Boolean);
   }
 
+  private _control!: TControl;
+
   constructor(
+    private formFactory: DynFormFactory,
     private logger: DynLogger,
     // parent node should be set for all except the root
     @Optional() @SkipSelf() public parent: DynFormTreeNode,
   ) {}
 
-  load(config: Partial<DynBaseConfig>, control?: TControl): void {
+  setControl(control: TControl, instance = DynInstanceType.Group): void {
+    this.logger.nodeControl();
+
+    // manual setup with no wiring nor config validation
+    this.instance = instance;
+    this._control = control;
+  }
+
+  register(instance: DynInstanceType, config: DynBaseConfig): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
-      return this.logger.nodeFailed(config.control);
+      throw this.logger.nodeFailed(config.control);
     }
 
-    // disconnect this node from any parent
+    // register the instance type for the childs to know
+    this.instance = instance;
+
+    if (config.name) {
+      // register the control into the parent
+      this._control = this.formFactory.register(
+        instance as any,
+        config,
+        this.parent,
+      );
+    } else {
+      // or takes the parent control
+      // useful for nested UI groups in the same FormGroup
+      this._control = this.parent.control as unknown as TControl;
+    }
+
+    this.load(config);
+  }
+
+  load(config: Partial<DynBaseConfig>): void {
+    // disconnect this node from any parent DynControl
     this.isolated = Boolean(config.isolated);
 
     // register the name to build the form path
     this.name = config.name ?? '';
 
-    // register the incoming control created by the FormFactory
-    // or takes the parent control without registering it as child
-    this.control = control ?? this.parent.control as unknown as TControl;
-
-    if (!this.control) {
+    if (!this._control) {
       throw this.logger.nodeWithoutControl();
     }
 
-    if (!this.isolated && control) {
+    if (!this.isolated) {
       // register the node with its parent
       this.parent?.addChild(this);
     }
   }
 
-  unload(): void {
+  unregister(): void {
     // TODO test unload with routed forms
 
     if (!this.isolated) {
@@ -88,7 +124,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
    * Feature methods
    */
   callHook(event: DynControlHook): void {
-    this.logger.hookCalled(event.hook, this.path.join('.'), event.payload);
+    this.logger.hookCalled(event.hook, this.path, event.payload);
 
     this.hook$.next(event);
   }

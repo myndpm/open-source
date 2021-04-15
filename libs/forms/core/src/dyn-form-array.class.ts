@@ -20,22 +20,15 @@ implements OnInit {
 
   // auto-register in the form hierarchy
   ngOnInit(): void {
-    if (!this.config.name) {
+    if (!this.config.name && this.node.parent.instance !== DynInstanceType.Array) {
       throw this._logger.unnamedArray(this.config.control);
     }
 
-    // register the control
-    this.control = this._formFactory.register(
-      DynInstanceType.Array,
-      this.config,
-      this.node.parent,
-    );
+    // initialize the node
+    this.node.register(DynInstanceType.Array, this.config);
 
     // provide the parameters
     super.ngOnInit();
-
-    // initialize the node
-    this.node.load(this.config, this.control);
 
     // log the successful initialization
     this._logger.nodeLoaded('dyn-form-array', this.node.path, this.config.control);

@@ -19,23 +19,14 @@ implements OnInit {
 
   // auto-register in the form hierarchy
   ngOnInit(): void {
-    // register the control
-    if (this.config.name) {
-      this.control = this._formFactory.register(
-        DynInstanceType.Container,
-        this.config,
-        this.node.parent,
-      );
-    } else if (!this.control) {
-      // fallback to the parent control
-      this.control = this.node.parent.control;
+    // initialize the node
+    if (!this.control) {
+      // containers could have initialized the node differently
+      this.node.register(DynInstanceType.Container, this.config);
     }
 
     // provide the parameters
     super.ngOnInit();
-
-    // initialize the node
-    this.node.load(this.config, this.control);
 
     // log the successful initialization
     this._logger.nodeLoaded('dyn-form-container', this.node.path, this.config.control);

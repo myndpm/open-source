@@ -25,7 +25,7 @@ export class DynLogger {
 
   nodeFailed(control?: string): void {
     this.driver.log({
-      level: DynLogLevel.Error,
+      level: DynLogLevel.Fatal,
       message:
         `Control '${control}' need to provide its own DynFormTreeNode. ` +
         `It is consuming the parent Node and that will cause unexpected effects.`,
@@ -37,6 +37,13 @@ export class DynLogger {
       level: DynLogLevel.Fatal,
       message:
         `Could not resolve a control for the Node .`,
+    });
+  }
+
+  nodeControl(): void {
+    this.driver.log({
+      level: DynLogLevel.Info,
+      message: `[DynFormTreeNode] control was manually set`,
     });
   }
 
@@ -66,10 +73,10 @@ export class DynLogger {
     });
   }
 
-  hookCalled(hook: string, path: string, payload?: any): void {
+  hookCalled(hook: string, path: string[], payload?: any): void {
     this.driver.log({
       level: DynLogLevel.Debug,
-      message: `[hook] '${hook}' called on '${path}' with`,
+      message: `[hook] '${hook}' called on '${path.join('.')}' with`,
       payload,
     });
   }

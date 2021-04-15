@@ -30,7 +30,7 @@ implements OnInit, OnDestroy {
     this._unsubscribe.complete();
 
     // remove it from the hierarchy
-    this.node.unload();
+    this.node.unregister();
   }
 
   // propagate hook calls from the top to the bottom of the DynControls tree

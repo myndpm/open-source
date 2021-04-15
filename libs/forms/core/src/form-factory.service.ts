@@ -18,19 +18,19 @@ export class DynFormFactory {
   /**
    * Adds a control (via config) to the given parent.
    */
-  register(
+  register<FormGroup>(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
     parent: DynFormTreeNode,
     recursively?: boolean
   ): FormGroup;
-  register(
+  register<FormArray>(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
     parent: DynFormTreeNode,
     recursively?: boolean
   ): FormArray;
-  register(
+  register<FormControl>(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
     parent: DynFormTreeNode,

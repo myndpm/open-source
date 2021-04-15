@@ -13,6 +13,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
  * This component just wraps the incoming controls in a FormGroup.
  */
 export class DynGroupComponent implements OnInit {
+  @Input() isolated = false;
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
@@ -23,7 +24,8 @@ export class DynGroupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.node.load({ name: this.name }, this.group);
+    this.node.setControl(this.group);
+    this.node.load({ name: this.name, isolated: Boolean(this.isolated) });
 
     // log the successful initialization
     this.logger.nodeLoaded('dyn-group', this.node.path);
