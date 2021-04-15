@@ -4,13 +4,13 @@ import { DynControlFactoryParams, DynControlParams } from './control-params.type
 import { DynControlType } from './control.types';
 
 // single dynamic control config
-export interface DynControlConfig<P extends DynControlParams = DynControlParams> {
+export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
   // config
   control: DynControlType;
-  options?: AbstractControlOptions;
+  options?: AbstractControlOptions; // TODO remove when implement plain objects
   // customizations
   factory?: DynControlFactoryParams;
-  params?: P | Observable<P>;
+  params?: TParams | Observable<TParams>;
   // errorHandler: (errors: ValidationErrors) => string
   /*
   customized lifecycle functions
