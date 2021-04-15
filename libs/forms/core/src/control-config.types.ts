@@ -8,15 +8,25 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   // config
   control: DynControlType;
   options?: AbstractControlOptions; // TODO remove when implement plain objects
+  /*
+  options?: {
+    defaults: {
+      value?: DynConfigArgs;
+      disabled?: boolean;
+    };
+    validators?: { [name: string]: DynConfigArgs; };
+    asyncValidators?: { [name: string]: DynConfigArgs; };
+    errorHandlers?: string[];
+    updateOn?: 'change' | 'blur' | 'submit';
+  };
+  */
   // customizations
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
-  // errorHandler: (errors: ValidationErrors) => string
   /*
-  customized lifecycle functions
-  dynFns: DynStrategyClass {
-    abstract getValue(form, config) => T
-    getRequestValue?
+  // customized params functions
+  functions: {
+    [name: string]: DynConfigArgs;
   }
   */
 }
