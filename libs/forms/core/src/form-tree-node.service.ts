@@ -111,13 +111,13 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
   /**
    * Hierarchy methods
    */
-  addChild(node: DynFormTreeNode<any>): void {
+  private addChild(node: DynFormTreeNode<any>): void {
     this.children.push(node);
 
     // TODO setup validators
   }
 
-  removeChild(node: DynFormTreeNode<any>): void {
+  private removeChild(node: DynFormTreeNode<any>): void {
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });

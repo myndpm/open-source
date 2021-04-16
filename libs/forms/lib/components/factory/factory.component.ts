@@ -40,7 +40,7 @@ export class DynFactoryComponent implements OnInit {
   @HostBinding('class')
   get cssClass(): string {
     return [
-      this.config?.factory?.cssClass,
+      this.config.factory?.cssClass,
       // add a default class based on the name
       this.config.name ? `dyn-control-${this.config.name}` : null,
     ].filter(Boolean).join(' ');
