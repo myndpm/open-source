@@ -2,11 +2,11 @@
 
 Abstract layer to easily generate Dynamic Forms for Angular.
 
-With this library we are able to dynamically create the Form Controls hierarchy from a Configuration Object, this is comprised of nested configuration objects which corresponds one-to-one with the form fields.
+With this library we are able to dynamically create the Form Controls hierarchy from a Configuration Object, which is comprised of nested configuration objects which corresponds one-to-one with form controls.
 
-Each nested field configuration supports the default options from Angular's form framework, while avoiding boilerplate.
+A general introduction is presented in this [article](https://dev.to/myndpm/a-new-approach-to-have-dynamic-forms-in-angular-5d11), the big picture is shown in this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, and you can play with live code in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts).
 
-The general overview is shown at this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, and you can play live in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts).
+Technical [packages](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-packages.svg) and [sequence](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-sequence.svg) diagrams are also available.
 
 ## Installation
 
@@ -37,10 +37,12 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
       controls: [
         {
           control: SelectComponent.dynControl, // 'MYSELECT'
+          instance: SelectComponent.dynInstance,
           component: SelectComponent,
         },
         {
           control: InputComponent.dynControl, // 'MYINPUT'
+          instance: InputComponent.dynInstance,
           component: InputComponent,
         },
       ],
@@ -57,37 +59,37 @@ Then with the provided controls you could use them in a Config like this:
 export class MyFormComponent {
   form = new FormGroup({});
 
-  controls: DynFormControls = [
-    {
-      control: 'MYSELECT',
-      instance: 'CONTROL',
-      name: 'option',
-      params: {
-        label: 'Pick an Option',
-        options: [
-          { text: 'Option 1', value: 1 },
-          { text: 'Option 2', value: 2 },
-        ],
+  config: DynFormConfig = {
+    controls: [
+      {
+        control: 'MYSELECT',
+        name: 'option',
+        params: {
+          label: 'Pick an Option',
+          options: [
+            { text: 'Option 1', value: 1 },
+            { text: 'Option 2', value: 2 },
+          ],
+        },
       },
-    },
-    {
-      control: 'MYINPUT',
-      instance: 'CONTROL',
-      name: 'quantity',
-      params: {
-        label: 'Quantity',
-        type: 'number',
+      {
+        control: 'MYINPUT',
+        name: 'quantity',
+        options: { validators: [Validators.required] },
+        params: {
+          label: 'Quantity',
+          type: 'number',
+        },
       },
-      options: { validators: [Validators.required] },
-    },
-  ];
+    ];
+  }
 }
 ```
 
-and pass it them to the `dyn-form` component in its template:
+and pass them to the `dyn-form` component in its template:
 
 ```html
-<dyn-form [form]="form" [controls]="controls"></dyn-form>
+<dyn-form [form]="form" [config]="config"></dyn-form>
 ```
 
 and that's it!  
@@ -102,24 +104,26 @@ the config objects corresponding to its DynControls; for example:
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 
 export class MyFormComponent {
-  controls: DynFormControls = [
-    createMatConfig('CARD', {
-      name: 'group',
-      params: { title: 'My Card' },
-      controls: [
-        createMatConfig('INPUT', {
-          name: 'firstName',
-          params: { label: 'First Name' },
-          options: { validators: [Validators.required] },
-        }),
-        createMatConfig('INPUT', {
-          name: 'lastName',
-          params: { label: 'Last Name' },
-          options: { validators: [Validators.required] },
-        }),
-      ],
-    }),
-  ];
+  config: DynFormConfig = {
+    controls: [
+      createMatConfig('CARD', {
+        name: 'group',
+        params: { title: 'My Card' },
+        controls: [
+          createMatConfig('INPUT', {
+            name: 'firstName',
+            options: { validators: [Validators.required] },
+            params: { label: 'First Name' },
+          }),
+          createMatConfig('INPUT', {
+            name: 'lastName',
+            options: { validators: [Validators.required] },
+            params: { label: 'Last Name' },
+          }),
+        ],
+      }),
+    ]
+  };
 }
 ```
 
@@ -134,15 +138,15 @@ We can reference any component from the configuration object with this ID.
 While creating a new form the library recursively instantiates these Dynamic Controls components, and populates their core fields:
 
 1. Its corresponding `config`,
-2. the `control` instance (`FormControl`, `FormGroup` or `FormArray`),
-3. any `params` values specified in the config.
+2. any `params` values specified in the config,
+3. the corresponding `control` instance (`FormControl`, `FormGroup` or `FormArray`).
 
-From there, we have the required tools for the component to provide any control functionality.
+From there, we have the required tools for the component to provide any functionality.
 
 ## Extending
 
 You can check out the example [source code of @myndpm/dyn-forms/ui-material](https://github.com/myndpm/open-source/tree/master/libs/forms/ui-material/src).
-Basically your custom controls need to extend the respective `Abstract Dynamic Control`
+Basically your custom controls need to extend the respective Abstract Dynamic Control
 (`DynFormControl`, `DynFormArray`, `DynFormGroup` or `DynFormContainer`) which register the corresponding Form Control into the hierarchy specified in the nested Config Object.
 
 You just need to implement `static dynControl` property which is the unique place where you define your control identificator,
@@ -155,7 +159,7 @@ As mentioned in the [Installation](#installation) section, you can provide your 
 ## Share your Feedback
 
 Please share your experience and ideas!  
-Impressions, sugestions, improvements, use cases are welcome at [GitHub Discussions](https://github.com/myndpm/open-source/discussions).  
+Impressions, sugestions, improvements, use cases that you've implemented or your company needs, everything is welcome in the [GitHub Discussions](https://github.com/myndpm/open-source/discussions).  
 As usual, please report any [Issue](https://github.com/myndpm/open-source/issues/new?labels=bug&template=bug-report.md)
 or request a [Feature](https://github.com/myndpm/open-source/issues/new?labels=enhancement&template=feature-request.md).
 
