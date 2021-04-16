@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
 import { createMatConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn-forms/ui-material';
 import { DynFormConfig } from '@myndpm/dyn-forms';
@@ -41,13 +40,13 @@ export function simpleForm(
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Last Name *' },
           }),
@@ -56,7 +55,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'address1',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-12 col-md-8' },
             params: { label: 'Address Line 1 *' },
           }),
@@ -70,7 +69,7 @@ export function simpleForm(
           }),
           createMatConfig('SELECT', {
             name: 'country',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: {
               label: 'Country',
@@ -97,7 +96,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'zipCode',
-            options: { validators: [Validators.required, Validators.min(0)] },
+            options: { validators: { required: null, min: 0 } },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Postal Code *' },
           }),
@@ -134,13 +133,13 @@ export function simpleForm(
         controls: [
           createMatConfig('INPUT', {
             name: 'product',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-6 col-md-8' },
             params: { label: 'Product Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'quantity',
-            options: { validators: [Validators.required, Validators.min(1)] },
+            options: { validators: { required: null, min: 1 } },
             factory: { cssClass: 'col-5 col-md-3' },
             params: { label: 'Quantity *', type: 'number' },
           }),

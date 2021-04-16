@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
   AbstractControl,
+  AbstractControlOptions,
   FormArray,
   FormControl,
   FormGroup,
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
+import { DynConfigCollection, DynControlOptions } from './control-config.types';
 import { DynInstanceType } from './control.types';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
@@ -93,17 +95,22 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const control = new FormGroup({}, config.options);
+        const control = new FormGroup({}, this.dynOptions(config.options));
         if (recursively) {
           this.buildControls(control, config);
         }
         return (control as unknown) as T;
       }
       case DynInstanceType.Array: {
-        return (new FormArray([], config.options) as unknown) as T;
+        return (new FormArray([], this.dynOptions(config.options)) as unknown) as T;
       }
       case DynInstanceType.Control: {
-        return (new FormControl(null, config.options) as unknown) as T;
+        return (
+          new FormControl(
+            config.options?.defaults ?? null,
+            this.dynOptions(config.options)
+          ) as unknown
+        ) as T;
       }
     }
   }
@@ -137,5 +144,26 @@ export class DynFormFactory {
     } else if (parent.control instanceof FormArray) {
       parent.control.push(control);
     }
+  }
+
+  /**
+   * Config translators
+   */
+  dynOptions(config?: DynControlOptions): AbstractControlOptions {
+    return {
+      validators: this.dynValidators(config?.validators),
+      asyncValidators: this.dynAsyncValidators(config?.asyncValidators),
+      updateOn: config?.updateOn,
+    }
+  }
+
+  dynValidators(config?: DynConfigCollection) { // TODO type return
+    // TODO process the validators
+    return null;
+  }
+
+  dynAsyncValidators(config?: DynConfigCollection) { // TODO type return
+    // TODO process the asyncValidators
+    return null;
   }
 }
