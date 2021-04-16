@@ -42,6 +42,9 @@ implements OnInit, OnChanges, OnDestroy {
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
   }
+  get parentControl(): AbstractControl { // utility getter for the form directives
+    return this.node.parent.control;
+  }
 
   protected readonly _logger: DynLogger;
   protected readonly _formFactory: DynFormFactory;
