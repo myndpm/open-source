@@ -4,6 +4,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { Subject } from 'rxjs';
 import { DynBaseConfig } from './config.types';
 import { DynControlHook } from './control-events.types';
+import { DynControlMatch } from './control-matchers.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 
@@ -40,6 +41,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
+  private _matchers?: DynControlMatch[];
 
   constructor(
     private readonly formFactory: DynFormFactory,
@@ -91,6 +93,9 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
 
     // register the name to build the form path
     this._name = config.name ?? '';
+
+    // store the matchers to be processed afterViewInit
+    this._matchers = config.options?.matchers;
 
     if (!this.isolated) {
       // register the node with its parent

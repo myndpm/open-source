@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs';
+import { DynControlMatch } from './control-matchers.types';
 import { DynControlFactoryParams, DynControlParams } from './control-params.types';
 import { DynControlTriggers } from './control-validation.types';
 import { DynControlType } from './control.types';
 
-export type DynConfigPrimitive = any; // FIXME omit functions?
-
-// a plain/serializable value
-export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
-
-// a given id to the functions
+// a given id to a validator/async-validator/error-handler/function
 export type DynConfigId = string;
+
+// plain/serializable arguments (no functions)
+export type DynConfigPrimitive = string | boolean | number | RegExp | { [k: string]: DynConfigPrimitive };
+export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 // a collection of ids with arguments to be used
 export type DynConfigCollection = { [id: string]: DynConfigArgs }
@@ -25,8 +25,8 @@ export interface DynControlOptions extends DynControlTriggers {
   };
   validators?: DynConfigCollection;
   asyncValidators?: DynConfigCollection;
+  matchers?: DynControlMatch[]; // conditional validations
   // errorHandlers?: DynConfigCollection;
-  // matchers?: DynControlMatcher[];
 }
 
 /**

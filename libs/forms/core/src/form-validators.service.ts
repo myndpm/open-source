@@ -15,16 +15,18 @@ export class DynFormValidators {
 
   constructor(
     private readonly logger: DynLogger,
-    @Inject(DYN_VALIDATORS_TOKEN) @Optional() readonly vals?: DynValidatorProvider[],
-    @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional() readonly avals?: DynAsyncValidatorProvider[],
+    @Inject(DYN_VALIDATORS_TOKEN) @Optional()
+    readonly providedValidators?: DynValidatorProvider[],
+    @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
+    readonly providedAsyncValidators?: DynAsyncValidatorProvider[],
   ) {
     // reduce the provided validators according to priority
     this.reduceProvider(
-      (this.vals ?? []).concat(defaultValidators), // add Angular's default validators
+      (this.providedValidators ?? []).concat(defaultValidators), // add Angular's default validators
       this.validators,
     );
     this.reduceProvider(
-      (this.avals ?? []),
+      (this.providedAsyncValidators ?? []),
       this.asyncValidators,
     );
   }
@@ -82,7 +84,7 @@ export class DynFormValidators {
     providers: T[],
     dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
   ): void {
-    // FIXME validate the data-integrity of the incoming providers and throw logger
+    // FIXME validate the data-integrity of the provided values and throw logger
     providers
       .reduce(
         // reduce the validators according to the priority
