@@ -69,7 +69,10 @@ export function simpleForm(
           }),
           createMatConfig('SELECT', {
             name: 'country',
-            options: { validators: ['required'] },
+            options: {
+              defaults: 'CO',
+              validators: ['required'],
+            },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: {
               label: 'Country',

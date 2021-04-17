@@ -3,7 +3,7 @@ import { DynControlFactoryParams, DynControlParams } from './control-params.type
 import { DynControlTriggers } from './control-validation.types';
 import { DynControlType } from './control.types';
 
-export type DynConfigPrimitive = number | string | boolean;
+export type DynConfigPrimitive = number | string | boolean | object;
 
 // a plain/serializable value
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
@@ -19,7 +19,7 @@ export type DynConfigCollection = { [id: string]: DynConfigArgs }
   single control options
  */
 export interface DynControlOptions extends DynControlTriggers {
-  defaults?: { // used on FormControls only
+  defaults?: DynConfigArgs | { // used on FormControls only
     value?: DynConfigArgs;
     disabled?: boolean;
   };
