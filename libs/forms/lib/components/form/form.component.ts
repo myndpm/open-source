@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -31,7 +32,7 @@ import { DynFormConfig } from './form.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DynFormTreeNode],
 })
-export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
+export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() isolated = false;
   @Input() form!: FormGroup;
   @Input() config?: DynFormConfig;
@@ -104,6 +105,11 @@ export class DynFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // prevent ExpressionChangedAfterItHasBeenCheckedError
     this.ref.detectChanges();
+  }
+
+  ngAfterViewInit(): void {
+    // trigger processes once the form is built
+    this.node.afterViewInit()
   }
 
   ngOnChanges(changes: SimpleChanges): void {

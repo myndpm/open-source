@@ -98,6 +98,13 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
     }
   }
 
+  afterViewInit(): void {
+    // process the stored matchers
+
+    // call the children
+    this.children.map(child => child.afterViewInit());
+  }
+
   onDestroy(): void {
     // TODO test unload with routed forms
 
