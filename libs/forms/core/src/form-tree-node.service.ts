@@ -48,15 +48,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
     @Optional() @SkipSelf() public readonly parent: DynFormTreeNode,
   ) {}
 
-  setControl(control: TControl, instance = DynInstanceType.Group): void {
-    this.logger.nodeControl();
-
-    // manual setup with no wiring nor config validation
-    this._instance = instance;
-    this._control = control;
-  }
-
-  register(instance: DynInstanceType, config: DynBaseConfig): void {
+  onInit(instance: DynInstanceType, config: DynBaseConfig): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       throw this.logger.nodeFailed(config.control);
@@ -81,6 +73,14 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
     this.load(config);
   }
 
+  setControl(control: TControl, instance = DynInstanceType.Group): void {
+    this.logger.nodeControl();
+
+    // manual setup with no wiring nor config validation
+    this._instance = instance;
+    this._control = control;
+  }
+
   load(config: Partial<DynBaseConfig>): void {
     if (!this._control) {
       throw this.logger.nodeWithoutControl();
@@ -98,7 +98,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>{
     }
   }
 
-  unregister(): void {
+  onDestroy(): void {
     // TODO test unload with routed forms
 
     if (!this.isolated) {

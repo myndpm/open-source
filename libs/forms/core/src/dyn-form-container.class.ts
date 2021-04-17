@@ -22,7 +22,7 @@ implements OnInit {
     // initialize the node
     if (!this.control) {
       // containers could have initialized the node differently
-      this.node.register(DynInstanceType.Container, this.config);
+      this.node.onInit(DynInstanceType.Container, this.config);
     }
 
     // provide the parameters
