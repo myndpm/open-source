@@ -22,7 +22,7 @@ export function step1Form(): DynFormConfig {
           }),
           createMatConfig('INPUT', {
             name: 'phone',
-            options: { validators: { pattern: '/^[+]?\d*$/' } },
+            options: { validators: { pattern: /^[+]?\d*$/ } },
             factory: { cssClass: 'col-md-6' },
             params: {
               label: 'Phone',

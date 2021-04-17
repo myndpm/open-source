@@ -3,7 +3,7 @@ import { DynControlFactoryParams, DynControlParams } from './control-params.type
 import { DynControlTriggers } from './control-validation.types';
 import { DynControlType } from './control.types';
 
-export type DynConfigPrimitive = number | string | boolean | object;
+export type DynConfigPrimitive = any; // FIXME omit functions?
 
 // a plain/serializable value
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
