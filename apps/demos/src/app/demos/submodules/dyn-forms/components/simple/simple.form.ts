@@ -96,7 +96,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'zipCode',
-            options: { validators: { required: null, min: 0 } },
+            options: { validators: { required: null, minLength: 4 } },
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Postal Code *' },
           }),
@@ -139,7 +139,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'quantity',
-            options: { validators: { required: null, min: 1 } },
+            options: { validators: ['required', ['min', 1]] },
             factory: { cssClass: 'col-5 col-md-3' },
             params: { label: 'Quantity *', type: 'number' },
           }),

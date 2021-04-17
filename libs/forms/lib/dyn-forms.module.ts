@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { getModuleProviders } from '@myndpm/dyn-forms/core';
+import { DynModuleProviders, getModuleProviders } from '@myndpm/dyn-forms/core';
 import { DynFactoryComponent, DynFormComponent, DynGroupComponent } from './components';
-import { DynFormsModuleArgs } from './dyn-forms.module.interface';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
@@ -12,12 +11,12 @@ import { DynFormsModuleArgs } from './dyn-forms.module.interface';
 })
 export class DynFormsModule {
   static forFeature(
-    args?: DynFormsModuleArgs,
+    args?: DynModuleProviders,
     ngModule = DynFormsModule,
   ): ModuleWithProviders<DynFormsModule> {
     return {
       ngModule,
-      providers: getModuleProviders(args?.controls, args?.providers),
+      providers: getModuleProviders(args),
     };
   }
 }

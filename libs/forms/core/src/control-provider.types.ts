@@ -5,6 +5,7 @@ import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
 import { DynControl } from './dyn-control.class';
+import { DynBaseProvider } from './dyn-providers';
 
 export type AbstractDynControl = DynControl<
   DynControlMode,
@@ -13,7 +14,7 @@ export type AbstractDynControl = DynControl<
   AbstractControl
 >;
 
-export interface LazyControl {
+export interface LazyControl extends DynBaseProvider {
   control: DynControlType;
   instance: DynInstanceType;
   // resolved in DynFormRegistry
@@ -21,7 +22,7 @@ export interface LazyControl {
   component?: Type<AbstractDynControl>;
 }
 
-export interface InjectedControl {
+export interface InjectedControl extends DynBaseProvider {
   control: DynControlType;
   instance: DynInstanceType;
   component: Type<AbstractDynControl>;

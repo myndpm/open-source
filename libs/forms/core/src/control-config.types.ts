@@ -12,7 +12,8 @@ export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 export type DynConfigId = string;
 
 // a collection of ids with arguments to be used
-export type DynConfigCollection = { [id: string]: DynConfigArgs } | DynConfigId[];
+export type DynConfigCollection = { [id: string]: DynConfigArgs }
+                                | Array<DynConfigId | [DynConfigId, DynConfigArgs]>;
 
 /**
   single control options
