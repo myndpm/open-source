@@ -11,7 +11,8 @@ export interface DynBaseProvider {
 /**
  * Mapper to add the incoming priority
  */
- export function mapPriority<T extends DynBaseProvider>(priority?: number) {
+export function mapPriority<T extends DynBaseProvider>(priority?: number) {
+  // TODO verify with real use-cases for the priority order
   return (item: T) => ({ ...item, priority: priority ?? item.priority ?? 0 });
 }
 
