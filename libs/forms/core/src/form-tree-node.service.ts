@@ -18,7 +18,7 @@ export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>
 implements DynTreeNode<TControl> {
   // form hierarchy
   isolated = false;
-  children: DynFormTreeNode[] = [];
+  children: DynFormTreeNode<AbstractControl>[] = [];
 
   // reactive events
   hook$ = new Subject<DynControlHook>();
@@ -216,13 +216,13 @@ implements DynTreeNode<TControl> {
   /**
    * Hierarchy methods
    */
-  private addChild(node: DynFormTreeNode<any>): void {
+  private addChild(node: DynFormTreeNode<AbstractControl>): void {
     this.children.push(node);
 
     // TODO setup validators
   }
 
-  private removeChild(node: DynFormTreeNode<any>): void {
+  private removeChild(node: DynFormTreeNode<AbstractControl>): void {
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });

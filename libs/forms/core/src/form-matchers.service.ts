@@ -2,24 +2,27 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
 import {
-  DynBaseMatcher,
   DynControlCondition,
   DynControlConditionFn,
   DynControlMatchCondition,
   DynControlMatcher,
   DynControlMatcherFn,
-  DynMatcherFactory,
   isBaseCondition,
 } from './control-matchers.types';
-import { defaultConditions, defaultMatchers } from './dyn-providers';
+import {
+  defaultConditions,
+  defaultMatchers,
+  DynBaseHandler,
+  DynHandlerFactory,
+} from './dyn-providers';
 import { DYN_MATCHERS_TOKEN, DYN_MATCHER_CONDITIONS_TOKEN } from './form.tokens';
 
 @Injectable()
 // injected in the DynFormTreeNode to manage matchers
 export class DynFormMatchers {
   // registered matchers and conditions
-  matchers = new Map<DynConfigId, DynMatcherFactory<DynControlMatcherFn>>();
-  conditions = new Map<DynConfigId, DynMatcherFactory<DynControlConditionFn>>();
+  matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
+  conditions = new Map<DynConfigId, DynHandlerFactory<DynControlConditionFn>>();
 
   constructor(
     private readonly logger: DynLogger,
@@ -74,9 +77,9 @@ export class DynFormMatchers {
       : [];
   }
 
-  private reduceProvider<T extends DynBaseMatcher<any>, V>(
+  private reduceProvider<T extends DynBaseHandler<any>, V>(
     providers: T[],
-    dictionary: Map<DynConfigId, DynMatcherFactory<V>>,
+    dictionary: Map<DynConfigId, DynHandlerFactory<V>>,
   ): void {
     // FIXME validate the data-integrity of the provided values and throw logger
     providers

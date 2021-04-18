@@ -52,7 +52,7 @@ export class DynFormFactory {
     }
 
     // return any existing control with this name
-    // TODO check if we have a parent FormArray
+    // TODO check if we have a parent FormArray with node.instance
     // assumes a parent FormGroup
     let control = config.name ? parent.control.get(config.name) : null;
     if (control) {

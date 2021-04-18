@@ -1,17 +1,23 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { AbstractControlOptions, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { DynConfigArgs, DynConfigCollection, DynConfigId, DynConfigProvider, DynControlOptions } from './control-config.types';
-import { DynAsyncValidatorProvider, DynBaseValidatorProvider, DynValidatorFactory, DynValidatorProvider } from './control-validation.types';
-import { defaultValidators } from './dyn-providers';
+import {
+  DynConfigArgs,
+  DynConfigCollection,
+  DynConfigId,
+  DynConfigProvider,
+  DynControlOptions,
+} from './control-config.types';
+import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
+import { defaultValidators, DynBaseHandler, DynHandlerFactory } from './dyn-providers';
 import { DYN_ASYNCVALIDATORS_TOKEN, DYN_VALIDATORS_TOKEN } from './form.tokens';
 
 @Injectable()
 // injected in the DynFormFactory to complete the controls options
 export class DynFormValidators {
   // registered validators
-  validators = new Map<DynConfigId, DynValidatorFactory<ValidatorFn>>();
-  asyncValidators = new Map<DynConfigId, DynValidatorFactory<AsyncValidatorFn>>();
+  validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
+  asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
 
   constructor(
     private readonly logger: DynLogger,
@@ -42,11 +48,11 @@ export class DynFormValidators {
     }
   }
 
-  private dynValidators<V>(
-    dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
+  private dynValidators<F>(
+    dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
     config?: DynConfigCollection,
-  ): V[]|null {
-    let validators: V[] = [];
+  ): F[]|null {
+    let validators: F[] = [];
     if (Array.isArray(config)) {
       // array of ids or [id, args]
       validators = config.map(id => this.getValidatorFn(id, dictionary));
@@ -59,10 +65,10 @@ export class DynFormValidators {
     return validators.length ? validators : null;
   }
 
-  private getValidatorFn<V>(
+  private getValidatorFn<F>(
     config: DynConfigProvider,
-    dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
-  ): V {
+    dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
+  ): F {
     if (Array.isArray(config)) {
       const [id, args] = config;
       if (dictionary.has(id)) {
@@ -80,9 +86,9 @@ export class DynFormValidators {
       : [];
   }
 
-  private reduceProvider<T extends DynBaseValidatorProvider<any>, V>(
+  private reduceProvider<T extends DynBaseHandler<any>, F>(
     providers: T[],
-    dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
+    dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
   ): void {
     // FIXME validate the data-integrity of the provided values and throw logger
     providers

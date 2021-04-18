@@ -1,15 +1,23 @@
 import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { DynConfigId } from './control-config.types';
 import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
 import { DynValidatorProvider } from "./control-validation.types";
 import { DynTreeNode } from './tree.types';
 
 /**
- * Base provider
+ * Base types
  */
 export interface DynBaseProvider {
   priority?: number;
+}
+
+export type DynHandlerFactory<F> = (...args: any[]) => F;
+
+export interface DynBaseHandler<F> extends DynBaseProvider {
+  id: DynConfigId;
+  fn: DynHandlerFactory<F>;
 }
 
 /**
