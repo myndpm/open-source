@@ -190,7 +190,8 @@ implements DynTreeNode<TControl> {
           distinctUntilChanged(),
         )
         .subscribe(hasMatch => {
-          matcher(this, hasMatch) // run the matcher with the match result
+          // run the matcher with the conditions result
+          matcher(this, config.negate ? !hasMatch : hasMatch)
         });
     });
 

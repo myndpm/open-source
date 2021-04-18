@@ -20,7 +20,7 @@ export interface DynBaseCondition {
 export interface DynControlMatchCondition extends DynBaseCondition {
   id?: DynConfigId; // defaults to the DEFAULT condition handler
   value?: DynConfigArgs;
-  negation?: boolean; // negate the output of the handler
+  negate?: boolean; // negate the output of the handler
 }
 
 /**
@@ -28,6 +28,7 @@ export interface DynControlMatchCondition extends DynBaseCondition {
  */
  export interface DynControlMatch {
   matcher: DynConfigId | [DynConfigId, DynConfigArgs]; // matcher id | [id, args]
+  negate?: boolean; // use this matcher in the opposed way (ie. DISABLE -> ENABLE)
   operator?: 'AND' | 'OR';
   when: Array<DynConfigId | [DynConfigId, DynConfigArgs] | DynControlMatchCondition>;
 }

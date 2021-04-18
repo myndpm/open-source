@@ -67,7 +67,7 @@ export const defaultMatchers: DynControlMatcher[] = [
 export const defaultConditions: DynControlCondition[] = [
   {
     id: 'DEFAULT',
-    fn: ({ path, value, negation }: DynControlMatchCondition): DynControlConditionFn => {
+    fn: ({ path, value, negate }: DynControlMatchCondition): DynControlConditionFn => {
       return (node: DynTreeNode) => {
         const control = node.query(path);
         if (!control) {
@@ -83,7 +83,7 @@ export const defaultConditions: DynControlCondition[] = [
               : value === controlValue;
           }),
           // negate the result if needed
-          map(result => negation ? !result : result),
+          map(result => negate ? !result : result),
         );
       }
     }

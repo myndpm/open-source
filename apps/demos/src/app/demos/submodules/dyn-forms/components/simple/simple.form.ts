@@ -102,11 +102,12 @@ export function simpleForm(
             options: {
               matchers: [
                 {
-                  matcher: 'DISABLE',
-                  operator: 'OR',
+                  matcher: 'ENABLE',
+                  negate: true,
+                  operator: 'AND',
                   when: [
+                    { path: 'firstName', value: 'Mateo' },
                     { path: 'country', value: 'CO' },
-                    { path: 'firstName', value: 'M' },
                   ]
                 },
               ]
