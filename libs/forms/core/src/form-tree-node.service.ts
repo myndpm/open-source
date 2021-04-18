@@ -176,24 +176,23 @@ implements DynTreeNode<TControl> {
     this._matchers?.map((config) => {
       const matcher = this.formMatchers.getMatcher(config.matcher);
 
-      // build an array of observables to listen changes into
-      const observables = config.when
-        .map(condition => this.formMatchers.getCondition(condition)) // handler fn
-        .map(fn => fn(this)); // condition observables
-
-      const listen = config.operator === 'OR'
-        ? merge(...observables)
-        : combineLatest(observables).pipe(map(results => results.every(Boolean)));
-
-      listen
-        .pipe(
-          takeUntil(this._unsubscribe),
-          distinctUntilChanged(),
-        )
-        .subscribe(hasMatch => {
-          // run the matcher with the conditions result
-          matcher(this, config.negate ? !hasMatch : hasMatch)
-        });
+      combineLatest(
+        // build an array of observables to listen changes into
+        config.when
+          .map(condition => this.formMatchers.getCondition(condition)) // handler fn
+          .map(fn => fn(this)) // condition observables
+      ).pipe(
+        map(results => config.operator === 'OR'
+          ? results.some(Boolean)
+          : results.every(Boolean)
+        ),
+        takeUntil(this._unsubscribe),
+        distinctUntilChanged(),
+      )
+      .subscribe(hasMatch => {
+        // run the matcher with the conditions result
+        matcher(this, config.negate ? !hasMatch : hasMatch)
+      });
     });
 
     // call the children
