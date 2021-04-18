@@ -11,9 +11,10 @@ export type DynConfigId = string;
 export type DynConfigPrimitive = string | boolean | number | RegExp | { [k: string]: DynConfigPrimitive };
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
-// a collection of ids with arguments to be used
-export type DynConfigCollection = { [id: string]: DynConfigArgs }
-                                | Array<DynConfigId | [DynConfigId, DynConfigArgs]>;
+// handlers provided can be referenced by id or [id with args]
+export type DynConfigProvider = DynConfigId | [DynConfigId, DynConfigArgs];
+// collection of handlers to be used
+export type DynConfigCollection = { [id: string]: DynConfigArgs } | Array<DynConfigProvider>;
 
 /**
   single control options

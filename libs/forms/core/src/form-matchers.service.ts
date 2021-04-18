@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { DynConfigArgs, DynConfigId } from './control-config.types';
+import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
 import {
   DynBaseMatcher,
   DynControlCondition,
@@ -39,9 +39,7 @@ export class DynFormMatchers {
     );
   }
 
-  getMatcher(
-    config: DynConfigId | [DynConfigId, DynConfigArgs],
-  ): DynControlMatcherFn {
+  getMatcher(config: DynConfigProvider): DynControlMatcherFn {
     if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.matchers.has(id)) {
@@ -53,9 +51,7 @@ export class DynFormMatchers {
     throw this.logger.providerNotFound('Matcher', config);
   }
 
-  getCondition(
-    config: DynConfigId | [DynConfigId, DynConfigArgs] | DynControlMatchCondition,
-  ): DynControlConditionFn {
+  getCondition(config: DynConfigProvider | DynControlMatchCondition): DynControlConditionFn {
     if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.conditions.has(id)) {

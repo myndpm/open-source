@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { AbstractControlOptions, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { DynConfigArgs, DynConfigCollection, DynConfigId, DynControlOptions } from './control-config.types';
+import { DynConfigArgs, DynConfigCollection, DynConfigId, DynConfigProvider, DynControlOptions } from './control-config.types';
 import { DynAsyncValidatorProvider, DynBaseValidatorProvider, DynValidatorFactory, DynValidatorProvider } from './control-validation.types';
 import { defaultValidators } from './dyn-providers';
 import { DYN_ASYNCVALIDATORS_TOKEN, DYN_VALIDATORS_TOKEN } from './form.tokens';
@@ -60,7 +60,7 @@ export class DynFormValidators {
   }
 
   private getValidatorFn<V>(
-    config: DynConfigId | [DynConfigId, DynConfigArgs],
+    config: DynConfigProvider,
     dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
   ): V {
     if (Array.isArray(config)) {

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { DynConfigArgs, DynConfigId } from './control-config.types';
+import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
 import { DynBaseProvider } from './dyn-providers';
 import { DynTreeNode } from './tree.types';
 
@@ -27,10 +27,10 @@ export interface DynControlMatchCondition extends DynBaseCondition {
  * match (condition) then run (matcher)
  */
  export interface DynControlMatch {
-  matcher: DynConfigId | [DynConfigId, DynConfigArgs]; // matcher id | [id, args]
+  matcher: DynConfigProvider; // matcher id | [id, args]
   negate?: boolean; // use this matcher in the opposed way (ie. DISABLE -> ENABLE)
   operator?: 'AND' | 'OR';
-  when: Array<DynConfigId | [DynConfigId, DynConfigArgs] | DynControlMatchCondition>;
+  when: Array<DynConfigProvider | DynControlMatchCondition>;
 }
 
 /**
