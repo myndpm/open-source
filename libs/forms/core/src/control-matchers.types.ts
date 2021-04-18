@@ -37,8 +37,8 @@ export interface DynControlMatchCondition extends DynBaseCondition {
  *
  * id: DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | VALIDATE | etc
  * fn: matcher action (node?) => ?
- * FIXME type the fn
  */
+export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean) => void;
 export type DynControlMatcher = DynBaseMatcher<any>;
 
 /**
@@ -47,7 +47,6 @@ export type DynControlMatcher = DynBaseMatcher<any>;
  * fn:
  *   provided: (node) => Observable<boolean>
  *   match: object => [Observables] => boolean
- * FIXME type the fn
  */
 export type DynControlConditionFn = (node: DynTreeNode) => Observable<boolean>;
 export type DynControlCondition = DynBaseMatcher<DynControlConditionFn>;

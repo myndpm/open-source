@@ -1,7 +1,7 @@
 import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition } from './control-matchers.types';
+import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
 import { DynValidatorProvider } from "./control-validation.types";
 import { DynTreeNode } from './tree.types';
 
@@ -35,6 +35,31 @@ export const defaultValidators: DynValidatorProvider[] = [
 ].map(
   mapPriority<DynValidatorProvider>()
 );
+
+/**
+ * Default matchers
+ */
+export const defaultMatchers: DynControlMatcher[] = [
+  {
+    id: 'DISABLE',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        hasMatch ? node.control.disable() : node.control.enable();
+      }
+    }
+  },
+  {
+    id: 'ENABLE',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        hasMatch ? node.control.enable() : node.control.disable();
+      }
+    }
+  },
+].map(
+  mapPriority<DynControlMatcher>()
+);
+
 
 /**
  * Default condition handler

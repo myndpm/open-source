@@ -173,6 +173,8 @@ implements DynTreeNode<TControl> {
   afterViewInit(): void {
     // process the stored matchers
     this._matchers?.map((config) => {
+      const matcher = this.formMatchers.getMatcher(config.matcher);
+
       // build an array of observables to listen changes into
       const observables = config.when
         .map(condition => this.formMatchers.getCondition(condition)) // handler fn
@@ -187,8 +189,8 @@ implements DynTreeNode<TControl> {
           takeUntil(this._unsubscribe),
           distinctUntilChanged(),
         )
-        .subscribe(res => {
-          console.log('matcher', res)
+        .subscribe(hasMatch => {
+          matcher(this, hasMatch) // run the matcher with the match result
         });
     });
 

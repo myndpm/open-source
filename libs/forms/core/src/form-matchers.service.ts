@@ -7,17 +7,18 @@ import {
   DynControlConditionFn,
   DynControlMatchCondition,
   DynControlMatcher,
+  DynControlMatcherFn,
   DynMatcherFactory,
   isBaseCondition,
 } from './control-matchers.types';
-import { defaultConditions } from './dyn-providers';
+import { defaultConditions, defaultMatchers } from './dyn-providers';
 import { DYN_MATCHERS_TOKEN, DYN_MATCHER_CONDITIONS_TOKEN } from './form.tokens';
 
 @Injectable()
 // injected in the DynFormTreeNode to manage matchers
 export class DynFormMatchers {
   // registered matchers and conditions
-  matchers = new Map<DynConfigId, DynMatcherFactory<any>>();
+  matchers = new Map<DynConfigId, DynMatcherFactory<DynControlMatcherFn>>();
   conditions = new Map<DynConfigId, DynMatcherFactory<DynControlConditionFn>>();
 
   constructor(
@@ -29,7 +30,7 @@ export class DynFormMatchers {
   ) {
     // reduce the provided validators according to priority
     this.reduceProvider(
-      (this.providedMatchers ?? []),
+      (this.providedMatchers ?? []).concat(defaultMatchers),
       this.matchers,
     );
     this.reduceProvider(
@@ -38,9 +39,9 @@ export class DynFormMatchers {
     );
   }
 
-  getMatcher<V>(
+  getMatcher(
     config: DynConfigId | [DynConfigId, DynConfigArgs],
-  ): V {
+  ): DynControlMatcherFn {
     if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.matchers.has(id)) {

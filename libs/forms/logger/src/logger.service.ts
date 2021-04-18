@@ -26,7 +26,7 @@ export class DynLogger {
   providerNotFound(provider: string, config: any): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,
-      message: `${provider} '${JSON.stringify(config)}' not provided.`,
+      message: `${provider} ${JSON.stringify(config)} not provided.`,
     });
   }
 
