@@ -1,5 +1,9 @@
 import { Validators } from '@angular/forms';
+import { of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition } from './control-matchers.types';
 import { DynValidatorProvider } from "./control-validation.types";
+import { DynTreeNode } from './tree.types';
 
 /**
  * Base provider
@@ -30,4 +34,35 @@ export const defaultValidators: DynValidatorProvider[] = [
   { id: 'max', fn: Validators.max },
 ].map(
   mapPriority<DynValidatorProvider>()
+);
+
+/**
+ * Default condition handler
+ */
+export const defaultConditions: DynControlCondition[] = [
+  {
+    id: 'DEFAULT',
+    fn: ({ path, value, negation }: DynControlMatchCondition): DynControlConditionFn => {
+      return (node: DynTreeNode) => {
+        const control = node.query(path);
+        if (!control) {
+          console.error(`Control '${path}' not found inside a Condition`)
+          return of(true); // do not break AND matchers
+        }
+        return control.valueChanges.pipe(
+          startWith(control.value),
+          // compare the configured value
+          map(controlValue => {
+            return Array.isArray(value)
+              ? value.includes(controlValue)
+              : value === controlValue;
+          }),
+          // negate the result if needed
+          map(result => negation ? !result : result),
+        );
+      }
+    }
+  },
+].map(
+  mapPriority<DynControlCondition>()
 );

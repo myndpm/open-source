@@ -102,9 +102,13 @@ export function simpleForm(
             options: {
               matchers: [
                 {
-                  match: 'DISABLE',
-                  when: [{ path: 'country', value: 'CO' }]
-                }
+                  matcher: 'DISABLE',
+                  operator: 'OR',
+                  when: [
+                    { path: 'country', value: 'CO' },
+                    { path: 'firstName', value: 'M' },
+                  ]
+                },
               ]
             },
             factory: { cssClass: 'col-sm-6 col-md-4' },

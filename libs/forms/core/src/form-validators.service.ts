@@ -60,18 +60,18 @@ export class DynFormValidators {
   }
 
   private getValidatorFn<V>(
-    id: DynConfigId | [DynConfigId, DynConfigArgs],
+    config: DynConfigId | [DynConfigId, DynConfigArgs],
     dictionary: Map<DynConfigId, DynValidatorFactory<V>>,
   ): V {
-    if (Array.isArray(id)) {
-      const [vid, args] = id;
-      if (dictionary.has(vid)) {
-        return (dictionary.get(vid) as DynValidatorFactory<V>)(...this.getArgs(args));
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (dictionary.has(id)) {
+        return dictionary.get(id)!(...this.getArgs(args));
       }
-    } else if (dictionary.has(id)) {
-      return (dictionary.get(id) as DynValidatorFactory<V>)();
+    } else if (dictionary.has(config)) {
+      return dictionary.get(config)!();
     }
-    throw this.logger.validatorNotFound(id);
+    throw this.logger.providerNotFound('Validator', config);
   }
 
   private getArgs(args: DynConfigArgs): DynConfigArgs[] {

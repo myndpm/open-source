@@ -1,15 +1,24 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { DynConfigId } from './control-config.types';
-import { DynBaseMatcher, DynControlMatcher, DynControlCondition, DynMatcherFactory } from './control-matchers.types';
+import { DynConfigArgs, DynConfigId } from './control-config.types';
+import {
+  DynBaseMatcher,
+  DynControlCondition,
+  DynControlConditionFn,
+  DynControlMatchCondition,
+  DynControlMatcher,
+  DynMatcherFactory,
+  isBaseCondition,
+} from './control-matchers.types';
+import { defaultConditions } from './dyn-providers';
 import { DYN_MATCHERS_TOKEN, DYN_MATCHER_CONDITIONS_TOKEN } from './form.tokens';
 
 @Injectable()
 // injected in the DynFormTreeNode to manage matchers
 export class DynFormMatchers {
   // registered matchers and conditions
-  matchers = new Map<DynConfigId, any>();
-  conditions = new Map<DynConfigId, any>();
+  matchers = new Map<DynConfigId, DynMatcherFactory<any>>();
+  conditions = new Map<DynConfigId, DynMatcherFactory<DynControlConditionFn>>();
 
   constructor(
     private readonly logger: DynLogger,
@@ -24,9 +33,48 @@ export class DynFormMatchers {
       this.matchers,
     );
     this.reduceProvider(
-      (this.providedConditions ?? []),
+      (this.providedConditions ?? []).concat(defaultConditions),
       this.conditions,
     );
+  }
+
+  getMatcher<V>(
+    config: DynConfigId | [DynConfigId, DynConfigArgs],
+  ): V {
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.matchers.has(id)) {
+        return this.matchers.get(id)!(...this.getArgs(args));
+      }
+    } else if (this.matchers.has(config)) {
+      return this.matchers.get(config)!();
+    }
+    throw this.logger.providerNotFound('Matcher', config);
+  }
+
+  getCondition(
+    config: DynConfigId | [DynConfigId, DynConfigArgs] | DynControlMatchCondition,
+  ): DynControlConditionFn {
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.conditions.has(id)) {
+        return this.conditions.get(id)!(...this.getArgs(args));
+      }
+    } else if (isBaseCondition(config)) {
+      const id = config.id ?? 'DEFAULT'; // default condition handler
+      if (this.conditions.has(id)) {
+        return this.conditions.get(id)!(config);
+      }
+    } else if (this.conditions.has(config)) {
+      return this.conditions.get(config)!();
+    }
+    throw this.logger.providerNotFound('Condition', config);
+  }
+
+  private getArgs(args: DynConfigArgs): DynConfigArgs[] {
+    return args ?? false
+      ? Array.isArray(args) ? args : [args]
+      : [];
   }
 
   private reduceProvider<T extends DynBaseMatcher<any>, V>(
