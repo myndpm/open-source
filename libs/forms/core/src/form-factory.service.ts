@@ -9,11 +9,15 @@ import { DynBaseConfig } from './config.types';
 import { DynInstanceType } from './control.types';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
+import { DynFormValidators } from './form-validators.service';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls
 export class DynFormFactory {
-  constructor(private registry: DynFormRegistry) {}
+  constructor(
+    private registry: DynFormRegistry,
+    private validators: DynFormValidators,
+  ) {}
 
   /**
    * Adds a control (via config) to the given parent.
@@ -93,17 +97,22 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const control = new FormGroup({}, config.options);
+        const control = new FormGroup({}, this.validators.dynOptions(config.options));
         if (recursively) {
           this.buildControls(control, config);
         }
         return (control as unknown) as T;
       }
       case DynInstanceType.Array: {
-        return (new FormArray([], config.options) as unknown) as T;
+        return (new FormArray([], this.validators.dynOptions(config.options)) as unknown) as T;
       }
       case DynInstanceType.Control: {
-        return (new FormControl(null, config.options) as unknown) as T;
+        return (
+          new FormControl(
+            config.options?.defaults ?? null,
+            this.validators.dynOptions(config.options)
+          ) as unknown
+        ) as T;
       }
     }
   }

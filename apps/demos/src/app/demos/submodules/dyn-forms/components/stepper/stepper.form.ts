@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 
@@ -11,19 +10,19 @@ export function step1Form(): DynFormConfig {
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-sm-6' },
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             factory: { cssClass: 'col-sm-6' },
             params: { label: 'Last Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'phone',
-            options: { validators: [Validators.pattern(/^[+]?\d*$/)] },
+            options: { validators: { pattern: /^[+]?\d*$/ } },
             factory: { cssClass: 'col-md-6' },
             params: {
               label: 'Phone',
@@ -68,7 +67,7 @@ export function step2Form(): DynFormConfig {
         controls: [
           createMatConfig('RADIO', {
             name: 'toc',
-            options: { validators: [Validators.required] },
+            options: { validators: ['required'] },
             params: {
               label: 'Do you accept the terms and conditions',
               options: [
@@ -79,7 +78,7 @@ export function step2Form(): DynFormConfig {
           }),
           createMatConfig('MULTICHECK', {
             name: 'choices',
-            options: { validators: [Validators.minLength(1)] },
+            options: { validators: { minLength: 1 } },
             params: {
               label: 'Select the applicable choices',
               options: [

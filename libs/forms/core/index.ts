@@ -4,6 +4,7 @@ export * from './src/control-events.types';
 export * from './src/control-mode.types';
 export * from './src/control-params.types';
 export * from './src/control-provider.types';
+export * from './src/control-validation.types';
 export * from './src/control.types';
 export * from './src/option.types';
 export * from './src/tree.types';

@@ -7,5 +7,3 @@ export enum DynInstanceType {
   Control = 'CONTROL',
   Container = 'CONTAINER',
 }
-
-// DynConfigArgs: any plain/serializable value

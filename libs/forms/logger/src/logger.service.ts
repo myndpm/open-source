@@ -23,8 +23,15 @@ export class DynLogger {
     });
   }
 
-  nodeFailed(control?: string): void {
-    this.driver.log({
+  validatorNotFound(id: any): Error {
+    return this.driver.log({
+      level: DynLogLevel.Fatal,
+      message: `Validator '${id}' not provided.`,
+    });
+  }
+
+  nodeFailed(control?: string): Error {
+    return this.driver.log({
       level: DynLogLevel.Fatal,
       message:
         `Control '${control}' need to provide its own DynFormTreeNode. ` +
@@ -32,11 +39,10 @@ export class DynLogger {
     });
   }
 
-  nodeWithoutControl(): void {
-    this.driver.log({
+  nodeWithoutControl(): Error {
+    return this.driver.log({
       level: DynLogLevel.Fatal,
-      message:
-        `Could not resolve a control for the Node .`,
+      message: `Could not resolve a control for the Node .`,
     });
   }
 
