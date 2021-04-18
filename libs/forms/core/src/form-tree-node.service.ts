@@ -73,8 +73,9 @@ implements DynTreeNode<TControl> {
 
   // query for a control upper in the tree
   query(path: string, searchNodes = false): AbstractControl|null {
-    let result: AbstractControl|null;
+    /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<AbstractControl> = this;
+    let result: AbstractControl|null;
 
     do {
       // query by form.control and by node.path
