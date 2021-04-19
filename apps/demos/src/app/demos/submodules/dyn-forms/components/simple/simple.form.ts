@@ -88,12 +88,7 @@ export function simpleForm(
             modes: {
               display: {
                 control: 'INPUT',
-                params: {
-                  getValue: (params: DynMatSelectParams, value: string) => {
-                    const option = params.options.find(o => o.value === value);
-                    return value && option ? option.text : value;
-                  },
-                },
+                paramFns: { getValue: 'getOptionText' }
               },
             },
           }),
@@ -128,12 +123,7 @@ export function simpleForm(
         modes: {
           display: {
             control: 'INPUT',
-            params: {
-              getValue: (params: DynMatRadioParams, value: string) => {
-                const option = params.options.find(o => o.value === value);
-                return value && option ? option.text : value;
-              },
-            },
+            paramFns: { getValue: 'getOptionText' }
           },
         },
       }),

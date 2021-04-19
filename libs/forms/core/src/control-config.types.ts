@@ -8,11 +8,15 @@ import { DynControlType } from './control.types';
 export type DynConfigId = string;
 
 // plain/serializable arguments (no functions)
-export type DynConfigPrimitive = string | boolean | number | RegExp | { [k: string]: DynConfigPrimitive };
+export type DynConfigPrimitive = undefined | string | boolean | number | Set<any> | RegExp | DynConfigPrimitive[] | { [k: string]: DynConfigPrimitive };
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 // handlers provided can be referenced by id or [id with args]
 export type DynConfigProvider = DynConfigId | [DynConfigId, DynConfigArgs];
+// object map of handlers
+export interface DynConfigMap<T> {
+  [field: string]: T;
+}
 // collection of handlers to be used
 export type DynConfigCollection = { [id: string]: DynConfigArgs } | Array<DynConfigProvider>;
 
@@ -40,5 +44,5 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   // customizations
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
-  // functions: DynConfigCollection;
+  paramFns?: DynConfigMap<DynConfigProvider>;
 }

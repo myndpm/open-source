@@ -13,12 +13,14 @@ import merge from 'merge';
 import { BehaviorSubject, isObservable, merge as mergeStreams, Observable, of } from 'rxjs';
 import { scan } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
+import { DynConfigMap, DynConfigProvider } from './control-config.types';
 import { DynControlVisibility } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
+import { DynFormHandlers } from './form-handlers.service';
 
 @Directive()
 export abstract class DynControl<
@@ -54,16 +56,18 @@ implements OnInit, OnChanges {
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 
+  protected readonly _ref: ChangeDetectorRef;
   protected readonly _logger: DynLogger;
   protected readonly _formFactory: DynFormFactory;
-  protected readonly _ref: ChangeDetectorRef;
+  private readonly _formHandlers: DynFormHandlers;
 
   constructor(injector: Injector) {
     super(injector);
 
+    this._ref = injector.get(ChangeDetectorRef);
     this._logger = injector.get(DynLogger);
     this._formFactory = injector.get(DynFormFactory);
-    this._ref = injector.get(ChangeDetectorRef);
+    this._formHandlers = injector.get(DynFormHandlers);
   }
 
   // complete a partial specification of the required parameters
@@ -92,6 +96,10 @@ implements OnInit, OnChanges {
       // emulates the async pipe
       this._ref.markForCheck();
     });
+
+    if (this.config.paramFns) {
+      this.updateParams(undefined, this.config.paramFns);
+    }
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
@@ -99,7 +107,12 @@ implements OnInit, OnChanges {
     // emulated while assigning the params as DynControls has no Inputs
   }
 
-  updateParams(newParams?: Partial<TParams>): void {
-    this.node.paramsUpdates$.next(newParams);
+  updateParams(
+    newParams?: Partial<TParams>,
+    newParamFns?: DynConfigMap<DynConfigProvider>
+  ): void {
+    this.node.paramsUpdates$.next(
+      merge(true, newParams, this._formHandlers.getFunctions(newParamFns))
+    );
   }
 }

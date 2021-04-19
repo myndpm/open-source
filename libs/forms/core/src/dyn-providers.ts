@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
 import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
+import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
 import { DynValidatorProvider } from "./control-validation.types";
 import { DynTreeNode } from './tree.types';
 
@@ -93,6 +94,23 @@ export const defaultConditions: DynControlCondition[] = [
           // negate the result if needed
           map(result => negate ? !result : result),
         );
+      }
+    }
+  },
+].map(
+  mapPriority<DynControlCondition>()
+);
+
+/**
+ * Default params functions
+ */
+export const defaultFunctions: DynControlFunction[] = [
+  {
+    id: 'getOptionText',
+    fn: (): DynControlFunctionFn => {
+      return (params: any, value: any) => {
+        const option = params.options.find((o: any) => o.value === value);
+        return value && option ? option.text : value;
       }
     }
   },

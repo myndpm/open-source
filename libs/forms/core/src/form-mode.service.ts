@@ -69,6 +69,9 @@ export class DynFormMode {
         ? merge(true, config.params, mode.params)
         : mode.params;
     }
+    if (Object.prototype.hasOwnProperty.call(mode, 'paramFns')) {
+      config.paramFns = merge(true, config.paramFns, mode.paramFns);
+    }
 
     return config;
   }

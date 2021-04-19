@@ -5,6 +5,7 @@ import {
   DynConfigArgs,
   DynConfigCollection,
   DynConfigId,
+  DynConfigMap,
   DynConfigProvider,
   DynControlOptions,
 } from './control-config.types';
@@ -16,9 +17,11 @@ import {
   DynControlMatcherFn,
   isBaseCondition,
 } from './control-matchers.types';
+import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
 import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
 import {
   defaultConditions,
+  defaultFunctions,
   defaultMatchers,
   defaultValidators,
   DynBaseHandler,
@@ -26,6 +29,7 @@ import {
 } from './dyn-providers';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
+  DYN_FUNCTIONS_TOKEN,
   DYN_MATCHERS_TOKEN,
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
@@ -34,6 +38,7 @@ import {
 @Injectable()
 export class DynFormHandlers {
   // registered handlers
+  functions = new Map<DynConfigId, DynHandlerFactory<DynControlFunctionFn>>();
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
   matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
@@ -41,6 +46,8 @@ export class DynFormHandlers {
 
   constructor(
     private readonly logger: DynLogger,
+    @Inject(DYN_FUNCTIONS_TOKEN) @Optional()
+    readonly providedFunctions?: DynControlFunction[],
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
     readonly providedValidators?: DynValidatorProvider[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
@@ -50,7 +57,7 @@ export class DynFormHandlers {
     @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()
     readonly providedConditions?: DynControlCondition[],
   ) {
-    // reduce the provided validators according to priority
+    // reduce the provided handlers according to priority
     this.reduceProvider(
       (this.providedValidators ?? []).concat(defaultValidators), // add Angular's default validators
       this.validators,
@@ -66,6 +73,10 @@ export class DynFormHandlers {
     this.reduceProvider(
       (this.providedConditions ?? []).concat(defaultConditions),
       this.conditions,
+    );
+    this.reduceProvider(
+      (this.providedFunctions ?? []).concat(defaultFunctions),
+      this.functions,
     );
   }
 
@@ -104,6 +115,32 @@ export class DynFormHandlers {
       return this.conditions.get(config)!();
     }
     throw this.logger.providerNotFound('Condition', config);
+  }
+
+  getFunctions(config?: DynConfigMap<DynConfigProvider>): DynConfigMap<DynControlFunctionFn> {
+    if (!config) {
+      return {};
+    }
+    return Object.keys(config).reduce<DynConfigMap<DynControlFunctionFn>>(
+      (result, field) => {
+        result[field] = this.getFunction(config[field]);
+        return result;
+      },
+      {},
+    );
+  }
+
+  getFunction(config: DynConfigProvider): DynControlFunctionFn {
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.functions.has(id)) {
+        return this.functions.get(id)!(...this.getArgs(args));
+      }
+    } else if (this.functions.has(config)) {
+      return this.functions.get(config)!();
+    }
+    throw this.logger.providerNotFound('Function', config);
+
   }
 
   private dynValidators<F>(
