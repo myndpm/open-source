@@ -51,14 +51,23 @@ export class DynFormFactory {
       throw new Error(`The parent ControlContainer doesn't have a control`);
     }
 
+    let control : AbstractControl|null;
+
     // return any existing control with this name
-    // TODO check if we have a parent FormArray with node.instance
-    // assumes a parent FormGroup
-    let control = config.name ? parent.control.get(config.name) : null;
-    if (control) {
-      return control as T;
+    if (config.name) {
+      if (parent.instance === DynInstanceType.Array) {
+        // check if we have a parent FormArray with node.instance
+        control = (parent.control as FormArray).at(parseInt(config.name));
+      } else {
+        // assumes a parent FormGroup
+        control = parent.control.get(config.name);
+      }
+      if (control) {
+        return control as T;
+      }
     }
 
+    // build the control with the given config
     control = this.build(instance as any, config, recursively);
     if (!control) {
       throw new Error(`Could not build a control for ${instance}`);

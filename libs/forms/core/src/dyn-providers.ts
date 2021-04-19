@@ -81,7 +81,6 @@ export const defaultMatchers: DynControlMatcher[] = [
       }
     }
   },
-  // TODO also disable? support more than one matcher?
   {
     id: 'HIDE',
     fn: (): DynControlMatcherFn => {

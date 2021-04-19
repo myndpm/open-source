@@ -248,7 +248,7 @@ implements DynTreeNode<TParams, TControl> {
   private addChild(node: DynFormTreeNode<any, any>): void {
     this.children.push(node);
 
-    // TODO setup validators
+    // TODO updateValue and validity? or it's automatically done?
   }
 
   private removeChild(node: DynFormTreeNode<any, any>): void {
@@ -257,6 +257,6 @@ implements DynTreeNode<TParams, TControl> {
     });
 
     // TODO what happen to the data if we remove the control
-    // TODO update validators if not isolated
+    // TODO update validity if not isolated
   }
 }
