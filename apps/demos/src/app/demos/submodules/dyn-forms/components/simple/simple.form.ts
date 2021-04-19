@@ -27,9 +27,10 @@ export const simpleData = {
 
 export function simpleForm(
   obsParams: Observable<DynControlParams>
-): DynFormConfig<'display'> { // typed mode
+): DynFormConfig<'edit'|'display'> { // typed mode
   return {
     modeParams: {
+      edit: { readonly: false },
       display: { readonly: true },
     },
     controls: [

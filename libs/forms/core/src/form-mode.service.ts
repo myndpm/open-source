@@ -33,12 +33,12 @@ export class DynFormMode {
 
     // overrides any customization set in control.modes[mode]
     if (config.modes?.[mode]) {
-      result = this.mergeConfigs(result, config.modes[mode]);
+      result = this.mergeConfigs(result, config.modes[mode]!);
     }
 
     // overrides any customization set in form.modes[mode][control]
     if (this.controls && Object.prototype.hasOwnProperty.call(this.controls, mode)) {
-      const control = this.getControl(result.control, this.controls[mode]);
+      const control = this.getControl(result.control, this.controls[mode]!);
       if (control) {
         result = this.mergeConfigs(result, control);
       }
