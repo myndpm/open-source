@@ -43,7 +43,7 @@ export class DynFormFactory {
   register<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
-    parent: DynFormTreeNode<AbstractControl>,
+    parent: DynFormTreeNode<any, AbstractControl>,
     recursively = false
   ): T {
     // fail-safe validation
@@ -139,7 +139,7 @@ export class DynFormFactory {
   /**
    * Append a control to a given parent in the specified name.
    */
-  append(parent: DynFormTreeNode<AbstractControl>, name: string, control: AbstractControl): void {
+  append(parent: DynFormTreeNode<any, AbstractControl>, name: string, control: AbstractControl): void {
     // only FormGroup can be extended
     if (parent.control instanceof FormGroup) {
       parent.control.addControl(name, control);

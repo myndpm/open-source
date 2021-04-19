@@ -5,5 +5,6 @@ export interface DynControlFactoryParams {
 
 // control params
 export interface DynControlParams {
-  // not using a generic type to be strictly typed
+  // some custom params could be needed by custom handlers
+  [key: string]: any;
 }

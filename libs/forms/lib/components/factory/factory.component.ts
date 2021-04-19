@@ -93,7 +93,7 @@ export class DynFactoryComponent implements OnInit {
           deepEqual(config?.options, newConfig.options)
         ) {
           if (newConfig.params) {
-            this.component.instance.setParams(newConfig.params);
+            this.component.instance.updateParams(newConfig.params);
           }
         } else {
           // new config

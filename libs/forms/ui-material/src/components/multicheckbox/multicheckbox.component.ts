@@ -69,7 +69,7 @@ implements OnInit, OnChanges {
         return valueChanges.pipe(startWith(value));
       })
     )
-      .pipe(takeUntil(this._paramsChanged))
+      .pipe(takeUntil(this.params$)) // stop on params changed
       .subscribe((values: boolean[]) => {
         this._internalValueChange = true;
         this.control.setValue(

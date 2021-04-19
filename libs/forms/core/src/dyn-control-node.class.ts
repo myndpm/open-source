@@ -4,13 +4,18 @@ import isCallable from 'is-callable';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './control-events.types';
+import { DynControlParams } from './control-params.types';
 import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()
-export abstract class DynControlNode<TControl extends AbstractControl>
+export abstract class DynControlNode<
+  TParams extends DynControlParams,
+  TControl extends AbstractControl,
+>
 implements OnInit, OnDestroy {
 
-  node!: DynFormTreeNode<TControl>; // corresponding node in the form hierarchy
+  // corresponding node in the form hierarchy
+  node!: DynFormTreeNode<TParams, TControl>;
 
   protected _unsubscribe = new Subject<void>();
 

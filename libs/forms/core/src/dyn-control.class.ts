@@ -3,15 +3,15 @@ import {
   Directive,
   Injector,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { isObservable, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import merge from 'merge';
+import { BehaviorSubject, isObservable, merge as mergeStreams, of } from 'rxjs';
+import { scan } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
@@ -26,8 +26,8 @@ export abstract class DynControl<
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
-extends DynControlNode<TControl>
-implements OnInit, OnChanges, OnDestroy {
+extends DynControlNode<TParams, TControl>
+implements OnInit, OnChanges {
 
   // central place to define the provided Type
   static dynControl: DynControlType = '';
@@ -38,7 +38,9 @@ implements OnInit, OnChanges, OnDestroy {
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
   config!: TConfig; // passed down in the hierarchy
-  params!: TParams; // values available for the concrete Component instance
+  get params(): TParams { // values available for the concrete Component instance
+    return this.params$.getValue();
+  }
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
   }
@@ -46,10 +48,11 @@ implements OnInit, OnChanges, OnDestroy {
     return this.node.parent.control;
   }
 
+  readonly params$ = new BehaviorSubject<TParams>({} as TParams);
+
   protected readonly _logger: DynLogger;
   protected readonly _formFactory: DynFormFactory;
   protected readonly _ref: ChangeDetectorRef;
-  protected readonly _paramsChanged = new Subject<void>();
 
   constructor(injector: Injector) {
     super(injector);
@@ -66,8 +69,25 @@ implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     super.ngOnInit();
 
-    // assign incoming parameters after the control is ready
-    this.setParams(this.config.params);
+    // listen parameters changes after the control is ready
+    mergeStreams(
+      isObservable(this.config.params) ? this.config.params : of(this.config.params),
+      this.node.paramsUpdates$,
+    )
+    .pipe(
+      scan((params, updates) => merge(true, params, updates), {})
+    )
+    .subscribe((params) => {
+      // emulates ngOnChanges
+      const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
+      this.params$.next(change.currentValue);
+      this.ngOnChanges({ params: change });
+
+      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
+
+      // emulates the async pipe
+      this._ref.markForCheck();
+    });
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
@@ -75,35 +95,7 @@ implements OnInit, OnChanges, OnDestroy {
     // emulated while assigning the params as DynControls has no Inputs
   }
 
-  ngOnDestroy(): void {
-    this._paramsChanged.next();
-    this._paramsChanged.complete();
-
-    super.ngOnDestroy();
-  }
-
-  setParams(params?: Partial<TParams> | Observable<Partial<TParams>>): void {
-    const updateParams = (newParams: Partial<TParams>): void => {
-      // emulates ngOnChanges
-      const change = new SimpleChange(this.params, this.completeParams(newParams), !this.params);
-      this.params = change.currentValue;
-      this.ngOnChanges({ params: change });
-
-      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
-
-      // emulates the async pipe
-      this._ref.markForCheck();
-    }
-
-    this._paramsChanged.next();
-
-    // update params
-    if (!isObservable(params)) {
-      updateParams(params || {});
-    } else {
-      params.pipe(takeUntil(this._paramsChanged)).subscribe({
-        next: (values) => updateParams(values),
-      });
-    }
+  updateParams(newParams?: Partial<TParams>): void {
+    this.node.paramsUpdates$.next(newParams);
   }
 }

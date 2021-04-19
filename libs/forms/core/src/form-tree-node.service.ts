@@ -1,11 +1,12 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { combineLatest, merge, Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlHook } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
+import { DynControlParams } from './control-params.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormMatchers } from './form-matchers.service';
@@ -14,13 +15,17 @@ import { DynTreeNode } from './tree.types';
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
-export class DynFormTreeNode<TControl extends AbstractControl = FormGroup>
+export class DynFormTreeNode<
+  TParams extends DynControlParams = DynControlParams,
+  TControl extends AbstractControl = FormGroup
+>
 implements DynTreeNode<TControl> {
   // form hierarchy
   isolated = false;
-  children: DynFormTreeNode<AbstractControl>[] = [];
+  children: DynFormTreeNode[] = [];
 
-  // reactive events
+  // listened by DynControl
+  paramsUpdates$ = new Subject<Partial<TParams>>();
   hook$ = new Subject<DynControlHook>();
 
   // control config
@@ -57,7 +62,7 @@ implements DynTreeNode<TControl> {
     private readonly formMatchers: DynFormMatchers,
     private readonly logger: DynLogger,
     // parent node should be set for all except the root
-    @Optional() @SkipSelf() public readonly parent: DynFormTreeNode,
+    @Optional() @SkipSelf() public readonly parent: DynFormTreeNode<any>,
   ) {}
 
   /**
@@ -74,7 +79,7 @@ implements DynTreeNode<TControl> {
   // query for a control upper in the tree
   query(path: string, searchNodes = false): AbstractControl|null {
     /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<AbstractControl> = this;
+    let node: DynFormTreeNode<TParams, any> = this;
     let result: AbstractControl|null;
 
     do {
@@ -215,13 +220,13 @@ implements DynTreeNode<TControl> {
   /**
    * Hierarchy methods
    */
-  private addChild(node: DynFormTreeNode<AbstractControl>): void {
+  private addChild(node: DynFormTreeNode<any, any>): void {
     this.children.push(node);
 
     // TODO setup validators
   }
 
-  private removeChild(node: DynFormTreeNode<AbstractControl>): void {
+  private removeChild(node: DynFormTreeNode<any, any>): void {
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });
