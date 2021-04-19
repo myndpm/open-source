@@ -10,12 +10,9 @@ import { DynFactoryComponent, DynFormComponent, DynGroupComponent } from './comp
   exports: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
 })
 export class DynFormsModule {
-  static forFeature(
-    args?: DynModuleProviders,
-    ngModule = DynFormsModule,
-  ): ModuleWithProviders<DynFormsModule> {
+  static forFeature(args?: DynModuleProviders): ModuleWithProviders<DynFormsModule> {
     return {
-      ngModule,
+      ngModule: DynFormsModule,
       providers: getModuleProviders(args),
     };
   }

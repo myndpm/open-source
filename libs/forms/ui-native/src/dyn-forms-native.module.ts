@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
+import { getModuleProviders } from '@myndpm/dyn-forms/core';
 import {
   DynNatInputComponent,
 } from './components';
@@ -22,14 +23,17 @@ import {
 })
 export class DynFormsNativeModule {
   static forFeature(): ModuleWithProviders<DynFormsNativeModule> {
-    return DynFormsModule.forFeature({
-      controls: [
-        {
-          control: DynNatInputComponent.dynControl,
-          instance: DynNatInputComponent.dynInstance,
-          component: DynNatInputComponent,
-        },
-      ],
-    }, DynFormsNativeModule);
+    return {
+      ngModule: DynFormsNativeModule,
+      providers: getModuleProviders({
+        controls: [
+          {
+            control: DynNatInputComponent.dynControl,
+            instance: DynNatInputComponent.dynInstance,
+            component: DynNatInputComponent,
+          },
+        ],
+      }),
+    };
   }
 }

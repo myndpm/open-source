@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule, MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
+import { getModuleProviders } from '@myndpm/dyn-forms/core';
 import {
   DynMatArrayComponent,
   DynMatCardComponent,
@@ -73,57 +74,60 @@ import {
 })
 export class DynFormsMaterialModule {
   static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
-    return DynFormsModule.forFeature({
-      providers: [
-        MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
-      ],
-      controls: [
-        {
-          control: DynMatArrayComponent.dynControl,
-          instance: DynMatArrayComponent.dynInstance,
-          component: DynMatArrayComponent,
-        },
-        {
-          control: DynMatCardComponent.dynControl,
-          instance: DynMatCardComponent.dynInstance,
-          component: DynMatCardComponent,
-        },
-        {
-          control: DynMatCheckboxComponent.dynControl,
-          instance: DynMatCheckboxComponent.dynInstance,
-          component: DynMatCheckboxComponent,
-        },
-        {
-          control: DynMatDatepickerComponent.dynControl,
-          instance: DynMatDatepickerComponent.dynInstance,
-          component: DynMatDatepickerComponent,
-        },
-        {
-          control: DynMatDividerComponent.dynControl,
-          instance: DynMatDividerComponent.dynInstance,
-          component: DynMatDividerComponent,
-        },
-        {
-          control: DynMatInputComponent.dynControl,
-          instance: DynMatInputComponent.dynInstance,
-          component: DynMatInputComponent,
-        },
-        {
-          control: DynMatMulticheckboxComponent.dynControl,
-          instance: DynMatMulticheckboxComponent.dynInstance,
-          component: DynMatMulticheckboxComponent,
-        },
-        {
-          control: DynMatRadioComponent.dynControl,
-          instance: DynMatRadioComponent.dynInstance,
-          component: DynMatRadioComponent,
-        },
-        {
-          control: DynMatSelectComponent.dynControl,
-          instance: DynMatSelectComponent.dynInstance,
-          component: DynMatSelectComponent,
-        },
-      ],
-    }, DynFormsMaterialModule);
+    return {
+      ngModule: DynFormsMaterialModule,
+      providers: getModuleProviders({
+        providers: [
+          MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+        ],
+        controls: [
+          {
+            control: DynMatArrayComponent.dynControl,
+            instance: DynMatArrayComponent.dynInstance,
+            component: DynMatArrayComponent,
+          },
+          {
+            control: DynMatCardComponent.dynControl,
+            instance: DynMatCardComponent.dynInstance,
+            component: DynMatCardComponent,
+          },
+          {
+            control: DynMatCheckboxComponent.dynControl,
+            instance: DynMatCheckboxComponent.dynInstance,
+            component: DynMatCheckboxComponent,
+          },
+          {
+            control: DynMatDatepickerComponent.dynControl,
+            instance: DynMatDatepickerComponent.dynInstance,
+            component: DynMatDatepickerComponent,
+          },
+          {
+            control: DynMatDividerComponent.dynControl,
+            instance: DynMatDividerComponent.dynInstance,
+            component: DynMatDividerComponent,
+          },
+          {
+            control: DynMatInputComponent.dynControl,
+            instance: DynMatInputComponent.dynInstance,
+            component: DynMatInputComponent,
+          },
+          {
+            control: DynMatMulticheckboxComponent.dynControl,
+            instance: DynMatMulticheckboxComponent.dynInstance,
+            component: DynMatMulticheckboxComponent,
+          },
+          {
+            control: DynMatRadioComponent.dynControl,
+            instance: DynMatRadioComponent.dynInstance,
+            component: DynMatRadioComponent,
+          },
+          {
+            control: DynMatSelectComponent.dynControl,
+            instance: DynMatSelectComponent.dynInstance,
+            component: DynMatSelectComponent,
+          },
+        ],
+      }),
+    };
   }
 }
