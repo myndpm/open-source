@@ -13,7 +13,7 @@
     <mat-datepicker #picker></mat-datepicker>
 
     <span *ngIf="params.readonly">
-      {{ (params.getValue ? params.getValue(params, control.value) : control.value) || '-' }}
+      {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
     </span>
 
     <mat-hint *ngIf="params.hint">{{ params.hint }}</mat-hint>

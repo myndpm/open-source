@@ -1,5 +1,5 @@
 import { FloatLabelType } from '@angular/material/form-field';
-import { DynControlParams } from '@myndpm/dyn-forms/core';
+import { DynControlParams, DynTreeNode } from '@myndpm/dyn-forms/core';
 
 export interface DynMatInputParams extends DynControlParams {
   floatLabel: FloatLabelType; // readonly mode uses 'always' floating label
@@ -12,5 +12,6 @@ export interface DynMatInputParams extends DynControlParams {
   textSuffix?: string;
   readonly?: boolean;
   rows?: number; // for textarea type
-  getValue?: (params: DynMatInputParams, value: any) => any;
+  // paramFns
+  getValue?: (node: DynTreeNode) => string;
 }

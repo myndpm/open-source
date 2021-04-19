@@ -108,8 +108,9 @@ export const defaultFunctions: DynControlFunction[] = [
   {
     id: 'getOptionText',
     fn: (): DynControlFunctionFn => {
-      return (params: any, value: any) => {
-        const option = params.options.find((o: any) => o.value === value);
+      return (node: DynTreeNode) => {
+        const value = node.control.value;
+        const option = node.params.options.find((o: any) => o.value === value);
         return value && option ? option.text : value;
       }
     }

@@ -24,7 +24,7 @@
     </ng-template>
 
     <span *ngIf="params.readonly">
-      {{ (params.getValue ? params.getValue(params, control.value) : control.value) || '-' }}
+      {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
     </span>
 
     <mat-icon *ngIf="params.iconPrefix" matPrefix>{{ params.iconPrefix }}</mat-icon>

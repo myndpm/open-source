@@ -19,7 +19,7 @@ export class DynFormTreeNode<
   TParams extends DynControlParams = DynControlParams,
   TControl extends AbstractControl = FormGroup
 >
-implements DynTreeNode<TControl> {
+implements DynTreeNode<TParams, TControl> {
   // form hierarchy
   isolated = false;
   children: DynFormTreeNode[] = [];
@@ -40,6 +40,9 @@ implements DynTreeNode<TControl> {
   get control(): TControl {
     return this._control;
   }
+  get params(): TParams {
+    return this._params;
+  }
   get isRoot(): boolean {
     return this.isolated || !this.parent;
   }
@@ -56,6 +59,7 @@ implements DynTreeNode<TControl> {
   private _instance!: DynInstanceType;
   private _control!: TControl;
   private _matchers?: DynControlMatch[];
+  private _params!: TParams;
 
   private _unsubscribe = new Subject<void>();
 
@@ -171,6 +175,9 @@ implements DynTreeNode<TControl> {
 
     // store the matchers to be processed afterViewInit
     this._matchers = config.options?.matchers;
+
+    // store the params to be accessible to the handlers
+    this._params = config.params as TParams;
 
     if (!this.isolated) {
       // register the node with its parent
