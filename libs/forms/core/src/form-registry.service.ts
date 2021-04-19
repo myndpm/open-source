@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { ControlProvider, InjectedControl, isLazyControl } from './control-provider.types';
+import { DynControlProvider, DynInjectedControl, isDynLazyControl } from './control-provider.types';
 import { DynControlType, DynInstanceType } from './control.types';
 import { DYN_CONTROLS_TOKEN } from './form.tokens';
 
 @Injectable()
 export class DynFormRegistry {
   constructor(
-    @Inject(DYN_CONTROLS_TOKEN) private readonly controls: ControlProvider[]
+    @Inject(DYN_CONTROLS_TOKEN) private readonly controls: DynControlProvider[]
   ) {}
 
-  get(dynControl: DynControlType): ControlProvider {
+  get(dynControl: DynControlType): DynControlProvider {
     const provided = this.controls.find(({ control }) => dynControl === control);
 
     if (!provided) {
@@ -19,10 +19,10 @@ export class DynFormRegistry {
     return provided;
   }
 
-  resolve(dynControl: DynControlType): InjectedControl {
+  resolve(dynControl: DynControlType): DynInjectedControl {
     const resolved = this.get(dynControl);
 
-    if (isLazyControl(resolved)) {
+    if (isDynLazyControl(resolved)) {
       // TODO dynamically load provider.component with useFactory
     }
 

@@ -3,13 +3,13 @@ import { BehaviorSubject } from 'rxjs';
 import { DynControlCondition, DynControlMatcher } from './control-matchers.types';
 import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
 import { DynControlFunction } from './control-params.types';
-import { ControlProvider } from './control-provider.types';
+import { DynControlProvider } from './control-provider.types';
 import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
 
 /**
  * core token gathering the controls in the system
  */
-export const DYN_CONTROLS_TOKEN = new InjectionToken<ControlProvider[]>(
+export const DYN_CONTROLS_TOKEN = new InjectionToken<DynControlProvider[]>(
   '@myndpm/dyn-forms/dyn-controls'
 );
 
