@@ -4,7 +4,7 @@ import { DynControlCondition, DynControlMatcher } from './control-matchers.types
 import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
 import { DynControlFunction } from './control-params.types';
 import { ControlProvider } from './control-provider.types';
-import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
+import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
 
 /**
  * core token gathering the controls in the system
@@ -16,11 +16,11 @@ export const DYN_CONTROLS_TOKEN = new InjectionToken<ControlProvider[]>(
 /**
  * core tokens for named functions
  */
-export const DYN_VALIDATORS_TOKEN = new InjectionToken<DynValidatorProvider[]>(
+export const DYN_VALIDATORS_TOKEN = new InjectionToken<DynControlValidator[]>(
   '@myndpm/dyn-forms/validators'
 );
 
-export const DYN_ASYNCVALIDATORS_TOKEN = new InjectionToken<DynAsyncValidatorProvider[]>(
+export const DYN_ASYNCVALIDATORS_TOKEN = new InjectionToken<DynControlAsyncValidator[]>(
   '@myndpm/dyn-forms/async-validators'
 );
 

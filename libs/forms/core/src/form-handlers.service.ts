@@ -18,7 +18,7 @@ import {
   isBaseCondition,
 } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
-import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
+import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
 import {
   defaultConditions,
   defaultFunctions,
@@ -49,9 +49,9 @@ export class DynFormHandlers {
     @Inject(DYN_FUNCTIONS_TOKEN) @Optional()
     readonly providedFunctions?: DynControlFunction[],
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
-    readonly providedValidators?: DynValidatorProvider[],
+    readonly providedValidators?: DynControlValidator[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
-    readonly providedAsyncValidators?: DynAsyncValidatorProvider[],
+    readonly providedAsyncValidators?: DynControlAsyncValidator[],
     @Inject(DYN_MATCHERS_TOKEN) @Optional()
     readonly providedMatchers?: DynControlMatcher[],
     @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()

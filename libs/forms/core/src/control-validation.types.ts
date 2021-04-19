@@ -12,5 +12,5 @@ import { DynBaseHandler } from './dyn-providers';
 /**
  * validators provided in the module individually
  */
-export type DynValidatorProvider = DynBaseHandler<ValidatorFn>;
-export type DynAsyncValidatorProvider = DynBaseHandler<AsyncValidatorFn>;
+export type DynControlValidator = DynBaseHandler<ValidatorFn>;
+export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;

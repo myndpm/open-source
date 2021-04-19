@@ -4,7 +4,7 @@ import { map, startWith } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
 import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
-import { DynValidatorProvider } from "./control-validation.types";
+import { DynControlValidator } from './control-validation.types';
 import { DynTreeNode } from './tree.types';
 
 /**
@@ -32,7 +32,7 @@ export function mapPriority<T extends DynBaseProvider>(priority?: number) {
 /**
  * Default Angular validators
  */
-export const defaultValidators: DynValidatorProvider[] = [
+export const defaultValidators: DynControlValidator[] = [
   { id: 'required', fn: () => Validators.required },
   { id: 'requiredTrue', fn: () => Validators.requiredTrue },
   { id: 'pattern', fn: Validators.pattern },
@@ -42,7 +42,7 @@ export const defaultValidators: DynValidatorProvider[] = [
   { id: 'min', fn: Validators.min },
   { id: 'max', fn: Validators.max },
 ].map(
-  mapPriority<DynValidatorProvider>()
+  mapPriority<DynControlValidator>()
 );
 
 /**
