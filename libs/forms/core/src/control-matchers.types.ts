@@ -21,7 +21,7 @@ export interface DynControlMatchCondition extends DynBaseCondition {
  * match (condition) then run (matcher)
  */
  export interface DynControlMatch {
-  matcher: DynConfigProvider; // matcher id | [id, args]
+  matchers: DynConfigProvider[]; // [matcher id | [id, args]]
   negate?: boolean; // use this matcher in the opposed way (ie. DISABLE -> ENABLE)
   operator?: 'AND' | 'OR';
   when: Array<DynConfigProvider | DynControlMatchCondition>;

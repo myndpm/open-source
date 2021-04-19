@@ -204,7 +204,7 @@ implements DynTreeNode<TParams, TControl> {
   afterViewInit(): void {
     // process the stored matchers
     this._matchers?.map((config) => {
-      const matcher = this.formHandlers.getMatcher(config.matcher);
+      const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
 
       combineLatest(
         // build an array of observables to listen changes into
@@ -220,8 +220,8 @@ implements DynTreeNode<TParams, TControl> {
         distinctUntilChanged(),
       )
       .subscribe(hasMatch => {
-        // run the matcher with the conditions result
-        matcher(this, config.negate ? !hasMatch : hasMatch)
+        // run the matchers with the conditions result
+        matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch));
       });
     });
 

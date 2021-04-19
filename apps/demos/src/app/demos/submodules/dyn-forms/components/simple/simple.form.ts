@@ -98,7 +98,7 @@ export function simpleForm(
             options: {
               matchers: [
                 {
-                  matcher: 'ENABLE',
+                  matchers: ['ENABLE'],
                   negate: true,
                   operator: 'AND',
                   when: [
@@ -107,7 +107,7 @@ export function simpleForm(
                   ]
                 },
                 {
-                  matcher: 'HIDE',
+                  matchers: ['HIDE'],
                   when: [
                     { path: 'account', value: 'GUEST' },
                   ]
