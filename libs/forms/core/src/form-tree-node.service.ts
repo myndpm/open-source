@@ -72,6 +72,22 @@ implements DynTreeNode<TParams, TControl> {
   ) {}
 
   /**
+   * VIsibility methods
+   */
+
+  visible(): void {
+    this.visibility$.next('VISIBLE');
+  }
+
+  invisible(): void {
+    this.visibility$.next('INVISIBLE');
+  }
+
+  hidden(): void {
+    this.visibility$.next('HIDDEN');
+  }
+
+  /**
    * Feature methods
    */
 

@@ -65,6 +65,31 @@ export const defaultMatchers: DynControlMatcher[] = [
       }
     }
   },
+  {
+    id: 'SHOW',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        hasMatch ? node.visible() : node.hidden();
+      }
+    }
+  },
+  {
+    id: 'INVISIBLE',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        hasMatch ? node.invisible() : node.visible();
+      }
+    }
+  },
+  // TODO also disable? support more than one matcher?
+  {
+    id: 'HIDE',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        hasMatch ? node.hidden() : node.visible();
+      }
+    }
+  },
 ].map(
   mapPriority<DynControlMatcher>()
 );

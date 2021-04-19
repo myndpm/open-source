@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -65,6 +66,7 @@ export class DynFactoryComponent implements OnInit {
 
   constructor(
     @Inject(INJECTOR) private readonly parent: Injector,
+    private readonly ref: ChangeDetectorRef,
     private readonly resolver: ComponentFactoryResolver,
     private readonly registry: DynFormRegistry,
     private readonly logger: DynLogger,
@@ -134,6 +136,9 @@ export class DynFactoryComponent implements OnInit {
     // listen control.visibility$
     this.component.instance.visibility$
       .pipe(takeUntil(this.component.instance.onDestroy$))
-      .subscribe(visibility => this.visibility = visibility);
+      .subscribe((visibility) => {
+        this.visibility = visibility;
+        this.ref.markForCheck();
+      });
   }
 }

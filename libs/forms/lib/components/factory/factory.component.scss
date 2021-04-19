@@ -1,8 +1,8 @@
 dyn-factory {
   &.dyn-invisible {
-    visibility: hidden;
+    visibility: hidden !important;
   }
   &.dyn-hidden {
-    display: none;
+    display: none !important;
   }
 }

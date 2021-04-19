@@ -1,5 +1,5 @@
 import { DynControlParams } from '@myndpm/dyn-forms/core';
-import { createMatConfig, DynMatRadioParams, DynMatSelectParams } from '@myndpm/dyn-forms/ui-material';
+import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 
@@ -103,6 +103,12 @@ export function simpleForm(
                   when: [
                     { path: 'firstName', value: 'Mateo' },
                     { path: 'country', value: 'CO' },
+                  ]
+                },
+                {
+                  matcher: 'HIDE',
+                  when: [
+                    { path: 'account', value: 'GUEST' },
                   ]
                 },
               ]

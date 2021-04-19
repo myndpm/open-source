@@ -21,6 +21,10 @@ export interface DynTreeNode<
   control: TControl;
   params: TParams;
 
+  visible(): void;
+  invisible(): void;
+  hidden(): void;
+
   callHook(event: DynControlHook): void;
   query(path: string, searchNodes?: boolean): AbstractControl|null;
   select(path: string): AbstractControl|null;
