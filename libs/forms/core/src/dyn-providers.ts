@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, mapTo, startWith } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
 import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
@@ -107,6 +107,10 @@ export const defaultConditions: DynControlCondition[] = [
         if (!control) {
           console.error(`Control '${path}' not found inside a Condition`)
           return of(true); // do not break AND matchers
+        }
+        if (value === undefined) {
+          // triggers with any valueChange
+          return control.valueChanges.pipe(mapTo(true));
         }
         return control.valueChanges.pipe(
           startWith(control.value),
