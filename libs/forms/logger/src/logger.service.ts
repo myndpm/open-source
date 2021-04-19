@@ -23,10 +23,10 @@ export class DynLogger {
     });
   }
 
-  validatorNotFound(id: any): Error {
+  providerNotFound(provider: string, config: any): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,
-      message: `Validator '${id}' not provided.`,
+      message: `${provider} ${JSON.stringify(config)} not provided.`,
     });
   }
 

@@ -29,7 +29,7 @@ export class DynFormRegistry {
     return {
       control: resolved.control,
       instance: resolved.instance,
-      component: resolved.component ?? ({} as any),
+      component: resolved.component!,
     };
   }
 

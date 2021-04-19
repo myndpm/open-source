@@ -55,7 +55,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'address1',
-            options: { validators: ['required'] },
+            options: { validators: { required: null, minLength: 4 } },
             factory: { cssClass: 'col-12 col-md-8' },
             params: { label: 'Address Line 1 *' },
           }),
@@ -99,9 +99,21 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'zipCode',
-            options: { validators: { required: null, minLength: 4 } },
+            options: {
+              matchers: [
+                {
+                  matcher: 'ENABLE',
+                  negate: true,
+                  operator: 'AND',
+                  when: [
+                    { path: 'firstName', value: 'Mateo' },
+                    { path: 'country', value: 'CO' },
+                  ]
+                },
+              ]
+            },
             factory: { cssClass: 'col-sm-6 col-md-4' },
-            params: { label: 'Postal Code *' },
+            params: { label: 'Postal Code' },
           }),
         ],
       }),

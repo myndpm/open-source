@@ -6,7 +6,7 @@ import {
   DynControlMode,
 } from '@myndpm/dyn-forms/core';
 
-// typed config with any supported modes
+// typed config with any set of supported modes
 export interface DynFormConfig<M extends DynControlMode = DynControlMode> {
   controls: Array<DynBaseConfig<M> | DynConfig<M>>;
   modeParams?: DynModeParams<M>; // default params per mode
