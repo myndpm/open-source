@@ -7,16 +7,16 @@ import {
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
 import { DynInstanceType } from './control.types';
+import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
-import { DynFormValidators } from './form-validators.service';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls
 export class DynFormFactory {
   constructor(
+    private handlers: DynFormHandlers,
     private registry: DynFormRegistry,
-    private validators: DynFormValidators,
   ) {}
 
   /**
@@ -97,20 +97,20 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const control = new FormGroup({}, this.validators.dynOptions(config.options));
+        const control = new FormGroup({}, this.handlers.getControlOptions(config.options));
         if (recursively) {
           this.buildControls(control, config);
         }
         return (control as unknown) as T;
       }
       case DynInstanceType.Array: {
-        return (new FormArray([], this.validators.dynOptions(config.options)) as unknown) as T;
+        return (new FormArray([], this.handlers.getControlOptions(config.options)) as unknown) as T;
       }
       case DynInstanceType.Control: {
         return (
           new FormControl(
             config.options?.defaults ?? null,
-            this.validators.dynOptions(config.options)
+            this.handlers.getControlOptions(config.options)
           ) as unknown
         ) as T;
       }

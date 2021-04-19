@@ -8,16 +8,36 @@ import {
   DynConfigProvider,
   DynControlOptions,
 } from './control-config.types';
+import {
+  DynControlCondition,
+  DynControlConditionFn,
+  DynControlMatchCondition,
+  DynControlMatcher,
+  DynControlMatcherFn,
+  isBaseCondition,
+} from './control-matchers.types';
 import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
-import { defaultValidators, DynBaseHandler, DynHandlerFactory } from './dyn-providers';
-import { DYN_ASYNCVALIDATORS_TOKEN, DYN_VALIDATORS_TOKEN } from './form.tokens';
+import {
+  defaultConditions,
+  defaultMatchers,
+  defaultValidators,
+  DynBaseHandler,
+  DynHandlerFactory,
+} from './dyn-providers';
+import {
+  DYN_ASYNCVALIDATORS_TOKEN,
+  DYN_MATCHERS_TOKEN,
+  DYN_MATCHER_CONDITIONS_TOKEN,
+  DYN_VALIDATORS_TOKEN,
+} from './form.tokens';
 
 @Injectable()
-// injected in the DynFormFactory to complete the controls options
-export class DynFormValidators {
-  // registered validators
+export class DynFormHandlers {
+  // registered handlers
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
+  matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
+  conditions = new Map<DynConfigId, DynHandlerFactory<DynControlConditionFn>>();
 
   constructor(
     private readonly logger: DynLogger,
@@ -25,6 +45,10 @@ export class DynFormValidators {
     readonly providedValidators?: DynValidatorProvider[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
     readonly providedAsyncValidators?: DynAsyncValidatorProvider[],
+    @Inject(DYN_MATCHERS_TOKEN) @Optional()
+    readonly providedMatchers?: DynControlMatcher[],
+    @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()
+    readonly providedConditions?: DynControlCondition[],
   ) {
     // reduce the provided validators according to priority
     this.reduceProvider(
@@ -35,17 +59,51 @@ export class DynFormValidators {
       (this.providedAsyncValidators ?? []),
       this.asyncValidators,
     );
+    this.reduceProvider(
+      (this.providedMatchers ?? []).concat(defaultMatchers),
+      this.matchers,
+    );
+    this.reduceProvider(
+      (this.providedConditions ?? []).concat(defaultConditions),
+      this.conditions,
+    );
   }
 
-  /**
-   * Config translators
-   */
-  dynOptions(config?: DynControlOptions): AbstractControlOptions {
+  getControlOptions(config?: DynControlOptions): AbstractControlOptions {
     return {
       validators: this.dynValidators(this.validators, config?.validators),
       asyncValidators: this.dynValidators(this.asyncValidators, config?.asyncValidators),
       updateOn: config?.updateOn,
     }
+  }
+
+  getMatcher(config: DynConfigProvider): DynControlMatcherFn {
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.matchers.has(id)) {
+        return this.matchers.get(id)!(...this.getArgs(args));
+      }
+    } else if (this.matchers.has(config)) {
+      return this.matchers.get(config)!();
+    }
+    throw this.logger.providerNotFound('Matcher', config);
+  }
+
+  getCondition(config: DynConfigProvider | DynControlMatchCondition): DynControlConditionFn {
+    if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.conditions.has(id)) {
+        return this.conditions.get(id)!(...this.getArgs(args));
+      }
+    } else if (isBaseCondition(config)) {
+      const id = config.id ?? 'DEFAULT'; // default condition handler
+      if (this.conditions.has(id)) {
+        return this.conditions.get(id)!(config);
+      }
+    } else if (this.conditions.has(config)) {
+      return this.conditions.get(config)!();
+    }
+    throw this.logger.providerNotFound('Condition', config);
   }
 
   private dynValidators<F>(

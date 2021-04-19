@@ -9,7 +9,7 @@ import { DynControlMatch } from './control-matchers.types';
 import { DynControlParams } from './control-params.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
-import { DynFormMatchers } from './form-matchers.service';
+import { DynFormHandlers } from './form-handlers.service';
 import { DynTreeNode } from './tree.types';
 
 @Injectable()
@@ -61,7 +61,7 @@ implements DynTreeNode<TControl> {
 
   constructor(
     private readonly formFactory: DynFormFactory,
-    private readonly formMatchers: DynFormMatchers,
+    private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
     // parent node should be set for all except the root
     @Optional() @SkipSelf() public readonly parent: DynFormTreeNode<any>,
@@ -181,12 +181,12 @@ implements DynTreeNode<TControl> {
   afterViewInit(): void {
     // process the stored matchers
     this._matchers?.map((config) => {
-      const matcher = this.formMatchers.getMatcher(config.matcher);
+      const matcher = this.formHandlers.getMatcher(config.matcher);
 
       combineLatest(
         // build an array of observables to listen changes into
         config.when
-          .map(condition => this.formMatchers.getCondition(condition)) // handler fn
+          .map(condition => this.formHandlers.getCondition(condition)) // handler fn
           .map(fn => fn(this)) // condition observables
       ).pipe(
         map(results => config.operator === 'OR'

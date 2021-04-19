@@ -5,9 +5,8 @@ import { ControlProvider } from './control-provider.types';
 import { DynAsyncValidatorProvider, DynValidatorProvider } from './control-validation.types';
 import { mapPriority } from './dyn-providers';
 import { DynFormFactory } from './form-factory.service';
-import { DynFormMatchers } from './form-matchers.service';
+import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
-import { DynFormValidators } from './form-validators.service';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
   DYN_CONTROLS_TOKEN,
@@ -36,8 +35,7 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
     DynLogDriver,
     DynLogger,
     DynFormRegistry,
-    DynFormValidators,
-    DynFormMatchers,
+    DynFormHandlers,
     DynFormFactory,
     ...args?.providers ?? [],
     ...args?.controls?.map(mapPriority(args?.priority)).map((control) => ({
