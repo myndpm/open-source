@@ -1,5 +1,7 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { DynConfigId } from './control-config.types';
 import { DynBaseHandler } from './dyn-providers';
+import { DynTreeNode } from './tree.types';
 
 /**
  * triggers configuration
@@ -14,3 +16,13 @@ import { DynBaseHandler } from './dyn-providers';
  */
 export type DynControlValidator = DynBaseHandler<ValidatorFn>;
 export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;
+
+/**
+ * error handlers
+ */
+export interface DynErrorMessage {
+  id: DynConfigId; // handler that returned it
+  message: string; // string to be displayed
+}
+export type DynErrorHandlerFn = (node: DynTreeNode) => DynErrorMessage|null;
+export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;

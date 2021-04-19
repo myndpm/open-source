@@ -31,7 +31,6 @@ export interface DynControlOptions extends DynControlTriggers {
   validators?: DynConfigCollection;
   asyncValidators?: DynConfigCollection;
   matchers?: DynControlMatch[]; // conditional validations
-  // errorHandlers?: DynConfigCollection;
 }
 
 /**
@@ -45,4 +44,5 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider>;
+  // errorHandlers?: Array<DynConfigProvider>;
 }
