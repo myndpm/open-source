@@ -21,4 +21,5 @@ export * from './src/form.tokens';
 export * from './src/form-mode.service';
 export * from './src/form-registry.service';
 export * from './src/form-factory.service';
+export * from './src/form-handlers.service';
 export * from './src/form-tree-node.service';

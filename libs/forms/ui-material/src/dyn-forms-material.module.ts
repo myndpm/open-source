@@ -53,7 +53,7 @@ import {
     DynMatRadioComponent,
     DynMatSelectComponent,
   ],
-  // FIXME added for stackblitz
+  // FIXME added for Stackblitz
   entryComponents: [
     DynMatArrayComponent,
     DynMatCardComponent,

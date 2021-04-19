@@ -10,6 +10,7 @@ import {
   Injector,
   Input,
   OnInit,
+  SkipSelf,
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
@@ -18,11 +19,13 @@ import {
   AbstractDynControl,
   DynBaseConfig,
   DynControlMode,
+  DynControlVisibility,
+  DynFormFactory,
+  DynFormHandlers,
   DynFormMode,
   DynFormTreeNode,
   DynFormRegistry,
   DYN_MODE,
-  DynControlVisibility,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
@@ -85,6 +88,12 @@ export class DynFactoryComponent implements OnInit {
         {
           provide: DynFormTreeNode,
           useClass: DynFormTreeNode,
+          deps: [ // FIXME added for Stackblitz
+            DynFormFactory,
+            DynFormHandlers,
+            DynLogger,
+            [new SkipSelf(), DynFormTreeNode],
+          ],
         },
       ],
       parent: injector,
