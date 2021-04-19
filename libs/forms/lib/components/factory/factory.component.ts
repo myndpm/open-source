@@ -11,6 +11,7 @@ import {
   OnInit,
   ViewChild,
   ViewContainerRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   AbstractDynControl,
@@ -20,14 +21,18 @@ import {
   DynFormTreeNode,
   DynFormRegistry,
   DYN_MODE,
+  DynControlVisibility,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'dyn-factory',
   templateUrl: './factory.component.html',
+  styleUrls: ['./factory.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynFactoryComponent implements OnInit {
@@ -37,10 +42,14 @@ export class DynFactoryComponent implements OnInit {
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
 
+  visibility: DynControlVisibility = 'VISIBLE';
+
   @HostBinding('class')
   get cssClass(): string {
     return [
       this.config.factory?.cssClass,
+      // add the visibility class
+      this.visibility ? `dyn-${this.visibility.toLowerCase()}` : null,
       // add a default class based on the name
       this.config.name ? `dyn-control-${this.config.name}` : null,
     ].filter(Boolean).join(' ');
@@ -121,5 +130,10 @@ export class DynFactoryComponent implements OnInit {
     // and register itself in the Form Tree in the lifecycle methods
 
     this.component.hostView.detectChanges();
+
+    // listen control.visibility$
+    this.component.instance.visibility$
+      .pipe(takeUntil(this.component.instance.onDestroy$))
+      .subscribe(visibility => this.visibility = visibility);
   }
 }

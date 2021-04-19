@@ -46,7 +46,7 @@ implements OnInit, OnChanges {
 
     // listen valueChanges to sync the internal checkboxes
     this.control.valueChanges
-      .pipe(takeUntil(this._unsubscribe))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         if (!this._internalValueChange) {
           this.params.options.forEach((option, i) => {

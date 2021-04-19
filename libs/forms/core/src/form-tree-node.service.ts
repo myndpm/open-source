@@ -4,7 +4,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
-import { DynControlHook } from './control-events.types';
+import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlParams } from './control-params.types';
 import { DynInstanceType } from './control.types';
@@ -24,6 +24,8 @@ implements DynTreeNode<TControl> {
   isolated = false;
   children: DynFormTreeNode[] = [];
 
+  // listened by dyn-factory
+  visibility$ = new Subject<DynControlVisibility>();
   // listened by DynControl
   paramsUpdates$ = new Subject<Partial<TParams>>();
   hook$ = new Subject<DynControlHook>();

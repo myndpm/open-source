@@ -10,9 +10,10 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import merge from 'merge';
-import { BehaviorSubject, isObservable, merge as mergeStreams, of } from 'rxjs';
+import { BehaviorSubject, isObservable, merge as mergeStreams, Observable, of } from 'rxjs';
 import { scan } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
+import { DynControlVisibility } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
@@ -46,6 +47,9 @@ implements OnInit, OnChanges {
   }
   get parentControl(): AbstractControl { // utility getter for the form directives
     return this.node.parent.control;
+  }
+  get visibility$(): Observable<DynControlVisibility> {
+    return this.node.visibility$.asObservable();
   }
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);

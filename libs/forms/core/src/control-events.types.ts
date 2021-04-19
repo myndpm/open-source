@@ -1,4 +1,9 @@
 /**
+ * Visibility handled by dyn-factory
+ */
+export type DynControlVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
+
+/**
  * callHook contract
  */
 export interface DynControlHook {

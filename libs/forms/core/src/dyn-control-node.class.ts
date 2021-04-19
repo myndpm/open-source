@@ -1,7 +1,7 @@
 import { Directive, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './control-events.types';
 import { DynControlParams } from './control-params.types';
@@ -17,7 +17,11 @@ implements OnInit, OnDestroy {
   // corresponding node in the form hierarchy
   node!: DynFormTreeNode<TParams, TControl>;
 
-  protected _unsubscribe = new Subject<void>();
+  get onDestroy$(): Observable<void> {
+    return this._unsubscribe.asObservable();
+  }
+
+  private _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
     this.node = injector.get(DynFormTreeNode);
