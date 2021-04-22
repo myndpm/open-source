@@ -1,0 +1,15 @@
+{
+  "examples": {
+    "languages": {
+      "title": {
+        "en": "Examples",
+        "es": "Ejemplos"
+      }
+    },
+    "files": [
+      "examples/introduction/app.component.ts",
+      "examples/introduction/app.component.html",
+      "examples/introduction/app.module.ts"
+    ]
+  }
+}

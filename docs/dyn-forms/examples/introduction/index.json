@@ -1,0 +1,19 @@
+{
+  "path": "examples",
+  "languages": {
+    "en": {
+      "title": "Examples",
+      "content": "README.md"
+    },
+    "es": {
+      "title": "Ejemplos",
+      "content": "README.es.md"
+    }
+  },
+  "files": [
+    "form.config.ts",
+    "app.component.ts",
+    "app.component.html",
+    "app.module.ts"
+  ]
+}
