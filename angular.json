@@ -29,7 +29,7 @@
       "projectType": "application",
       "root": "apps/demos",
       "sourceRoot": "apps/demos/src",
-      "prefix": "open-source",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
