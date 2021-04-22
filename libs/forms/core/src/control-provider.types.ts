@@ -8,25 +8,8 @@ import { DynBaseProvider } from './dyn-providers';
 
 export type AbstractDynControl = DynControl<DynControlMode, any, DynBaseConfig, AbstractControl>;
 
-export interface DynLazyControl extends DynBaseProvider {
-  control: DynControlType;
-  instance: DynInstanceType;
-  // resolved in DynFormRegistry
-  useFactory: () => Type<AbstractDynControl>;
-  component?: Type<AbstractDynControl>;
-}
-
-export interface DynInjectedControl extends DynBaseProvider {
+export interface DynControlProvider extends DynBaseProvider {
   control: DynControlType;
   instance: DynInstanceType;
   component: Type<AbstractDynControl>;
-}
-
-export type DynControlProvider = DynLazyControl | DynInjectedControl;
-
-// type guard
-export function isDynLazyControl(
-  provider: DynControlProvider
-): provider is DynLazyControl {
-  return Object.prototype.hasOwnProperty.call(provider, 'useFactory');
 }

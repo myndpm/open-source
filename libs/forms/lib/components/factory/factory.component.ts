@@ -128,7 +128,7 @@ export class DynFactoryComponent implements OnInit {
   }
 
   private createFrom(config: DynBaseConfig): void {
-    const control = this.registry.resolve(config.control);
+    const control = this.registry.get(config.control);
     const factory = this.resolver.resolveComponentFactory(control.component);
 
     this.component = this.container.createComponent<AbstractDynControl>(
