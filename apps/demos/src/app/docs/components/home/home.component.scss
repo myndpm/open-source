@@ -1,0 +1,36 @@
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
+
+header {
+  background-color: #f2f2f7;
+  height: 320px;
+  overflow: hidden;
+  text-align: center;
+
+  @include media-breakpoint-down(md) {
+    height: 240px;
+  }
+
+  h2 {
+    color: #38b87c;
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 56px;
+    margin: 15px 5px;
+  }
+
+  span {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 28px;
+  }
+}
+
+main {
+  p {
+    text-align: center;
+  }
+}
+
