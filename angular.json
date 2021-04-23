@@ -42,7 +42,12 @@
             "aot": true,
             "assets": [
               "apps/demos/src/favicon.jpg",
-              "apps/demos/src/assets"
+              "apps/demos/src/assets",
+              {
+                "glob": "**/*",
+                "input": "docs",
+                "output": "docs"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

@@ -15,6 +15,11 @@ const routes: Routes = [
       import('./demos/demos.module').then((m) => m.DemosModule),
   },
   {
+    path: 'docs',
+    loadChildren: () =>
+      import('./docs/docs.module').then((m) => m.DocsModule),
+  },
+  {
     path: '**',
     component: LayoutWrapperComponent,
     children: [

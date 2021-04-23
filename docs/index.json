@@ -1,10 +1,8 @@
 {
-  "examples": {
-    "languages": {
-      "title": {
-        "en": "Examples",
-        "es": "Ejemplos"
-      }
+  "dyn-forms/examples": {
+    "title": {
+      "en": "Examples",
+      "es": "Ejemplos"
     },
     "files": [
       "examples/introduction/app.component.ts",

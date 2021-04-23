@@ -1,14 +1,12 @@
 {
   "path": "examples",
-  "languages": {
-    "en": {
-      "title": "Examples",
-      "content": "README.md"
-    },
-    "es": {
-      "title": "Ejemplos",
-      "content": "README.es.md"
-    }
+  "title": {
+    "en": "Examples",
+    "es": "Ejemplos"
+  },
+  "content": {
+    "en": "README.md",
+    "es": "README.es.md"
   },
   "files": [
     "form.config.ts",
