@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  OnDestroy,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -19,7 +20,7 @@ import { simpleData, simpleForm } from './simple.form';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class SimpleComponent implements AfterViewInit {
+export class SimpleComponent implements AfterViewInit, OnDestroy {
   // ref links
   badges = badges;
   actions = [
@@ -60,6 +61,10 @@ export class SimpleComponent implements AfterViewInit {
             : 'Billing information complete',
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    console.clear();
   }
 
   loadData(): void {

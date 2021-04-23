@@ -1,4 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { actions, badges } from '../../constants/dyn-forms.links';
@@ -9,7 +15,7 @@ import { actions, badges } from '../../constants/dyn-forms.links';
   styleUrls: ['./stepper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StepperComponent implements AfterViewInit {
+export class StepperComponent implements AfterViewInit, OnDestroy {
   // ref links
   badges = badges;
   actions = [
@@ -30,5 +36,9 @@ export class StepperComponent implements AfterViewInit {
     this.form.patchValue({ choices: [1] });
     // logs each change in the console just to demo
     this.dynForm.valueChanges().subscribe(console.log);
+  }
+
+  ngOnDestroy(): void {
+    console.clear();
   }
 }
