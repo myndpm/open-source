@@ -1,0 +1,7 @@
+[build]
+  command = "npm run ssr:prerender"
+  publish = "dist/website/browser"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

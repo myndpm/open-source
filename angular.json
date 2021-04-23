@@ -41,7 +41,6 @@
             "tsConfig": "apps/website/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/website/src/_redirects",
               "apps/website/src/favicon.jpg",
               "apps/website/src/assets",
               {
