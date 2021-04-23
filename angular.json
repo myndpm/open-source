@@ -34,7 +34,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/demos",
+            "outputPath": "dist/demos/browser",
             "index": "apps/demos/src/index.html",
             "main": "apps/demos/src/main.ts",
             "polyfills": "apps/demos/src/polyfills.ts",
@@ -133,6 +133,53 @@
             "email": "eng.frontend@mynd.co",
             "cname": "false",
             "message": "build: github pages ci release"
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/demos/server",
+            "main": "apps/demos/server.ts",
+            "tsConfig": "apps/demos/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "apps/demos/src/environments/environment.ts",
+                  "with": "apps/demos/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "demos:build",
+            "serverTarget": "demos:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "demos:build:production",
+              "serverTarget": "demos:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "demos:build:production",
+            "serverTarget": "demos:server:production",
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }
