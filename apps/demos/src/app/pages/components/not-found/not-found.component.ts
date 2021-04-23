@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Optional } from '@angular/core';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
 
 @Component({
   selector: 'app-not-found',
@@ -6,4 +8,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./not-found.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  constructor(
+    @Optional() @Inject(RESPONSE) private response: Response,
+  ) {}
+
+  ngOnInit() {
+    if (this.response) {
+      this.response.statusCode = 404;
+      this.response.statusMessage = 'Page Not Found';
+    }
+  }
+}

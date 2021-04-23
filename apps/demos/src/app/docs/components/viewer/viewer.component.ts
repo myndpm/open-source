@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
 import { DocsMetadata } from '../../interfaces';
 
 @Component({
@@ -16,6 +18,7 @@ export class ViewerComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
+    @Optional() @Inject(RESPONSE) private response: Response,
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +30,10 @@ export class ViewerComponent {
 
       // defaults to the docs/home
       if (!this.metadata) {
+        if (this.response) {
+          this.response.statusCode = 404;
+          this.response.statusMessage = 'Page Not Found';
+        }
         this.router.navigateByUrl('/404');
       }
     })
