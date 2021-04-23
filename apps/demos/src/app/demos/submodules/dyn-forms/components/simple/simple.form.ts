@@ -1,6 +1,6 @@
+import { DynFormConfig } from '@myndpm/dyn-forms';
 import { DynControlParams } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { DynFormConfig } from '@myndpm/dyn-forms';
 import { Observable } from 'rxjs';
 
 export const simpleData = {

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from './bootstrap-breakpoints';
 import { LayoutModule, LayoutWrapperComponent } from './layout';
