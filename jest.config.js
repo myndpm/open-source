@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ['<rootDir>/apps/demos', '<rootDir>/libs/forms'],
+  projects: ['<rootDir>/apps/website', '<rootDir>/libs/forms'],
 };

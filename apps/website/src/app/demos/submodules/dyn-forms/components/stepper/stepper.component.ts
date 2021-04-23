@@ -14,7 +14,7 @@ export class StepperComponent implements AfterViewInit {
   badges = badges;
   actions = [
     {
-      link: "https://github.com/myndpm/open-source/tree/master/apps/demos/src/app/demos/submodules/dyn-forms/components/stepper",
+      link: "https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/stepper",
       icon: 'code',
       tooltip: 'See source code',
     },

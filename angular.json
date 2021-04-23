@@ -3,7 +3,7 @@
   "cli": {
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "demos",
+  "defaultProject": "website",
   "schematics": {
     "@nrwl/angular:application": {
       "style": "styl",
@@ -25,25 +25,25 @@
     }
   },
   "projects": {
-    "demos": {
+    "website": {
       "projectType": "application",
-      "root": "apps/demos",
-      "sourceRoot": "apps/demos/src",
+      "root": "apps/website",
+      "sourceRoot": "apps/website/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/demos/browser",
-            "index": "apps/demos/src/index.html",
-            "main": "apps/demos/src/main.ts",
-            "polyfills": "apps/demos/src/polyfills.ts",
-            "tsConfig": "apps/demos/tsconfig.app.json",
+            "outputPath": "dist/website/browser",
+            "index": "apps/website/src/index.html",
+            "main": "apps/website/src/main.ts",
+            "polyfills": "apps/website/src/polyfills.ts",
+            "tsConfig": "apps/website/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/demos/src/_redirects",
-              "apps/demos/src/favicon.jpg",
-              "apps/demos/src/assets",
+              "apps/website/src/_redirects",
+              "apps/website/src/favicon.jpg",
+              "apps/website/src/assets",
               {
                 "glob": "**/*",
                 "input": "docs",
@@ -52,8 +52,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "apps/demos/src/material.scss",
-              "apps/demos/src/styles.styl"
+              "apps/website/src/material.scss",
+              "apps/website/src/styles.styl"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
@@ -63,8 +63,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/demos/src/environments/environment.ts",
-                  "with": "apps/demos/src/environments/environment.prod.ts"
+                  "replace": "apps/website/src/environments/environment.ts",
+                  "with": "apps/website/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -92,36 +92,36 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "demos:build"
+            "browserTarget": "website:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "demos:build:production"
+              "browserTarget": "website:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demos:build"
+            "browserTarget": "website:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/demos/src/**/*.ts",
-              "apps/demos/src/**/*.html"
+              "apps/website/src/**/*.ts",
+              "apps/website/src/**/*.html"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "outputs": [
-            "coverage/apps/demos"
+            "coverage/apps/website"
           ],
           "options": {
-            "jestConfig": "apps/demos/jest.config.js",
+            "jestConfig": "apps/website/jest.config.js",
             "passWithNoTests": true
           }
         },
@@ -138,17 +138,17 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/demos/server",
-            "main": "apps/demos/server.ts",
-            "tsConfig": "apps/demos/tsconfig.server.json"
+            "outputPath": "dist/website/server",
+            "main": "apps/website/server.ts",
+            "tsConfig": "apps/website/tsconfig.server.json"
           },
           "configurations": {
             "production": {
               "outputHashing": "media",
               "fileReplacements": [
                 {
-                  "replace": "apps/demos/src/environments/environment.ts",
-                  "with": "apps/demos/src/environments/environment.prod.ts"
+                  "replace": "apps/website/src/environments/environment.ts",
+                  "with": "apps/website/src/environments/environment.prod.ts"
                 }
               ],
               "sourceMap": false,
@@ -159,21 +159,21 @@
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
-            "browserTarget": "demos:build",
-            "serverTarget": "demos:server"
+            "browserTarget": "website:build",
+            "serverTarget": "website:server"
           },
           "configurations": {
             "production": {
-              "browserTarget": "demos:build:production",
-              "serverTarget": "demos:server:production"
+              "browserTarget": "website:build:production",
+              "serverTarget": "website:server:production"
             }
           }
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "browserTarget": "demos:build:production",
-            "serverTarget": "demos:server:production",
+            "browserTarget": "website:build:production",
+            "serverTarget": "website:server:production",
             "routes": [
               "/"
             ]

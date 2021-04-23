@@ -15,7 +15,7 @@
     }
   },
   "projects": {
-    "demos": { "tags": [] },
+    "website": { "tags": [] },
     "forms": { "tags": ["shared"] }
   }
 }

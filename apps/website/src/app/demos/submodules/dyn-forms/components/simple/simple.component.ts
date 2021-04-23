@@ -24,7 +24,7 @@ export class SimpleComponent implements AfterViewInit {
   badges = badges;
   actions = [
     {
-      link: "https://github.com/myndpm/open-source/blob/master/apps/demos/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
+      link: "https://github.com/myndpm/open-source/blob/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple/simple.form.ts",
       icon: 'code',
       tooltip: 'See source code',
     },
