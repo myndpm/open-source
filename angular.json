@@ -46,7 +46,7 @@
               {
                 "glob": "**/*",
                 "input": "docs",
-                "output": "docs"
+                "output": "static"
               }
             ],
             "styles": [

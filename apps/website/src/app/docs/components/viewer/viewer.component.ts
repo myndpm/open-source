@@ -22,7 +22,7 @@ export class ViewerComponent {
   ) {}
 
   ngOnInit(): void {
-    this.http.get('/docs/index.json').subscribe((routes) => {
+    this.http.get('/static/index.json').subscribe((routes) => {
       // search the requested URL in the index
       const url = this.route.snapshot.url.map(({ path }) => path).join('/');
 
