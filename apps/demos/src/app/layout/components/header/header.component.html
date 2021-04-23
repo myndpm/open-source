@@ -12,8 +12,8 @@
     </button>
     <div class="collapse navbar-collapse" id="topNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" *ngFor="let option of menu" [routerLink]="option.link" routerLinkActive="active">
+        <li class="nav-item" *ngFor="let option of menu">
+          <a class="nav-link" [routerLink]="option.link" routerLinkActive="active">
             {{ option.title }}
           </a>
         </li>
