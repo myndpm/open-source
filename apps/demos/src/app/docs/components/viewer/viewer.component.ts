@@ -21,18 +21,13 @@ export class ViewerComponent {
   ngOnInit(): void {
     this.http.get('/docs/index.json').subscribe((routes) => {
       // search the requested URL in the index
-      const paths = this.route.snapshot.url.map(({ path }) => path);
+      const url = this.route.snapshot.url.map(({ path }) => path).join('/');
 
-      let url = paths.join('/');
-      do {
-        this.metadata = routes[url];
-        paths.pop();
-        url = paths.join('/');
-      } while (!this.metadata && paths.length)
+      this.metadata = routes[url];
 
       // defaults to the docs/home
       if (!this.metadata) {
-        this.router.navigateByUrl('/docs/home');
+        this.router.navigateByUrl('/404');
       }
     })
   }

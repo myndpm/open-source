@@ -14,10 +14,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
         component: HomepageComponent,
       },
       {
-        path: 'not-found',
+        path: '404',
         component: NotFoundComponent,
       },
     ],
@@ -33,10 +34,10 @@ const routes: Routes = [
   ],
   declarations: [
     HomepageComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   exports: [
-    NotFoundComponent
+    RouterModule,
   ],
 })
 export class PagesModule {}

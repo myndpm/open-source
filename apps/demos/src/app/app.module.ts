@@ -3,8 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from './bootstrap-breakpoints';
-import { LayoutModule, LayoutWrapperComponent } from './layout';
-import { NotFoundComponent } from './pages/components/not-found/not-found.component';
+import { LayoutModule } from './layout';
 import { PagesModule } from './pages/pages.module';
 
 const routes: Routes = [
@@ -14,20 +13,10 @@ const routes: Routes = [
       import('./demos/demos.module').then((m) => m.DemosModule),
   },
   {
-    path: 'docs',
+    path: '',
     loadChildren: () =>
       import('./docs/docs.module').then((m) => m.DocsModule),
   },
-  {
-    path: '**',
-    component: LayoutWrapperComponent,
-    children: [
-      {
-        path: '',
-        component: NotFoundComponent
-      },
-    ],
-  }
 ];
 
 @NgModule({

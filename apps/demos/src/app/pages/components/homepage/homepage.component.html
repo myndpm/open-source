@@ -1,15 +1,48 @@
-<div class="container-lg" fxLayout="row" fxLayoutAlign=" center">
-  <div fxFlex fxLayout="column" fxLayoutAlign=" end">
-    <h2>@myndpm/dyn-forms</h2>
-    <p>
-      Abstract layer to easily generate Dynamic Forms for Angular
-      with a brand-new standard opened for community contributions and feedback!
-    </p>
-    <button mat-raised-button color="primary" routerLink="/demos/dyn-forms">
-      Check the Demo Here
-    </button>
+<header fxLayout="column" fxLayoutAlign="center center">
+  <h2>Mynd.co + Angular</h2>
+  <span>Open Source libraries documentation</span>
+</header>
+
+<main>
+  <div fxLayout="row" fxLayoutGap="3%" fxLayout.lt-md="column">
+    <div fxFlex="30%">
+      <h3 class="compact">High Quality</h3>
+      <p>
+        Clear and consistent code, inline documented
+        to easily understand the purpose of each section.
+      </p>
+    </div>
+
+    <div fxFlex="30%">
+      <h3 class="compact">Flexible</h3>
+      <p>
+        Generic software for multiple purposes and use cases.
+      </p>
+    </div>
+
+    <div fxFlex="30%">
+      <h3 class="compact">Supported</h3>
+      <p>
+        Backed by a big company with a large number
+        of Senior Software Developers.
+      </p>
+    </div>
   </div>
-  <div fxFlex>
-    <img src="assets/banners/home-stats.svg" />
+
+  <div class="banner" fxLayout="row" fxLayoutAlign=" center">
+    <div fxFlex fxLayout="column" fxLayoutAlign=" end" fxLayoutAlign.lt-md=" center">
+      <h2>@myndpm/dyn-forms</h2>
+      <p>
+        Abstract layer to easily generate Dynamic Forms for Angular
+        with a brand-new standard opened for community contributions and feedback!
+      </p>
+      <button mat-raised-button color="primary" routerLink="/demos/dyn-forms">
+        Check the Demos Here
+      </button>
+    </div>
+    <div fxFlex fxHide.lt-md="true">
+      <img src="assets/banners/home-stats.svg" />
+    </div>
   </div>
-</div>
+
+</main>
