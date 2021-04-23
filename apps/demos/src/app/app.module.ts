@@ -37,7 +37,6 @@ const routes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, {
       initialNavigation: 'enabled',
-      useHash: true,
     }),
     LayoutModule,
     PagesModule,
