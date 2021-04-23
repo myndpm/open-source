@@ -20,6 +20,13 @@ header {
     letter-spacing: -0.02em;
     line-height: 56px;
     margin: 15px 5px;
+
+    @include media-breakpoint-down(lg) {
+      font-size: 48px;
+    }
+    @include media-breakpoint-down(md) {
+      font-size: 36px;
+    }
   }
 
   span {
