@@ -46,3 +46,28 @@ import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material`;
 
 El módulo `DynFormsMaterialModule` incluye el módulo base `DynFormsModule`
 y otros proveedores requeridos para que que no necesitas importar nada más.
+
+## Uso
+
+Con la configuración anterior ahora puedes usar el componente `dyn-form`:
+
+```html
+<dyn-forms [form]="form" [config]="config"></dyn-forms>
+```
+
+donde la configuración puede ser construída con una función útil provista por el `ui-package`:
+
+```typescript
+import { DynFormConfig } from '@myndpm/dyn-forms';
+import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+
+const config: DynFormConfig = {
+  controls: [
+    createMatConfig('INPUT', {
+      params: { label: 'My text input' }
+    }),
+  ],
+}
+```
+
+Revisa la sección de [Controles Dinámicos](/docs/dyn-forms/intro/dynamic-controls) para aprender más sobre la configuración.

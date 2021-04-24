@@ -97,7 +97,7 @@ export class LayoutComponent implements OnInit {
     const nav: NavigationData[] = [];
     index.forEach((item, route) => {
       // only "/docs/*" routes
-      if (route.split('/').length === 3) {
+      if (route.split('/').length === 4) {
         nav.push(item);
       }
     });

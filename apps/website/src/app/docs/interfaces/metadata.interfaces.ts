@@ -1,12 +1,16 @@
 /**
  * Structure of the JSON root index
  */
+
+export type DocsLocalized = { [lang: string]: string };
+
 export interface DocsIndex {
   [url: string]: DocsMetadata;
 }
 
 export interface DocsMetadata {
-  title: { [lang: string]: string };
+  title: DocsLocalized;
+  content?: DocsLocalized; // README.lang.md
   files?: string[]; // file-paths
   redirectTo?: string;
   sourceLink?: string;
@@ -17,8 +21,8 @@ export interface DocsMetadata {
  */
 export interface DocsModule {
   path: string;
-  title: { [lang: string]: string };
-  content?: { [lang: string]: string }; // README.lang.md
+  title: DocsLocalized;
+  content?: DocsLocalized; // README.lang.md
   files?: string[]; // file-paths
   redirectTo?: string;
   sourceLink?: string;

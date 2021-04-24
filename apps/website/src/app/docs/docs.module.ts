@@ -10,6 +10,7 @@ import { LayoutModule, LayoutWrapperComponent } from '../layout';
 import { StackblitzComponent } from './components/stackblitz/stackblitz.component';
 import { ViewerComponent } from './components/viewer/viewer.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { ContentService } from './services';
 
 const routes: Routes = [
   {
@@ -39,6 +40,9 @@ const routes: Routes = [
     StackblitzComponent,
     ViewerComponent,
     LayoutComponent,
+  ],
+  providers: [
+    ContentService,
   ],
 })
 export class DocsModule {}

@@ -1,6 +1,6 @@
 # @myndpm/dyn-form
 
-Welcome, here you will find how to build Dynamic Forms for Angular.
+Here you will find how to build Dynamic Forms for Angular.
 
 ## Installation
 
@@ -20,7 +20,7 @@ This library doesn't need anything in the root Application Module,
 unless you declare there components that use dyn-forms.
 
 ```typescript
-import { DynFormsModule } from '@myndpm/dyn-forms`;
+import { DynFormsModule } from '@myndpm/dyn-forms';
 
 @NgModule({
   imports: [
@@ -46,3 +46,28 @@ import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material`;
 
 The `DynFormsMaterialModule` includes the base module `DynFormsModule`
 and other the required providers so you don't need to import anything else.
+
+## Usage
+
+With the previous setup you're able to use the `dyn-form` component:
+
+```html
+<dyn-forms [form]="form" [config]="config"></dyn-forms>
+```
+
+where the config can be built with some utility functions provided by the `ui-package`:
+
+```typescript
+import { DynFormConfig } from '@myndpm/dyn-forms';
+import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+
+const config: DynFormConfig = {
+  controls: [
+    createMatConfig('INPUT', {
+      params: { label: 'My text input' }
+    }),
+  ],
+}
+```
+
+Look the [Dynamic Controls](/docs/dyn-forms/intro/dynamic-controls) sections to learn more about their configuration.

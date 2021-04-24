@@ -1,19 +1,67 @@
 {
   "/docs/dyn-forms": {
     "title": {
+      "en": "DynForms",
+      "es": "DynForms"
+    },
+    "redirectTo": "/docs/dyn-forms/intro/getting-started"
+  },
+  "/docs/dyn-forms/intro": {
+    "title": {
       "en": "Introduction",
       "es": "Introducción"
-    },
-    "redirectTo": "/docs/dyn-forms/getting-started"
+    }
   },
-  "/docs/dyn-forms/getting-started": {
+  "/docs/dyn-forms/intro/getting-started": {
     "title": {
       "en": "Getting Started",
       "es": "Primeros Pasos"
     },
     "content": {
-      "en": "getting-started/README.md",
-      "es": "getting-started/README.es.md"
+      "en": "dyn-forms/getting-started/README.md",
+      "es": "dyn-forms/getting-started/README.es.md"
+    }
+  },
+  "/docs/dyn-forms/intro/dynamic-controls": {
+    "title": {
+      "en": "Dynamic Controls",
+      "es": "Controles Dinámicos"
+    }
+  },
+  "/docs/dyn-forms/intro/control-params": {
+    "title": {
+      "en": "Control Parameters",
+      "es": "Parámetros del Control"
+    }
+  },
+  "/docs/dyn-forms/intro/validators": {
+    "title": {
+      "en": "Validators",
+      "es": "Validadores"
+    }
+  },
+  "/docs/dyn-forms/intro/matchers": {
+    "title": {
+      "en": "Matches and Conditions",
+      "es": "Matchers y Condiciones"
+    }
+  },
+  "/docs/dyn-forms/intro/layout": {
+    "title": {
+      "en": "Layout Options",
+      "es": "Opciones de Layout"
+    }
+  },
+  "/docs/dyn-forms/ui": {
+    "title": {
+      "en": "UI Packages",
+      "es": "Paquetes UI"
+    }
+  },
+  "/docs/dyn-forms/ui/material": {
+    "title": {
+      "en": "Material",
+      "es": "Material"
     }
   },
   "/docs/dyn-forms/examples": {
@@ -22,14 +70,86 @@
       "es": "Ejemplos"
     },
     "content": {
-      "en": "examples/introduction/README.md",
-      "es": "examples/introduction/README.es.md"
+      "en": "dyn-forms/examples/introduction/README.md",
+      "es": "dyn-forms/examples/introduction/README.es.md"
     },
     "files": [
-      "examples/introduction/form.config.ts",
-      "examples/introduction/app.component.ts",
-      "examples/introduction/app.component.html",
-      "examples/introduction/app.module.ts"
+      "dyn-forms/examples/introduction/form.config.ts",
+      "dyn-forms/examples/introduction/app.component.ts",
+      "dyn-forms/examples/introduction/app.component.html",
+      "dyn-forms/examples/introduction/app.module.ts"
     ]
+  },
+  "/docs/dyn-forms/examples/default-state": {
+    "title": {
+      "en": "Default Values",
+      "es": "Valores Predeterminados"
+    }
+  },
+  "/docs/dyn-forms/examples/hide-or-disable": {
+    "title": {
+      "en": "Hide or Disable",
+      "es": "Esconder o Deshabilitar"
+    }
+  },
+  "/docs/dyn-forms/examples/built-in-validators": {
+    "title": {
+      "en": "Built-in Validators",
+      "es": "Validadores Incluídos"
+    }
+  },
+  "/docs/dyn-forms/examples/custom-validators": {
+    "title": {
+      "en": "Custom Validators",
+      "es": "Validadores Personalizados"
+    }
+  },
+  "/docs/dyn-forms/examples/built-in-matchers": {
+    "title": {
+      "en": "Built-in Matchers",
+      "es": "Matchers Incluídos"
+    }
+  },
+  "/docs/dyn-forms/examples/custom-matchers": {
+    "title": {
+      "en": "Custom Matchers",
+      "es": "Matchers Personalizados"
+    }
+  },
+  "/docs/dyn-forms/examples/error-handlers": {
+    "title": {
+      "en": "Error Messages",
+      "es": "Mensajes de Error"
+    }
+  },
+  "/docs/dyn-forms/examples/conditional-validators": {
+    "title": {
+      "en": "Conditional Validators",
+      "es": "Validadores Condicionales"
+    }
+  },
+  "/docs/dyn-forms/examples/form-actions": {
+    "title": {
+      "en": "Form Actions",
+      "es": "Acciones del Formulario"
+    }
+  },
+  "/docs/dyn-forms/examples/form-arrays": {
+    "title": {
+      "en": "Form Arrays",
+      "es": "Arrays en el Formulario"
+    }
+  },
+  "/docs/dyn-forms/examples/combo-selectors": {
+    "title": {
+      "en": "Combo Selectors",
+      "es": "Selectores en Combo"
+    }
+  },
+  "/docs/dyn-forms/examples/deep-nesting": {
+    "title": {
+      "en": "Deep Nesting",
+      "es": "Anidado Múltiple"
+    }
   }
 }
