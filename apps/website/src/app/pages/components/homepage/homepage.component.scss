@@ -37,39 +37,16 @@ header {
 }
 
 main {
-
   p {
     text-align: center;
   }
 
-  .banner {
+  .call-to-action {
     margin: 20px 0 40px;
 
-    h2 {
-      color: #7a78b4;
-      font-size: 40px;
-      font-weight: 700;
-      letter-spacing: -.065ch;
-      line-height: 120%;
-      margin-top: 0;
-
-      @include media-breakpoint-down(lg) {
-        font-size: 32px;
-      }
-    }
-
-    p {
-      text-align: right;
-    }
-    img {
-      max-width: 100%;
-      vertical-align: middle;
-    }
-
-    @include media-breakpoint-down(md) {
-      p {
-        text-align: center;
-      }
+    button {
+      font-size: 16px;
+      line-height: 48px;
     }
   }
 }

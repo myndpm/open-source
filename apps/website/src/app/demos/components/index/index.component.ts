@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-index',
+  selector: 'app-demos-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -4,6 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule, LayoutWrapperComponent } from '../layout';
+import { DocsIndexComponent } from './components/docs/docs.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
@@ -16,6 +17,10 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         component: HomepageComponent,
+      },
+      {
+        path: 'docs',
+        component: DocsIndexComponent,
       },
       {
         path: '404',
@@ -33,6 +38,7 @@ const routes: Routes = [
     LayoutModule,
   ],
   declarations: [
+    DocsIndexComponent,
     HomepageComponent,
     NotFoundComponent,
   ],

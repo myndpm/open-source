@@ -1,0 +1,16 @@
+<section class="container px-4">
+  <div class="row row-cols-1 g-4">
+    <div class="col" *ngFor="let item of items">
+
+      <!--a [routerLink]="item.link">
+        <img [src]="item.image || '//via.placeholder.com/333x111'" alt="img">
+      </a-->
+
+      <div class="col-body border">
+        <h2><a [routerLink]="item.link">{{ item.title }}</a></h2>
+        <p *ngIf="item.description">{{ item.description }}</p>
+      </div>
+
+    </div>
+  </div>
+</section>
