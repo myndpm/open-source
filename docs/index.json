@@ -1,10 +1,32 @@
 {
-  "dyn-forms/examples": {
+  "/docs/dyn-forms": {
+    "title": {
+      "en": "Introduction",
+      "es": "Introducción"
+    },
+    "redirectTo": "/docs/dyn-forms/getting-started"
+  },
+  "/docs/dyn-forms/getting-started": {
+    "title": {
+      "en": "Getting Started",
+      "es": "Primeros Pasos"
+    },
+    "content": {
+      "en": "getting-started/README.md",
+      "es": "getting-started/README.es.md"
+    }
+  },
+  "/docs/dyn-forms/examples": {
     "title": {
       "en": "Examples",
       "es": "Ejemplos"
     },
+    "content": {
+      "en": "examples/introduction/README.md",
+      "es": "examples/introduction/README.es.md"
+    },
     "files": [
+      "examples/introduction/form.config.ts",
       "examples/introduction/app.component.ts",
       "examples/introduction/app.component.html",
       "examples/introduction/app.module.ts"

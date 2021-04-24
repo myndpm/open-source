@@ -1,0 +1,11 @@
+{
+  "path": "dyn-forms",
+  "title": {
+    "en": "Introduction",
+    "es": "Introducción"
+  },
+  "content": {
+    "en": "README.md",
+    "es": "README.es.md"
+  }
+}

@@ -1,0 +1,33 @@
+:host
+  display: block
+  height: 100%
+
+  ::ng-deep
+    //- customization of material styles
+    .mat-expansion-panel
+      border-radius: 0 !important
+      box-shadow: none
+
+    .mat-expansion-panel-header
+      font-size: 16px
+      font-weight: 500
+      padding: 0 24px 0 16px
+
+      .mat-expansion-indicator
+        padding: 0 0 8px
+
+      &.mat-expanded
+        height: 48px
+
+    .mat-expansion-panel-body
+      padding: 0
+
+    .mat-list-base
+      padding: 0
+
+    .mat-list-item
+      &.active
+        background: rgba(#38B87C, 0.5)
+
+.mat-accordion
+  border-right: 1px solid rgba(0,0,0,.12)

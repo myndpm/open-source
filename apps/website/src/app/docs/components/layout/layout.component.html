@@ -1,0 +1,19 @@
+<div fxFill fxLayout="row" fxLayoutAlign="stretch stretch">
+
+  <mat-accordion [multi]="true" fxFlex="250px">
+    <mat-expansion-panel [attr.route]="parent.link" *ngFor="let parent of nav | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ parent.text }}</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-nav-list *ngIf="parent.children">
+        <mat-list-item *ngFor="let option of parent.children" [routerLink]="option.link" routerLinkActive="active">
+          {{ option.text }}
+        </mat-list-item>
+      </mat-nav-list>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <app-docs-viewer fxFlex [metadata]="metadata"></app-docs-viewer>
+</div>

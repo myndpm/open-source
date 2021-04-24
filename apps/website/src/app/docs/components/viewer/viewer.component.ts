@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, Inject, Optional } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DocsMetadata } from '../../interfaces';
+import { I18nService } from '../../services';
 
 @Component({
   selector: 'app-docs-viewer',
@@ -12,30 +9,13 @@ import { DocsMetadata } from '../../interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerComponent {
-  metadata: DocsMetadata;
+  @Input() metadata: DocsMetadata;
+
+  get lang(): string {
+    return this.i18n.lang;
+  }
 
   constructor(
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router,
-    @Optional() @Inject(RESPONSE) private response: Response,
+    private i18n: I18nService,
   ) {}
-
-  ngOnInit(): void {
-    this.http.get('/static/index.json').subscribe((routes) => {
-      // search the requested URL in the index
-      const url = this.route.snapshot.url.map(({ path }) => path).join('/');
-
-      this.metadata = routes[url];
-
-      // defaults to the docs/home
-      if (!this.metadata) {
-        if (this.response) {
-          this.response.statusCode = 404;
-          this.response.statusMessage = 'Page Not Found';
-        }
-        this.router.navigateByUrl('/404');
-      }
-    })
-  }
 }
