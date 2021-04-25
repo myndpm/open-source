@@ -1,0 +1,24 @@
+[
+  {
+    "id": "dyn-forms.basic.intro",
+    "title": {
+      "en": "Basic Setup",
+      "es": "Configuración Básica"
+    },
+    "packagePath": "dyn-forms/basic/intro",
+    "componentName": "AppComponent",
+    "selector": "app-root",
+    "primaryFile": "app.component.ts",
+    "files": [
+      "form.config.ts",
+      "app.component.ts",
+      "app.component.html",
+      "app.module.ts"
+    ],
+    "additionalComponents": [],
+    "module": {
+      "name": "DynFormsExampleIntro",
+      "importSpecifier": "dyn-forms/basic/intro"
+    }
+  }
+]

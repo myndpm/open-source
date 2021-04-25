@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../../dist/libs/demos/dyn-forms",
+  "lib": {
+    "entryFile": "./index.ts"
+  }
+}

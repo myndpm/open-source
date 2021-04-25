@@ -1,3 +1,5 @@
+import EXAMPLE_COMPONENTS from './examples.json';
+
 export interface NgModuleInfo {
   /** Name of the NgModule. */
   name: string;
@@ -10,8 +12,12 @@ export interface NgModuleInfo {
 }
 
 export interface LiveExample {
+  /** Id of the example. */
+  id: string;
   /** Title of the example. */
-  title: string;
+  title: { [lang: string]: string };
+  /** Path to the directory containing the example. */
+  packagePath: string;
   /** Name of the example component. */
   componentName: string;
   /** Selector to match the component of this example. */
@@ -20,15 +26,15 @@ export interface LiveExample {
   primaryFile: string;
   /** List of files which are part of the example. */
   files: string[];
-  /** Path to the directory containing the example. */
-  packagePath: string;
   /** List of additional components which are part of the example. */
   additionalComponents: string[];
   /** NgModule that declares this example. */
   module: NgModuleInfo;
 }
 
-const EXAMPLE_COMPONENTS: { [id: string]: LiveExample } = {};
+export interface ExamplesIndex {
+  [id: string]: LiveExample;
+}
 
 /**
  * Example data with information about component name, selector, files used in
@@ -50,18 +56,26 @@ const EXAMPLE_COMPONENTS: { [id: string]: LiveExample } = {};
   /** Names of the components being used in this example. */
   componentNames!: string[];
 
-  constructor(example: string) {
+  constructor(example: string, lang = 'en') {
     if (!example || !EXAMPLE_COMPONENTS.hasOwnProperty(example)) {
       return;
     }
 
-    const {componentName, files, selector, primaryFile, additionalComponents, title} = EXAMPLE_COMPONENTS[example];
+    const {
+      componentName,
+      files,
+      selector,
+      primaryFile,
+      additionalComponents,
+      title
+    } = (EXAMPLE_COMPONENTS as unknown as ExamplesIndex)[example];
+
     const exampleName = example.replace(/(?:^\w|\b\w)/g, letter => letter.toUpperCase());
 
     this.exampleFiles = files;
     this.selectorName = selector;
     this.indexFilename = primaryFile;
-    this.description = title || exampleName.replace(/[\-]+/g, ' ') + ' Example';
+    this.description = title[lang] || exampleName.replace(/[\-]+/g, ' ') + ' Example';
     this.componentNames = [componentName, ...additionalComponents];
   }
 }

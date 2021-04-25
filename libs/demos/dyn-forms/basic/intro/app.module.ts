@@ -6,12 +6,16 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { DynFormsMaterialModule } from "@myndpm/dyn-forms/ui-material";
 import { AppComponent } from "./app.component";
 
+// workaround not required in application
+// https://github.com/angular/angular/issues/23609#issuecomment-407191955
+export const DynMaterialControls = DynFormsMaterialModule.forFeature();
+
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DynFormsMaterialModule.forFeature(),
     MatButtonModule,
+    DynMaterialControls,
   ],
   declarations: [
     AppComponent,

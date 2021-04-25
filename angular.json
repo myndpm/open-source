@@ -45,8 +45,13 @@
               "apps/website/src/assets",
               {
                 "glob": "**/*",
-                "input": "libs/demos/src/lib",
+                "input": "docs",
                 "output": "static"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/demos/dyn-forms",
+                "output": "static/dyn-forms"
               }
             ],
             "styles": [
