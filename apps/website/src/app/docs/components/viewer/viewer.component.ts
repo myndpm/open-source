@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DocsLocalized, DocsMetadata } from '../../interfaces';
 import { ContentService, I18nService } from '../../services';
 
@@ -12,6 +13,8 @@ export class ViewerComponent {
   @Input() metadata: DocsMetadata;
 
   @ViewChild('content', { read: ElementRef }) container: ElementRef;
+
+  loadExamples = false;
 
   get lang(): string {
     return this.i18n.lang;
@@ -32,7 +35,13 @@ export class ViewerComponent {
     }
   }
 
-  getLocalizedPath(paths: DocsLocalized): string {
+  onTabChange({ tab }: MatTabChangeEvent): void {
+    if (tab.textLabel === 'Examples') { // FIXME update i18n
+      this.loadExamples = true;
+    }
+  }
+
+  private getLocalizedPath(paths: DocsLocalized): string {
     if (this.lang !== 'en' && paths[this.lang]) {
       return paths[this.lang];
     }
@@ -42,7 +51,7 @@ export class ViewerComponent {
     return paths['en'];
   }
 
-  render(markdown: string, decodeHtml = false): void {
+  private render(markdown: string, decodeHtml = false): void {
     let compiled = this.content.compile(markdown, decodeHtml);
     this.container.nativeElement.innerHTML = compiled;
     this.content.highlight(this.container.nativeElement);
