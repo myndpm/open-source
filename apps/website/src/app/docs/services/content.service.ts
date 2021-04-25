@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, SecurityContext } from '@angular/core';
+import { Injectable, isDevMode, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as marked from 'marked';
 import { Observable } from 'rxjs';
@@ -37,6 +37,13 @@ export class ContentService {
     const decoded = decodeHtml ? this.decodeHtml(trimmed) : trimmed;
     const compiled = marked.parse(decoded, {
       renderer: new marked.Renderer(),
+      breaks: false,
+      gfm: true,
+      headerIds: true,
+      silent: !isDevMode(),
+      smartLists: true,
+      smartypants: true,
+      xhtml: true,
     });
     return this.sanitizer.sanitize(SecurityContext.HTML, compiled) || '';
   }

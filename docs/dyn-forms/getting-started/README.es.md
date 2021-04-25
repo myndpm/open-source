@@ -35,10 +35,12 @@ así que necesitamos incluir un `ui-package` de nuestra preferencia,
 o nuestro propio módulo con nuestros controles personalizados como:
 
 ```typescript
+import { ReactiveFormsModule } from '@angular/forms';
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material`;
 
 @NgModule({
   imports: [
+    ReactiveFormsModule,
     DynFormsMaterialModule.forRoot(),
   ]
 })
@@ -52,14 +54,20 @@ y otros proveedores requeridos para que que no necesitas importar nada más.
 Con la configuración anterior ahora puedes usar el componente `dyn-form`:
 
 ```html
-<dyn-forms [form]="form" [config]="config"></dyn-forms>
+<form [formGroup]="form">
+  <dyn-forms [form]="form" [config]="config"></dyn-forms>
+</form>
 ```
 
-donde la configuración puede ser construída con una función útil provista por el `ui-package`:
+donde el formulario es el `FormGroup` que se usa usualmente en Reactive Forms
+y la configuración puede ser construída con una función útil provista por el `ui-package`:
 
 ```typescript
+import { FormGroup } from '@angular/forms';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+
+const form = new FormGroup({});
 
 const config: DynFormConfig = {
   controls: [
@@ -70,4 +78,7 @@ const config: DynFormConfig = {
 }
 ```
 
-Revisa la sección de [Controles Dinámicos](/docs/dyn-forms/intro/dynamic-controls) para aprender más sobre la configuración.
+## A Continuación
+
+- Mira el código fuente del demo [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple).
+- Revisa la sección de [Controles Dinámicos](/docs/dyn-forms/intro/dynamic-controls) para aprender más sobre la configuración.
