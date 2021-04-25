@@ -79,11 +79,19 @@
       "en": "dyn-forms/examples/introduction/README.md",
       "es": "dyn-forms/examples/introduction/README.es.md"
     },
-    "files": [
-      "dyn-forms/examples/introduction/form.config.ts",
-      "dyn-forms/examples/introduction/app.component.ts",
-      "dyn-forms/examples/introduction/app.component.html",
-      "dyn-forms/examples/introduction/app.module.ts"
+    "examples": [
+      {
+        "title": {
+          "en": "Basic Setup",
+          "es": "Configuración Básica"
+        },
+        "files": [
+          "dyn-forms/examples/introduction/form.config.ts",
+          "dyn-forms/examples/introduction/app.component.ts",
+          "dyn-forms/examples/introduction/app.component.html",
+          "dyn-forms/examples/introduction/app.module.ts"
+        ]
+      }
     ]
   },
   "/docs/dyn-forms/examples/default-state": {

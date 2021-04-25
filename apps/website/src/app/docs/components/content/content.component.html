@@ -1,0 +1,26 @@
+<div class="content-wrapper" fxFill fxLayout="column">
+  <ng-container *ngIf="metadata?.examples then tabs; else overview"></ng-container>
+
+  <ng-template #overview>
+    <app-docs-viewer [source]="source | async"></app-docs-viewer>
+  </ng-template>
+
+  <ng-template #tabs>
+    <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
+
+      <mat-tab label="Overview">
+        <app-docs-viewer [source]="source | async"></app-docs-viewer>
+      </mat-tab>
+
+      <mat-tab label="Examples">
+        <ng-container *ngIf="loadExamples">
+          <app-docs-example
+            *ngFor="let example of metadata.examples"
+            [example]="example"
+          ></app-docs-example>
+        </ng-container>
+      </mat-tab>
+
+    </mat-tab-group>
+  </ng-template>
+</div>

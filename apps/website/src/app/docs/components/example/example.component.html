@@ -1,1 +1,43 @@
-<p>example works!</p>
+<div class="docs-example-viewer-wrapper">
+  <div class="docs-example-viewer-title">
+    <div class="docs-example-viewer-title-spacer">{{ example.title[lang] }}</div>
+
+    <button
+      mat-icon-button
+      type="button"
+      [attr.aria-label]="'Copy link to the clipboard'"
+      matTooltip="Copy link to example"
+      (click)="copyLink()">
+      <mat-icon>link</mat-icon>
+    </button>
+
+    <button mat-icon-button type="button" (click)="toggleSourceView()"
+            [matTooltip]="view === 'demo' ? 'View code' : 'Hide code'" aria-label="View source">
+      <mat-icon>code</mat-icon>
+    </button>
+
+    <!--stack-blitz-button [example]="example"></stack-blitz-button-->
+  </div>
+
+  <div class="docs-example-viewer-source" *ngIf="view === 'full'">
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTab">
+      <mat-tab *ngFor="let tabName of tabNames" [label]="tabName">
+        <div class="button-bar">
+          <button mat-icon-button type="button" (click)="copySource(exampleTabs[tabName])"
+                  class="docs-example-source-copy docs-example-button" matTooltip="Copy example source"
+                  title="Copy example source" aria-label="Copy example source to clipboard">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+        <app-docs-viewer [source]="exampleTabs[tabName]"></app-docs-viewer>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div class="docs-example-viewer-body">
+    TODO: DEMO RUNNING HERE
+    <!--ng-template *ngIf="_exampleComponentType && _exampleModuleFactory"
+                 [ngComponentOutlet]="_exampleComponentType"
+                 [ngComponentOutletNgModuleFactory]="_exampleModuleFactory"></ng-template-->
+  </div>
+</div>

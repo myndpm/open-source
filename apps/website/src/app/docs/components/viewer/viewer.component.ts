@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DocsLocalized, DocsMetadata } from '../../interfaces';
 import { ContentService, I18nService } from '../../services';
 
 @Component({
@@ -10,10 +15,10 @@ import { ContentService, I18nService } from '../../services';
   styleUrls: ['./viewer.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewerComponent {
-  @Input() metadata: DocsMetadata;
+export class ViewerComponent implements OnChanges {
+  @Input() source: string;
 
-  @ViewChild('content', { read: ElementRef }) container: ElementRef;
+  @ViewChild('content', { read: ElementRef, static: true }) container: ElementRef;
 
   loadExamples = false;
 
@@ -28,29 +33,10 @@ export class ViewerComponent {
   ) {}
 
   ngOnChanges(): void {
-    if (this.metadata?.content) {
+    if (this.source) {
       // render the markdown content
-      const path = this.getLocalizedPath(this.metadata?.content);
-      this.content.getFile(`/static/${path}`).subscribe(markdown => {
-        this.render(markdown);
-      });
+      this.render(this.source);
     }
-  }
-
-  onTabChange({ tab }: MatTabChangeEvent): void {
-    if (tab.textLabel === 'Examples') { // FIXME update i18n
-      this.loadExamples = true;
-    }
-  }
-
-  private getLocalizedPath(paths: DocsLocalized): string {
-    if (this.lang !== 'en' && paths[this.lang]) {
-      return paths[this.lang];
-    }
-    if (!paths['en']) {
-      throw new Error('Default english path not found')
-    }
-    return paths['en'];
   }
 
   private render(markdown: string, decodeHtml = false): void {
