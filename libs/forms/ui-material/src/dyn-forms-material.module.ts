@@ -26,6 +26,59 @@ import {
   DynMatSelectComponent,
 } from './components';
 
+export const PROVIDERS = getModuleProviders({
+  providers: [
+    MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+  ],
+  controls: [
+    {
+      control: DynMatArrayComponent.dynControl,
+      instance: DynMatArrayComponent.dynInstance,
+      component: DynMatArrayComponent,
+    },
+    {
+      control: DynMatCardComponent.dynControl,
+      instance: DynMatCardComponent.dynInstance,
+      component: DynMatCardComponent,
+    },
+    {
+      control: DynMatCheckboxComponent.dynControl,
+      instance: DynMatCheckboxComponent.dynInstance,
+      component: DynMatCheckboxComponent,
+    },
+    {
+      control: DynMatDatepickerComponent.dynControl,
+      instance: DynMatDatepickerComponent.dynInstance,
+      component: DynMatDatepickerComponent,
+    },
+    {
+      control: DynMatDividerComponent.dynControl,
+      instance: DynMatDividerComponent.dynInstance,
+      component: DynMatDividerComponent,
+    },
+    {
+      control: DynMatInputComponent.dynControl,
+      instance: DynMatInputComponent.dynInstance,
+      component: DynMatInputComponent,
+    },
+    {
+      control: DynMatMulticheckboxComponent.dynControl,
+      instance: DynMatMulticheckboxComponent.dynInstance,
+      component: DynMatMulticheckboxComponent,
+    },
+    {
+      control: DynMatRadioComponent.dynControl,
+      instance: DynMatRadioComponent.dynInstance,
+      component: DynMatRadioComponent,
+    },
+    {
+      control: DynMatSelectComponent.dynControl,
+      instance: DynMatSelectComponent.dynInstance,
+      component: DynMatSelectComponent,
+    },
+  ],
+});
+
 @NgModule({
   imports: [
     CommonModule,
@@ -76,58 +129,7 @@ export class DynFormsMaterialModule {
   static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
     return {
       ngModule: DynFormsMaterialModule,
-      providers: getModuleProviders({
-        providers: [
-          MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
-        ],
-        controls: [
-          {
-            control: DynMatArrayComponent.dynControl,
-            instance: DynMatArrayComponent.dynInstance,
-            component: DynMatArrayComponent,
-          },
-          {
-            control: DynMatCardComponent.dynControl,
-            instance: DynMatCardComponent.dynInstance,
-            component: DynMatCardComponent,
-          },
-          {
-            control: DynMatCheckboxComponent.dynControl,
-            instance: DynMatCheckboxComponent.dynInstance,
-            component: DynMatCheckboxComponent,
-          },
-          {
-            control: DynMatDatepickerComponent.dynControl,
-            instance: DynMatDatepickerComponent.dynInstance,
-            component: DynMatDatepickerComponent,
-          },
-          {
-            control: DynMatDividerComponent.dynControl,
-            instance: DynMatDividerComponent.dynInstance,
-            component: DynMatDividerComponent,
-          },
-          {
-            control: DynMatInputComponent.dynControl,
-            instance: DynMatInputComponent.dynInstance,
-            component: DynMatInputComponent,
-          },
-          {
-            control: DynMatMulticheckboxComponent.dynControl,
-            instance: DynMatMulticheckboxComponent.dynInstance,
-            component: DynMatMulticheckboxComponent,
-          },
-          {
-            control: DynMatRadioComponent.dynControl,
-            instance: DynMatRadioComponent.dynInstance,
-            component: DynMatRadioComponent,
-          },
-          {
-            control: DynMatSelectComponent.dynControl,
-            instance: DynMatSelectComponent.dynInstance,
-            component: DynMatSelectComponent,
-          },
-        ],
-      }),
+      providers: PROVIDERS,
     };
   }
 }
