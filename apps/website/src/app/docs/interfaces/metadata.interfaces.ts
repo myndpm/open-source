@@ -11,8 +11,8 @@ export interface DocsExample {
  export interface DocsModule {
   path: string;
   title: DocsLocalized;
-  content?: DocsLocalized; // README.lang.md
-  examples?: DocsExample[];
+  content?: DocsLocalized; // README[.lang].md
+  examples?: string[]; // example IDs
   redirectTo?: string;
   sourceLink?: string;
 }
