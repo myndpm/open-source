@@ -38,7 +38,7 @@ export class LayoutComponent implements OnInit {
   }
 
   private loadIndex(): void {
-    this.http.get('/static/index.json').subscribe((routes: DocsIndex) => {
+    this.http.get('/static/docs.json').subscribe((routes: DocsIndex) => {
       this.initNav(routes);
 
       // open the panel corresponding to the currentUrl

@@ -45,7 +45,7 @@
               "apps/website/src/assets",
               {
                 "glob": "**/*",
-                "input": "docs",
+                "input": "libs/demos/src/lib",
                 "output": "static"
               }
             ],
