@@ -1,6 +1,18 @@
 {
   "name": "@myndpm/demos",
   "version": "0.0.1",
+  "description": "Mynd Components Examples",
+  "keywords": [
+    "angular",
+    "demos"
+  ],
+  "license": "MIT",
+  "homepage": "https://mynd.netlify.app/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:myndpm/open-source.git",
+    "directory": "libs/demos"
+  },
   "peerDependencies": {
     "@angular/common": ">=11.0.0",
     "@angular/core": ">=11.0.0"
