@@ -1,8 +1,8 @@
 {
-  "path": "examples",
+  "path": "examples/basic-setup",
   "title": {
-    "en": "Examples",
-    "es": "Ejemplos"
+    "en": "Basic Setup",
+    "es": "Configuración Básica"
   },
   "content": {
     "en": "README.md",

@@ -68,6 +68,12 @@
     "title": {
       "en": "Examples",
       "es": "Ejemplos"
+    }
+  },
+  "/docs/dyn-forms/examples/basic-setup": {
+    "title": {
+      "en": "Basic Setup",
+      "es": "Configuración Básica"
     },
     "content": {
       "en": "dyn-forms/examples/introduction/README.md",

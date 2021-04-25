@@ -1,8 +1,8 @@
 {
   "path": "dyn-forms",
   "title": {
-    "en": "Introduction",
-    "es": "Introducción"
+    "en": "Getting Started",
+    "es": "Primeros Pasos"
   },
   "content": {
     "en": "README.md",

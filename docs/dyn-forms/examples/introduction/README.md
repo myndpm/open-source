@@ -1,4 +1,4 @@
-# Introductory Example
+# Basic Setup
 
 This is the most basic setup of dyn-forms.
 
