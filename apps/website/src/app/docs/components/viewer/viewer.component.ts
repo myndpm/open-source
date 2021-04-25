@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
 import { DocsLocalized, DocsMetadata } from '../../interfaces';
 import { ContentService, I18nService } from '../../services';
 
@@ -17,10 +18,11 @@ export class ViewerComponent {
   loadExamples = false;
 
   get lang(): string {
-    return this.i18n.lang;
+    return this.route.snapshot.queryParams.lang || this.i18n.lang;
   }
 
   constructor(
+    private route: ActivatedRoute,
     private content: ContentService,
     private i18n: I18nService,
   ) {}
