@@ -9,7 +9,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "noUnusedLocals": true,
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2017", "dom"],
