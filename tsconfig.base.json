@@ -17,6 +17,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@myndpm/demos": ["libs/demos/src/index.ts"],
       "@myndpm/dyn-forms": ["libs/forms/index.ts"],
       "@myndpm/dyn-forms/*": ["libs/forms/*"]
     }

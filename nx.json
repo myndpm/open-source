@@ -1,9 +1,14 @@
 {
   "npmScope": "myndpm",
-  "affected": { "defaultBase": "master" },
+  "affected": {
+    "defaultBase": "master"
+  },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     "tsconfig.base.json": "*",
     ".eslintrc.json": "*",
     "nx.json": "*"
@@ -11,11 +16,20 @@
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test"] }
+      "options": {
+        "cacheableOperations": ["build", "lint", "test"]
+      }
     }
   },
   "projects": {
-    "website": { "tags": [] },
-    "forms": { "tags": ["shared"] }
+    "website": {
+      "tags": []
+    },
+    "forms": {
+      "tags": ["shared"]
+    },
+    "demos": {
+      "tags": []
+    }
   }
 }

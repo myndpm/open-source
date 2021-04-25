@@ -121,9 +121,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/website"
-          ],
+          "outputs": ["coverage/apps/website"],
           "options": {
             "jestConfig": "apps/website/jest.config.js",
             "passWithNoTests": true
@@ -178,9 +176,7 @@
           "options": {
             "browserTarget": "website:build:production",
             "serverTarget": "website:server:production",
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
           },
           "configurations": {
             "production": {}
@@ -209,20 +205,44 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/forms/**/*.ts",
-              "libs/forms/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/forms/**/*.ts", "libs/forms/**/*.html"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/forms"
-          ],
+          "outputs": ["coverage/libs/forms"],
           "options": {
             "jestConfig": "libs/forms/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "demos": {
+      "projectType": "library",
+      "root": "libs/demos",
+      "sourceRoot": "libs/demos/src",
+      "prefix": "demo",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/demos/tsconfig.lib.json",
+            "project": "libs/demos/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/demos/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/demos/src/**/*.ts",
+              "libs/demos/src/**/*.html"
+            ]
           }
         }
       }
