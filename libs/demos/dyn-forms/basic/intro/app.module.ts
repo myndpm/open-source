@@ -3,23 +3,29 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { DynFormsModule } from "@myndpm/dyn-forms";
 import { DynFormsMaterialModule } from "@myndpm/dyn-forms/ui-material";
-import { AppComponent } from "./app.component";
+import { DynFormsBasicComponent } from "./app.component";
 
 // workaround not required in application
 // https://github.com/angular/angular/issues/23609#issuecomment-407191955
 export const DynMaterialControls = DynFormsMaterialModule.forFeature();
+
+const EXAMPLES = [
+  DynFormsBasicComponent,
+];
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
+    DynFormsModule,
     DynMaterialControls,
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: EXAMPLES,
+  entryComponents: EXAMPLES,
+  exports: EXAMPLES,
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

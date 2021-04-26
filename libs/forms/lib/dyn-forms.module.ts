@@ -7,6 +7,7 @@ import { DynFactoryComponent, DynFormComponent, DynGroupComponent } from './comp
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
   declarations: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
+  entryComponents: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
   exports: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
 })
 export class DynFormsModule {

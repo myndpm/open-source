@@ -1,6 +1,6 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
-    <div class="docs-example-viewer-title-spacer">{{ example.title[lang] }}</div>
+    <div class="docs-example-viewer-title-spacer">{{ exampleData.title[lang] }}</div>
 
     <button
       mat-icon-button
@@ -35,9 +35,11 @@
   </div>
 
   <div class="docs-example-viewer-body">
-    TODO: DEMO RUNNING HERE
-    <!--ng-template *ngIf="_exampleComponentType && _exampleModuleFactory"
-                 [ngComponentOutlet]="_exampleComponentType"
-                 [ngComponentOutletNgModuleFactory]="_exampleModuleFactory"></ng-template-->
+    FIXME: DEMO RUNNING HERE
+    <ng-template
+      *ngIf="_exampleComponentType && _exampleModuleFactory"
+      [ngComponentOutlet]="_exampleComponentType"
+      [ngComponentOutletNgModuleFactory]="_exampleModuleFactory"
+    ></ng-template>
   </div>
 </div>

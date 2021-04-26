@@ -17,6 +17,7 @@
     "strict": true
   },
   "angularCompilerOptions": {
+    "strictMetadataEmit": true,
     "strictInjectionParameters": false,
     "strictTemplates": false
   }

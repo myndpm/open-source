@@ -3,12 +3,12 @@ import { FormGroup } from "@angular/forms";
 import { formConfig } from "./form.config";
 
 @Component({
-  selector: "app-root",
+  selector: "dyn-forms-basic",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class DynFormsBasicComponent {
   form = new FormGroup({});
   config = formConfig();
 

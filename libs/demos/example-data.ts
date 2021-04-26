@@ -16,12 +16,12 @@ export interface LiveExample {
   id: string;
   /** Title of the example. */
   title: { [lang: string]: string };
-  /** Path to the directory containing the example. */
-  packagePath: string;
   /** Name of the example component. */
   componentName: string;
   /** Selector to match the component of this example. */
   selector: string;
+  /** Path to the directory containing the example. */
+  filesPath: string;
   /** Name of the primary file of this example. */
   primaryFile: string;
   /** List of files which are part of the example. */

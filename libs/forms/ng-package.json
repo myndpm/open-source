@@ -7,5 +7,6 @@
       "fast-deep-equal": "equal"
     }
   },
+  "deleteDestPath": true,
   "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge"]
 }

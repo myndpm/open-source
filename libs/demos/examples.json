@@ -5,9 +5,9 @@
       "en": "Basic Setup",
       "es": "Configuración Básica"
     },
-    "packagePath": "dyn-forms/basic/intro",
-    "componentName": "AppComponent",
-    "selector": "app-root",
+    "componentName": "DynFormsBasicComponent",
+    "selector": "dyn-forms-basic",
+    "filesPath": "dyn-forms/basic/intro",
     "primaryFile": "app.component.ts",
     "files": [
       "form.config.ts",
@@ -17,8 +17,8 @@
     ],
     "additionalComponents": [],
     "module": {
-      "name": "DynFormsExampleIntro",
-      "importSpecifier": "dyn-forms/basic/intro"
+      "name": "DemoFormsModule",
+      "importSpecifier": "myndpm-demos-dyn-forms-basic-intro"
     }
   }
 }
