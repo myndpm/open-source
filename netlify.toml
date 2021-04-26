@@ -1,5 +1,5 @@
 [build]
-  command = "npm run ssr:prerender"
+  command = "yarn build:prod"
   publish = "dist/website/browser"
 [[redirects]]
   from = "/*"

@@ -13,6 +13,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "run-s 'build -- forms --prod' 'build -- demos --prod' 'yarn' 'ssr:prerender'",
     "test": "ng test",
     "test:tdd": "ng test --bail 5 --cache --notify --notify-mode change --only-changed --watch",
     "lint": "nx workspace-lint && ng lint",
@@ -39,6 +40,7 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "nx": "nx",
+    "yarn": "yarn",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main"
   },
   "dependencies": {
