@@ -1,6 +1,7 @@
 import { Provider } from '@angular/core';
 import { DynLogDriver, DynLogger, DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn-forms/logger';
 import { DynControlCondition, DynControlMatcher } from './control-matchers.types';
+import { DynControlFunction } from './control-params.types';
 import { DynControlProvider } from './control-provider.types';
 import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
 import { mapPriority } from './dyn-providers';
@@ -10,6 +11,7 @@ import { DynFormRegistry } from './form-registry.service';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
   DYN_CONTROLS_TOKEN,
+  DYN_FUNCTIONS_TOKEN,
   DYN_MATCHERS_TOKEN,
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
@@ -18,6 +20,7 @@ import {
 export interface DynModuleProviders {
   providers?: Provider[];
   controls?: DynControlProvider[];
+  functions?: DynControlFunction[];
   validators?: DynControlValidator[];
   asyncValidators?: DynControlAsyncValidator[];
   matchers?: DynControlMatcher[];
@@ -60,6 +63,11 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
     })) ?? [],
     ...args?.conditions?.map(mapPriority(args?.priority)).map((condition) => ({
       provide: DYN_MATCHER_CONDITIONS_TOKEN,
+      useValue: condition,
+      multi: true,
+    })) ?? [],
+    ...args?.functions?.map(mapPriority(args?.priority)).map((condition) => ({
+      provide: DYN_FUNCTIONS_TOKEN,
       useValue: condition,
       multi: true,
     })) ?? [],
