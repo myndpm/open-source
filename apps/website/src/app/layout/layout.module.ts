@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +31,7 @@ import { LayoutWrapperComponent } from './containers/wrapper/wrapper.component';
     LayoutWrapperComponent,
     SectionBadgesComponent,
     SectionActionsComponent,
-  ]
+  ],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class LayoutModule {}

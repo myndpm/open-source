@@ -48,6 +48,9 @@ export class ExampleComponent {
   /** Data for the currently selected example. */
   exampleData: LiveExample|null = null;
 
+  /** The tab to jump to when expanding from snippet view. */
+  selectedTab: number = 0;
+
   view: Views = 'full';
 
   tabNames: string[] = [];

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule, LayoutWrapperComponent } from '../layout';
@@ -34,6 +34,5 @@ const routes: Routes = [
     LayoutModule,
   ],
   declarations: [IndexComponent],
-  schemas: [NO_ERRORS_SCHEMA],
 })
 export class DemosModule {}
