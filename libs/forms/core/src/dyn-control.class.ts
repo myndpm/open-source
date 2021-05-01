@@ -47,7 +47,7 @@ implements OnInit, OnChanges {
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
   }
-  get parentControl(): AbstractControl { // utility getter for the form directives
+  get parentControl(): FormGroup { // utility getter for the form directives
     return this.node.parent.control;
   }
   get visibility$(): Observable<DynControlVisibility> {
