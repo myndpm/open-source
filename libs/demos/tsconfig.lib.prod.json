@@ -6,6 +6,7 @@
     "noUnusedLocals": true
   },
   "angularCompilerOptions": {
-    "enableIvy": false
+    /* we need the NgModule metadata to dynamically import */
+    "enableIvy": true
   }
 }

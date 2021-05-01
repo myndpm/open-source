@@ -18,6 +18,7 @@ export class ContentComponent implements DoCheck, OnChanges {
 
   source = new Subject<string>();
 
+  initialized = false;
   loadExamples = false;
 
   get lang(): string {
@@ -32,7 +33,7 @@ export class ContentComponent implements DoCheck, OnChanges {
   ) {}
 
   ngDoCheck(): void {
-    if (this.tabs) {
+    if (!this.initialized && this.tabs) {
       const active = this.route.snapshot.queryParamMap.get('active');
       if (active) {
         const tab = this.tabs._allTabs.find(
@@ -42,6 +43,7 @@ export class ContentComponent implements DoCheck, OnChanges {
           this.tabs.selectedIndex = tab.position;
         }
       }
+      this.initialized = true;
     }
   }
 

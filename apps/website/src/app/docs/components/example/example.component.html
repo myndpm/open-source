@@ -2,14 +2,14 @@
   <div class="docs-example-viewer-title">
     <div class="docs-example-viewer-title-spacer">{{ exampleData.title[lang] }}</div>
 
-    <button
+    <!--button
       mat-icon-button
       type="button"
       [attr.aria-label]="'Copy link to the clipboard'"
       matTooltip="Copy link to example"
       (click)="copyLink()">
       <mat-icon>link</mat-icon>
-    </button>
+    </button-->
 
     <button mat-icon-button type="button" (click)="toggleSourceView()"
             [matTooltip]="view === 'demo' ? 'View code' : 'Hide code'" aria-label="View source">
@@ -35,7 +35,6 @@
   </div>
 
   <div class="docs-example-viewer-body">
-    FIXME: DEMO RUNNING HERE
     <ng-template
       *ngIf="_exampleComponentType && _exampleModuleFactory"
       [ngComponentOutlet]="_exampleComponentType"

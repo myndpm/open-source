@@ -51,7 +51,7 @@ export class ExampleComponent {
   /** The tab to jump to when expanding from snippet view. */
   selectedTab: number = 0;
 
-  view: Views = 'full';
+  view: Views = 'demo';
 
   tabNames: string[] = [];
   exampleTabs: LiveExampleTabs = {};
@@ -122,7 +122,7 @@ export class ExampleComponent {
     const { componentName, module } = this.exampleData;
     const moduleExports: any = await import(
       /* webpackExclude: /\.map$/ */
-    '@myndpm/demos/__ivy_ngcc__/fesm2015/' + module.importSpecifier);
+    '@myndpm/demos/fesm2015/' + module.importSpecifier);
 
     this._exampleComponentType = moduleExports[componentName];
     this._exampleModuleFactory = new ɵNgModuleFactory(moduleExports[module.name]);
