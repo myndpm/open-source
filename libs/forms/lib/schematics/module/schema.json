@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "DynFormsModule",
+  "title": "DynForms Module Options Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Creates a new DynForms NgModule to provide DynControls.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the DynModule.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the DynModule?"
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path at which to create the DynModule, relative to the workspace root.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "controlPath": {
+      "type": "string",
+      "format": "path",
+      "description": "The relative path at which to create the default DynControl.",
+      "alias": "cp",
+      "default": "components",
+      "x-prompt": "Which relative path would you like to use for the default control?"
+    },
+    "controlName": {
+      "type": "string",
+      "description": "The name of the default control.",
+      "alias": "c",
+      "x-prompt": "What name would you like to use for the default control?"
+    },
+    "type": {
+      "type": "string",
+      "description": "Adds a developer-defined type to the control filename, in the format \"name.type.ts\".",
+      "default": "Component"
+    },
+    "id": {
+      "type": "string",
+      "description": "The ID of the default control.",
+      "alias": "id",
+      "x-prompt": "Which ID would you like to identify the default control?"
+    },
+    "instance": {
+      "description": "The control instance type of the default control.",
+      "enum": ["Container", "Array", "Group", "Control"],
+      "default": "Control",
+      "type": "string",
+      "alias": "i"
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Create the new files at the top level of the current project root. ",
+      "default": false
+    },
+    "module": {
+      "type": "string",
+      "description": "The declaring NgModule.",
+      "alias": "m"
+    },
+    "lintFix": {
+      "type": "boolean",
+      "description": "Apply lint fixes after generating the module.",
+      "x-deprecated": "Use \"ng lint --fix\" directly instead."
+    }
+  },
+  "required": ["name", "controlName", "id"]
+}

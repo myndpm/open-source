@@ -1,0 +1,17 @@
+{
+  "$schema": "../../@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "module": {
+      "description": "Create a DynControls Module",
+      "factory": "./lib/schematics/module/index",
+      "schema": "./lib/schematics/module/schema.json",
+      "aliases": ["m"]
+    },
+    "control": {
+      "description": "Create a DynControl",
+      "factory": "./lib/schematics/control/index",
+      "schema": "./lib/schematics/control/schema.json",
+      "aliases": ["c"]
+    }
+  }
+}

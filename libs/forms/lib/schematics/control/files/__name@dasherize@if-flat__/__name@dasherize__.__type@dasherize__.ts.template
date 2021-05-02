@@ -1,0 +1,41 @@
+import { Component<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';<% if(instance == 'Array') { %>
+import { FormGroup } from '@angular/forms';<% } %>
+import {
+  DynConfig,
+  DynControlMode,
+  DynForm<%= classify(instance) %>,
+  DynPartialControlConfig,
+} from '@myndpm/dyn-forms/core';
+import { <%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
+
+@Component({
+  selector: '<%= selector %>',
+  templateUrl: './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.html',
+  styleUrls: ['./<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.<%= style %>']<% if(!!viewEncapsulation) { %>,
+  encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
+  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+})
+export class <%= classify(name) %><%= classify(type) %>
+extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(name) %>Params> {
+
+  static dynControl: '<%= classify(id) %>' = '<%= classify(id) %>';
+
+  static createConfig<M extends DynControlMode>(
+    partial: DynPartialControlConfig<M, <%= classify(name) %>Params>
+  ): DynConfig<M> {
+    return {
+      ...partial,
+      control: <%= classify(name) %><%= classify(type) %>.dynControl,
+    };
+  }
+<% if(instance == 'Array') { %>
+  get items(): FormGroup[] {
+    return this.control.controls as FormGroup[];
+  }
+<% } %>
+  completeParams(params: Partial<<%= classify(name) %>Params>): <%= classify(name) %>Params {
+    return {
+      ...params,
+    };
+  }
+}

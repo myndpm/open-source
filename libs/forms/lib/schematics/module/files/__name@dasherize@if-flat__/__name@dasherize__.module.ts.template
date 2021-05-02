@@ -1,0 +1,33 @@
+import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DynFormsModule } from '@myndpm/dyn-forms';
+import { getModuleProviders } from '@myndpm/dyn-forms/core';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DynFormsModule,
+  ],
+  declarations: [],
+  exports: [
+    DynFormsModule, // reduce the boilerplate
+  ]
+})
+export class <%= classify(name) %>Module {
+  static forFeature(): ModuleWithProviders<<%= classify(name) %>Module> {
+    return {
+      ngModule: <%= classify(name) %>Module,
+      providers: getModuleProviders({
+        controls: [
+          {
+            control: <%= classify(controlName) %>Component.dynControl,
+            instance: <%= classify(controlName) %>Component.dynInstance,
+            component: <%= classify(controlName) %>Component,
+          },
+        ],
+      }),
+    };
+  }
+}

@@ -14,6 +14,7 @@
     "url": "git@github.com:myndpm/open-source.git",
     "directory": "libs/forms"
   },
+  "schematics": "./schematics.json",
   "peerDependencies": {
     "@angular/common": ">=11.0.0",
     "@angular/core": ">=11.0.0",

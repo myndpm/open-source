@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.schematics.json",
+  "compilerOptions": {
+    "outDir": "../../dist/libs/forms",
+    "rootDir": "."
+  },
+  "exclude": [
+    "lib/schematics/*/files/**/*"
+  ],
+  "include": [
+    "lib/schematics/**/*"
+  ]
+}

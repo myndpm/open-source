@@ -1,0 +1,27 @@
+import {
+  DynConfig,
+  DynControlMode,
+  DynControlType,
+  DynPartialControlConfig,
+} from '@myndpm/dyn-forms/core';
+import { <%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
+import { <%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
+
+// type overloads
+export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
+  type: typeof <%= classify(controlName) %>Component.dynControl,
+  partial: DynPartialControlConfig<M, Partial<<%= classify(controlName) %>Params>>
+): DynConfig<M>;
+
+// factory
+export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
+  type: DynControlType,
+  partial: any,
+): DynConfig<M> {
+  switch (type) {
+    // controls
+    case <%= classify(controlName) %>Component.dynControl:
+    default:
+      return <%= classify(controlName) %>Component.createConfig(partial);
+  }
+}

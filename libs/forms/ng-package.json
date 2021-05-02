@@ -7,6 +7,9 @@
       "fast-deep-equal": "equal"
     }
   },
+  "assets": [
+    "schematics.json"
+  ],
   "deleteDestPath": true,
   "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge"]
 }

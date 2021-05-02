@@ -208,6 +208,16 @@
             }
           }
         },
+        "postbuild": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "./node_modules/.bin/tsc -p libs/forms/tsconfig.schematics.json",
+              "rsync -R libs/forms/lib/schematics/*/files/**/* dist/",
+              "rsync -R libs/forms/lib/schematics/*/schema.json dist/"
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {

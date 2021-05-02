@@ -1,0 +1,34 @@
+<% if(instance == 'Container') { %>
+<div class="container">
+  <dyn-group
+    [class]="config.factory?.cssClass"
+    [group]="control"
+    [controls]="config.controls"
+  ></dyn-group>
+</div>
+<% }else if(instance == 'Array') { %>
+<div class="array">
+  <div class="array-item" *ngFor="let item of items; index as i">
+    <dyn-group
+      [class]="config.factory?.cssClass"
+      [name]="i.toString()"
+      [group]="item"
+      [controls]="config.controls"
+    ></dyn-group>
+  </div>
+</div>
+<% }else if(instance == 'Group') { %>
+<div class="group">
+  <dyn-group
+    [class]="config.factory?.cssClass"
+    [group]="control"
+    [controls]="config.controls"
+  ></dyn-group>
+</div>
+<% }else if(instance == 'Control') { %>
+<ng-container [formGroup]="parentControl">
+  <label *ngIf="params.label">{{ params.label }}</label>
+
+  <input [formControlName]="config.name" />
+</ng-container>
+<% } %>

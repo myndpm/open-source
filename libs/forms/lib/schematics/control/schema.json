@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "DynFormsControl",
+  "title": "DynControl Options Schema",
+  "type": "object",
+  "description": "Creates a new DynControl.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path at which to create the control, relative to the current workspace. Default is a folder with the same name as the component in the project root.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "type": {
+      "type": "string",
+      "description": "Adds a developer-defined type to the filename, in the format \"name.type.ts\".",
+      "default": "Component"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the control.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the control?"
+    },
+    "id": {
+      "type": "string",
+      "description": "The ID of the control.",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "alias": "id",
+      "x-prompt": "Which ID would you like to identify the control?"
+    },
+    "instance": {
+      "description": "The control instance type of the new control.",
+      "enum": ["Container", "Array", "Group", "Control"],
+      "default": "Control",
+      "type": "string",
+      "alias": "i"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "The prefix to apply to the generated component selector.",
+      "alias": "p",
+      "oneOf": [
+        {
+          "maxLength": 0
+        },
+        {
+          "minLength": 1,
+          "format": "html-selector"
+        }
+      ]
+    },
+    "selector": {
+      "type": "string",
+      "format": "html-selector",
+      "description": "The HTML selector to use for this component."
+    },
+    "style": {
+      "description": "The file extension or preprocessor to use for style files.",
+      "type": "string",
+      "default": "scss",
+      "enum": ["css", "scss", "sass", "less"]
+    },
+    "displayBlock": {
+      "description": "Specifies if the style will contain `:host { display: block; }`.",
+      "type": "boolean",
+      "default": false,
+      "alias": "b"
+    },
+    "viewEncapsulation": {
+      "description": "The view encapsulation strategy to use in the new component.",
+      "enum": ["Emulated", "None", "ShadowDom"],
+      "type": "string",
+      "alias": "v"
+    },
+    "changeDetection": {
+      "description": "The change detection strategy to use in the new control.",
+      "enum": ["Default", "OnPush"],
+      "type": "string",
+      "default": "OnPush",
+      "alias": "c"
+    },
+    "skipTests": {
+      "type": "boolean",
+      "description": "Do not create \"spec.ts\" test files for the new component.",
+      "default": false
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Create the new files at the top level of the current project.",
+      "default": false
+    },
+    "module":  {
+      "type": "string",
+      "description": "The declaring NgModule.",
+      "alias": "m"
+    },
+    "export": {
+      "type": "boolean",
+      "default": false,
+      "description": "The declaring NgModule exports this control."
+    },
+    "lintFix": {
+      "type": "boolean",
+      "description": "Apply lint fixes after generating the component.",
+      "x-deprecated": "Use \"ng lint --fix\" directly instead."
+    }
+  },
+  "required": [
+    "name",
+    "id"
+  ]
+}
