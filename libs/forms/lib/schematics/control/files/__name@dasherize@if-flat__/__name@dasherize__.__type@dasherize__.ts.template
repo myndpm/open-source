@@ -6,7 +6,7 @@ import {
   DynForm<%= classify(instance) %>,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { <%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
+import { <%= classify(prefix) %><%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
 
 @Component({
   selector: '<%= selector %>',
@@ -15,17 +15,17 @@ import { <%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasheri
   encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
   changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
 })
-export class <%= classify(name) %><%= classify(type) %>
-extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(name) %>Params> {
+export class <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>
+extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(prefix) %><%= classify(name) %>Params> {
 
   static dynControl: '<%= classify(id) %>' = '<%= classify(id) %>';
 
   static createConfig<M extends DynControlMode>(
-    partial: DynPartialControlConfig<M, <%= classify(name) %>Params>
+    partial: DynPartialControlConfig<M, <%= classify(prefix) %><%= classify(name) %>Params>
   ): DynConfig<M> {
     return {
       ...partial,
-      control: <%= classify(name) %><%= classify(type) %>.dynControl,
+      control: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>.dynControl,
     };
   }
 <% if(instance == 'Array') { %>
@@ -33,7 +33,7 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(name) %>Pa
     return this.control.controls as FormGroup[];
   }
 <% } %>
-  completeParams(params: Partial<<%= classify(name) %>Params>): <%= classify(name) %>Params {
+  completeParams(params: Partial<<%= classify(prefix) %><%= classify(name) %>Params>): <%= classify(prefix) %><%= classify(name) %>Params {
     return {
       ...params,
     };

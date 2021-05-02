@@ -60,6 +60,20 @@
       "type": "string",
       "alias": "i"
     },
+    "prefix": {
+      "type": "string",
+      "description": "The prefix to apply to the generated control.",
+      "alias": "p",
+      "oneOf": [
+        {
+          "maxLength": 0
+        },
+        {
+          "minLength": 1,
+          "format": "html-selector"
+        }
+      ]
+    },
     "flat": {
       "type": "boolean",
       "description": "Create the new files at the top level of the current project root. ",

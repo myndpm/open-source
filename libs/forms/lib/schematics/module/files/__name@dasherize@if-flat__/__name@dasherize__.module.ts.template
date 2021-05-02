@@ -22,9 +22,9 @@ export class <%= classify(name) %>Module {
       providers: getModuleProviders({
         controls: [
           {
-            control: <%= classify(controlName) %>Component.dynControl,
-            instance: <%= classify(controlName) %>Component.dynInstance,
-            component: <%= classify(controlName) %>Component,
+            control: <%= classify(prefix) %><%= classify(controlName) %>Component.dynControl,
+            instance: <%= classify(prefix) %><%= classify(controlName) %>Component.dynInstance,
+            component: <%= classify(prefix) %><%= classify(controlName) %>Component,
           },
         ],
       }),

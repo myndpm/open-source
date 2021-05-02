@@ -5,6 +5,7 @@ export class Schema {
    */
   path?: string;
   project?: string;
+  prefix?: string;
   /**
    * The name of the DynModule.
    */

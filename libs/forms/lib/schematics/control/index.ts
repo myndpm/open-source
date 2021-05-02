@@ -52,7 +52,7 @@ import { strings } from '@angular-devkit/core';
        (options.type ? '.' : '') +
        strings.dasherize(options.type);
      const relativePath = buildRelativePath(modulePath, componentPath);
-     const classifiedName = strings.classify(options.name) + strings.classify(options.type);
+     const classifiedName = strings.classify(options.prefix!) + strings.classify(options.name) + strings.classify(options.type);
      const declarationChanges = addDeclarationToModule(
        source,
        modulePath,
@@ -110,6 +110,10 @@ import { strings } from '@angular-devkit/core';
 
      if (options.path === undefined && project) {
        options.path = buildDefaultPath(project);
+     }
+
+     if (options.prefix === undefined && project) {
+       options.prefix = project.prefix;
      }
 
      options.module = findModuleFromOptions(host, options);

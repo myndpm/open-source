@@ -4,11 +4,11 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 
-import { <%= classify(name) %><%= classify(type) %> } from './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>';
+import { <%= classify(prefix) %><%= classify(name) %><%= classify(type) %> } from './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>';
 
-describe('<%= classify(name) %><%= classify(type) %>', () => {
-  let component: <%= classify(name) %><%= classify(type) %>;
-  let fixture: ComponentFixture<<%= classify(name) %><%= classify(type) %>>;
+describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', () => {
+  let component: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>;
+  let fixture: ComponentFixture<<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,7 +16,9 @@ describe('<%= classify(name) %><%= classify(type) %>', () => {
         ReactiveFormsModule,
         DynFormsModule.forFeature(),
       ],
-      declarations: [ <%= classify(name) %><%= classify(type) %> ],
+      declarations: [
+        <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>
+      ],
       providers: [
         DynLogger,
         DynFormTreeNode,
@@ -26,7 +28,7 @@ describe('<%= classify(name) %><%= classify(type) %>', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(<%= classify(name) %><%= classify(type) %>);
+    fixture = TestBed.createComponent(<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

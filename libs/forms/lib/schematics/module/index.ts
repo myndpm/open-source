@@ -39,20 +39,19 @@ export default function (options: ModuleOptions): Rule {
       options.module = findModuleFromOptions(host, options);
     }
 
+    if (options.prefix === undefined) {
+      options.prefix = project?.prefix;
+    }
+
     const parsedPath = parseName(options.path, options.name);
     options.name = parsedPath.name;
     options.path = parsedPath.path;
-
-    const values = {
-      prefix: project?.prefix,
-    }
 
     const templateSource = apply(url('./files'), [
       applyTemplates({
         ...strings,
         'if-flat': (s: string) => (options.flat ? '' : s),
         ...options,
-        ...values,
       }),
       move(parsedPath.path),
     ]);
@@ -60,7 +59,7 @@ export default function (options: ModuleOptions): Rule {
     const controlDasherized = strings.dasherize(options.controlName);
     const controlPath = `${options.path}/${
       !options.flat ? `${moduleDasherized}/` : ''
-    }${options.controlPath}`;
+    }${options.controlPath}${options.flat ? `/${controlDasherized}` : ''}`;
 
     const componentOptions: ComponentOptions = {
       project: options.project,
@@ -70,7 +69,7 @@ export default function (options: ModuleOptions): Rule {
       id: options.id || 'CONTROL',
       instance: options.instance || 'Control',
       flat: options.flat,
-      prefix: values.prefix,
+      prefix: options.prefix,
     };
 
     return chain([

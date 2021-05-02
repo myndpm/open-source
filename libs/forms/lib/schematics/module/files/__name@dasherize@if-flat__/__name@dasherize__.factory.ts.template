@@ -4,13 +4,13 @@ import {
   DynControlType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { <%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
-import { <%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
+import { <%= classify(prefix) %><%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
+import { <%= classify(prefix) %><%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
 
 // type overloads
 export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
-  type: typeof <%= classify(controlName) %>Component.dynControl,
-  partial: DynPartialControlConfig<M, Partial<<%= classify(controlName) %>Params>>
+  type: typeof <%= classify(prefix) %><%= classify(controlName) %>Component.dynControl,
+  partial: DynPartialControlConfig<M, Partial<<%= classify(prefix) %><%= classify(controlName) %>Params>>
 ): DynConfig<M>;
 
 // factory
@@ -20,8 +20,8 @@ export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
 ): DynConfig<M> {
   switch (type) {
     // controls
-    case <%= classify(controlName) %>Component.dynControl:
+    case <%= classify(prefix) %><%= classify(controlName) %>Component.dynControl:
     default:
-      return <%= classify(controlName) %>Component.createConfig(partial);
+      return <%= classify(prefix) %><%= classify(controlName) %>Component.createConfig(partial);
   }
 }
