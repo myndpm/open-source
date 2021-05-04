@@ -4,6 +4,7 @@ Abstract layer to easily generate Dynamic Forms for Angular.
 
 With this library we are able to dynamically create the Form Controls hierarchy from a Configuration Object, which is comprised of nested configuration objects which corresponds one-to-one with form controls.
 
+The documentation is available at [mynd.dev/docs/dyn-forms](https://mynd.dev/docs/dyn-forms).  
 A general introduction is presented in this [article](https://dev.to/myndpm/a-new-approach-to-have-dynamic-forms-in-angular-5d11), the big picture is shown in this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, and you can play with live code in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts).
 
 Technical [packages](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-packages.svg) and [sequence](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-sequence.svg) diagrams are also available.
@@ -16,7 +17,7 @@ Add this library to your Angular project:
 npm install @myndpm/dyn-forms
 ```
 
-and import the Dynamic-Forms-Material module with:
+and import a `ui-package` to provide controls like the Dynamic-Forms-Material module:
 
 ```typescript
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
@@ -53,7 +54,7 @@ where [SelectComponent](https://github.com/myndpm/open-source/blob/master/libs/f
 and [InputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/components/input/input.component.ts)
 are already implemented in `DynFormsMaterialModule`.
 
-Then with the provided controls you could use them in a Config like this:
+Then with the provided controls you could use them in a Form Configuration like this:
 
 ```typescript
 export class MyFormComponent {
@@ -127,8 +128,7 @@ export class MyFormComponent {
 }
 ```
 
-This factory will warn you if the provided config object doesn't correspond to the ControlType,
-for example if you try to set an `action` parameter for the `CARD` which is not supported.
+This factory will warn you if the provided config object doesn't correspond to the ControlType.
 
 ## DynControl
 
