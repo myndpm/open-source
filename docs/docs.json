@@ -26,18 +26,27 @@
     "title": {
       "en": "Dynamic Controls",
       "es": "Controles Dinámicos"
+    },
+    "content": {
+      "en": "dyn-forms/dynamic-controls/README.md"
     }
   },
   "/docs/dyn-forms/intro/control-params": {
     "title": {
       "en": "Control Parameters",
       "es": "Parámetros del Control"
+    },
+    "content": {
+      "en": "dyn-forms/control-params/README.md"
     }
   },
   "/docs/dyn-forms/intro/validators": {
     "title": {
       "en": "Validators",
       "es": "Validadores"
+    },
+    "content": {
+      "en": "dyn-forms/validators/README.md"
     }
   },
   "/docs/dyn-forms/intro/matchers": {
