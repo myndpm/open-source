@@ -16,7 +16,7 @@ import { DynBaseConfig } from './config.types';
 import { DynConfigMap, DynConfigProvider } from './control-config.types';
 import { DynControlVisibility } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
-import { DynControlParams } from './control-params.types';
+import { DynControlFunctionFn, DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
@@ -109,7 +109,7 @@ implements OnInit, OnChanges {
 
   updateParams(
     newParams?: Partial<TParams>,
-    newParamFns?: DynConfigMap<DynConfigProvider>
+    newParamFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>
   ): void {
     this.node.paramsUpdates$.next(
       merge(true, newParams, this._formHandlers.getFunctions(newParamFns))

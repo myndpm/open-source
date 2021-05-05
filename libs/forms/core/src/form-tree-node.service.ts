@@ -190,7 +190,7 @@ implements DynTreeNode<TParams, TControl> {
     this._name = config.name ?? '';
 
     // store the matchers to be processed afterViewInit
-    this._matchers = config.options?.matchers;
+    this._matchers = config.options?.match;
 
     // store the params to be accessible to the handlers
     this._params = config.params as TParams;

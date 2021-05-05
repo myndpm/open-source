@@ -24,5 +24,8 @@ export interface DynErrorMessage {
   id: DynConfigId; // handler that returned it
   message: string; // string to be displayed
 }
-export type DynErrorHandlerFn = (node: DynTreeNode) => DynErrorMessage|null;
+
+export interface DynErrorHandlerFn {
+  (node: DynTreeNode): DynErrorMessage|null;
+}
 export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;

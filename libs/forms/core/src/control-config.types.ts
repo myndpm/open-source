@@ -1,6 +1,7 @@
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlMatch } from './control-matchers.types';
-import { DynControlFactoryParams, DynControlParams } from './control-params.types';
+import { DynControlFactoryParams, DynControlFunctionFn, DynControlParams } from './control-params.types';
 import { DynControlTriggers } from './control-validation.types';
 import { DynControlType } from './control.types';
 
@@ -12,13 +13,13 @@ export type DynConfigPrimitive = undefined | string | boolean | number | Set<any
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 // handlers provided can be referenced by id or [id with args]
-export type DynConfigProvider = DynConfigId | [DynConfigId, DynConfigArgs];
+export type DynConfigProvider<F extends Function> = F | DynConfigId | [DynConfigId, DynConfigArgs];
 // object map of handlers
 export interface DynConfigMap<T> {
   [field: string]: T;
 }
 // collection of handlers to be used
-export type DynConfigCollection = { [id: string]: DynConfigArgs } | Array<DynConfigProvider>;
+export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigArgs } | Array<DynConfigProvider<F>>;
 
 /**
   single control options
@@ -28,9 +29,9 @@ export interface DynControlOptions extends DynControlTriggers {
     value?: DynConfigArgs;
     disabled?: boolean;
   };
-  validators?: DynConfigCollection;
-  asyncValidators?: DynConfigCollection;
-  matchers?: DynControlMatch[]; // conditional validations
+  validators?: DynConfigCollection<ValidatorFn>;
+  asyncValidators?: DynConfigCollection<AsyncValidatorFn>;
+  match?: DynControlMatch[]; // conditional tasks
 }
 
 /**
@@ -43,6 +44,6 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   // customizations
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
-  paramFns?: DynConfigMap<DynConfigProvider>;
+  paramFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>;
   // errorHandlers?: Array<DynConfigProvider>;
 }

@@ -15,7 +15,7 @@ import {
   DynControlMatchCondition,
   DynControlMatcher,
   DynControlMatcherFn,
-  isBaseCondition,
+  isMatchCondition,
 } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
 import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
@@ -88,8 +88,10 @@ export class DynFormHandlers {
     }
   }
 
-  getMatcher(config: DynConfigProvider): DynControlMatcherFn {
-    if (Array.isArray(config)) {
+  getMatcher(config: DynConfigProvider<DynControlMatcherFn>): DynControlMatcherFn {
+    if (typeof config === 'function') {
+      return config;
+    } else if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.matchers.has(id)) {
         return this.matchers.get(id)!(...this.getArgs(args));
@@ -100,15 +102,26 @@ export class DynFormHandlers {
     throw this.logger.providerNotFound('Matcher', config);
   }
 
-  getCondition(config: DynConfigProvider | DynControlMatchCondition): DynControlConditionFn {
-    if (Array.isArray(config)) {
+  getCondition(
+    config: DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition,
+  ): DynControlConditionFn {
+    if (typeof config === 'function') {
+      return config;
+    } else if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.conditions.has(id)) {
         return this.conditions.get(id)!(...this.getArgs(args));
       }
-    } else if (isBaseCondition(config)) {
-      const id = config.id ?? 'DEFAULT'; // default condition handler
-      if (this.conditions.has(id)) {
+    } else if (isMatchCondition(config)) {
+      const id = config.condition ?? 'DEFAULT'; // default condition handler
+      if (typeof id === 'function') {
+        return id;
+      } else if (Array.isArray(id)) {
+        const [cid, args] = id;
+        if (this.conditions.has(cid)) {
+          return this.conditions.get(cid)!(...this.getArgs(args));
+        }
+      } else if (this.conditions.has(id)) {
         return this.conditions.get(id)!(config);
       }
     } else if (this.conditions.has(config)) {
@@ -117,7 +130,9 @@ export class DynFormHandlers {
     throw this.logger.providerNotFound('Condition', config);
   }
 
-  getFunctions(config?: DynConfigMap<DynConfigProvider>): DynConfigMap<DynControlFunctionFn> {
+  getFunctions(
+    config?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>,
+  ): DynConfigMap<DynControlFunctionFn> {
     if (!config) {
       return {};
     }
@@ -130,8 +145,10 @@ export class DynFormHandlers {
     );
   }
 
-  getFunction(config: DynConfigProvider): DynControlFunctionFn {
-    if (Array.isArray(config)) {
+  getFunction(config: DynConfigProvider<DynControlFunctionFn>): DynControlFunctionFn {
+    if (typeof config === 'function') {
+      return config;
+    } else if (Array.isArray(config)) {
       const [id, args] = config;
       if (this.functions.has(id)) {
         return this.functions.get(id)!(...this.getArgs(args));
@@ -143,14 +160,16 @@ export class DynFormHandlers {
 
   }
 
-  private dynValidators<F>(
+  private dynValidators<F extends Function>(
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
-    config?: DynConfigCollection,
+    config?: DynConfigCollection<F>,
   ): F[]|null {
     let validators: F[] = [];
     if (Array.isArray(config)) {
-      // array of ids or [id, args]
-      validators = config.map(id => this.getValidatorFn(id, dictionary));
+      // array of ids or [id, args] | F
+      validators = config.map(id => {
+        return this.getValidatorFn(id, dictionary);
+      });
     } else if (config) {
       // object of { id: args }
       Object.keys(config).forEach(id => {
@@ -160,11 +179,13 @@ export class DynFormHandlers {
     return validators.length ? validators : null;
   }
 
-  private getValidatorFn<F>(
-    config: DynConfigProvider,
+  private getValidatorFn<F extends Function>(
+    config: DynConfigProvider<F>,
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
   ): F {
-    if (Array.isArray(config)) {
+    if (typeof config === 'function') {
+      return config;
+    } else if (Array.isArray(config)) {
       const [id, args] = config;
       if (dictionary.has(id)) {
         return dictionary.get(id)!(...this.getArgs(args));

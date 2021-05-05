@@ -17,5 +17,5 @@ export interface DynControlParams {
  * control functions
  * ie. { functions: { getValue: 'getOptionText' }}
  */
- export type DynControlFunctionFn = (...args: any[]) => any;
- export type DynControlFunction = DynBaseHandler<DynControlFunctionFn>;
+ export type DynControlFunctionFn<T = any> = (...args: any[]) => T;
+ export type DynControlFunction<T = any> = DynBaseHandler<DynControlFunctionFn<T>>;

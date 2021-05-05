@@ -1,48 +1,49 @@
 import { Observable } from 'rxjs';
-import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
+import { DynConfigArgs, DynConfigProvider } from './control-config.types';
 import { DynBaseHandler } from './dyn-providers';
 import { DynTreeNode } from './tree.types';
 
 /**
- * Base types
+ * match (condition) then run (matcher)
  */
-
-export interface DynBaseCondition {
-  path: string; // queried relative to the control with the matcher
-}
-
-export interface DynControlMatchCondition extends DynBaseCondition {
-  id?: DynConfigId; // defaults to the DEFAULT condition handler
-  value?: DynConfigArgs;
-  negate?: boolean; // negate the output of the handler
+export interface DynControlMatch {
+  matchers: DynConfigProvider<DynControlMatcherFn>[]; // [matcher id | [id, args] | DynControlMatcherFn]
+  negate?: boolean; // use this matcher in the opposed way
+  operator?: 'AND' | 'OR';
+  when: Array<DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition>;
 }
 
 /**
- * match (condition) then run (matcher)
+ * condition
  */
- export interface DynControlMatch {
-  matchers: DynConfigProvider[]; // [matcher id | [id, args]]
-  negate?: boolean; // use this matcher in the opposed way (ie. DISABLE -> ENABLE)
-  operator?: 'AND' | 'OR';
-  when: Array<DynConfigProvider | DynControlMatchCondition>;
+export interface DynControlMatchCondition {
+  condition?: DynConfigProvider<DynControlConditionFn>; // defaults to the DEFAULT condition handler
+  path: string; // query relative to the control with the matcher
+  value?: DynConfigArgs;
+  negate?: boolean; // negate the output of the condition
+  [key: string]: any; // any parameter to the Condition Factory
 }
 
 /**
  * matcher handlers
  * ie. DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | etc
  */
-export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean) => void;
+export interface DynControlMatcherFn {
+  (node: DynTreeNode, hasMatch: boolean): void;
+}
 export type DynControlMatcher = DynBaseHandler<DynControlMatcherFn>;
 
 /**
  * condition handlers
  */
-export type DynControlConditionFn = (node: DynTreeNode) => Observable<boolean>;
+export interface DynControlConditionFn {
+  (node: DynTreeNode): Observable<boolean>;
+}
 export type DynControlCondition = DynBaseHandler<DynControlConditionFn>;
 
 /**
  * type guard
  */
-export function isBaseCondition(value: any): value is DynBaseCondition {
+export function isMatchCondition(value: any): value is DynControlMatchCondition {
   return !Array.isArray(value) && typeof value === 'object' && value.path;
 }
