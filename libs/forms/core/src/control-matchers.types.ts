@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { DynConfigArgs, DynConfigProvider } from './control-config.types';
+import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
 import { DynBaseHandler } from './dyn-providers';
 import { DynTreeNode } from './tree.types';
 
 /**
- * match (condition) then run (matcher)
+ * when (conditions) then run (matcher)
  */
 export interface DynControlMatch {
   matchers: DynConfigProvider<DynControlMatcherFn>[]; // [matcher id | [id, args] | DynControlMatcherFn]
@@ -17,7 +17,7 @@ export interface DynControlMatch {
  * condition
  */
 export interface DynControlMatchCondition {
-  condition?: DynConfigProvider<DynControlConditionFn>; // defaults to the DEFAULT condition handler
+  condition?: DynConfigId | DynControlConditionFn; // defaults to the DEFAULT condition handler
   path: string; // query relative to the control with the matcher
   value?: DynConfigArgs;
   negate?: boolean; // negate the output of the condition

@@ -212,7 +212,7 @@ implements DynTreeNode<TParams, TControl> {
           .map(condition => this.formHandlers.getCondition(condition)) // handler fn
           .map(fn => fn(this)) // condition observables
       ).pipe(
-        map(results => config.operator === 'OR'
+        map(results => config.operator === 'OR' // AND by default
           ? results.some(Boolean)
           : results.every(Boolean)
         ),
@@ -221,6 +221,7 @@ implements DynTreeNode<TParams, TControl> {
       )
       .subscribe(hasMatch => {
         // run the matchers with the conditions result
+        // TODO config to run the matcher only if there's a match?
         matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch));
       });
     });

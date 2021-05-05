@@ -116,11 +116,6 @@ export class DynFormHandlers {
       const id = config.condition ?? 'DEFAULT'; // default condition handler
       if (typeof id === 'function') {
         return id;
-      } else if (Array.isArray(id)) {
-        const [cid, args] = id;
-        if (this.conditions.has(cid)) {
-          return this.conditions.get(cid)!(...this.getArgs(args));
-        }
       } else if (this.conditions.has(id)) {
         return this.conditions.get(id)!(config);
       }
