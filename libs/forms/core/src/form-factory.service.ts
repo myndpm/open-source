@@ -118,7 +118,7 @@ export class DynFormFactory {
       case DynInstanceType.Control: {
         return (
           new FormControl(
-            config.options?.defaults ?? null,
+            config.options?.default ?? null,
             this.handlers.getControlOptions(config.options)
           ) as unknown
         ) as T;

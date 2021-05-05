@@ -71,7 +71,10 @@ export function simpleForm(
           createMatConfig('SELECT', {
             name: 'country',
             options: {
-              defaults: 'CO',
+              default: {
+                value: 'CO',
+                disabled: true,
+              },
               validators: ['required'],
             },
             factory: { cssClass: 'col-sm-6 col-md-4' },
@@ -96,7 +99,7 @@ export function simpleForm(
           createMatConfig('INPUT', {
             name: 'zipCode',
             options: {
-              matchers: [
+              match: [
                 {
                   matchers: ['ENABLE'],
                   negate: true,

@@ -25,9 +25,9 @@ export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigA
   single control options
  */
 export interface DynControlOptions extends DynControlTriggers {
-  defaults?: DynConfigArgs | { // used on FormControls only
-    value?: DynConfigArgs;
-    disabled?: boolean;
+  default?: DynConfigArgs | { // used on FormControls only
+    value: DynConfigArgs;
+    disabled: boolean;
   };
   validators?: DynConfigCollection<ValidatorFn>;
   asyncValidators?: DynConfigCollection<AsyncValidatorFn>;
