@@ -20,11 +20,11 @@
     "paths": {
       "@myndpm/demos/*": ["dist/libs/demos/*", "libs/demos/*"],
       "@myndpm/demos": ["dist/libs/demos", "libs/demos/index.ts"],
-      "@myndpm/dyn-forms": ["dist/libs/forms", "libs/forms/index.ts"],
-      "@myndpm/dyn-forms/logger": ["dist/libs/forms/logger", "libs/forms/logger"],
-      "@myndpm/dyn-forms/core": ["dist/libs/forms/core", "libs/forms/core"],
-      "@myndpm/dyn-forms/ui-material": ["dist/libs/forms/ui-material", "libs/forms/ui-material"],
-      "@myndpm/dyn-forms/ui-native": ["dist/libs/forms/ui-native", "libs/forms/ui-native"]
+      "@myndpm/dyn-forms": ["libs/forms/index.ts"],
+      "@myndpm/dyn-forms/logger": ["libs/forms/logger"],
+      "@myndpm/dyn-forms/core": ["libs/forms/core"],
+      "@myndpm/dyn-forms/ui-material": ["libs/forms/ui-material"],
+      "@myndpm/dyn-forms/ui-native": ["libs/forms/ui-native"]
     }
   },
   "exclude": ["node_modules", "tmp"]
