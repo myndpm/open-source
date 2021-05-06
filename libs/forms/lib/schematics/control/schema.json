@@ -26,19 +26,12 @@
     "name": {
       "type": "string",
       "description": "The name of the control.",
-      "$default": {
-        "$source": "argv",
-        "index": 0
-      },
+      "alias": "n",
       "x-prompt": "What name would you like to use for the control?"
     },
     "id": {
       "type": "string",
       "description": "The ID of the control.",
-      "$default": {
-        "$source": "argv",
-        "index": 1
-      },
       "alias": "id",
       "x-prompt": "Which ID would you like to identify the control?"
     },

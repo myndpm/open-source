@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DYN_CONTROLS_TOKEN, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 
 import { <%= classify(prefix) %><%= classify(name) %><%= classify(type) %> } from './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>';
@@ -21,7 +21,24 @@ describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', ()
       ],
       providers: [
         DynLogger,
-        DynFormTreeNode,
+        {
+          provide: DYN_CONTROLS_TOKEN,
+          useValue: {},
+          multi: true,
+        },
+        {
+          provide: DynFormTreeNode,
+          useValue: {
+            _name: 'test',
+            _control: 'CONTROL',
+            hook$: of(),
+            path: [],
+            parent: {
+              control: new FormGroup({ test: new FormControl() }),
+            },
+            onInit: () => {},
+          },
+        },
       ],
     })
     .compileComponents();
@@ -30,6 +47,10 @@ describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', ()
   beforeEach(() => {
     fixture = TestBed.createComponent(<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>);
     component = fixture.componentInstance;
+    component.config = {
+      control: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>.dynControl,
+      name: 'test',
+    };
     fixture.detectChanges();
   });
 
