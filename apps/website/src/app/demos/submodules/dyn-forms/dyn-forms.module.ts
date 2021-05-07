@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DYN_LOG_LEVEL, DynLogLevel } from '@myndpm/dyn-forms/logger';
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 import { LayoutModule } from '../../../layout';
+import { BuilderComponent } from './components/builder/builder.component';
 import { SimpleComponent } from './components/simple/simple.component';
 import { StepperStep1Component } from './components/stepper/step1/step1.component';
 import { StepperStep2Component } from './components/stepper/step2/step2.component';
@@ -20,6 +21,10 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'simple-form',
+  },
+  {
+    path: 'builder',
+    component: BuilderComponent,
   },
   {
     path: 'simple-form',
@@ -62,6 +67,7 @@ const routes: Routes = [
     LayoutModule,
   ],
   declarations: [
+    BuilderComponent,
     SimpleComponent,
     StepperComponent,
     StepperStep1Component,
