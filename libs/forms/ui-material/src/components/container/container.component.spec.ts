@@ -5,11 +5,11 @@ import { DYN_CONTROLS_TOKEN, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { of } from 'rxjs';
 
-import { <%= classify(prefix) %><%= classify(name) %><%= classify(type) %> } from './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>';
+import { DynMatContainerComponent } from './container.component';
 
-describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', () => {
-  let component: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>;
-  let fixture: ComponentFixture<<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>>;
+describe('DynMatContainerComponent', () => {
+  let component: DynMatContainerComponent;
+  let fixture: ComponentFixture<DynMatContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', ()
         DynFormsModule.forFeature(),
       ],
       declarations: [
-        <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>
+        DynMatContainerComponent
       ],
       providers: [
         DynLogger,
@@ -46,10 +46,10 @@ describe('<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>', ()
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(<%= classify(prefix) %><%= classify(name) %><%= classify(type) %>);
+    fixture = TestBed.createComponent(DynMatContainerComponent);
     component = fixture.componentInstance;
     component.config = {
-      control: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>.dynControl,
+      control: DynMatContainerComponent.dynControl,
       name: 'test',
     };
     fixture.detectChanges();

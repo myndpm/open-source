@@ -12,6 +12,8 @@ import {
   DynMatCardParams,
   DynMatCheckboxComponent,
   DynMatCheckboxParams,
+  DynMatContainerComponent,
+  DynMatContainerParams,
   DynMatDatepickerComponent,
   DynMatDatepickerParams,
   DynMatDividerComponent,
@@ -38,6 +40,10 @@ export function createMatConfig<M extends DynControlMode>(
 export function createMatConfig<M extends DynControlMode>(
   type: typeof DynMatCheckboxComponent.dynControl,
   partial: DynPartialGroupConfig<M, Partial<DynMatCheckboxParams>>
+): DynConfig<M>;
+export function createMatConfig<M extends DynControlMode>(
+  type: typeof DynMatContainerComponent.dynControl,
+  partial: DynPartialGroupConfig<M, Partial<DynMatContainerParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
   type: typeof DynMatDatepickerComponent.dynControl,
@@ -76,6 +82,9 @@ export function createMatConfig<M extends DynControlMode>(
 
     case DynMatCardComponent.dynControl:
       return DynMatCardComponent.createConfig(partial);
+
+    case DynMatContainerComponent.dynControl:
+      return DynMatContainerComponent.createConfig(partial);
 
     case DynMatDividerComponent.dynControl:
       return DynMatDividerComponent.createConfig(partial);
