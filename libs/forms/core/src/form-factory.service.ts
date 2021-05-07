@@ -67,15 +67,33 @@ export class DynFormFactory {
       }
     }
 
+    // looks for an existing deep parent
+    let controlParent = parent.control;
+    let controlName = config.name;
+
+    if (this.isDeepName(controlName)) {
+      const parentNames = controlName.split('.');
+      parentNames.some(parentName => {
+        const control = controlParent.get(parentName);
+        if (!control) {
+          return true;
+        }
+        controlParent = control;
+        parentNames.shift();
+        return false;
+      });
+      controlName = parentNames.join('.');
+    }
+
     // build the control with the given config
-    const { name, control } = this.build(instance as any, config, recursively);
+    const { name, control } = this.build(instance as any, config, recursively, controlName);
 
     if (!control) {
       throw new Error(`Could not build a control for ${instance}`);
     }
 
     if (name) {
-      this.append(parent, name, control);
+      this.append(controlParent, name, control);
     }
 
     return control as unknown as T;
@@ -87,26 +105,30 @@ export class DynFormFactory {
   build(
     instance: DynInstanceType.Container | DynInstanceType.Group,
     config: DynBaseConfig,
-    recursively?: boolean
+    recursively?: boolean,
+    controlName?: string,
   ): { name?: string, control: FormGroup };
   build(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
-    recursively?: boolean
+    recursively?: boolean,
+    controlName?: string,
   ): { name?: string, control: FormArray };
   build(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
-    recursively?: boolean
+    recursively?: boolean,
+    controlName?: string,
   ): { name?: string, control: FormControl };
   build<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
-    recursively = false
+    recursively = false,
+    controlName = config.name,
   ): { name?: string, control: T } {
 
     // creates the specific control
-    let name = config.name;
+    let name = controlName;
     let control: AbstractControl;
 
     switch (instance) {
@@ -132,9 +154,9 @@ export class DynFormFactory {
       }
     }
 
-    // builds a hierarchy if the name has deep
-    if (config.name && config.name.split('.').length > 1) {
-      const names = config.name.split('.').reverse();
+    // builds a hierarchy if the name is deep
+    if (this.isDeepName(controlName)) {
+      const names = controlName.split('.').reverse();
       name = names.pop();
       names.forEach(parentName => {
         control = new FormGroup({
@@ -166,12 +188,16 @@ export class DynFormFactory {
   /**
    * Append a control to a given parent in the specified name.
    */
-  append(parent: DynFormTreeNode<any, AbstractControl>, name: string, control: AbstractControl): void {
+  append(parent: AbstractControl, name: string, control: AbstractControl): void {
     // only FormGroup can be extended
-    if (parent.control instanceof FormGroup) {
-      parent.control.addControl(name, control);
-    } else if (parent.control instanceof FormArray) {
-      parent.control.push(control);
+    if (parent instanceof FormGroup) {
+      parent.addControl(name, control);
+    } else if (parent instanceof FormArray) {
+      parent.push(control);
     }
+  }
+
+  private isDeepName(name?: string): name is string {
+    return Boolean(name && name.split('.').length > 1);
   }
 }
