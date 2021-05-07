@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { actions, badges } from '../../constants/dyn-forms.links';
@@ -9,6 +9,7 @@ import { buildConfig } from './builder.form';
   templateUrl: './builder.component.html',
   styleUrls: ['./builder.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class BuilderComponent implements AfterViewInit, OnDestroy {
   // ref links
