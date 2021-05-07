@@ -45,5 +45,5 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>;
-  // errorHandlers?: Array<DynConfigProvider>;
+  // errorHandlers?: Array<DynConfigProvider<DynErrorHandler>>;
 }

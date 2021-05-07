@@ -8,8 +8,8 @@ import { DynTreeNode } from './tree.types';
  */
 export interface DynControlMatch {
   matchers: DynConfigProvider<DynControlMatcherFn>[]; // [matcher id | [id, args] | DynControlMatcherFn]
-  negate?: boolean; // use this matcher in the opposed way
-  operator?: 'AND' | 'OR';
+  negate?: boolean; // negate the input of the matcher
+  operator?: 'AND' | 'OR'; // triggers the matcher with all/one truthy condition
   when: Array<DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition>;
 }
 
