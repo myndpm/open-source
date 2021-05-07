@@ -45,7 +45,9 @@ implements OnInit, OnChanges {
     return this.params$.getValue();
   }
   get control(): TControl { // built from the config in the DynFormTreeNode
-    return this.node.control;
+    return this.config.name // can be deep into the parent
+      ? this.node.parent.control.get(this.config.name) as TControl
+      : this.node.control;
   }
   get parentControl(): FormGroup { // utility getter for the form directives
     return this.node.parent.control;

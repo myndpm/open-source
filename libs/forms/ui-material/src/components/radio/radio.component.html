@@ -1,13 +1,11 @@
 <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
 
-<ng-container [formGroup]="parentControl">
-  <mat-radio-group [formControlName]="config.name">
-    <mat-radio-button
-      *ngFor="let option of params.options"
-      [value]="option.value"
-      [disabled]="params.readonly"
-    >
-      {{ option.text }}
-    </mat-radio-button>
-  </mat-radio-group>
-</ng-container>
+<mat-radio-group [formControl]="control">
+  <mat-radio-button
+    *ngFor="let option of params.options"
+    [value]="option.value"
+    [disabled]="params.readonly"
+  >
+    {{ option.text }}
+  </mat-radio-button>
+</mat-radio-group>

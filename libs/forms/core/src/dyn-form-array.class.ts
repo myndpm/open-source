@@ -52,9 +52,8 @@ implements OnInit {
   }
 
   addItem(): void {
-    this.control.push(
-      this._formFactory.build(DynInstanceType.Group, this.config, true)
-    );
+    const { control } = this._formFactory.build(DynInstanceType.Group, this.config, true);
+    this.control.push(control);
   }
 
   removeItem(index: number): void {

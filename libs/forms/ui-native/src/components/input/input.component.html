@@ -1,8 +1,6 @@
-<ng-container [formGroup]="parentControl">
-  <label *ngIf="params.label">{{ params.label }}</label>
+<label *ngIf="params.label">{{ params.label }}</label>
 
-  <input
-    [type]="params.type"
-    [formControlName]="config.name"
-  />
-</ng-container>
+<input
+  [type]="params.type"
+  [formControl]="control"
+/>

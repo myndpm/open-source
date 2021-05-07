@@ -26,9 +26,9 @@
   ></dyn-group>
 </div>
 <% }else if(instance == 'Control') { %>
-<ng-container [formGroup]="parentControl">
+<div class="control">
   <label *ngIf="params.label">{{ params.label }}</label>
 
-  <input [formControlName]="config.name" />
-</ng-container>
+  <input [formControl]="control" />
+</div>
 <% } %>
