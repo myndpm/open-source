@@ -1,6 +1,6 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { IMyndUnit, accessTypes, unitTypes } from './business.types';
+import { IMyndUnit, accessTypes, unitTypes, MyndAccessType } from './business.types';
 
 export const unitConfig: DynFormConfig = {
   controls: [
@@ -20,13 +20,24 @@ export function buildConfig(
       display: { readonly: true },
     },
     controls: [
-      createMatConfig('CHECKBOX', {
-        name: 'agentShowing.isRequired',
-        params: { label: 'Agent is required?' },
-      }),
-      createMatConfig('INPUT', {
-        name: 'agentShowing.agentName',
-        params: { label: 'Agent Name' },
+      createMatConfig('CONTAINER', {
+        name: 'agentShowing',
+        controls: [
+          createMatConfig('CHECKBOX', {
+            name: 'isRequired',
+            params: { label: 'Agent is required?' },
+          }),
+          createMatConfig('INPUT', {
+            name: 'agentName',
+            params: { label: 'Agent Name' },
+            options: {
+              match: [{
+                matchers: ['SHOW'],
+                when: [{ path: 'isRequired', value: true }],
+              }],
+            },
+          }),
+        ],
       }),
       createMatConfig('SELECT', {
         name: 'accessType',
@@ -49,32 +60,32 @@ export function buildConfig(
             name: 'description',
             params: { label: 'Location Description' },
           }),
-          createMatConfig('INPUT', {
-            name: 'photo',
-            params: { label: 'Location Photo' },
-          }),
         ],
+        options: {
+          match: [{
+            matchers: ['SHOW'],
+            when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
+          }],
+        },
       }),
       createMatConfig('CONTAINER', {
         name: 'smartLock',
         controls: [
           createMatConfig('INPUT', {
-            name: 'provider',
-            params: { label: 'Smart Lock Provider' },
+            name: 'serial',
+            params: { label: 'Smart Lock Serial #' },
           }),
-          createMatConfig('INPUT', {
-            name: 'type',
-            params: { label: 'Smart Lock Type' },
-          }),
-          createMatConfig('INPUT', {
+          createMatConfig('DATEPICKER', {
             name: 'installDate',
             params: { label: 'Install Date' },
           }),
-          createMatConfig('INPUT', {
-            name: 'serial',
-            params: { label: 'Serial' },
-          }),
         ],
+        options: {
+          match: [{
+            matchers: ['SHOW'],
+            when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+          }],
+        },
       }),
     ],
   };
