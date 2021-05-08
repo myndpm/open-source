@@ -6,6 +6,12 @@
     <h3>Config Builder Form</h3>
 
     <dyn-form
+      [config]="unitConfig"
+      [form]="unit"
+    ></dyn-form>
+
+    <dyn-form
+      *ngIf="config$ | async as config"
       [config]="config"
       [form]="form"
       [mode]="mode"

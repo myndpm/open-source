@@ -1,8 +1,19 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { accessTypes } from './business.types';
+import { IMyndUnit, accessTypes, unitTypes } from './business.types';
 
-export function buildConfig(): DynFormConfig<'edit'|'display'> { // typed mode
+export const unitConfig: DynFormConfig = {
+  controls: [
+    createMatConfig('SELECT', {
+      name: 'unitType',
+      params: { label: 'Unit Type', options: unitTypes },
+    }),
+  ],
+};
+
+export function buildConfig(
+  unit: IMyndUnit,
+): DynFormConfig<'edit'|'display'> {
   return {
     modeParams: {
       edit: { readonly: false },
