@@ -1,6 +1,11 @@
+import { MatDialog } from '@angular/material/dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
+import { DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { IMyndUnit, accessTypes, unitTypes, MyndAccessType } from './business.types';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { PromptDialog, PromptDialogData } from '../../../../../layout';
+import { IMyndUnit, accessTypes, unitTypes, MyndAccessType, MyndUnitType } from './business.types';
 
 export const unitConfig: DynFormConfig = {
   controls: [
@@ -12,8 +17,43 @@ export const unitConfig: DynFormConfig = {
 };
 
 export function buildConfig(
-  unit: IMyndUnit,
+  unit$: Observable<IMyndUnit>,
+  dialog: MatDialog,
 ): DynFormConfig<'edit'|'display'> {
+  // custom condition for UnitType
+  const isUnitParking = () => {
+    return unit$.pipe(map(({ unitType }) => unitType === MyndUnitType.Parking));
+  };
+
+  // custom matcher for AccessType
+  let previousType: MyndAccessType = null;
+  const confirmTypeChange = (node: DynTreeNode) => {
+    // will be triggered each time the node changes value
+    const currentType = node.control.value;
+    // process any previously selected type
+    if (previousType && previousType !== currentType) {
+      const data: PromptDialogData = {
+        title: `Please confirm`,
+        content: `The data from the previous type will be removed, are you sure?`,
+        no: 'Go back'
+      };
+      dialog.open(PromptDialog, { data })
+        .afterClosed()
+        .subscribe(wasConfirmed => {
+          if (wasConfirmed) {
+            // remove the previous access type data
+            changedAccessType(node, previousType);
+            previousType = currentType;
+          } else {
+            // restore the previous value
+            node.control.setValue(previousType);
+          }
+        });
+    } else {
+      previousType = currentType;
+    }
+  };
+
   return {
     modeParams: {
       edit: { readonly: false },
@@ -42,6 +82,18 @@ export function buildConfig(
       createMatConfig('SELECT', {
         name: 'accessType',
         params: { label: 'Access Type', options: accessTypes },
+        options: {
+          match: [
+            {
+              matchers: ['HIDE'],
+              when: [isUnitParking],
+            },
+            {
+              matchers: [confirmTypeChange],
+              when: [{ path: 'accessType' }],
+            },
+          ],
+        },
         modes: {
           display: {
             control: 'INPUT',
@@ -89,4 +141,23 @@ export function buildConfig(
       }),
     ],
   };
+}
+
+function changedAccessType(node: DynTreeNode, previousType: MyndAccessType): void {
+  switch (previousType) {
+    case MyndAccessType.CodeBox: {
+      node.query('codeBox').patchValue({
+        description: null,
+        serial: null,
+      });
+      break;
+    }
+    case MyndAccessType.SmartLock: {
+      node.query('smartLock').patchValue({
+        installDate: null,
+        serial: null,
+      });
+      break;
+    }
+  }
 }

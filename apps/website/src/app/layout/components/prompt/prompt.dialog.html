@@ -1,0 +1,9 @@
+
+<h4 *ngIf="data.title" matDialogTitle [innerHTML]="data.title"></h4>
+
+<div mat-dialog-content [innerHTML]="data.content"></div>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
+  <button mat-raised-button [matDialogClose]="false">{{ data.no }}</button>
+  <button mat-raised-button [color]="data.color" [matDialogClose]="true">{{ data.yes }}</button>
+</div>

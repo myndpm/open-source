@@ -2,7 +2,7 @@ import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { combineLatest, Subject } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
@@ -217,11 +217,11 @@ implements DynTreeNode<TParams, TControl> {
           : results.every(Boolean)
         ),
         takeUntil(this._unsubscribe),
-        distinctUntilChanged(),
+        // TODO option for distinctUntilChanged?
       )
       .subscribe(hasMatch => {
         // run the matchers with the conditions result
-        // TODO config to run the matcher only if there's a match?
+        // TODO config to run the matcher only if hasMatch? (unidirectional)
         matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch));
       });
     });

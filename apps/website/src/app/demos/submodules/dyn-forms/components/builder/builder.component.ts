@@ -9,9 +9,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DynFormComponent, DynFormConfig } from '@myndpm/dyn-forms';
-import { Observable, Subject, merge } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { buildConfig, unitConfig } from './builder.form';
 import { MyndUnitType } from './business.types';
@@ -40,21 +40,19 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   unitConfig = unitConfig;
 
   // dyn-form inputs
-  config$: Observable<DynFormConfig>;
+  config: DynFormConfig;
   form = new FormGroup({});
   mode = 'edit';
 
   @ViewChildren(DynFormComponent)
   dynForms: QueryList<DynFormComponent>;
 
-  private _unsubscribe = new Subject<void>();
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.config$ = merge(
+    this.config = buildConfig(
       this.unit.valueChanges.pipe(startWith(this.unit.value)),
-    ).pipe(
-      takeUntil(this._unsubscribe),
-      map(() => buildConfig(this.unit.value))
+      this.dialog,
     );
   }
 
@@ -66,9 +64,6 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribe.next();
-    this._unsubscribe.complete();
-
     console.clear();
   }
 

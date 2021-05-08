@@ -10,6 +10,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { SectionBadgesComponent } from './components/section-badges/section-badges.component';
 import { SectionActionsComponent } from './components/section-actions/section-actions.component';
 import { LayoutWrapperComponent } from './containers/wrapper/wrapper.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PromptDialog } from './components';
 
 @NgModule({
   imports: [
@@ -17,6 +19,7 @@ import { LayoutWrapperComponent } from './containers/wrapper/wrapper.component';
     FlexLayoutModule,
     RouterModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatTooltipModule,
   ],
@@ -26,11 +29,13 @@ import { LayoutWrapperComponent } from './containers/wrapper/wrapper.component';
     LayoutWrapperComponent,
     SectionBadgesComponent,
     SectionActionsComponent,
+    PromptDialog,
   ],
   exports: [
     LayoutWrapperComponent,
     SectionBadgesComponent,
     SectionActionsComponent,
+    PromptDialog,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
