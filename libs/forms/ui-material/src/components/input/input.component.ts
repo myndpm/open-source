@@ -43,7 +43,12 @@ implements OnInit {
       floatLabel: params.floatLabel || 'auto',
       type: params.type || 'text',
       placeholder: params.placeholder || '',
-      rows: params.rows || 3
+      rows: params.rows || 3,
+      errorStateMatcher: {
+        isErrorState: (control, parent) => {
+          return !!(control?.invalid && (control.touched || parent?.submitted));
+        },
+      }
     };
   }
 }
