@@ -6,10 +6,11 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { BehaviorSubject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { markAsUntouched } from '../../../../../layout';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { simpleData, simpleForm } from './simple.form';
 
@@ -77,20 +78,7 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
 
     if (this.mode === 'display') {
       // reset invalid styles on display markAllAsPristine
-      this.markAsUntouched(this.form);
+      markAsUntouched(this.form);
     }
-  }
-
-  private markAsUntouched(group: FormGroup | FormArray): void {
-    group.markAsUntouched();
-
-    Object.keys(group.controls).map((field) => {
-      const control = group.get(field);
-      if (control instanceof FormControl) {
-        control.markAsUntouched();
-      } else if (control instanceof FormGroup) {
-        this.markAsUntouched(control);
-      }
-    });
   }
 }
