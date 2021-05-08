@@ -18,5 +18,10 @@ export class IndexComponent {
       link: './dyn-forms/stepper-form',
       description: 'Demo of dyn-forms under different router-outlets.',
     },
+    {
+      title: 'Config Builder Form',
+      link: './dyn-forms/builder',
+      description: 'Real use-case building a configuration with a custom condition and matcher.',
+    },
   ];
 }
