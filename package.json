@@ -14,7 +14,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:forms": "run-s 'build forms -- --prod' 'nx postbuild forms'",
-    "build:prod": "run-s 'build:forms' 'build demos --prod' 'yarn' 'build --prod'",
+    "build:prod": "run-s 'build forms' 'nx postbuild forms' 'build demos --prod' 'yarn' 'build --prod'",
     "test": "ng test",
     "test:tdd": "ng test --bail 5 --cache --notify --notify-mode change --only-changed --watch",
     "lint": "nx workspace-lint && ng lint",
