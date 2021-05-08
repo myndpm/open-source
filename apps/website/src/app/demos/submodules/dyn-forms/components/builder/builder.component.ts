@@ -69,6 +69,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (this.form.valid) {
         console.log('Valid Form Submitted');
+        this.toggleMode();
       }
     })
   }
@@ -81,7 +82,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mode = (this.mode === 'edit') ? 'display' : 'edit';
 
     if (this.mode === 'display') {
-      // reset invalid styles on display markAllAsPristine
+      // reset invalid styles on display
       markAsUntouched(this.form);
     }
   }

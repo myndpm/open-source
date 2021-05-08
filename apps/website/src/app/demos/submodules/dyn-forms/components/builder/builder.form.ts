@@ -2,6 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+import { DynControlMatch } from 'libs/forms/core/src/control-matchers.types';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PromptDialog, PromptDialogData } from '../../../../../layout';
@@ -32,6 +33,7 @@ export function buildConfig(
     const currentType = node.control.value;
     // process any previously selected type
     if (previousType && previousType !== currentType) {
+      // here we could check if there's anything to delete and prompt if so
       const data: PromptDialogData = {
         title: `Please confirm`,
         content: `The data from the previous type will be removed, are you sure?`,
@@ -54,6 +56,21 @@ export function buildConfig(
     }
   };
 
+  // config matchers for Access Types containers
+  function getMatchersFor(accessType: MyndAccessType): DynControlMatch[] {
+    return [
+      {
+        matchers: ['HIDE'],
+        operator: 'OR',
+        when: [
+          // we need to hide when isParking OR not the current type
+          isUnitParking,
+          { path: 'accessType', value: accessType, negate: true }
+        ],
+      },
+    ];
+  }
+
   return {
     modeParams: {
       edit: { readonly: false },
@@ -66,6 +83,12 @@ export function buildConfig(
           createMatConfig('CHECKBOX', {
             name: 'isRequired',
             params: { label: 'Agent is required?' },
+            modes: {
+              display: {
+                control: 'INPUT',
+                paramFns: { getValue: 'formatYesNo' }
+              },
+            },
           }),
           createMatConfig('INPUT', {
             name: 'agentName',
@@ -120,10 +143,7 @@ export function buildConfig(
           }),
         ],
         options: {
-          match: [{
-            matchers: ['SHOW'],
-            when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
-          }],
+          match: getMatchersFor(MyndAccessType.CodeBox),
         },
       }),
       createMatConfig('CONTAINER', {
@@ -145,10 +165,7 @@ export function buildConfig(
           }),
         ],
         options: {
-          match: [{
-            matchers: ['SHOW'],
-            when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
-          }],
+          match: getMatchersFor(MyndAccessType.SmartLock),
         },
       }),
     ],

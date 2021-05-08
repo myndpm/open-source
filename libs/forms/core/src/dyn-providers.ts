@@ -147,6 +147,18 @@ export const defaultConditions: DynControlCondition[] = [
  */
 export const defaultFunctions: DynControlFunction[] = [
   {
+    id: 'formatYesNo',
+    fn: (isBinary = true): DynControlFunctionFn => {
+      return (node: DynTreeNode) => {
+        return node.control.value === true
+          ? 'Yes'
+          : isBinary || node.control.value === false
+            ? 'No'
+            : '-';
+      }
+    },
+  },
+  {
     id: 'getOptionText',
     fn: (): DynControlFunctionFn => {
       return (node: DynTreeNode) => {
@@ -154,7 +166,15 @@ export const defaultFunctions: DynControlFunction[] = [
         const option = node.params.options.find((o: any) => o.value === value);
         return value && option ? option.text : value;
       }
-    }
+    },
+  },
+  {
+    id: 'getParamsField',
+    fn: (field = 'label', defaultText = '-'): DynControlFunctionFn => {
+      return (node: DynTreeNode) => {
+        return node.params[field] || defaultText;
+      }
+    },
   },
 ].map(
   mapPriority<DynControlCondition>()

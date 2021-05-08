@@ -17,13 +17,19 @@
     ></dyn-form>
 
     <div class="form-actions" fxLayout="row" fxLayoutGap="10px">
-      <button type="submit" mat-raised-button color="primary">
-        Save
-      </button>
-
-      <button type="button" mat-raised-button color="accent" (click)="toggleMode()">
-        {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
-      </button>
+      <ng-container *ngIf="mode === 'display'; else editActions">
+        <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
+          Edit
+        </button>
+      </ng-container>
+      <ng-template #editActions>
+        <button type="submit" mat-raised-button color="primary">
+          Save
+        </button>
+        <button type="button" mat-stroked-button (click)="toggleMode()">
+          Cancel
+        </button>
+      </ng-template>
     </div>
   </form>
 </section>

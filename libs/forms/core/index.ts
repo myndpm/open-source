@@ -1,6 +1,7 @@
 export * from './src/config.types';
 export * from './src/control-config.types';
 export * from './src/control-events.types';
+export * from './src/control-matchers.types';
 export * from './src/control-mode.types';
 export * from './src/control-params.types';
 export * from './src/control-provider.types';
