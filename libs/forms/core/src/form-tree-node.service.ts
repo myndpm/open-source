@@ -46,6 +46,9 @@ implements DynTreeNode<TParams, TControl> {
   get isRoot(): boolean {
     return this.isolated || !this.parent;
   }
+  get isFormLoaded(): boolean {
+    return this._formLoaded;
+  }
 
   // control.path relative to the root
   get path(): string[] {
@@ -60,6 +63,7 @@ implements DynTreeNode<TParams, TControl> {
   private _control!: TControl;
   private _matchers?: DynControlMatch[];
   private _params!: TParams;
+  private _formLoaded = false; // view already initialized
 
   private _unsubscribe = new Subject<void>();
 
@@ -199,9 +203,15 @@ implements DynTreeNode<TParams, TControl> {
       // register the node with its parent
       this.parent?.addChild(this);
     }
+
+    if (this.parent?.isFormLoaded) {
+      this.afterViewInit();
+    }
   }
 
   afterViewInit(): void {
+    this._formLoaded = true;
+
     // process the stored matchers
     this._matchers?.map((config) => {
       const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
