@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
@@ -86,6 +86,19 @@ export const defaultMatchers: DynControlMatcher[] = [
     fn: (): DynControlMatcherFn => {
       return (node: DynTreeNode, hasMatch: boolean) => {
         hasMatch ? node.hidden() : node.visible();
+      }
+    }
+  },
+  {
+    id: 'VALIDATE',
+    fn: (validator: ValidatorFn = Validators.required): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        const error = hasMatch
+          ? validator(node.control)
+          : null;
+        error
+          ? node.control.setErrors(error)
+          : node.control.updateValueAndValidity();
       }
     }
   },

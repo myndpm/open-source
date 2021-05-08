@@ -107,6 +107,12 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'CodeBox Serial #' },
+            options: {
+              match: [{
+                matchers: ['VALIDATE'],
+                when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
+              }],
+            },
           }),
           createMatConfig('INPUT', {
             name: 'description',
@@ -126,6 +132,12 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'Smart Lock Serial #' },
+            options: {
+              match: [{
+                matchers: ['VALIDATE'],
+                when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+              }],
+            },
           }),
           createMatConfig('DATEPICKER', {
             name: 'installDate',
