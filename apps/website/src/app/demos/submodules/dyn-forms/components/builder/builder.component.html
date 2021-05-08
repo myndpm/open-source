@@ -17,7 +17,11 @@
     ></dyn-form>
 
     <div class="form-actions" fxLayout="row" fxLayoutGap="10px">
-      <button type="button" mat-raised-button color="primary" (click)="toggleMode()">
+      <button type="submit" mat-raised-button color="primary">
+        Save
+      </button>
+
+      <button type="button" mat-raised-button color="accent" (click)="toggleMode()">
         {{ mode === 'edit' ? 'Switch to Display mode' : 'Back to Edit mode' }}
       </button>
     </div>

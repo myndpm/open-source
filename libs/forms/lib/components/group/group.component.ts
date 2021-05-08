@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynBaseConfig, DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DynBaseConfig, DynControlNode, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 
 @Component({
@@ -12,18 +12,22 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 /**
  * This component just wraps the incoming controls in a FormGroup.
  */
-export class DynGroupComponent implements OnInit {
+export class DynGroupComponent extends DynControlNode<any, FormGroup> implements OnInit {
   @Input() isolated = false;
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
 
   constructor(
+    injector: Injector,
     private readonly logger: DynLogger,
-    private readonly node: DynFormTreeNode,
-  ) {}
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
+    super.ngOnInit();
+
     this.node.setControl(this.group);
     this.node.load({ name: this.name, isolated: Boolean(this.isolated) });
 

@@ -62,6 +62,15 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dynForms.forEach(
       dynForm => dynForm.valueChanges().subscribe(console.log),
     );
+
+    // listen submit
+    this.dynForms.get(1).addHookListener('Submit', () => {
+      this.form.markAllAsTouched();
+
+      if (this.form.valid) {
+        console.log('Valid Form Submitted');
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -74,14 +83,6 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.mode === 'display') {
       // reset invalid styles on display markAllAsPristine
       markAsUntouched(this.form);
-    }
-  }
-
-  onSubmit(): void {
-    this.form.markAllAsTouched();
-
-    if (this.form.valid) {
-      console.log('SubmitCode');
     }
   }
 }

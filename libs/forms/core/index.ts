@@ -9,6 +9,7 @@ export * from './src/control.types';
 export * from './src/option.types';
 export * from './src/tree.types';
 
+export * from './src/dyn-control-node.class';
 export * from './src/dyn-control.class';
 export * from './src/dyn-form-array.class';
 export * from './src/dyn-form-container.class';

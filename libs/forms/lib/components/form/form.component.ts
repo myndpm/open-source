@@ -12,7 +12,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import {
   DynControlMode,
   DynFormMode,
@@ -44,6 +44,9 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
 
+  // registered hook listeners
+  protected listeners = new Map<string, Function[]>();
+
   // easier <dyn-form #dyn> and dyn.control.*
   get control() {
     return this.node.control;
@@ -61,6 +64,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private readonly ref: ChangeDetectorRef,
     private readonly node: DynFormTreeNode,
     private readonly logger: DynLogger,
+    private readonly parent?: FormGroupDirective,
   ) {}
 
   ngOnInit() {
@@ -108,6 +112,14 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       ],
     });
 
+    // call hooks when the form is submitted
+    this.parent?.ngSubmit.subscribe((event: Event) => {
+      this.callHook('PreSubmit', event, true);
+      if (!event.defaultPrevented) {
+        this.callHook('Submit', this.form.value);
+      }
+    });
+
     // prevent ExpressionChangedAfterItHasBeenCheckedError
     this.ref.detectChanges();
   }
@@ -136,6 +148,9 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
   // call a hook in the dynControls using plain/hierarchical data
   callHook(hook: string, payload: any, plain = false): void {
+    if (this.listeners.has(hook)) {
+      this.listeners.get(hook)?.map(listener => listener(payload));
+    }
     this.node.children.forEach(node => {
       const fieldName = node.name;
       node.callHook({
@@ -146,5 +161,13 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         plain,
       });
     });
+  }
+
+  // register hook listener
+  addHookListener(hook: string, listener: Function): void {
+    if (!this.listeners.has(hook)) {
+      this.listeners.set(hook, []);
+    }
+    this.listeners.get(hook)!.push(listener);
   }
 }

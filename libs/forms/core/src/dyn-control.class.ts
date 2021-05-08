@@ -117,4 +117,9 @@ implements OnInit, OnChanges {
       merge(true, newParams, this._formHandlers.getFunctions(newParamFns))
     );
   }
+
+  // hook to refresh the form status
+  hookPreSubmit(): void {
+    this._ref.markForCheck();
+  }
 }

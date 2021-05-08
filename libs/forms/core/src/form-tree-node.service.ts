@@ -72,7 +72,7 @@ implements DynTreeNode<TParams, TControl> {
   ) {}
 
   /**
-   * VIsibility methods
+   * Visibility methods
    */
 
   visible(): void {
