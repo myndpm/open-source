@@ -1,8 +1,7 @@
 import { MatDialog } from '@angular/material/dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
-import { DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlConditionFn, DynControlMatch, DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { DynControlMatch } from 'libs/forms/core/src/control-matchers.types';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PromptDialog, PromptDialogData } from '../../../../../layout';
@@ -21,56 +20,6 @@ export function buildConfig(
   unit$: Observable<IMyndUnit>,
   dialog: MatDialog,
 ): DynFormConfig<'edit'|'display'> {
-  // custom condition for UnitType
-  const isUnitParking = () => {
-    return unit$.pipe(map(({ unitType }) => unitType === MyndUnitType.Parking));
-  };
-
-  // custom matcher for AccessType
-  let previousType: MyndAccessType = null;
-  const confirmTypeChange = (node: DynTreeNode) => {
-    // will be triggered each time the node changes value
-    const currentType = node.control.value;
-    // process any previously selected type
-    if (previousType && previousType !== currentType) {
-      // here we could check if there's anything to delete and prompt if so
-      const data: PromptDialogData = {
-        title: `Please confirm`,
-        content: `The data from the previous type will be removed, are you sure?`,
-        no: 'Go back'
-      };
-      dialog.open(PromptDialog, { data })
-        .afterClosed()
-        .subscribe(wasConfirmed => {
-          if (wasConfirmed) {
-            // remove the previous access type data
-            changedAccessType(node, previousType);
-            previousType = currentType;
-          } else {
-            // restore the previous value
-            node.control.setValue(previousType);
-          }
-        });
-    } else {
-      previousType = currentType;
-    }
-  };
-
-  // config matchers for Access Types containers
-  function getMatchersFor(accessType: MyndAccessType): DynControlMatch[] {
-    return [
-      {
-        matchers: ['HIDE'],
-        operator: 'OR',
-        when: [
-          // we need to hide when isParking OR not the current type
-          isUnitParking,
-          { path: 'accessType', value: accessType, negate: true }
-        ],
-      },
-    ];
-  }
-
   return {
     modeParams: {
       edit: { readonly: false },
@@ -109,10 +58,10 @@ export function buildConfig(
           match: [
             {
               matchers: ['HIDE'],
-              when: [isUnitParking],
+              when: [isUnitParking(unit$)],
             },
             {
-              matchers: [confirmTypeChange],
+              matchers: [confirmTypeChange(dialog)],
               when: [{ path: 'accessType' }],
             },
           ],
@@ -143,7 +92,7 @@ export function buildConfig(
           }),
         ],
         options: {
-          match: getMatchersFor(MyndAccessType.CodeBox),
+          match: getMatchersFor(MyndAccessType.CodeBox, isUnitParking(unit$)),
         },
       }),
       createMatConfig('CONTAINER', {
@@ -165,13 +114,66 @@ export function buildConfig(
           }),
         ],
         options: {
-          match: getMatchersFor(MyndAccessType.SmartLock),
+          match: getMatchersFor(MyndAccessType.SmartLock, isUnitParking(unit$)),
         },
       }),
     ],
   };
 }
 
+// custom condition factory for UnitType
+function isUnitParking(unit$: Observable<IMyndUnit>) {
+  return () => unit$.pipe(map(({ unitType }) => unitType === MyndUnitType.Parking));
+}
+
+// custom matcher factory for AccessType
+let previousType: MyndAccessType = null;
+function confirmTypeChange(dialog: MatDialog) {
+  return (node: DynTreeNode) => {
+    // will be triggered each time the node changes value
+    const currentType = node.control.value;
+    // process any previously selected type
+    if (previousType && previousType !== currentType) {
+      // here we could check if there's anything to delete and prompt if so
+      const data: PromptDialogData = {
+        title: `Please confirm`,
+        content: `The data from the previous type will be removed, are you sure?`,
+        no: 'Go back'
+      };
+      dialog.open(PromptDialog, { data })
+        .afterClosed()
+        .subscribe(wasConfirmed => {
+          if (wasConfirmed) {
+            // remove the previous access type data
+            changedAccessType(node, previousType);
+            previousType = currentType;
+          } else {
+            // restore the previous value
+            node.control.setValue(previousType);
+          }
+        });
+    } else {
+      previousType = currentType;
+    }
+  };
+}
+
+// config matchers for Access Types containers
+function getMatchersFor(accessType: MyndAccessType, isParking: DynControlConditionFn): DynControlMatch[] {
+  return [
+    {
+      matchers: ['HIDE'],
+      operator: 'OR',
+      when: [
+        // we need to hide when isParking OR not the current type
+        isParking,
+        { path: 'accessType', value: accessType, negate: true }
+      ],
+    },
+  ];
+}
+
+// data reseter when Access Type changes
 function changedAccessType(node: DynTreeNode, previousType: MyndAccessType): void {
   switch (previousType) {
     case MyndAccessType.CodeBox: {

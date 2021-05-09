@@ -5,10 +5,20 @@
   <form [formGroup]="form">
     <h3>Config Builder Form</h3>
 
+    <p>
+      This real-life use case consists of a form depending on a <code>Unit</code>
+      coming from the state emulated by the following form:
+    </p>
+
     <dyn-form
       [config]="unitConfig"
       [form]="unit"
     ></dyn-form>
+
+    <p>
+      which <code>Type</code> affects the available options for the <code>Access</code> configuration,
+      plus additional matchers and conditional validations:
+    </p>
 
     <dyn-form
       [config]="config"
