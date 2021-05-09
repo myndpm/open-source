@@ -18,9 +18,16 @@ import {
   isMatchCondition,
 } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
-import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
+import {
+  DynControlAsyncValidator,
+  DynControlErrors,
+  DynControlValidator,
+  DynErrorHandler,
+  DynErrorHandlerFn,
+} from './control-validation.types';
 import {
   defaultConditions,
+  defaultErrorHandlers,
   defaultFunctions,
   defaultMatchers,
   defaultValidators,
@@ -29,6 +36,7 @@ import {
 } from './dyn-providers';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
+  DYN_ERROR_HANDLERS_TOKEN,
   DYN_FUNCTIONS_TOKEN,
   DYN_MATCHERS_TOKEN,
   DYN_MATCHER_CONDITIONS_TOKEN,
@@ -38,6 +46,7 @@ import {
 @Injectable()
 export class DynFormHandlers {
   // registered handlers
+  errorHandlers = new Map<DynConfigId, DynHandlerFactory<DynErrorHandlerFn>>();
   functions = new Map<DynConfigId, DynHandlerFactory<DynControlFunctionFn>>();
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
@@ -46,6 +55,8 @@ export class DynFormHandlers {
 
   constructor(
     private readonly logger: DynLogger,
+    @Inject(DYN_ERROR_HANDLERS_TOKEN) @Optional()
+    readonly providedErrorHandlers?: DynErrorHandler[],
     @Inject(DYN_FUNCTIONS_TOKEN) @Optional()
     readonly providedFunctions?: DynControlFunction[],
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
@@ -73,6 +84,10 @@ export class DynFormHandlers {
     this.reduceProvider(
       (this.providedConditions ?? []).concat(defaultConditions),
       this.conditions,
+    );
+    this.reduceProvider(
+      (this.providedErrorHandlers ?? []).concat(defaultErrorHandlers),
+      this.errorHandlers,
     );
     this.reduceProvider(
       (this.providedFunctions ?? []).concat(defaultFunctions),
@@ -125,6 +140,30 @@ export class DynFormHandlers {
     throw this.logger.providerNotFound('Condition', config);
   }
 
+  getErrorHandlers(
+    config?: Array<DynConfigProvider<DynErrorHandlerFn>> | DynControlErrors,
+  ): DynErrorHandlerFn[] {
+    return config
+      ? Array.isArray(config)
+        ? config.map(handler => this.getErrorHandler(handler))
+        : [this.errorHandlers.get('CONTROL')!(config)]
+      : [];
+  }
+
+  getErrorHandler(config: DynConfigProvider<DynErrorHandlerFn>): DynErrorHandlerFn {
+    if (typeof config === 'function') {
+      return config;
+    } else if (Array.isArray(config)) {
+      const [id, args] = config;
+      if (this.errorHandlers.has(id)) {
+        return this.errorHandlers.get(id)!(...this.getArgs(args));
+      }
+    } else if (this.errorHandlers.has(config)) {
+      return this.errorHandlers.get(config)!();
+    }
+    throw this.logger.providerNotFound('Error Handler', config);
+  }
+
   getFunctions(
     config?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>,
   ): DynConfigMap<DynControlFunctionFn> {
@@ -152,7 +191,6 @@ export class DynFormHandlers {
       return this.functions.get(config)!();
     }
     throw this.logger.providerNotFound('Function', config);
-
   }
 
   private dynValidators<F extends Function>(

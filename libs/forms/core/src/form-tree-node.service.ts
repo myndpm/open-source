@@ -7,6 +7,7 @@ import { DynBaseConfig } from './config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlParams } from './control-params.types';
+import { DynErrorHandlerFn } from './control-validation.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -64,6 +65,7 @@ implements DynTreeNode<TParams, TControl> {
   private _matchers?: DynControlMatch[];
   private _params!: TParams;
   private _formLoaded = false; // view already initialized
+  private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _unsubscribe = new Subject<void>();
 
@@ -94,6 +96,21 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Feature methods
    */
+
+  // error message resolver
+  getErrorMessage(): string|null {
+    let errorMsg: string|null = null;
+
+    if (this._control.errors) {
+      // loop the handlers and retrieve the message
+      this._errorHandlers.some(handler => {
+        errorMsg = handler(this);
+        return Boolean(errorMsg);
+      });
+    }
+    // TODO i18n transformation
+    return errorMsg;
+  }
 
   // let the TreeNode know of an incoming hook
   callHook(event: DynControlHook): void {
@@ -198,6 +215,9 @@ implements DynTreeNode<TParams, TControl> {
 
     // store the params to be accessible to the handlers
     this._params = config.params as TParams;
+
+    // resolve and store the error handlers
+    this._errorHandlers = this.formHandlers.getErrorHandlers(config.errorMsg);
 
     if (!this.isolated) {
       // register the node with its parent

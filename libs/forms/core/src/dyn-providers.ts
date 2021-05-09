@@ -2,9 +2,21 @@ import { ValidatorFn, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
-import { DynControlCondition, DynControlConditionFn, DynControlMatchCondition, DynControlMatcher, DynControlMatcherFn } from './control-matchers.types';
+import {
+  DynControlCondition,
+  DynControlConditionFn,
+  DynControlMatchCondition,
+  DynControlMatcher,
+  DynControlMatcherFn,
+} from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
-import { DynControlValidator } from './control-validation.types';
+import {
+  DynControlErrors,
+  DynControlValidator,
+  DynErrorHandler,
+  DynErrorHandlerFn,
+  DynErrorMessage,
+} from './control-validation.types';
 import { DynTreeNode } from './tree.types';
 
 /**
@@ -141,6 +153,28 @@ export const defaultConditions: DynControlCondition[] = [
 ].map(
   mapPriority<DynControlCondition>()
 );
+
+/**
+ * Default error handler
+ */
+export const defaultErrorHandlers: DynErrorHandler[] = [
+  {
+    id: 'CONTROL',
+    fn: (messages: DynControlErrors): DynErrorHandlerFn => {
+      return ({ control }: DynTreeNode) => {
+        // match the control errors with the configured messages
+        return control.errors
+          ? Object.keys(control.errors).reduce<DynErrorMessage>((result, error) => {
+              return !result && messages[error] ? messages[error] : result;
+            }, null)
+          : null;
+      }
+    }
+  },
+].map(
+  mapPriority<DynErrorHandler>()
+);
+
 
 /**
  * Default params functions

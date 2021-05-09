@@ -2,7 +2,7 @@ import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlFactoryParams, DynControlFunctionFn, DynControlParams } from './control-params.types';
-import { DynControlTriggers } from './control-validation.types';
+import { DynControlErrors, DynControlTriggers, DynErrorHandlerFn } from './control-validation.types';
 import { DynControlType } from './control.types';
 
 // a given id to a validator/async-validator/error-handler/function
@@ -45,5 +45,5 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>;
-  // errorHandlers?: Array<DynConfigProvider<DynErrorHandler>>;
+  errorMsg?: Array<DynConfigProvider<DynErrorHandlerFn>> | DynControlErrors;
 }

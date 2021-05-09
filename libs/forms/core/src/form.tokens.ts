@@ -4,7 +4,7 @@ import { DynControlCondition, DynControlMatcher } from './control-matchers.types
 import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
 import { DynControlFunction } from './control-params.types';
 import { DynControlProvider } from './control-provider.types';
-import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
+import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './control-validation.types';
 
 /**
  * core token gathering the controls in the system
@@ -34,6 +34,10 @@ export const DYN_MATCHER_CONDITIONS_TOKEN = new InjectionToken<DynControlConditi
 
 export const DYN_FUNCTIONS_TOKEN = new InjectionToken<DynControlFunction[]>(
   '@myndpm/dyn-forms/functions'
+);
+
+export const DYN_ERROR_HANDLERS_TOKEN = new InjectionToken<DynErrorHandler[]>(
+  '@myndpm/dyn-forms/error-handlers'
 );
 
 /**

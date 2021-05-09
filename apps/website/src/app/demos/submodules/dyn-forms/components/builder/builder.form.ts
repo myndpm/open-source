@@ -85,6 +85,9 @@ export function buildConfig(
                 when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
               }],
             },
+            errorMsg: {
+              required: 'Serial is required',
+            },
           }),
           createMatConfig('INPUT', {
             name: 'description',
