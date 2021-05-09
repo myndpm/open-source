@@ -1,13 +1,13 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { combineLatest, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlParams } from './control-params.types';
-import { DynErrorHandlerFn } from './control-validation.types';
+import { DynErrorHandlerFn, DynErrorMessage } from './control-validation.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -50,6 +50,9 @@ implements DynTreeNode<TParams, TControl> {
   get isFormLoaded(): boolean {
     return this._formLoaded;
   }
+  get errorMsg$(): Observable<DynErrorMessage> {
+    return this._errorMsg$.asObservable();
+  }
 
   // control.path relative to the root
   get path(): string[] {
@@ -68,6 +71,7 @@ implements DynTreeNode<TParams, TControl> {
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _unsubscribe = new Subject<void>();
+  private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
 
   constructor(
     private readonly formFactory: DynFormFactory,
@@ -231,6 +235,28 @@ implements DynTreeNode<TParams, TControl> {
 
   afterViewInit(): void {
     this._formLoaded = true;
+
+    // listen control changes to update the error
+    merge(
+      this._control.valueChanges,
+      this._control.statusChanges,
+    ).pipe(
+      takeUntil(this._unsubscribe),
+      withLatestFrom(this._errorMsg$),
+    ).subscribe(([_, currentError]) => {
+      if (this._control.valid) {
+        // reset any existing error
+        if (currentError) {
+          this._errorMsg$.next(null);
+        }
+      } else {
+        // update the error message if needed
+        const errorMsg = this.getErrorMessage();
+        if (currentError !== errorMsg) {
+          this._errorMsg$.next(errorMsg);
+        }
+      }
+    });
 
     // process the stored matchers
     this._matchers?.map((config) => {

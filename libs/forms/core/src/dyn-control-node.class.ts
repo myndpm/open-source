@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './control-events.types';
 import { DynControlParams } from './control-params.types';
+import { DynErrorMessage } from './control-validation.types';
 import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()
@@ -16,6 +17,10 @@ implements OnInit, OnDestroy {
 
   // corresponding node in the form hierarchy
   node!: DynFormTreeNode<TParams, TControl>;
+
+  get errorMsg$(): Observable<DynErrorMessage> {
+    return this.node.errorMsg$;
+  }
 
   get onDestroy$(): Observable<void> {
     return this._unsubscribe.asObservable();
