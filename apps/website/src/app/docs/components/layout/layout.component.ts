@@ -101,6 +101,7 @@ export class LayoutComponent implements OnInit {
         nav.push(item);
       }
     });
+
     this.nav.next(nav);
   }
 }

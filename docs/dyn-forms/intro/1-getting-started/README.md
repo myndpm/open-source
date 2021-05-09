@@ -2,6 +2,8 @@
 
 Here you will find how to build Dynamic Forms for Angular.
 
+This library aims to be a quite *generic* and *lightweight* layer on th top of Angular's Reactive Forms to enable a declarative way to build our stuff.
+
 ## Installation
 
 You can add this library to your Angular project with:
@@ -30,9 +32,9 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 ```
 
 The library needs some Dynamic Controls to be provided,
-the base module doesn't provide any by default,
-so we will need to include a `ui-package` of our preference,
-or our own module with our custom controls like:
+the core module doesn't provide any by default,
+so we will need to include a `ui-package` of our preference
+(or build our own module with our custom controls).
 
 ```typescript
 import { ReactiveFormsModule } from '@angular/forms';
@@ -41,13 +43,13 @@ import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material`;
 @NgModule({
   imports: [
     ReactiveFormsModule,
-    DynFormsMaterialModule.forRoot(),
+    DynFormsMaterialModule.forFeature(),
   ]
 })
 ```
 
-The `DynFormsMaterialModule` includes the base module `DynFormsModule`
-and other the required providers so you don't need to import anything else.
+The `DynFormsMaterialModule` includes the core module `DynFormsModule`
+and the required providers so you don't need to import anything else.
 
 ## Usage
 
@@ -82,3 +84,4 @@ const config: DynFormConfig = {
 
 - Check the source code of the [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple) demo.
 - Look the [Dynamic Controls](/docs/dyn-forms/intro/dynamic-controls) sections to learn more about their configuration.
+- Share your experience and suggestions about this setup in [this GitHub Thread](https://github.com/myndpm/open-source/discussions/26).

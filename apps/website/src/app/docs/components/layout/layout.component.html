@@ -3,7 +3,7 @@
   <mat-accordion [multi]="true" fxFlex="250px">
     <mat-expansion-panel [attr.route]="parent.link" *ngFor="let parent of nav | async">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ parent.text }}</mat-panel-title>
+        <mat-panel-title [routerLink]="parent.link">{{ parent.text }}</mat-panel-title>
       </mat-expansion-panel-header>
 
       <mat-nav-list *ngIf="parent.children">

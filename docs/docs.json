@@ -10,7 +10,8 @@
     "title": {
       "en": "Introduction",
       "es": "Introducción"
-    }
+    },
+    "redirectTo": "/docs/dyn-forms/intro/getting-started"
   },
   "/docs/dyn-forms/intro/getting-started": {
     "title": {
@@ -18,8 +19,8 @@
       "es": "Primeros Pasos"
     },
     "content": {
-      "en": "dyn-forms/getting-started/README.md",
-      "es": "dyn-forms/getting-started/README.es.md"
+      "en": "dyn-forms/intro/1-getting-started/README.md",
+      "es": "dyn-forms/intro/1-getting-started/README.es.md"
     }
   },
   "/docs/dyn-forms/intro/dynamic-controls": {
@@ -28,7 +29,7 @@
       "es": "Controles Dinámicos"
     },
     "content": {
-      "en": "dyn-forms/dynamic-controls/README.md"
+      "en": "dyn-forms/intro/2-dynamic-controls/README.md"
     }
   },
   "/docs/dyn-forms/intro/control-params": {
@@ -37,7 +38,7 @@
       "es": "Parámetros del Control"
     },
     "content": {
-      "en": "dyn-forms/control-params/README.md"
+      "en": "dyn-forms/intro/3-control-params/README.md"
     }
   },
   "/docs/dyn-forms/intro/validators": {
@@ -46,31 +47,52 @@
       "es": "Validadores"
     },
     "content": {
-      "en": "dyn-forms/validators/README.md"
+      "en": "dyn-forms/intro/4-validators/README.md"
     }
   },
   "/docs/dyn-forms/intro/matchers": {
     "title": {
-      "en": "Matches and Conditions",
+      "en": "Matchers and Conditions",
       "es": "Matchers y Condiciones"
+    },
+    "content": {
+      "en": "dyn-forms/intro/5-matchers/README.md"
     }
   },
   "/docs/dyn-forms/intro/layout": {
     "title": {
       "en": "Layout Options",
       "es": "Opciones de Layout"
+    },
+    "content": {
+      "en": "dyn-forms/intro/6-layout/README.md"
+    }
+  },
+  "/docs/dyn-forms/intro/schematics": {
+    "title": {
+      "en": "Schematics",
+      "es": "Schematics"
+    },
+    "content": {
+      "en": "dyn-forms/intro/7-schematics/README.md"
     }
   },
   "/docs/dyn-forms/ui": {
     "title": {
       "en": "UI Packages",
       "es": "Paquetes UI"
+    },
+    "content": {
+      "en": "dyn-forms/ui/packages/README.md"
     }
   },
   "/docs/dyn-forms/ui/material": {
     "title": {
       "en": "Material",
       "es": "Material"
+    },
+    "content": {
+      "en": "dyn-forms/ui/ui-material/README.md"
     }
   },
   "/docs/dyn-forms/examples": {
