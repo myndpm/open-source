@@ -25,6 +25,11 @@ export function buildConfig(
       edit: { readonly: false },
       display: { readonly: true },
     },
+    errorMsgs: {
+      "smartLock.serial": {
+        required: 'Serial is required',
+      },
+    },
     controls: [
       createMatConfig('CONTAINER', {
         name: 'agentShowing',

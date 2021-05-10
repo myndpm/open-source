@@ -53,7 +53,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // works in AfterViewInit
-  valueChanges = (time: number = 100): Observable<any> => {
+  valueChanges = (time: number = 50): Observable<any> => {
     // this omit the consecutive changes while patching a Form Array
     // the more complex the form is, the more debounce would be needed
     return this.form.valueChanges.pipe(debounceTime(time));
@@ -81,7 +81,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
     // manually register the node
     this.node.setControl(this.form)
-    this.node.load({ isolated: Boolean(this.isolated) });
+    this.node.load({
+      isolated: Boolean(this.isolated),
+      errorMsgs: this.config?.errorMsgs,
+    });
     this.logger.nodeLoaded('dyn-form', this.node.path);
 
     this.configLayer = Injector.create({

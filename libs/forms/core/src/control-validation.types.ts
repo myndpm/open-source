@@ -19,15 +19,14 @@ export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;
 /**
  * error handlers
  */
- export type DynErrorMessage = string|null;
+export type DynErrorId = string;
+export type DynErrorMessage = string|null;
 
- export interface DynErrorMessages {
-  [path: string]: DynControlErrors; // partial ending or full path of the control
-}
+// partial ending or full path of the control
+export type DynErrorMessages = Record<string, DynControlErrors>;
 
-export interface DynControlErrors {
-  [error: string]: string; // string to be displayed for a particular error
-}
+// string to be displayed for a particular error
+export type DynControlErrors = Record<DynErrorId, DynErrorMessage>;
 
 export interface DynErrorHandlerFn {
   (node: DynTreeNode): DynErrorMessage;

@@ -2,12 +2,13 @@ import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
+import { DynConfigErrors } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlParams } from './control-params.types';
-import { DynErrorHandlerFn, DynErrorMessage } from './control-validation.types';
+import { DynErrorHandlerFn, DynErrorMessage, DynErrorMessages } from './control-validation.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -54,6 +55,10 @@ implements DynTreeNode<TParams, TControl> {
     return this._errorMsg$.asObservable();
   }
 
+  // form root node
+  get root(): DynFormTreeNode<any, any> {
+    return this.isRoot ? this : this.parent.root;
+  }
   // control.path relative to the root
   get path(): string[] {
     return [
@@ -100,21 +105,6 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Feature methods
    */
-
-  // error message resolver
-  getErrorMessage(): string|null {
-    let errorMsg: string|null = null;
-
-    if (this._control.errors) {
-      // loop the handlers and retrieve the message
-      this._errorHandlers.some(handler => {
-        errorMsg = handler(this);
-        return Boolean(errorMsg);
-      });
-    }
-    // TODO i18n transformation
-    return errorMsg;
-  }
 
   // let the TreeNode know of an incoming hook
   callHook(event: DynControlHook): void {
@@ -203,7 +193,9 @@ implements DynTreeNode<TParams, TControl> {
     this._control = control;
   }
 
-  load(config: Partial<DynBaseConfig>): void {
+  load(
+    config: Partial<DynBaseConfig> & { errorMsgs?: DynConfigErrors<DynErrorMessages> },
+  ): void {
     if (!this._control) {
       throw this.logger.nodeWithoutControl();
     }
@@ -221,7 +213,11 @@ implements DynTreeNode<TParams, TControl> {
     this._params = config.params as TParams;
 
     // resolve and store the error handlers
-    this._errorHandlers = this.formHandlers.getErrorHandlers(config.errorMsg);
+    this._errorHandlers = config.errorMsgs
+      ? this.formHandlers.getFormErrorHandlers(config.errorMsgs)
+      : config.errorMsg
+        ? this.formHandlers.getErrorHandlers(config.errorMsg)
+        : [];
 
     if (!this.isolated) {
       // register the node with its parent
@@ -242,6 +238,7 @@ implements DynTreeNode<TParams, TControl> {
       this._control.statusChanges,
     ).pipe(
       takeUntil(this._unsubscribe),
+      debounceTime(20), // wait for subcontrols to be updated
       withLatestFrom(this._errorMsg$),
     ).subscribe(([_, currentError]) => {
       if (this._control.valid) {
@@ -315,5 +312,20 @@ implements DynTreeNode<TParams, TControl> {
 
     // TODO what happen to the data if we remove the control
     // TODO update validity if not isolated
+  }
+
+  // error message resolver
+  private getErrorMessage(): string|null {
+    let errorMsg: string|null = null;
+
+    if (this._control.errors) {
+      // loop the handlers and retrieve the message
+      this._errorHandlers.concat(this.root._errorHandlers || []).some(handler => {
+        errorMsg = handler(this);
+        return Boolean(errorMsg);
+      });
+    }
+    // TODO i18n transformation
+    return errorMsg;
   }
 }

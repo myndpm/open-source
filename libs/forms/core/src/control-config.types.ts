@@ -14,12 +14,16 @@ export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 // handlers provided can be referenced by id or [id with args]
 export type DynConfigProvider<F extends Function> = F | DynConfigId | [DynConfigId, DynConfigArgs];
+
 // object map of handlers
 export interface DynConfigMap<T> {
   [field: string]: T;
 }
 // collection of handlers to be used
 export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigArgs } | Array<DynConfigProvider<F>>;
+
+// error handlers config
+export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T;
 
 /**
   single control options
@@ -45,5 +49,5 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>;
-  errorMsg?: Array<DynConfigProvider<DynErrorHandlerFn>> | DynControlErrors;
+  errorMsg?: DynConfigErrors<DynControlErrors>;
 }

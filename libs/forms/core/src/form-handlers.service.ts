@@ -4,6 +4,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import {
   DynConfigArgs,
   DynConfigCollection,
+  DynConfigErrors,
   DynConfigId,
   DynConfigMap,
   DynConfigProvider,
@@ -24,6 +25,7 @@ import {
   DynControlValidator,
   DynErrorHandler,
   DynErrorHandlerFn,
+  DynErrorMessages,
 } from './control-validation.types';
 import {
   defaultConditions,
@@ -140,8 +142,18 @@ export class DynFormHandlers {
     throw this.logger.providerNotFound('Condition', config);
   }
 
+  getFormErrorHandlers(
+    config?: DynConfigErrors<DynErrorMessages>,
+  ): DynErrorHandlerFn[] {
+    return config
+      ? Array.isArray(config)
+        ? config.map(handler => this.getErrorHandler(handler))
+        : [this.errorHandlers.get('FORM')!(config)]
+      : [];
+  }
+
   getErrorHandlers(
-    config?: Array<DynConfigProvider<DynErrorHandlerFn>> | DynControlErrors,
+    config?: DynConfigErrors<DynControlErrors>,
   ): DynErrorHandlerFn[] {
     return config
       ? Array.isArray(config)

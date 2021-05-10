@@ -16,6 +16,7 @@ import {
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessage,
+  DynErrorMessages,
 } from './control-validation.types';
 import { DynTreeNode } from './tree.types';
 
@@ -162,6 +163,32 @@ export const defaultConditions: DynControlCondition[] = [
  */
 export const defaultErrorHandlers: DynErrorHandler[] = [
   {
+    id: 'FORM',
+    fn: (messages: DynErrorMessages): DynErrorHandlerFn => {
+      return ({ control, path }: DynTreeNode) => {
+        if (!control.errors) {
+          return null;
+        }
+        // match the control errors with the configured messages
+        let currentMatch = [];
+        const config = Object.keys(messages).reduce<DynControlErrors|null>((result, key) => {
+          const errorPath = key.split('.');
+          if (pathEndsWith(path, errorPath) && errorPath.length > currentMatch.length) {
+            currentMatch = errorPath;
+            return messages[key]
+          }
+          return result;
+        }, null);
+
+        return config
+          ? Object.keys(control.errors).reduce<DynErrorMessage>((result, error) => {
+              return !result && config[error] ? config[error] : result;
+            }, null)
+          : null;
+      }
+    }
+  },
+  {
     id: 'CONTROL',
     fn: (messages: DynControlErrors): DynErrorHandlerFn => {
       return ({ control }: DynTreeNode) => {
@@ -216,3 +243,17 @@ export const defaultFunctions: DynControlFunction[] = [
 ].map(
   mapPriority<DynControlCondition>()
 );
+
+/**
+ * Utils
+ */
+export function getMapFromRecord<V>(config: Record<string, V>): Map<string, V> {
+  return new Map<string, V>(Object.entries(config));
+}
+
+// check if the control.path endsWith the provided config
+function pathEndsWith(path: string[], config: string[]): boolean {
+  return [...config].reverse().every((item, i) => {
+    return item === path[path.length - 1 - i];
+  });
+}

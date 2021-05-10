@@ -25,7 +25,6 @@ export interface DynTreeNode<
   invisible(): void;
   hidden(): void;
 
-  getErrorMessage(): string|null;
   callHook(event: DynControlHook): void;
   query(path: string, searchNodes?: boolean): AbstractControl|null;
   select(path: string): AbstractControl|null;
