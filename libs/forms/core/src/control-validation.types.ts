@@ -28,7 +28,5 @@ export type DynErrorMessages = Record<string, DynControlErrors>;
 // string to be displayed for a particular error
 export type DynControlErrors = Record<DynErrorId, DynErrorMessage>;
 
-export interface DynErrorHandlerFn {
-  (node: DynTreeNode): DynErrorMessage;
-}
+export type DynErrorHandlerFn = (node: DynTreeNode) => DynErrorMessage;
 export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;

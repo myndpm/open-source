@@ -28,17 +28,13 @@ export interface DynControlMatchCondition {
  * matcher handlers
  * ie. DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | etc
  */
-export interface DynControlMatcherFn {
-  (node: DynTreeNode, hasMatch: boolean): void;
-}
+export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean) => void;
 export type DynControlMatcher = DynBaseHandler<DynControlMatcherFn>;
 
 /**
  * condition handlers
  */
-export interface DynControlConditionFn {
-  (node: DynTreeNode): Observable<boolean>;
-}
+export type DynControlConditionFn = (node: DynTreeNode) => Observable<boolean>;
 export type DynControlCondition = DynBaseHandler<DynControlConditionFn>;
 
 /**
