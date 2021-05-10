@@ -3,7 +3,7 @@ import { DynLogDriver, DynLogger, DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn
 import { DynControlCondition, DynControlMatcher } from './control-matchers.types';
 import { DynControlFunction } from './control-params.types';
 import { DynControlProvider } from './control-provider.types';
-import { DynControlAsyncValidator, DynControlValidator } from './control-validation.types';
+import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './control-validation.types';
 import { mapPriority } from './dyn-providers';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -11,6 +11,7 @@ import { DynFormRegistry } from './form-registry.service';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
   DYN_CONTROLS_TOKEN,
+  DYN_ERROR_HANDLERS_TOKEN,
   DYN_FUNCTIONS_TOKEN,
   DYN_MATCHERS_TOKEN,
   DYN_MATCHER_CONDITIONS_TOKEN,
@@ -20,6 +21,7 @@ import {
 export interface DynModuleProviders {
   providers?: Provider[];
   controls?: DynControlProvider[];
+  errorHandlers?: DynErrorHandler[];
   functions?: DynControlFunction[];
   validators?: DynControlValidator[];
   asyncValidators?: DynControlAsyncValidator[];
@@ -46,6 +48,16 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
       useValue: control,
       multi: true,
     })) ?? [],
+    ...args?.errorHandlers?.map(mapPriority(args?.priority)).map((errorHandler) => ({
+      provide: DYN_ERROR_HANDLERS_TOKEN,
+      useValue: errorHandler,
+      multi: true,
+    })) ?? [],
+    ...args?.functions?.map(mapPriority(args?.priority)).map((fn) => ({
+      provide: DYN_FUNCTIONS_TOKEN,
+      useValue: fn,
+      multi: true,
+    })) ?? [],
     ...args?.validators?.map(mapPriority(args?.priority)).map((validator) => ({
       provide: DYN_VALIDATORS_TOKEN,
       useValue: validator,
@@ -63,11 +75,6 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
     })) ?? [],
     ...args?.conditions?.map(mapPriority(args?.priority)).map((condition) => ({
       provide: DYN_MATCHER_CONDITIONS_TOKEN,
-      useValue: condition,
-      multi: true,
-    })) ?? [],
-    ...args?.functions?.map(mapPriority(args?.priority)).map((condition) => ({
-      provide: DYN_FUNCTIONS_TOKEN,
       useValue: condition,
       multi: true,
     })) ?? [],
