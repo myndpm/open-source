@@ -7,8 +7,6 @@ export function markAsUntouched(group: FormGroup | FormArray): void {
     const control = group.get(field);
     if (control instanceof FormControl) {
       control.markAsUntouched();
-      // we're not wired by the Form Directives so we need this:
-      control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     } else if (control instanceof FormGroup) {
       markAsUntouched(control);
     }

@@ -134,7 +134,10 @@ export const defaultConditions: DynControlCondition[] = [
         }
         if (value === undefined) {
           // triggers with any valueChange
-          return control.valueChanges.pipe(mapTo(true));
+          return control.valueChanges.pipe(
+            startWith(control.value),
+            mapTo(true),
+          );
         }
         return control.valueChanges.pipe(
           startWith(control.value),

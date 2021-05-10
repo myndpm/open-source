@@ -21,6 +21,7 @@ import { DynControlType, DynInstanceType } from './control.types';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
+import { DYN_MODE } from './form.tokens';
 
 @Directive()
 export abstract class DynControl<
@@ -58,6 +59,7 @@ implements OnInit, OnChanges {
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 
+  protected readonly _mode: BehaviorSubject<DynControlMode>;
   protected readonly _ref: ChangeDetectorRef;
   protected readonly _logger: DynLogger;
   protected readonly _formFactory: DynFormFactory;
@@ -66,6 +68,7 @@ implements OnInit, OnChanges {
   constructor(injector: Injector) {
     super(injector);
 
+    this._mode = injector.get(DYN_MODE);
     this._ref = injector.get(ChangeDetectorRef);
     this._logger = injector.get(DynLogger);
     this._formFactory = injector.get(DynFormFactory);
@@ -83,11 +86,9 @@ implements OnInit, OnChanges {
     mergeStreams(
       isObservable(this.config.params) ? this.config.params : of(this.config.params),
       this.node.paramsUpdates$,
-    )
-    .pipe(
+    ).pipe(
       scan((params, updates) => merge(true, params, updates), {})
-    )
-    .subscribe((params) => {
+    ).subscribe((params) => {
       // emulates ngOnChanges
       const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
       this.params$.next(change.currentValue);
@@ -99,6 +100,7 @@ implements OnInit, OnChanges {
       this._ref.markForCheck();
     });
 
+    // merge any configured paramFns
     if (this.config.paramFns) {
       this.updateParams(undefined, this.config.paramFns);
     }

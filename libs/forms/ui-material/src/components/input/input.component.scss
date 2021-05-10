@@ -11,6 +11,8 @@
 
   &.readonly ::ng-deep {
     .mat-form-field-outline,
+    .mat-error,
+    .mat-hint,
     input {
       display: none;
     }
@@ -21,6 +23,20 @@
 
     .mat-form-field-appearance-fill .mat-form-field-flex {
       background: transparent;
+    }
+
+    // reset invalid colors in readonly
+    .mat-form-field-invalid {
+      &.mat-form-field {
+        .mat-form-field-label {
+          color: rgba(0, 0, 0, 0.6); // TODO mat-color
+        }
+      }
+      &.mat-form-field-appearance-outline {
+        .mat-form-field-outline-thick {
+          color: rgba(0, 0, 0, 0.87); // TODO mat-color
+        }
+      }
     }
   }
 }
