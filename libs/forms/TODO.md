@@ -2,7 +2,6 @@
 
 ## Form Controls
 
-- Chainable error handlers
 - Check FormDirectives responsibilities to apply in DynFormTreeNode if the validators doesn't work
 - Provide config for appearance (theme, full-width, inline)
 - Extensible handlers for different modes (panel, filter, table-cell, mobile?)

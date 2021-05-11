@@ -3,6 +3,7 @@ import {
   Directive,
   Injector,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChange,
   SimpleChanges,
@@ -31,7 +32,7 @@ export abstract class DynControl<
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
 extends DynControlNode<TParams, TControl>
-implements OnInit, OnChanges {
+implements OnInit, OnChanges, OnDestroy {
 
   // central place to define the provided Type
   static dynControl: DynControlType = '';
@@ -46,9 +47,7 @@ implements OnInit, OnChanges {
     return this.params$.getValue();
   }
   get control(): TControl { // built from the config in the DynFormTreeNode
-    return this.config.name // can be deep into the parent
-      ? this.node.parent.control.get(this.config.name) as TControl
-      : this.node.control;
+    return this.node.control;
   }
   get parentControl(): FormGroup { // utility getter for the form directives
     return this.node.parent.control;
@@ -109,6 +108,11 @@ implements OnInit, OnChanges {
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
   ngOnChanges(changes?: SimpleChanges): void {
     // emulated while assigning the params as DynControls has no Inputs
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.params$.complete();
   }
 
   updateParams(

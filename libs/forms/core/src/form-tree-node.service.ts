@@ -299,7 +299,9 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     this.hook$.complete();
-
+    this.paramsUpdates$.complete();
+    this.visibility$.complete();
+    this._errorMsg$.complete();
     this._unsubscribe.next();
     this._unsubscribe.complete();
   }

@@ -16,7 +16,7 @@ export abstract class DynControlNode<
 implements OnInit, OnDestroy {
 
   // corresponding node in the form hierarchy
-  node!: DynFormTreeNode<TParams, TControl>;
+  node: DynFormTreeNode<TParams, TControl>;
 
   get errorMsg$(): Observable<DynErrorMessage> {
     return this.node.errorMsg$;
