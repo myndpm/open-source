@@ -86,14 +86,14 @@ export class DynFormFactory {
     }
 
     // build the control with the given config
-    const { name, control } = this.build(instance as any, config, recursively, controlName);
+    const { name, parentControl, control } = this.build(instance as any, config, recursively, controlName);
 
     if (!control) {
       throw new Error(`Could not build a control for ${instance}`);
     }
 
     if (name) {
-      this.append(controlParent, name, control);
+      this.append(controlParent, name, parentControl);
     }
 
     return control as unknown as T;
@@ -107,25 +107,25 @@ export class DynFormFactory {
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
-  ): { name?: string, control: FormGroup };
+  ): { name?: string, parentControl: AbstractControl, control: FormGroup };
   build(
     instance: DynInstanceType.Array,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
-  ): { name?: string, control: FormArray };
+  ): { name?: string, parentControl: AbstractControl, control: FormArray };
   build(
     instance: DynInstanceType.Control,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
-  ): { name?: string, control: FormControl };
+  ): { name?: string, parentControl: AbstractControl, control: FormControl };
   build<T extends AbstractControl>(
     instance: DynInstanceType,
     config: DynBaseConfig,
     recursively = false,
     controlName = config.name,
-  ): { name?: string, control: T } {
+  ): { name?: string, parentControl: AbstractControl, control: T } {
 
     // creates the specific control
     let name = controlName;
@@ -155,17 +155,18 @@ export class DynFormFactory {
     }
 
     // builds a hierarchy if the name is deep
+    let parentControl = control;
     if (this.isDeepName(controlName)) {
       const names = controlName.split('.').reverse();
       name = names.pop();
       names.forEach(parentName => {
-        control = new FormGroup({
-          [parentName]: control,
+        parentControl = new FormGroup({
+          [parentName]: parentControl,
         });
       })
     }
 
-    return { name, control: control as T };
+    return { name, parentControl, control: control as T };
   }
 
   /**
