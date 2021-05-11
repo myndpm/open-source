@@ -2,7 +2,7 @@ import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -239,6 +239,8 @@ implements DynTreeNode<TParams, TControl> {
     ).pipe(
       takeUntil(this._unsubscribe),
       debounceTime(20), // wait for subcontrols to be updated
+      map(() => this._control.errors),
+      distinctUntilChanged(),
       withLatestFrom(this._errorMsg$),
     ).subscribe(([_, currentError]) => {
       if (this._control.valid) {
