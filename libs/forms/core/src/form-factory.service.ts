@@ -6,7 +6,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
-import { DynInstanceType } from './control.types';
+import { DynControlType, DynInstanceType } from './control.types';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
@@ -177,7 +177,7 @@ export class DynFormFactory {
   ): void {
     config.controls?.forEach((item) => {
       if (item.name) {
-        const { name, control } = this.build(this.registry.getInstanceFor(item.control) as any, item, true)
+        const { name, control } = this.build(this.getInstanceFor(item.control) as any, item, true)
         parent.addControl(name!, control);
       } else {
         this.buildControls(parent, item);
@@ -195,6 +195,13 @@ export class DynFormFactory {
     } else if (parent instanceof FormArray) {
       parent.push(control);
     }
+  }
+
+  /**
+   * getInstanceFor facade for DynControl
+   */
+  getInstanceFor(control: DynControlType): DynInstanceType {
+    return this.registry.getInstanceFor(control);
   }
 
   private isDeepName(name?: string): name is string {

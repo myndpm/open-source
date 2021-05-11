@@ -39,6 +39,14 @@ export class DynLogger {
     });
   }
 
+  nodeInstanceMismatch(control: string, superclass: string, configured: string): Error {
+    return this.driver.log({
+      level: DynLogLevel.Fatal,
+      message:
+        `Control '${control}' extends  from '${superclass}' but is provided as '${configured}'.`,
+    });
+  }
+
   nodeWithoutControl(): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,

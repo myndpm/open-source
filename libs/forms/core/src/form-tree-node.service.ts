@@ -166,6 +166,12 @@ implements DynTreeNode<TParams, TControl> {
       throw this.logger.nodeFailed(config.control);
     }
 
+    // throw error if the configured instance is different to the inherited one
+    const configInstance = this.formFactory.getInstanceFor(config.control);
+    if (instance !== configInstance) {
+      throw this.logger.nodeInstanceMismatch(config.control, instance, configInstance);
+    }
+
     // register the instance type for the childs to know
     this._instance = instance;
 
