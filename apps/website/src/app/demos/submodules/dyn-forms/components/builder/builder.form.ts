@@ -1,6 +1,6 @@
 import { MatDialog } from '@angular/material/dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
-import { DynControlConditionFn, DynControlMatch, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlConditionFn, DynControlMatch, DynControlMatcherFn, DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -40,7 +40,7 @@ export function buildConfig(
             modes: {
               display: {
                 control: 'INPUT',
-                paramFns: { getValue: 'formatYesNo' }
+                paramFns: { getValue: 'formatYesNo' },
               },
             },
           }),
@@ -67,7 +67,10 @@ export function buildConfig(
             },
             {
               matchers: [confirmTypeChange(dialog)],
-              when: [{ path: 'accessType' }],
+              when: [
+                { path: 'accessType' }, // listen value changes
+                ['MODE', 'edit'], // only in edit mode
+              ],
             },
           ],
         },
@@ -130,13 +133,13 @@ export function buildConfig(
 }
 
 // custom condition factory for UnitType
-function isUnitParking(unit$: Observable<IMyndUnit>) {
+function isUnitParking(unit$: Observable<IMyndUnit>): DynControlConditionFn {
   return () => unit$.pipe(map(({ unitType }) => unitType === MyndUnitType.Parking));
 }
 
 // custom matcher factory for AccessType
 let previousType: MyndAccessType = null;
-function confirmTypeChange(dialog: MatDialog) {
+function confirmTypeChange(dialog: MatDialog): DynControlMatcherFn {
   return (node: DynTreeNode) => {
     // will be triggered each time the node changes value
     const currentType = node.control.value;
@@ -182,8 +185,8 @@ function getMatchersFor(accessType: MyndAccessType, isParking: DynControlConditi
 }
 
 // data reseter when Access Type changes
-function changedAccessType(node: DynTreeNode, previousType: MyndAccessType): void {
-  switch (previousType) {
+function changedAccessType(node: DynTreeNode, previousValue: MyndAccessType): void {
+  switch (previousValue) {
     case MyndAccessType.CodeBox: {
       node.query('codeBox').patchValue({
         description: null,

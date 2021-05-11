@@ -92,6 +92,7 @@ export class DynFactoryComponent implements OnInit {
             DynFormFactory,
             DynFormHandlers,
             DynLogger,
+            DYN_MODE,
             [new SkipSelf(), DynFormTreeNode],
           ],
         },

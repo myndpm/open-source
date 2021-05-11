@@ -1,5 +1,7 @@
 import { AbstractControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { DynControlHook } from './control-events.types';
+import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynInstanceType } from './control.types';
 
@@ -13,6 +15,7 @@ export interface DynTreeNode<
   TParams extends DynControlParams = DynControlParams,
   TControl extends AbstractControl = AbstractControl
 > {
+  root: DynTreeNode;
   isRoot: boolean;
   name: string|undefined;
   path: string[];
@@ -20,6 +23,8 @@ export interface DynTreeNode<
   instance: DynInstanceType;
   control: TControl;
   params: TParams;
+
+  mode$: Observable<DynControlMode>;
 
   visible(): void;
   invisible(): void;

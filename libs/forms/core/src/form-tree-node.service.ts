@@ -1,4 +1,4 @@
-import { Injectable, Optional, SkipSelf } from '@angular/core';
+import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
@@ -7,11 +7,13 @@ import { DynBaseConfig } from './config.types';
 import { DynConfigErrors } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
+import { DynControlMode } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynErrorMessages } from './control-validation.types';
 import { DynInstanceType } from './control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
+import { DYN_MODE } from './form.tokens';
 import { DynTreeNode } from './tree.types';
 
 @Injectable()
@@ -54,6 +56,9 @@ implements DynTreeNode<TParams, TControl> {
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
+  get mode$(): Observable<DynControlMode> {
+    return this._mode$.asObservable();
+  }
 
   // form root node
   get root(): DynFormTreeNode<any, any> {
@@ -82,8 +87,11 @@ implements DynTreeNode<TParams, TControl> {
     private readonly formFactory: DynFormFactory,
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
+    @Optional() @Inject(DYN_MODE)
+    private readonly _mode$: BehaviorSubject<DynControlMode>,
     // parent node should be set for all except the root
-    @Optional() @SkipSelf() public readonly parent: DynFormTreeNode<any>,
+    @Optional() @SkipSelf()
+    public readonly parent: DynFormTreeNode<any>,
   ) {}
 
   /**

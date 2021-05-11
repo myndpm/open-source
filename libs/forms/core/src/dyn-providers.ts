@@ -152,7 +152,15 @@ export const defaultConditions: DynControlCondition[] = [
           map(result => negate ? !result : result),
         );
       }
-    }
+    },
+  },
+  {
+    id: 'MODE',
+    fn: (mode: string): DynControlConditionFn => {
+      return (node: DynTreeNode) => {
+        return node.mode$.pipe(map(value => value === mode));
+      }
+    },
   },
 ].map(
   mapPriority<DynControlCondition>()
