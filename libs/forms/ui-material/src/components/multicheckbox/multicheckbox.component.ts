@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnChanges,
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -12,7 +11,7 @@ import {
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { combineLatest } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DynMatMulticheckboxParams } from './multicheckbox.component.params';
 
 @Component({
@@ -23,7 +22,7 @@ import { DynMatMulticheckboxParams } from './multicheckbox.component.params';
 })
 export class DynMatMulticheckboxComponent
 extends DynFormControl<DynControlMode, DynMatMulticheckboxParams>
-implements OnInit, OnChanges {
+implements OnInit {
 
   static dynControl: 'MULTICHECK' = 'MULTICHECK';
 
@@ -55,27 +54,31 @@ implements OnInit, OnChanges {
         }
         this._internalValueChange = false;
       });
-  }
 
-  ngOnChanges(): void {
-    // map one control to each option
-    this.controls = this.params.options.map((option) => {
-      return new FormControl(this.hasValue(option.value))
-    });
+    this.params$.pipe(
+      takeUntil(this.onDestroy$),
+      switchMap((params) => {
+        // map one control to each option
+        this.controls = params.options.map((option) => {
+          return new FormControl(this.hasValue(option.value))
+        });
 
-    // listen the internal controls to sync the high-order control value
-    combineLatest(
-      this.controls.map(({ value, valueChanges }) => {
-        return valueChanges.pipe(startWith(value));
-      })
-    )
-      .pipe(takeUntil(this.params$)) // stop on params changed
-      .subscribe((values: boolean[]) => {
-        this._internalValueChange = true;
-        this.control.setValue(
-          values.map((enabled, i) => enabled ? this.params.options[i].value : null).filter(Boolean),
+        return combineLatest(
+          this.controls.map(({ value, valueChanges }) => {
+            return valueChanges.pipe(startWith(value));
+          })
+        ).pipe(
+          takeUntil(this.onDestroy$),
+          // TODO add distinctUntilChanged with lodash.isEqual
+          tap((values: boolean[]) => {
+            this._internalValueChange = true;
+            this.control.setValue(
+              values.map((enabled, i) => enabled ? this.params.options[i].value : null).filter(Boolean),
+            );
+          }),
         );
-      });
+      }),
+    ).subscribe();
   }
 
   completeParams(params: Partial<DynMatMulticheckboxParams>): DynMatMulticheckboxParams {
