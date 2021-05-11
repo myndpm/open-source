@@ -52,7 +52,7 @@ implements OnInit {
   }
 
   addItem(): void {
-    const { control } = this._formFactory.build(DynInstanceType.Group, this.config, true);
+    const { control } = this._factory.build(DynInstanceType.Group, this.config, true);
     this.control.push(control);
   }
 

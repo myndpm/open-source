@@ -62,8 +62,8 @@ implements OnInit, OnChanges {
   protected readonly _mode: BehaviorSubject<DynControlMode>;
   protected readonly _ref: ChangeDetectorRef;
   protected readonly _logger: DynLogger;
-  protected readonly _formFactory: DynFormFactory;
-  private readonly _formHandlers: DynFormHandlers;
+  protected readonly _factory: DynFormFactory;
+  private readonly _handlers: DynFormHandlers;
 
   constructor(injector: Injector) {
     super(injector);
@@ -71,8 +71,8 @@ implements OnInit, OnChanges {
     this._mode = injector.get(DYN_MODE);
     this._ref = injector.get(ChangeDetectorRef);
     this._logger = injector.get(DynLogger);
-    this._formFactory = injector.get(DynFormFactory);
-    this._formHandlers = injector.get(DynFormHandlers);
+    this._factory = injector.get(DynFormFactory);
+    this._handlers = injector.get(DynFormHandlers);
   }
 
   // complete a partial specification of the required parameters
@@ -116,7 +116,7 @@ implements OnInit, OnChanges {
     newParamFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>
   ): void {
     this.node.paramsUpdates$.next(
-      merge(true, newParams, this._formHandlers.getFunctions(newParamFns))
+      merge(true, newParams, this._handlers.getFunctions(newParamFns))
     );
   }
 
