@@ -63,7 +63,7 @@ export class DynFactoryComponent implements OnInit {
   private component!: ComponentRef<AbstractDynControl>
 
   // retrieved from the proper injector
-  private _newLayer!: Injector;
+  private _injector!: Injector;
   private _mode$!: BehaviorSubject<DynControlMode>;
   private _formMode!: DynFormMode;
 
@@ -77,28 +77,9 @@ export class DynFactoryComponent implements OnInit {
 
   ngOnInit(): void {
     // resolve the injector to use and get providers
-    const injector = this.injector ?? this.parent;
-    this._mode$ = injector.get(DYN_MODE);
-    this._formMode = injector.get(DynFormMode);
-
-    this._newLayer = Injector.create({
-      providers: [
-        // new form-hierarchy sublevel
-        // DynControls has its own DynFormTreeNode
-        {
-          provide: DynFormTreeNode,
-          useClass: DynFormTreeNode,
-          deps: [ // FIXME added for Stackblitz
-            DynFormFactory,
-            DynFormHandlers,
-            DynLogger,
-            DYN_MODE,
-            [new SkipSelf(), DynFormTreeNode],
-          ],
-        },
-      ],
-      parent: injector,
-    });
+    this._injector = this.injector ?? this.parent;
+    this._mode$ = this._injector.get(DYN_MODE);
+    this._formMode = this._injector.get(DynFormMode);
 
     // process the dynamic component with each mode change
     let config: DynBaseConfig;
@@ -132,10 +113,29 @@ export class DynFactoryComponent implements OnInit {
     const control = this.registry.get(config.control);
     const factory = this.resolver.resolveComponentFactory(control.component);
 
+    const newInjectionLayer = Injector.create({
+      providers: [
+        // new form-hierarchy sublevel
+        // DynControls has its own DynFormTreeNode
+        {
+          provide: DynFormTreeNode,
+          useClass: DynFormTreeNode,
+          deps: [ // FIXME added for Stackblitz
+            DynFormFactory,
+            DynFormHandlers,
+            DynLogger,
+            DYN_MODE,
+            [new SkipSelf(), DynFormTreeNode],
+          ],
+        },
+      ],
+      parent: this._injector,
+    });
+
     this.component = this.container.createComponent<AbstractDynControl>(
       factory,
       undefined,
-      this._newLayer,
+      newInjectionLayer,
     );
     this.component.instance.config = config;
     // we let the corresponding DynFormTreeNode to initialize the control
