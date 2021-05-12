@@ -219,14 +219,22 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
  */
 export const defaultFunctions: DynControlFunction[] = [
   {
+    id: 'formatText',
+    fn: (defaultText = '-'): DynControlFunctionFn => {
+      return (node: DynTreeNode) => {
+        return node.control.value || defaultText;
+      }
+    },
+  },
+  {
     id: 'formatYesNo',
-    fn: (isBinary = true): DynControlFunctionFn => {
+    fn: (isBinary = true, defaultText = '-'): DynControlFunctionFn => {
       return (node: DynTreeNode) => {
         return node.control.value === true
           ? 'Yes'
           : isBinary || node.control.value === false
             ? 'No'
-            : '-';
+            : defaultText;
       }
     },
   },
