@@ -29,9 +29,9 @@ export function simpleForm(
   obsParams: Observable<DynControlParams>
 ): DynFormConfig<'edit'|'display'> { // typed mode
   return {
-    modeParams: {
-      edit: { readonly: false },
-      display: { readonly: true },
+    modes: {
+      edit: { params: { readonly: false } },
+      display: { params: { readonly: true } },
     },
     controls: [
       createMatConfig('CARD', {

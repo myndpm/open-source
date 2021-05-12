@@ -21,9 +21,9 @@ export function buildConfig(
   dialog: MatDialog,
 ): DynFormConfig<'edit'|'display'> {
   return {
-    modeParams: {
-      edit: { readonly: false },
-      display: { readonly: true },
+    modes: {
+      edit: { params: { readonly: false } },
+      display: { params: { readonly: true } },
     },
     errorMsgs: {
       "smartLock.serial": {

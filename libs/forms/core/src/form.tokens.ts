@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DynControlCondition, DynControlMatcher } from './control-matchers.types';
-import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
+import { DynControlMode, DynControlModes } from './control-mode.types';
 import { DynControlFunction } from './control-params.types';
 import { DynControlProvider } from './control-provider.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './control-validation.types';
@@ -47,10 +47,6 @@ export const DYN_MODE = new InjectionToken<BehaviorSubject<DynControlMode>>(
   '@myndpm/dyn-forms/internal/mode'
 );
 
-export const DYN_MODE_DEFAULTS = new InjectionToken<DynModeParams>(
+export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
   '@myndpm/dyn-forms/internal/mode-defaults'
-);
-
-export const DYN_MODE_CONTROL_DEFAULTS = new InjectionToken<DynModeControls>(
-  '@myndpm/dyn-forms/internal/mode-control-defaults'
 );

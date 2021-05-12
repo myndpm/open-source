@@ -11,8 +11,8 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import merge from 'merge';
-import { BehaviorSubject, isObservable, merge as mergeStreams, Observable, of } from 'rxjs';
-import { scan } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
+import { filter, scan, startWith } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigMap, DynConfigProvider } from './control-config.types';
 import { DynControlVisibility } from './control-events.types';
@@ -81,28 +81,30 @@ implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     super.ngOnInit();
 
-    // listen parameters changes after the control is ready
-    mergeStreams(
-      isObservable(this.config.params) ? this.config.params : of(this.config.params),
-      this.node.paramsUpdates$,
-    ).pipe(
-      scan((params, updates) => merge(true, params, updates), {})
-    ).subscribe((params) => {
-      // emulates ngOnChanges
-      const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
-      this.params$.next(change.currentValue);
-      this.ngOnChanges({ params: change });
-
-      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
-
-      // emulates the async pipe
-      this._ref.markForCheck();
-    });
-
     // merge any configured paramFns
     if (this.config.paramFns) {
       this.updateParams(undefined, this.config.paramFns);
     }
+
+    // listen parameters changes after the control is ready
+    combineLatest([
+      isObservable(this.config.params) ? this.config.params : of(this.config.params),
+      this.node.paramsUpdates$.pipe(startWith({})),
+    ]).pipe(
+      scan<any>((params, [config, updates]) => merge(true, params, config, updates)),
+      filter(params => !Array.isArray(params)), // filters the first scan
+    ).subscribe((params) => {
+      // emulates ngOnChanges
+      const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
+      this.params$.next(change.currentValue);
+      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
+
+      setTimeout(() => {
+        // emulates ngOnChanges and async pipe
+        this.ngOnChanges({ params: change });
+        this._ref.markForCheck();
+      }, 1);
+    });
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */

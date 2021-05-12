@@ -3,17 +3,15 @@ import merge from 'merge';
 import { BehaviorSubject, isObservable } from 'rxjs';
 import { DynBaseConfig } from './config.types';
 import { DynControlConfig } from './control-config.types';
-import { DynModeControls, DynModeParams, DynControlMode } from './control-mode.types';
-import { DynControlType } from './control.types';
-import { DYN_MODE, DYN_MODE_CONTROL_DEFAULTS, DYN_MODE_DEFAULTS } from './form.tokens';
+import { DynControlMode, DynControlModes } from './control-mode.types';
+import { DYN_MODE, DYN_MODE_DEFAULTS } from './form.tokens';
 
 @Injectable()
 // provided by the dyn-form component next to the internal tokens
 export class DynFormMode {
   constructor(
     @Inject(DYN_MODE) private readonly mode$: BehaviorSubject<DynControlMode>,
-    @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynModeParams,
-    @Inject(DYN_MODE_CONTROL_DEFAULTS) private readonly controls?: DynModeControls,
+    @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
   ) {}
 
   // resolves the config to be used by dyn-factory
@@ -26,29 +24,17 @@ export class DynFormMode {
       return result;
     }
 
-    // overrides any params set in the form.modeParams[mode]
+    // overrides any partial config set in the form.modes[mode]
     if (this.modes && Object.prototype.hasOwnProperty.call(this.modes, mode)) {
-      result = this.mergeConfigs(result, { params: this.modes[mode] });
+      result = this.mergeConfigs(result, this.modes[mode]!);
     }
 
-    // overrides any customization set in control.modes[mode]
+    // overrides any customized config in control.modes[mode]
     if (config.modes?.[mode]) {
       result = this.mergeConfigs(result, config.modes[mode]!);
     }
 
-    // overrides any customization set in form.modes[mode][control]
-    if (this.controls && Object.prototype.hasOwnProperty.call(this.controls, mode)) {
-      const control = this.getControl(result.control, this.controls[mode]!);
-      if (control) {
-        result = this.mergeConfigs(result, control);
-      }
-    }
-
     return result;
-  }
-
-  private getControl(id: DynControlType, controls: DynControlConfig[]): DynControlConfig | undefined {
-    return controls.find(({ control }) => control === id);
   }
 
   private mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {

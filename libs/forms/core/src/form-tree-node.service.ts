@@ -31,7 +31,7 @@ implements DynTreeNode<TParams, TControl> {
   // listened by dyn-factory
   visibility$ = new Subject<DynControlVisibility>();
   // listened by DynControl
-  paramsUpdates$ = new Subject<Partial<TParams>>();
+  paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   hook$ = new Subject<DynControlHook>();
 
   // control config

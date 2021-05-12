@@ -18,7 +18,6 @@ import {
   DynFormMode,
   DynFormTreeNode,
   DYN_MODE,
-  DYN_MODE_CONTROL_DEFAULTS,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -97,10 +96,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         // TODO merge with parent values
         {
           provide: DYN_MODE_DEFAULTS,
-          useValue: this.config?.modeParams,
-        },
-        {
-          provide: DYN_MODE_CONTROL_DEFAULTS,
           useValue: this.config?.modes,
         },
         {
@@ -109,7 +104,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           deps: [ // FIXME added for Stackblitz
             DYN_MODE,
             DYN_MODE_DEFAULTS,
-            DYN_MODE_CONTROL_DEFAULTS,
           ],
         }
       ],
