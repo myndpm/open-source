@@ -1,10 +1,5 @@
 import { DynBaseHandler } from './dyn-providers';
 
-// factory params
-export interface DynControlFactoryParams {
-  cssClass?: string;
-}
-
 /**
  * control params
  */

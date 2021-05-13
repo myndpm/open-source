@@ -36,19 +36,19 @@ export function simpleForm(
     controls: [
       createMatConfig('CARD', {
         name: 'billing',
-        factory: { cssClass: 'row' },
+        cssClass: 'row',
         params: obsParams,
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
             validators: ['required'],
-            factory: { cssClass: 'col-sm-6 col-md-4' },
+            cssClass: 'col-sm-6 col-md-4',
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
             validators: ['required'],
-            factory: { cssClass: 'col-sm-6 col-md-4' },
+            cssClass: 'col-sm-6 col-md-4',
             params: { label: 'Last Name *' },
           }),
           createMatConfig('DIVIDER', {
@@ -57,12 +57,12 @@ export function simpleForm(
           createMatConfig('INPUT', {
             name: 'address1',
             validators: { required: null, minLength: 4 },
-            factory: { cssClass: 'col-12 col-md-8' },
+            cssClass: 'col-12 col-md-8',
             params: { label: 'Address Line 1 *' },
           }),
           createMatConfig('INPUT', {
             name: 'address2',
-            factory: { cssClass: 'col-12 col-md-8' },
+            cssClass: 'col-12 col-md-8',
             params: { label: 'Address Line 2' },
           }),
           createMatConfig('DIVIDER', {
@@ -75,7 +75,7 @@ export function simpleForm(
               disabled: true,
             },
             validators: ['required'],
-            factory: { cssClass: 'col-sm-6 col-md-4' },
+            cssClass: 'col-sm-6 col-md-4',
             params: {
               label: 'Country',
               options: [
@@ -113,7 +113,7 @@ export function simpleForm(
                 ]
               },
             ],
-            factory: { cssClass: 'col-sm-6 col-md-4' },
+            cssClass: 'col-sm-6 col-md-4',
             params: { label: 'Postal Code' },
           }),
         ],
@@ -135,7 +135,7 @@ export function simpleForm(
       }),
       createMatConfig('ARRAY', {
         name: 'products',
-        factory: { cssClass: 'row' },
+        cssClass: 'row',
         params: {
           title: 'Products',
           subtitle: 'Items to checkout',
@@ -145,13 +145,13 @@ export function simpleForm(
           createMatConfig('INPUT', {
             name: 'product',
             validators: ['required'],
-            factory: { cssClass: 'col-6 col-md-8' },
+            cssClass: 'col-6 col-md-8',
             params: { label: 'Product Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'quantity',
             validators: ['required', ['min', 1]],
-            factory: { cssClass: 'col-5 col-md-3' },
+            cssClass: 'col-5 col-md-3',
             params: { label: 'Quantity *', type: 'number' },
           }),
         ],

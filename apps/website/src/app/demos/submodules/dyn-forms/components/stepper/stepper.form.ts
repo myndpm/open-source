@@ -6,24 +6,24 @@ export function step1Form(): DynFormConfig {
     controls: [
       createMatConfig('CARD', {
         name: 'data',
-        factory: { cssClass: 'row' },
+        cssClass: 'row',
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
             validators: ['required'],
-            factory: { cssClass: 'col-sm-6' },
+            cssClass: 'col-sm-6',
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
             validators: ['required'],
-            factory: { cssClass: 'col-sm-6' },
+            cssClass: 'col-sm-6',
             params: { label: 'Last Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'phone',
             validators: { pattern: /^[+]?\d*$/ },
-            factory: { cssClass: 'col-md-6' },
+            cssClass: 'col-md-6',
             params: {
               label: 'Phone',
               type: 'tel',
@@ -32,7 +32,7 @@ export function step1Form(): DynFormConfig {
           }),
           createMatConfig('DATEPICKER', {
             name: 'birthdate',
-            factory: { cssClass: 'col-md-6' },
+            cssClass: 'col-md-6',
             params: { label: 'Birth Date' },
           }),
           createMatConfig('SELECT', {
@@ -63,7 +63,7 @@ export function step2Form(): DynFormConfig {
   return {
     controls: [
       createMatConfig('CARD', {
-        factory: { cssClass: 'row' },
+        cssClass: 'row',
         controls: [
           createMatConfig('RADIO', {
             name: 'toc',

@@ -57,8 +57,11 @@ export class DynFormMode {
     if (Object.prototype.hasOwnProperty.call(mode, 'match')) {
       config.match = mode.match;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'factory')) {
-      config.factory = mode.factory;
+    if (Object.prototype.hasOwnProperty.call(mode, 'cssClass')) {
+      config.cssClass = mode.cssClass;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'errorMsg')) {
+      config.errorMsg = mode.errorMsg;
     }
     // do not override an existing observable (because of modeParams)
     // an observable will need to take in account the mode changes inside

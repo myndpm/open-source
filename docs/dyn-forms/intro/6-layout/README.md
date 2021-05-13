@@ -10,31 +10,31 @@ Simple form configurated with Bootstrap's Grid CSS classes:
 controls: [
   createMatConfig('CARD', {
     name: 'billing',
-    factory: { cssClass: 'row' },
+    cssClass: 'row',
     controls: [
       createMatConfig('INPUT', {
         name: 'firstName',
-        factory: { cssClass: 'col-sm-6 col-md-4' },
+        cssClass: 'col-sm-6 col-md-4',
       }),
       createMatConfig('INPUT', {
         name: 'lastName',
-        factory: { cssClass: 'col-sm-6 col-md-4' },
+        cssClass: 'col-sm-6 col-md-4',
       }),
       createMatConfig('INPUT', {
         name: 'address1',
-        factory: { cssClass: 'col-12 col-md-8' },
+        cssClass: 'col-12 col-md-8',
       }),
       createMatConfig('INPUT', {
         name: 'address2',
-        factory: { cssClass: 'col-12 col-md-8' },
+        cssClass: 'col-12 col-md-8',
       }),
       createMatConfig('SELECT', {
         name: 'country',
-        factory: { cssClass: 'col-sm-6 col-md-4' },
+        cssClass: 'col-sm-6 col-md-4',
       }),
       createMatConfig('INPUT', {
         name: 'zipCode',
-        factory: { cssClass: 'col-sm-6 col-md-4' },
+        cssClass: 'col-sm-6 col-md-4',
       }),
     ],
   }),

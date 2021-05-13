@@ -51,7 +51,7 @@ export class DynFactoryComponent implements OnInit {
   @HostBinding('class')
   get cssClass(): string {
     return [
-      this.config.factory?.cssClass,
+      this.config.cssClass,
       // add the visibility class
       this.visibility ? `dyn-${this.visibility.toLowerCase()}` : null,
       // add a default class based on the name
@@ -91,7 +91,6 @@ export class DynFactoryComponent implements OnInit {
         // check if the params are the only changed ones
         if (
           config?.control === newConfig.control &&
-          deepEqual(config?.factory, newConfig.factory) &&
           deepEqual(config?.validators, newConfig.validators) &&
           deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
           deepEqual(config?.match, newConfig.match)

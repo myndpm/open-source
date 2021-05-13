@@ -1,7 +1,7 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlMatch } from './control-matchers.types';
-import { DynControlFactoryParams, DynControlFunctionFn, DynControlParams } from './control-params.types';
+import { DynControlFunctionFn, DynControlParams } from './control-params.types';
 import { DynControlErrors, DynErrorHandlerFn } from './control-validation.types';
 import { DynControlType } from './control.types';
 
@@ -32,7 +32,7 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   // config
   control: DynControlType;
   // options
-  default?: DynConfigArgs | { // used on FormControls only
+  default?: DynConfigArgs | { // used in FormControls only
     value: DynConfigArgs;
     disabled: boolean;
   };
@@ -41,7 +41,7 @@ export interface DynControlConfig<TParams extends DynControlParams = DynControlP
   updateOn?: 'change' | 'blur' | 'submit'; // Angular FormHooks
   match?: DynControlMatch[]; // conditional tasks
   // customizations
-  factory?: DynControlFactoryParams;
+  cssClass?: string;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>;
   errorMsg?: DynConfigErrors<DynControlErrors>;
