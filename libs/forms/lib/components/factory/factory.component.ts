@@ -92,7 +92,9 @@ export class DynFactoryComponent implements OnInit {
         if (
           config?.control === newConfig.control &&
           deepEqual(config?.factory, newConfig.factory) &&
-          deepEqual(config?.options, newConfig.options)
+          deepEqual(config?.validators, newConfig.validators) &&
+          deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
+          deepEqual(config?.match, newConfig.match)
         ) {
           if (newConfig.params || newConfig.paramFns) {
             this.component.instance.updateParams(newConfig.params, newConfig.paramFns);

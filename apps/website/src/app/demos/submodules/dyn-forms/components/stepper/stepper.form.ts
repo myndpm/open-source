@@ -10,19 +10,19 @@ export function step1Form(): DynFormConfig {
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
-            options: { validators: ['required'] },
+            validators: ['required'],
             factory: { cssClass: 'col-sm-6' },
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
-            options: { validators: ['required'] },
+            validators: ['required'],
             factory: { cssClass: 'col-sm-6' },
             params: { label: 'Last Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'phone',
-            options: { validators: { pattern: /^[+]?\d*$/ } },
+            validators: { pattern: /^[+]?\d*$/ },
             factory: { cssClass: 'col-md-6' },
             params: {
               label: 'Phone',
@@ -67,7 +67,7 @@ export function step2Form(): DynFormConfig {
         controls: [
           createMatConfig('RADIO', {
             name: 'toc',
-            options: { validators: ['required'] },
+            validators: ['required'],
             params: {
               label: 'Do you accept the terms and conditions',
               options: [
@@ -78,7 +78,7 @@ export function step2Form(): DynFormConfig {
           }),
           createMatConfig('MULTICHECK', {
             name: 'choices',
-            options: { validators: { minLength: 1 } },
+            validators: { minLength: 1 },
             params: {
               label: 'Select the applicable choices',
               options: [

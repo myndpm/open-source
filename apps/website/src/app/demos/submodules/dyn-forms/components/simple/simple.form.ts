@@ -41,13 +41,13 @@ export function simpleForm(
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
-            options: { validators: ['required'] },
+            validators: ['required'],
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'First Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
-            options: { validators: ['required'] },
+            validators: ['required'],
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Last Name *' },
           }),
@@ -56,7 +56,7 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'address1',
-            options: { validators: { required: null, minLength: 4 } },
+            validators: { required: null, minLength: 4 },
             factory: { cssClass: 'col-12 col-md-8' },
             params: { label: 'Address Line 1 *' },
           }),
@@ -70,13 +70,11 @@ export function simpleForm(
           }),
           createMatConfig('SELECT', {
             name: 'country',
-            options: {
-              default: {
-                value: 'CO',
-                disabled: true,
-              },
-              validators: ['required'],
+            default: {
+              value: 'CO',
+              disabled: true,
             },
+            validators: ['required'],
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: {
               label: 'Country',
@@ -98,25 +96,23 @@ export function simpleForm(
           }),
           createMatConfig('INPUT', {
             name: 'zipCode',
-            options: {
-              match: [
-                {
-                  matchers: ['ENABLE'],
-                  negate: true,
-                  operator: 'AND',
-                  when: [
-                    { path: 'firstName', value: 'Mateo' },
-                    { path: 'country', value: 'CO' },
-                  ]
-                },
-                {
-                  matchers: ['HIDE'],
-                  when: [
-                    { path: 'account', value: 'GUEST' },
-                  ]
-                },
-              ]
-            },
+            match: [
+              {
+                matchers: ['ENABLE'],
+                negate: true,
+                operator: 'AND',
+                when: [
+                  { path: 'firstName', value: 'Mateo' },
+                  { path: 'country', value: 'CO' },
+                ]
+              },
+              {
+                matchers: ['HIDE'],
+                when: [
+                  { path: 'account', value: 'GUEST' },
+                ]
+              },
+            ],
             factory: { cssClass: 'col-sm-6 col-md-4' },
             params: { label: 'Postal Code' },
           }),
@@ -148,13 +144,13 @@ export function simpleForm(
         controls: [
           createMatConfig('INPUT', {
             name: 'product',
-            options: { validators: ['required'] },
+            validators: ['required'],
             factory: { cssClass: 'col-6 col-md-8' },
             params: { label: 'Product Name *' },
           }),
           createMatConfig('INPUT', {
             name: 'quantity',
-            options: { validators: ['required', ['min', 1]] },
+            validators: ['required', ['min', 1]],
             factory: { cssClass: 'col-5 col-md-3' },
             params: { label: 'Quantity *', type: 'number' },
           }),

@@ -134,7 +134,7 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const group = new FormGroup({}, this.handlers.getControlOptions(config.options));
+        const group = new FormGroup({}, this.handlers.getControlOptions(config));
         if (recursively) {
           this.buildControls(group, config);
         }
@@ -142,13 +142,13 @@ export class DynFormFactory {
         break;
       }
       case DynInstanceType.Array: {
-        control = new FormArray([], this.handlers.getControlOptions(config.options));
+        control = new FormArray([], this.handlers.getControlOptions(config));
         break;
       }
       case DynInstanceType.Control: {
         control = new FormControl(
-          config.options?.default ?? null,
-          this.handlers.getControlOptions(config.options)
+          config?.default ?? null,
+          this.handlers.getControlOptions(config)
         );
         break;
       }

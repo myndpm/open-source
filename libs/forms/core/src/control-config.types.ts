@@ -2,7 +2,7 @@ import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlFactoryParams, DynControlFunctionFn, DynControlParams } from './control-params.types';
-import { DynControlErrors, DynControlTriggers, DynErrorHandlerFn } from './control-validation.types';
+import { DynControlErrors, DynErrorHandlerFn } from './control-validation.types';
 import { DynControlType } from './control.types';
 
 // a given id to a validator/async-validator/error-handler/function
@@ -26,25 +26,20 @@ export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigA
 export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T;
 
 /**
-  single control options
+  single dynamic control config
  */
-export interface DynControlOptions extends DynControlTriggers {
+export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
+  // config
+  control: DynControlType;
+  // options
   default?: DynConfigArgs | { // used on FormControls only
     value: DynConfigArgs;
     disabled: boolean;
   };
   validators?: DynConfigCollection<ValidatorFn>;
   asyncValidators?: DynConfigCollection<AsyncValidatorFn>;
+  updateOn?: 'change' | 'blur' | 'submit'; // Angular FormHooks
   match?: DynControlMatch[]; // conditional tasks
-}
-
-/**
-  single dynamic control config
- */
-export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
-  // config
-  control: DynControlType;
-  options?: DynControlOptions;
   // customizations
   factory?: DynControlFactoryParams;
   params?: TParams | Observable<TParams>;

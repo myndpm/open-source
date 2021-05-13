@@ -8,7 +8,7 @@ import {
   DynConfigId,
   DynConfigMap,
   DynConfigProvider,
-  DynControlOptions,
+  DynControlConfig,
 } from './control-config.types';
 import {
   DynControlCondition,
@@ -97,7 +97,7 @@ export class DynFormHandlers {
     );
   }
 
-  getControlOptions(config?: DynControlOptions): AbstractControlOptions {
+  getControlOptions(config?: DynControlConfig): AbstractControlOptions {
     return {
       validators: this.dynValidators(this.validators, config?.validators),
       asyncValidators: this.dynValidators(this.asyncValidators, config?.asyncValidators),

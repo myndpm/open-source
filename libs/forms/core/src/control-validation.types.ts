@@ -3,14 +3,6 @@ import { DynBaseHandler } from './dyn-providers';
 import { DynTreeNode } from './tree.types';
 
 /**
- * triggers configuration
- */
- export interface DynControlTriggers {
-  invalidOn?: 'touched' | 'submitted';
-  updateOn?: 'change' | 'blur' | 'submit'; // Angular FormHooks
-}
-
-/**
  * validators provided in the module individually
  */
 export type DynControlValidator = DynBaseHandler<ValidatorFn>;

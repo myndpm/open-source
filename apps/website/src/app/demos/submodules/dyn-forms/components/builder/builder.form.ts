@@ -47,33 +47,29 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'agentName',
             params: { label: 'Agent Name' },
-            options: {
-              match: [{
-                matchers: ['SHOW'],
-                when: [{ path: 'isRequired', value: true }],
-              }],
-            },
+            match: [{
+              matchers: ['SHOW'],
+              when: [{ path: 'isRequired', value: true }],
+            }],
           }),
         ],
       }),
       createMatConfig('SELECT', {
         name: 'accessType',
         params: { label: 'Access Type', options: accessTypes },
-        options: {
-          match: [
-            {
-              matchers: ['HIDE'],
-              when: [isUnitParking(unit$)],
-            },
-            {
-              matchers: [confirmTypeChange(dialog)],
-              when: [
-                { path: 'accessType' }, // listen value changes
-                ['MODE', 'edit'], // only in edit mode
-              ],
-            },
-          ],
-        },
+        match: [
+          {
+            matchers: ['HIDE'],
+            when: [isUnitParking(unit$)],
+          },
+          {
+            matchers: [confirmTypeChange(dialog)],
+            when: [
+              { path: 'accessType' }, // listen value changes
+              ['MODE', 'edit'], // only in edit mode
+            ],
+          },
+        ],
         modes: {
           display: {
             control: 'INPUT',
@@ -87,12 +83,10 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'CodeBox Serial #' },
-            options: {
-              match: [{
-                matchers: ['VALIDATE'],
-                when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
-              }],
-            },
+            match: [{
+              matchers: ['VALIDATE'],
+              when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
+            }],
             errorMsg: {
               required: 'Serial is required',
             },
@@ -102,9 +96,7 @@ export function buildConfig(
             params: { label: 'Location Description' },
           }),
         ],
-        options: {
-          match: getMatchersFor(MyndAccessType.CodeBox, isUnitParking(unit$)),
-        },
+        match: getMatchersFor(MyndAccessType.CodeBox, isUnitParking(unit$)),
       }),
       createMatConfig('CONTAINER', {
         name: 'smartLock',
@@ -112,21 +104,17 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'Smart Lock Serial #' },
-            options: {
-              match: [{
-                matchers: ['VALIDATE'],
-                when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
-              }],
-            },
+            match: [{
+              matchers: ['VALIDATE'],
+              when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+            }],
           }),
           createMatConfig('DATEPICKER', {
             name: 'installDate',
             params: { label: 'Install Date' },
           }),
         ],
-        options: {
-          match: getMatchersFor(MyndAccessType.SmartLock, isUnitParking(unit$)),
-        },
+        match: getMatchersFor(MyndAccessType.SmartLock, isUnitParking(unit$)),
       }),
     ],
   };

@@ -42,8 +42,20 @@ export class DynFormMode {
     if (mode.control) {
       config.control = mode.control;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'options')) {
-      config.options = mode.options;
+    if (Object.prototype.hasOwnProperty.call(mode, 'default')) {
+      config.default = mode.default;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'validators')) {
+      config.validators = mode.validators;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'asyncValidators')) {
+      config.asyncValidators = mode.asyncValidators;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'updateOn')) {
+      config.updateOn = mode.updateOn;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'match')) {
+      config.match = mode.match;
     }
     if (Object.prototype.hasOwnProperty.call(mode, 'factory')) {
       config.factory = mode.factory;
