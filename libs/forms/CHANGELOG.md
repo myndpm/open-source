@@ -1,3 +1,11 @@
+<a name="11.2.11-beta.0"></a>
+# 11.2.11-beta.0 (2021-05-12)
+
+### BREAKING CHANGES
+
+* **lib:** Flatten config merging `factory` and `options` into the main object.
+* **lib:** Refactor `modeParams` into a partial config object in `modes`.
+
 <a name="11.2.10-beta.6"></a>
 # 11.2.10-beta.6 (2021-05-12)
 
