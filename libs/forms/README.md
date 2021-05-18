@@ -76,7 +76,7 @@ export class MyFormComponent {
       {
         control: 'MYINPUT',
         name: 'quantity',
-        options: { validators: [Validators.required] },
+        validators: [Validators.required],
         params: {
           label: 'Quantity',
           type: 'number',
@@ -113,12 +113,12 @@ export class MyFormComponent {
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
-            options: { validators: [Validators.required] },
+            validators: [Validators.required],
             params: { label: 'First Name' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
-            options: { validators: [Validators.required] },
+            validators: [Validators.required],
             params: { label: 'Last Name' },
           }),
         ],

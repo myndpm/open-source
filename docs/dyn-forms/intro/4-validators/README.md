@@ -13,13 +13,13 @@ The library provides the Validator Factories for the default Angular Validators:
 
 ```typescript
 // without parameters
-options: { validators: ['required'] },
+validators: ['required'],
 
 // with parameters as array
-options: { validators: ['required', ['min', 1] ] },
+validators: ['required', ['min', 1] ],
 
 // with parameters as object
-options: { validators: { required: null, minLength: 4 } },
+validators: { required: null, minLength: 4 },
 ```
 
 ## Typings

@@ -35,8 +35,8 @@ we can join these conditions with the required operator (`AND | OR`) for our use
 We define our requirement with the Matchers that we want to run when all or a single condition is satisfied:
 
 ```typescript
-options: {
-  match: {
+match: [
+  {
     matchers: ['DISABLE'], // one or more matchers
     when: [{
       // the library provides a DEFAULT condition handler to process path, value and negate
@@ -44,7 +44,7 @@ options: {
       value: 'expectedValue'
     }]
   }
-}
+]
 ```
 
 the `DISABLE` matcher is included in the library with `ENABLE`, `SHOW`, `HIDE` (display: none), `INVISIBLE` (visibility: hidden) and `VALIDATE`.
@@ -76,12 +76,10 @@ We have a matcher to conditionally validate a field: `VALIDATE`. The [config-bui
 
 ```typescript
   name: 'serial',
-  options: {
-    match: [{
-      matchers: ['VALIDATE'],
-      when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
-    }],
-  },
+  match: [{
+    matchers: ['VALIDATE'],
+    when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+  }],
 ```
 
 And the `serial` control will be required when the `accessType` field is equal to `SmartLock`. We can pass a custom `ValidatorFn` to the `VALIDATE` factory:
