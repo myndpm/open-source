@@ -12,7 +12,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import merge from 'merge';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
-import { filter, scan, startWith } from 'rxjs/operators';
+import { filter, scan } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigMap, DynConfigProvider } from './control-config.types';
 import { DynControlVisibility } from './control-events.types';
@@ -42,6 +42,7 @@ implements OnInit, OnChanges, OnDestroy {
   // optional method for modules providing a typed factory method
   // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
 
+  // core properties
   config!: TConfig; // passed down in the hierarchy
   get params(): TParams { // values available for the concrete Component instance
     return this.params$.getValue();
@@ -49,7 +50,9 @@ implements OnInit, OnChanges, OnDestroy {
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
   }
-  get parentControl(): FormGroup { // utility getter for the form directives
+
+  // utility properties
+  get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
     return this.node.parent.control;
   }
   get visibility$(): Observable<DynControlVisibility> {
@@ -89,7 +92,7 @@ implements OnInit, OnChanges, OnDestroy {
     // listen parameters changes after the control is ready
     combineLatest([
       isObservable(this.config.params) ? this.config.params : of(this.config.params),
-      this.node.paramsUpdates$.pipe(startWith({})),
+      this.node.paramsUpdates$,
     ]).pipe(
       scan<any>((params, [config, updates]) => merge(true, params, config, updates)),
       filter(params => !Array.isArray(params)), // filters the first scan

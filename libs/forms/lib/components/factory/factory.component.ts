@@ -28,7 +28,6 @@ import {
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -87,14 +86,9 @@ export class DynFactoryComponent implements OnInit {
       const newConfig = this._formMode.getModeConfig(this.config);
 
       // do not re-create the control if the config is the same
-      if (!deepEqual(config, newConfig)) {
+      if (!this._formMode.deepEqual(config, newConfig)) {
         // check if the params are the only changed ones
-        if (
-          config?.control === newConfig.control &&
-          deepEqual(config?.validators, newConfig.validators) &&
-          deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
-          deepEqual(config?.match, newConfig.match)
-        ) {
+        if (this._formMode.areConfigsEquivalent(config, newConfig)) {
           if (newConfig.params || newConfig.paramFns) {
             this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
           }

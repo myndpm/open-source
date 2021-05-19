@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import deepEqual from 'fast-deep-equal';
 import merge from 'merge';
 import { BehaviorSubject, isObservable } from 'rxjs';
 import { DynBaseConfig } from './config.types';
@@ -13,6 +14,10 @@ export class DynFormMode {
     @Inject(DYN_MODE) private readonly mode$: BehaviorSubject<DynControlMode>,
     @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
   ) {}
+
+  deepEqual(a: any, b: any): boolean {
+    return deepEqual(a, b);
+  }
 
   // resolves the config to be used by dyn-factory
   // this algorithm decides how to override the main config with mode customizations
@@ -35,6 +40,15 @@ export class DynFormMode {
     }
 
     return result;
+  }
+
+  areConfigsEquivalent(config: DynBaseConfig, newConfig: DynBaseConfig): boolean {
+    return config?.control === newConfig.control &&
+      deepEqual(config?.default, newConfig.default) &&
+      deepEqual(config?.validators, newConfig.validators) &&
+      deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
+      deepEqual(config?.updateOn, newConfig.updateOn) &&
+      deepEqual(config?.match, newConfig.match);
   }
 
   private mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {
