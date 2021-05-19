@@ -19,7 +19,7 @@ Each node is connected with a `DynTreeNode` instance which has the API to be pro
 
 ## Custom Controls
 
-We can easily create new DynControls with the [@myndpm/dyn-forms:control schematic](https://mynd.dev/docs/dyn-forms/intro/schematics).
+We can easily create new DynControls with the [@myndpm/dyn-forms:control](https://mynd.dev/docs/dyn-forms/intro/schematics) schematic.
 
 ### Technical Requirements
 
@@ -28,8 +28,8 @@ An `id` in form of `static dynControl` property. to reference the control in the
 
 ### Provisioning
 
-We can provide our custom controls directly in our module, or encapsulated and reused in another module which can be created with the [@myndpm/dyn-forms:module schematic](https://mynd.dev/docs/dyn-forms/intro/schematics).
+We can provide our custom controls directly in our module, or encapsulated and reused in another module which can be created with the [@myndpm/dyn-forms:module](https://mynd.dev/docs/dyn-forms/intro/schematics) schematic.
 
 ## Next
 
-- Share your impression and thoughts in [this GitHub Thread](https://github.com/myndpm/open-source/discussions/27).
+- Share your impression and thoughts in [this GitHub thread](https://github.com/myndpm/open-source/discussions/27).

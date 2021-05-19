@@ -34,4 +34,4 @@ We have implemented many of the supported Inputs of `mat-input` in the [DynMatIn
 
 ## Next
 
-- Is it enough with the `params`? share your ideas in [this GitHub Thread](https://github.com/myndpm/open-source/discussions/7).
+- Is it enough with the `params`? share your ideas in [this GitHub thread](https://github.com/myndpm/open-source/discussions/7).

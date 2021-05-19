@@ -99,7 +99,8 @@
     "title": {
       "en": "Examples",
       "es": "Ejemplos"
-    }
+    },
+    "redirectTo": "/docs/dyn-forms/examples/basic-setup"
   },
   "/docs/dyn-forms/examples/basic-setup": {
     "title": {

@@ -7,7 +7,7 @@ Aquí encontrarás cómo construir Formularios Dinámicos en Angular.
 Puedes añadir esta librería a tu proyecto de Angular con:
 
 ```bash
-npm add @myndpm/dyn-forms
+npm install @myndpm/dyn-forms
 # or
 yarn add @myndpm/dyn-forms
 ```
@@ -20,7 +20,7 @@ Esta librería no necesita importar nada en el Módulo Raíz,
 a no ser que declares allí componentes que usen dyn-forms.
 
 ```typescript
-import { DynFormsModule } from '@myndpm/dyn-forms`;
+import { DynFormsModule } from '@myndpm/dyn-forms';
 
 @NgModule({
   imports: [
@@ -36,7 +36,7 @@ o nuestro propio módulo con nuestros controles personalizados como:
 
 ```typescript
 import { ReactiveFormsModule } from '@angular/forms';
-import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material`;
+import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 
 @NgModule({
   imports: [

@@ -45,4 +45,4 @@ TODO: Reference an AsyncValidator example with a custom API call here.
 
 - Check the article about [Parametrized Validators](https://dev.to/myndpm/parametrized-validators-in-dynamic-forms-5emf) at DEV.to
 - Check the source code of the [demos](https://mynd.dev/demos) with already implemented validators.
-- Join the Validators discussion in [this GitHub Thread](https://github.com/myndpm/open-source/discussions/2) if you have something to say.
+- Join the Validators discussion in [this GitHub thread](https://github.com/myndpm/open-source/discussions/2) if you have something to say.
