@@ -70,6 +70,7 @@ export default function (options: ModuleOptions): Rule {
       instance: options.instance || 'Control',
       flat: options.flat,
       prefix: options.prefix,
+      prefixInterface: options.prefixInterface,
       prefixClass: options.prefixClass,
     };
 

@@ -1,4 +1,4 @@
 import { DynControlParams } from '@myndpm/dyn-forms/core';
 
-export interface <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params extends DynControlParams {
+export interface <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params extends DynControlParams {
 }

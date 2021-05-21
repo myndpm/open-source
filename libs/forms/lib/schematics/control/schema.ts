@@ -24,6 +24,10 @@ export class Schema {
    */
   prefix?: string;
   /**
+   * The prefix to apply to the params interface.
+   */
+  prefixInterface?: string;
+  /**
    * Whether to prefix the control class name.
    */
   prefixClass?: boolean;

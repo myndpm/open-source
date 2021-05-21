@@ -74,6 +74,12 @@
         }
       ]
     },
+    "prefixInterface": {
+      "type": "string",
+      "description": "The prefix to apply to the params interface.",
+      "alias": "pi",
+      "default": ""
+    },
     "prefixClass": {
       "type": "boolean",
       "description": "Whether to prefix the control class name.",

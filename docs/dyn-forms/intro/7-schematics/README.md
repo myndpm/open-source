@@ -13,6 +13,7 @@ ng generate @myndpm/dyn-forms:module
   --project=forms
   --path=libs/forms
   --prefix=dyn-tui
+  --prefixClass
   --name=DynFormsTaiga
   --controlName=input
   --id=INPUT
@@ -27,6 +28,7 @@ ng generate @myndpm/dyn-forms:control
   --project=forms
   --path=libs/forms/ui-material/src/components
   --prefix=dyn-mat
+  --prefixInterface=I
   --name=slider
   --id=SLIDER
 ```
