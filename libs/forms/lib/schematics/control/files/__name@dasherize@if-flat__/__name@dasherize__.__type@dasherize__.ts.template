@@ -21,7 +21,7 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><
   static dynControl: '<%= id %>' = '<%= id %>';
 
   static createConfig<M extends DynControlMode>(
-    partial: DynPartialControlConfig<M, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
+    partial: DynPartialControlConfig<M, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
   ): DynConfig<M> {
     return {
       ...partial,
