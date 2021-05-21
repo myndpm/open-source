@@ -13,7 +13,7 @@ import { getModuleProviders } from '@myndpm/dyn-forms/core';
   declarations: [],
   exports: [
     DynFormsModule, // reduce the boilerplate
-  ]
+  ],
 })
 export class <%= classify(name) %>Module {
   static forFeature(): ModuleWithProviders<<%= classify(name) %>Module> {

@@ -13,7 +13,7 @@ import { <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params }
   templateUrl: './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.html',
   styleUrls: ['./<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.<%= style %>']<% if(!!viewEncapsulation) { %>,
   encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
-  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+  changeDetection: ChangeDetectionStrategy.<%= changeDetection %>,<% } %>
 })
 export class <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>
 extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params> {
@@ -21,7 +21,7 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixClass ? class
   static dynControl: '<%= classify(id) %>' = '<%= classify(id) %>';
 
   static createConfig<M extends DynControlMode>(
-    partial: DynPartialControlConfig<M, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>
+    partial: DynPartialControlConfig<M, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
   ): DynConfig<M> {
     return {
       ...partial,
