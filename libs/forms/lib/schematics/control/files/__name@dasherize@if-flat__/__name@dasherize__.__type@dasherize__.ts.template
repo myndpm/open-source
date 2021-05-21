@@ -1,10 +1,10 @@
 import { Component<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';<% if(instance == 'Array') { %>
 import { FormGroup } from '@angular/forms';<% } %>
 import {
-  DynConfig,
+  DynBaseConfig,
   DynControlMode,
   DynForm<%= classify(instance) %>,
-  DynPartialControlConfig,
+  DynPartial<% } if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config,
 } from '@myndpm/dyn-forms/core';
 import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
 
@@ -21,8 +21,8 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><
   static dynControl: '<%= id %>' = '<%= id %>';
 
   static createConfig<M extends DynControlMode>(
-    partial: DynPartialControlConfig<M, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
-  ): DynConfig<M> {
+    partial: DynPartial<% } if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config<M, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
+  ): DynBaseConfig<M> {
     return {
       ...partial,
       control: <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>.dynControl,

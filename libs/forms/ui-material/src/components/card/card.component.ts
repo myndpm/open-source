@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
-  DynConfig,
+  DynBaseConfig,
   DynControlMode,
   DynFormContainer,
   DynPartialControlConfig,
@@ -14,14 +14,14 @@ import { DynMatCardParams } from './card.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatCardComponent
-extends DynFormContainer<DynControlMode, DynMatCardParams, DynConfig>
+extends DynFormContainer<DynControlMode, DynMatCardParams>
 implements OnInit {
 
   static dynControl: 'CARD' = 'CARD';
 
   static createConfig<M extends DynControlMode>(
     partial: DynPartialControlConfig<M, DynMatCardParams>
-  ): DynConfig<M, DynMatCardParams> {
+  ): DynBaseConfig<M, DynMatCardParams> {
     return {
       ...partial,
       control: DynMatCardComponent.dynControl,

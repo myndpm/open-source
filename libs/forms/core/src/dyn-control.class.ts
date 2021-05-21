@@ -40,7 +40,7 @@ implements OnInit, OnChanges, OnDestroy {
   static dynInstance: DynInstanceType = DynInstanceType.Group;
 
   // optional method for modules providing a typed factory method
-  // abstract static createConfig(partial?: DynPartialControlConfig<TParams>): TConfig;
+  // abstract static createConfig(partial: DynPartialControlConfig<TParams>): TConfig;
 
   // core properties
   config!: TConfig; // passed down in the hierarchy
