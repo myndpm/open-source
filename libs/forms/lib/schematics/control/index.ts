@@ -113,7 +113,7 @@ import { strings } from '@angular-devkit/core';
      }
 
      if (options.prefix === undefined && project) {
-       options.prefix = project.prefix;
+       options.prefix = project.prefix || '';
      }
 
      options.module = findModuleFromOptions(host, options);

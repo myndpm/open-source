@@ -19,6 +19,10 @@ export class Schema {
   id!: string;
   instance?: string;
   /**
+   * Whether to prefix the control class name.
+   */
+  prefixClass?: boolean;
+  /**
    * Flag to indicate if a directory is created.
    */
   flat?: boolean;

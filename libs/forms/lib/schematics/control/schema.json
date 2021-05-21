@@ -56,6 +56,12 @@
         }
       ]
     },
+    "prefixClass": {
+      "type": "boolean",
+      "description": "Whether to prefix the control class name.",
+      "alias": "pc",
+      "default": false
+    },
     "selector": {
       "type": "string",
       "format": "html-selector",

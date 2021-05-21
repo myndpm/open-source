@@ -24,6 +24,10 @@ export class Schema {
    */
   prefix?: string;
   /**
+   * Whether to prefix the control class name.
+   */
+  prefixClass?: boolean;
+  /**
    * The selector to use for the component.
    */
   selector?: string;

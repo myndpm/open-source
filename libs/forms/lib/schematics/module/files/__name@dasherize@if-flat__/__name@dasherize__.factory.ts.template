@@ -4,24 +4,24 @@ import {
   DynControlType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { <%= classify(prefix) %><%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
-import { <%= classify(prefix) %><%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
+import { <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
+import { <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
 
 // type overloads
-export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
-  type: typeof <%= classify(prefix) %><%= classify(controlName) %>Component.dynControl,
-  partial: DynPartialControlConfig<M, Partial<<%= classify(prefix) %><%= classify(controlName) %>Params>>
+export function create<%= prefixClass ? classify(prefix) : '' %>Config<M extends DynControlMode>(
+  type: typeof <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl,
+  partial: DynPartialControlConfig<M, Partial<<%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params>>
 ): DynConfig<M>;
 
 // factory
-export function create<%= classify(prefix) %>Config<M extends DynControlMode>(
+export function create<%= prefixClass ? classify(prefix) : '' %>Config<M extends DynControlMode>(
   type: DynControlType,
   partial: any,
 ): DynConfig<M> {
   switch (type) {
     // controls
-    case <%= classify(prefix) %><%= classify(controlName) %>Component.dynControl:
+    case <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl:
     default:
-      return <%= classify(prefix) %><%= classify(controlName) %>Component.createConfig(partial);
+      return <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.createConfig(partial);
   }
 }

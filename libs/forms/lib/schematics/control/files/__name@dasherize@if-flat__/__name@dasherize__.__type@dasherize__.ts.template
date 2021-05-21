@@ -6,7 +6,7 @@ import {
   DynForm<%= classify(instance) %>,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
-import { <%= classify(prefix) %><%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
+import { <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
 
 @Component({
   selector: '<%= selector %>',
@@ -15,17 +15,17 @@ import { <%= classify(prefix) %><%= classify(name) %>Params } from './<%= dasher
   encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
   changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
 })
-export class <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>
-extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(prefix) %><%= classify(name) %>Params> {
+export class <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>
+extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params> {
 
   static dynControl: '<%= classify(id) %>' = '<%= classify(id) %>';
 
   static createConfig<M extends DynControlMode>(
-    partial: DynPartialControlConfig<M, <%= classify(prefix) %><%= classify(name) %>Params>
+    partial: DynPartialControlConfig<M, <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>
   ): DynConfig<M> {
     return {
       ...partial,
-      control: <%= classify(prefix) %><%= classify(name) %><%= classify(type) %>.dynControl,
+      control: <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>.dynControl,
     };
   }
 <% if(instance == 'Array') { %>
@@ -33,7 +33,7 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= classify(prefix) %>
     return this.control.controls as FormGroup[];
   }
 <% } %>
-  completeParams(params: Partial<<%= classify(prefix) %><%= classify(name) %>Params>): <%= classify(prefix) %><%= classify(name) %>Params {
+  completeParams(params: Partial<<%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>): <%= classify(prefix) %><%= classify(name) %>Params {
     return {
       ...params,
     };

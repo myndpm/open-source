@@ -19,7 +19,7 @@ import {
   noop,
   url,
 } from '@angular-devkit/schematics';
-import { Schema as ComponentOptions } from '../control/schema';
+import { Schema as ControlOptions } from '../control/schema';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { applyLintFix } from '@schematics/angular/utility/lint-fix';
 import { parseName } from '@schematics/angular/utility/parse-name';
@@ -40,7 +40,7 @@ export default function (options: ModuleOptions): Rule {
     }
 
     if (options.prefix === undefined) {
-      options.prefix = project?.prefix;
+      options.prefix = project?.prefix || '';
     }
 
     const parsedPath = parseName(options.path, options.name);
@@ -61,7 +61,7 @@ export default function (options: ModuleOptions): Rule {
       !options.flat ? `${moduleDasherized}/` : ''
     }${options.controlPath}${options.flat ? `/${controlDasherized}` : ''}`;
 
-    const componentOptions: ComponentOptions = {
+    const controlOptions: ControlOptions = {
       project: options.project,
       path: controlPath,
       name: controlDasherized,
@@ -70,11 +70,12 @@ export default function (options: ModuleOptions): Rule {
       instance: options.instance || 'Control',
       flat: options.flat,
       prefix: options.prefix,
+      prefixClass: options.prefixClass,
     };
 
     return chain([
       mergeWith(templateSource),
-      schematic('control', componentOptions),
+      schematic('control', controlOptions),
       options.lintFix ? applyLintFix(options.path) : noop(),
     ]);
   };
