@@ -16,7 +16,7 @@ export function clone<T>(input: T): T {
 	if (Array.isArray(input)) {
     return input.map(clone) as any;
 
-	} else if (isObject(input)) {
+	} else if (isPlainObject(input)) {
     if (input instanceof Map || input instanceof Set) {
       // treated as an abstract data type
       return input;
@@ -33,19 +33,19 @@ export function clone<T>(input: T): T {
 	}
 }
 
-export function isObject(input: any): input is Object {
+export function isPlainObject(input: any): input is Object {
 	return input && typeof input === 'object' && !Array.isArray(input)
 }
 
 function _recursiveMerge(base: any, extend: any) {
-	if (!isObject(base))
+	if (!isPlainObject(base))
 		return extend
 
 	for (const key in extend) {
 		if (['__proto__', 'constructor', 'prototype', 'toString', 'hasOwnProperty'].includes(key)) {
       continue;
     }
-		base[key] = (isObject(base[key]) && isObject(extend[key]))
+		base[key] = (isPlainObject(base[key]) && isPlainObject(extend[key]))
       ? _recursiveMerge(base[key], extend[key])
       : extend[key];
 	}
@@ -56,14 +56,14 @@ function _recursiveMerge(base: any, extend: any) {
 
 function _merge(isClone: boolean, isRecursive: boolean, items: any[]) {
 	let result
-	if (isClone || !isObject(result = items.shift())) {
+	if (isClone || !isPlainObject(result = items.shift())) {
 		result = {}
   }
 
 	for (let index = 0; index < items.length; ++index) {
 		const item = items[index];
 
-		if (!isObject(item)) {
+		if (!isPlainObject(item)) {
 			continue;
     }
 

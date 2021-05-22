@@ -19,6 +19,7 @@ import {
   DynErrorMessages,
 } from './control-validation.types';
 import { DynTreeNode } from './tree.types';
+import { isPlainObject } from './utils';
 
 /**
  * Base types
@@ -126,7 +127,7 @@ export const defaultMatchers: DynControlMatcher[] = [
 export const defaultConditions: DynControlCondition[] = [
   {
     id: 'DEFAULT',
-    fn: ({ path, value, negate }: DynControlMatchCondition): DynControlConditionFn => {
+    fn: ({ path, value, field, negate }: DynControlMatchCondition): DynControlConditionFn => {
       return (node: DynTreeNode) => {
         const control = node.query(path);
         if (!control) {
@@ -143,6 +144,10 @@ export const defaultConditions: DynControlCondition[] = [
         return control.valueChanges.pipe(
           startWith(control.value),
           // compare the configured value
+          map(controlValue => field && isPlainObject(controlValue)
+            ? controlValue[field]
+            : controlValue
+          ),
           map(controlValue => {
             return Array.isArray(value)
               ? value.includes(controlValue)
