@@ -105,45 +105,51 @@ export class DynFactoryComponent implements OnInit {
   }
 
   private createFrom(config: DynBaseConfig): void {
-    const control = this.registry.get(config.control);
-    const factory = this.resolver.resolveComponentFactory(control.component);
+    try {
+      const control = this.registry.get(config.control);
+      const factory = this.resolver.resolveComponentFactory(control.component);
 
-    const newInjectionLayer = Injector.create({
-      providers: [
-        // new form-hierarchy sublevel
-        // DynControls has its own DynFormTreeNode
-        {
-          provide: DynFormTreeNode,
-          useClass: DynFormTreeNode,
-          deps: [ // FIXME added for Stackblitz
-            DynFormFactory,
-            DynFormHandlers,
-            DynLogger,
-            DYN_MODE,
-            [new SkipSelf(), DynFormTreeNode],
-          ],
-        },
-      ],
-      parent: this._injector,
-    });
-
-    this.component = this.container.createComponent<AbstractDynControl>(
-      factory,
-      undefined,
-      newInjectionLayer,
-    );
-    this.component.instance.config = config;
-    // we let the corresponding DynFormTreeNode to initialize the control
-    // and register itself in the Form Tree in the lifecycle methods
-
-    this.component.hostView.detectChanges();
-
-    // listen control.visibility$
-    this.component.instance.visibility$
-      .pipe(takeUntil(this.component.instance.onDestroy$))
-      .subscribe((visibility) => {
-        this.visibility = visibility;
-        this.ref.markForCheck();
+      const newInjectionLayer = Injector.create({
+        providers: [
+          // new form-hierarchy sublevel
+          // DynControls has its own DynFormTreeNode
+          {
+            provide: DynFormTreeNode,
+            useClass: DynFormTreeNode,
+            deps: [ // FIXME added for Stackblitz
+              DynFormFactory,
+              DynFormHandlers,
+              DynLogger,
+              DYN_MODE,
+              [new SkipSelf(), DynFormTreeNode],
+            ],
+          },
+        ],
+        parent: this._injector,
       });
+
+      this.component = this.container.createComponent<AbstractDynControl>(
+        factory,
+        undefined,
+        newInjectionLayer,
+      );
+      this.component.instance.config = config;
+      // we let the corresponding DynFormTreeNode to initialize the control
+      // and register itself in the Form Tree in the lifecycle methods
+
+      this.component.hostView.detectChanges();
+
+      // listen control.visibility$
+      this.component.instance.visibility$
+        .pipe(takeUntil(this.component.instance.onDestroy$))
+        .subscribe((visibility) => {
+          this.visibility = visibility;
+          this.ref.markForCheck();
+        });
+
+    } catch(e) {
+      // log any error happening in the control initialization
+      console.error(e);
+    }
   }
 }
