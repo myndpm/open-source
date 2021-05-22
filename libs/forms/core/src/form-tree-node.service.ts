@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -162,6 +162,14 @@ implements DynTreeNode<TParams, TControl> {
     });
 
     return result;
+  }
+
+  // listen another control value changes
+  valueChanges(path: string): Observable<any>|undefined {
+    const control = this.query(path);
+    return control?.valueChanges.pipe(
+      startWith(control.value),
+    );
   }
 
   /**
