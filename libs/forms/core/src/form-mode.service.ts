@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import deepEqual from 'fast-deep-equal';
-import merge from 'merge';
 import { BehaviorSubject, isObservable } from 'rxjs';
 import { DynBaseConfig } from './config.types';
 import { DynControlConfig } from './control-config.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
 import { DYN_MODE, DYN_MODE_DEFAULTS } from './form.tokens';
+import { merge } from './utils';
 
 @Injectable()
 // provided by the dyn-form component next to the internal tokens

@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import merge from 'merge';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
 import { filter, scan, startWith } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
@@ -23,6 +22,7 @@ import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
+import { merge } from './utils';
 
 @Directive()
 export abstract class DynControl<

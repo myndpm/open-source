@@ -5,8 +5,7 @@
     "entryFile": "./index.ts",
     "umdModuleIds": {
       "fast-deep-equal": "equal",
-      "is-callable": "isCallable",
-      "merge": "merge"
+      "is-callable": "isCallable"
     }
   }
 }
