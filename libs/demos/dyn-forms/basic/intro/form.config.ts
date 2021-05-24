@@ -17,12 +17,12 @@ export function formConfig(): DynFormConfig {
         params: {
           label: 'Country',
           options: [
-            { text: '- Choose one -', value: null },
-            { text: 'Colombia', value: 'CO' },
-            { text: 'United States', value: 'US' },
-            { text: 'China', value: 'CN' },
-            { text: 'Russia', value: 'RU' },
-            { text: 'Other', value: 'XX' },
+            { value: '- Choose one -', key: null },
+            { value: 'Colombia', key: 'CO' },
+            { value: 'United States', key: 'US' },
+            { value: 'China', key: 'CN' },
+            { value: 'Russia', key: 'RU' },
+            { value: 'Other', key: 'XX' },
           ],
         },
       }),
@@ -30,8 +30,8 @@ export function formConfig(): DynFormConfig {
         name: 'terms',
         params: {
           options: [
-            { text: 'Speaker', value: 'SPEAKER' },
-            { text: 'Attendant', value: 'ATTENDANT' },
+            { value: 'Speaker', key: 'SPEAKER' },
+            { value: 'Attendant', key: 'ATTENDANT' },
           ],
         },
       }),

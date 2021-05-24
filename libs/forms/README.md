@@ -68,8 +68,8 @@ export class MyFormComponent {
         params: {
           label: 'Pick an Option',
           options: [
-            { text: 'Option 1', value: 1 },
-            { text: 'Option 2', value: 2 },
+            { value: 'Option 1', key: 1 },
+            { value: 'Option 2', key: 2 },
           ],
         },
       },

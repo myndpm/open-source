@@ -85,7 +85,7 @@ const routes: Routes = [
     },
     {
       provide: DYN_LOG_LEVEL,
-      useValue: DynLogLevel.Fatal,
+      useValue: DynLogLevel.Verbose,
     },
   ],
 })
