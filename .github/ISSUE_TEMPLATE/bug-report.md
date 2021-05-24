@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report a problem with a library
 title: ''
-labels: ''
+labels: 'bug / fix'
 assignees: ''
 ---
 
