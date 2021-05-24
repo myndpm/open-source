@@ -54,6 +54,7 @@ implements OnInit {
   addItem(): void {
     const { control } = this._factory.build(DynInstanceType.Group, this.config, true);
     this.control.push(control);
+    // TODO initialize the matchers of the new control
   }
 
   removeItem(index: number): void {

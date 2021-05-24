@@ -40,12 +40,12 @@ export function step1Form(): DynFormConfig {
             params: {
               label: 'Place of birth',
               options: [
-                { text: '- Choose one -', value: null },
-                { text: 'Colombia', value: 'CO' },
-                { text: 'United States', value: 'US' },
-                { text: 'China', value: 'CN' },
-                { text: 'Russia', value: 'RU' },
-                { text: 'Other', value: 'XX' },
+                { value: '- Choose one -', key: null },
+                { value: 'Colombia', key: 'CO' },
+                { value: 'United States', key: 'US' },
+                { value: 'China', key: 'CN' },
+                { value: 'Russia', key: 'RU' },
+                { value: 'Other', key: 'XX' },
               ],
             },
           }),
@@ -71,8 +71,8 @@ export function step2Form(): DynFormConfig {
             params: {
               label: 'Do you accept the terms and conditions',
               options: [
-                { text: 'Yes', value: true },
-                { text: 'No', value: false },
+                { value: 'Yes', key: true },
+                { value: 'No', key: false },
               ],
             },
           }),
@@ -82,9 +82,9 @@ export function step2Form(): DynFormConfig {
             params: {
               label: 'Select the applicable choices',
               options: [
-                { text: 'Choice 1', value: 1 },
-                { text: 'Choice 2', value: 2 },
-                { text: 'Choice 3', value: 3 },
+                { value: 'Choice 1', key: 1 },
+                { value: 'Choice 2', key: 2 },
+                { value: 'Choice 3', key: 3 },
               ],
             },
           }),

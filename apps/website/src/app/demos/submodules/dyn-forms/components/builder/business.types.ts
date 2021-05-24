@@ -10,16 +10,16 @@ export enum MyndAccessType {
 
 export const accessTypes: DynOption[] = [
   {
-    value: null,
-    text: 'None',
+    key: null,
+    value: 'None',
   },
   {
-    value: MyndAccessType.CodeBox,
-    text: 'Code Box',
+    key: MyndAccessType.CodeBox,
+    value: 'Code Box',
   },
   {
-    value: MyndAccessType.SmartLock,
-    text: 'Smart Lock',
+    key: MyndAccessType.SmartLock,
+    value: 'Smart Lock',
   },
 ];
 
@@ -34,16 +34,16 @@ export enum MyndUnitType {
 
 export const unitTypes: DynOption[] = [
   {
-    value: MyndUnitType.Normal,
-    text: 'Normal',
+    key: MyndUnitType.Normal,
+    value: 'Normal',
   },
   {
-    value: MyndUnitType.Parking,
-    text: 'Parking',
+    key: MyndUnitType.Parking,
+    value: 'Parking',
   },
   {
-    value: MyndUnitType.Storage,
-    text: 'Storage',
+    key: MyndUnitType.Storage,
+    value: 'Storage',
   },
 ];
 
