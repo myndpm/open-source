@@ -62,15 +62,17 @@ implements OnInit, OnDestroy {
   // hook propagated to child DynControls
   // customized by special cases like FormArray
   callChildHooks({ hook, payload, plain }: DynControlHook): void {
-    this.node.children.map(node => {
-      const fieldName = node.name;
-      node.callHook({
-        hook,
-        payload: !plain && fieldName && Object.prototype.hasOwnProperty.call(payload, fieldName)
-          ? payload[fieldName]
-          : payload,
-        plain,
+    if (payload) {
+      this.node.children.map(node => {
+        const fieldName = node.name;
+        node.callHook({
+          hook,
+          payload: !plain && fieldName && Object.prototype.hasOwnProperty.call(payload, fieldName)
+            ? payload[fieldName]
+            : payload,
+          plain,
+        });
       });
-    });
+    }
   }
 }
