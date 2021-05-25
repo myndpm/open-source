@@ -25,3 +25,5 @@ export * from './src/form-registry.service';
 export * from './src/form-factory.service';
 export * from './src/form-handlers.service';
 export * from './src/form-tree-node.service';
+
+export * from './src/utils';
