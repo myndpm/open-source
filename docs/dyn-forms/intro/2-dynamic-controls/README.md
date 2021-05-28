@@ -24,11 +24,30 @@ We can easily create new DynControls with the [@myndpm/dyn-forms:control](https:
 ### Technical Requirements
 
 What do we need to define a Control?
-An `id` in form of `static dynControl` property. to reference the control in the Configuration Object.
+The control `id` specified in the `static dynControl` property, to reference it in the Configuration Object.
 
 ### Provisioning
 
 We can provide our custom controls directly in our module, or encapsulated and reused in another module which can be created with the [@myndpm/dyn-forms:module](https://mynd.dev/docs/dyn-forms/intro/schematics) schematic.
+
+For the first case, we can use `DynFormsModule.forFeature` in the following way:
+
+```typescript
+DynFormsModule.forFeature({
+  controls: [
+    {
+      control: MyCustomComponent.dynControl,
+      instance: MyCustomComponent.dynInstance,
+      component: MyCustomComponent,
+    },
+  ],
+  priority: 100,
+})
+```
+
+the `priority` is usefull to override any default control.
+
+The modules can use `getModuleProviders` from `@myndpm/dyn-forms/core` just like the `ui-material` subpackage does (see its [source code](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/dyn-forms-material.module.ts)).
 
 ## Next
 
