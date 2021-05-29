@@ -5,7 +5,7 @@ Abstract layer to easily generate Dynamic Forms for Angular.
 With this library we are able to dynamically create the Form Controls hierarchy from a Configuration Object, which is comprised of nested configuration objects which corresponds one-to-one with form controls.
 
 The documentation is available at [mynd.dev/docs/dyn-forms](https://mynd.dev/docs/dyn-forms).  
-A general introduction is presented in this [article](https://dev.to/myndpm/a-new-approach-to-have-dynamic-forms-in-angular-5d11), the big picture is shown in this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, and you can play with live code in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts).
+A general introduction is presented in this [article](https://dev.to/myndpm/a-new-approach-to-have-dynamic-forms-in-angular-5d11), the big picture is shown in this [Prezi](https://prezi.com/view/4Ok1bgCWvf0g26FMVwfx/)ntation, you can play with live code in this [StackBlitz](https://stackblitz.com/edit/myndpm-dyn-forms?file=src/app/simple-form/simple.form.ts) and you can join us on [Discord](https://discord.gg/XxEqkvzeXg).
 
 Technical [packages](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-packages.svg) and [sequence](https://raw.githubusercontent.com/myndpm/open-source/master/docs/myndpm-dyn-forms-sequence.svg) diagrams are also available.
 

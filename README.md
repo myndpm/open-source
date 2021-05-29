@@ -19,6 +19,7 @@ Abstract layer to easily generate Dynamic Forms for Angular.
 ## How can I contribute?
 
 - Star our GitHub repo :star:
+- Join our [channel](https://discord.gg/XxEqkvzeXg) in Angular's Discord
 - Share ideas and experience in the [Discussions](https://github.com/myndpm/open-source/discussions)
 - Create pull requests to extend the existing features
 - Report any existing issues that you find

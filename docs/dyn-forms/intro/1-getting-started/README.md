@@ -85,3 +85,4 @@ const config: DynFormConfig = {
 - Check the source code of the [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple) demo.
 - Look the [Dynamic Controls](/docs/dyn-forms/intro/dynamic-controls) sections to learn more about their configuration.
 - Share your experience and suggestions about this setup in [this GitHub thread](https://github.com/myndpm/open-source/discussions/26).
+- Join us on [Discord](https://discord.gg/XxEqkvzeXg).
