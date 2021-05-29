@@ -33,6 +33,8 @@ We can provide our custom controls directly in our module, or encapsulated and r
 For the first case, we can use `DynFormsModule.forFeature` in the following way:
 
 ```typescript
+import { DynFormsModule } from '@myndpm/dyn-forms';
+
 DynFormsModule.forFeature({
   controls: [
     {
