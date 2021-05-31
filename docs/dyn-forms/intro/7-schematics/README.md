@@ -11,7 +11,7 @@ We can easily create new modules to store our DynControls with:
 ```bash
 ng generate @myndpm/dyn-forms:module
   --project=forms
-  --path=libs/forms
+  --path=libs/forms/ui-taiga/src
   --prefix=dyn-tui
   --prefixClass
   --name=DynFormsTaiga
