@@ -2,7 +2,7 @@ import {
   DynBaseConfig,
   DynControlMode,
   DynControlType,
-  DynPartial<% } if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config,
+  DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config,
 } from '@myndpm/dyn-forms/core';
 import { <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
 import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
@@ -10,7 +10,7 @@ import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= cla
 // type overloads
 export function create<%= prefixClass ? classify(prefix) : '' %>Config<M extends DynControlMode>(
   type: typeof <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl,
-  partial: DynPartial<% } if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config<M, Partial<<%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params>>
+  partial: DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config<M, Partial<<%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params>>
 ): DynBaseConfig<M>;
 
 // factory
