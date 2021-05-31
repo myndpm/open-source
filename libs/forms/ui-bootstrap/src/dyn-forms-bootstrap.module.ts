@@ -5,6 +5,7 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 import { getModuleProviders } from '@myndpm/dyn-forms/core';
 import {
   DynBsInputComponent,
+  DynBsSelectComponent,
 } from './components';
 
 @NgModule({
@@ -14,7 +15,8 @@ import {
     DynFormsModule,
   ],
   declarations: [
-    DynBsInputComponent
+    DynBsInputComponent,
+    DynBsSelectComponent,
   ],
   exports: [
     DynFormsModule, // reduce the boilerplate
