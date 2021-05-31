@@ -1,6 +1,28 @@
+<label class="form-label" [for]="id" *ngIf="params.label">{{ params.label }}</label>
 
-<div class="control">
-  <label *ngIf="params.label">{{ params.label }}</label>
+<ng-container
+  *ngIf="params.type === 'textarea' then textareaControl else inputControl"
+></ng-container>
+<ng-template #inputControl>
+  <input
+    class="form-control"
+    type="params.type"
+    [class.form-control-lg]="params.size === 'large'"
+    [class.form-control-sm]="params.size === 'small'"
+    [class.form-control.color]="params.type === 'color'"
+    [id]="id"
+    [formControl]="control"
+    [placeholder]="params.placeholder"
+  />
+</ng-template>
+<ng-template #textareaControl>
+  <textarea
+    class="form-control"
+    [formControl]="control"
+    [id]="id"
+    [placeholder]="params.placeholder"
+    [rows]="params.rows"
+  ></textarea>
+</ng-template>
 
-  <input [formControl]="control" />
-</div>
+<div class="form-text" *ngIf="params.hint">{{ params.hint }}</div>

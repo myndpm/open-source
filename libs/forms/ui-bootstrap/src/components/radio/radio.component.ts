@@ -30,6 +30,7 @@ extends DynFormControl<DynControlMode, DynBsRadioParams> {
   completeParams(params: Partial<DynBsRadioParams>): DynBsRadioParams {
     return {
       ...params,
+      options: params.options || [],
     };
   }
 }

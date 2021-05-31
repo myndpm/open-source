@@ -30,6 +30,7 @@ extends DynFormControl<DynControlMode, DynBsCheckboxParams> {
   completeParams(params: Partial<DynBsCheckboxParams>): DynBsCheckboxParams {
     return {
       ...params,
+      label: params.label || '',
     };
   }
 }

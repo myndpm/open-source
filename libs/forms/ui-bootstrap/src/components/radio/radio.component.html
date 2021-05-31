@@ -1,6 +1,6 @@
-
-<div class="control">
-  <label *ngIf="params.label">{{ params.label }}</label>
-
-  <input [formControl]="control" />
-</div>
+<ng-container *ngFor="let option of params.options; let i = index">
+  <div class="form-check" [class.form-check-inline]="params.inline">
+    <input class="form-check-input" type="radio" [id]="id + i" [formControl]="control" [value]="option.key" />
+    <label class="form-check-label" [for]="id + i">{{ option.value }}</label>
+  </div>
+</ng-container>

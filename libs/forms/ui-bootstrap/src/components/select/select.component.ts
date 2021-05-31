@@ -30,6 +30,7 @@ extends DynFormControl<DynControlMode, DynBsSelectParams> {
   completeParams(params: Partial<DynBsSelectParams>): DynBsSelectParams {
     return {
       ...params,
+      options: params.options || [],
     };
   }
 }

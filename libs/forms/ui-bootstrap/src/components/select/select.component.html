@@ -1,6 +1,14 @@
+<label *ngIf="params.label">{{ params.label }}</label>
 
-<div class="control">
-  <label *ngIf="params.label">{{ params.label }}</label>
+<select
+  class="form-select"
+  [class.form-control-lg]="params.size === 'large'"
+  [class.form-control-sm]="params.size === 'small'"
+  [formControl]="control"
+>
+  <option *ngFor="let option of params.options" [value]="option.key">
+    {{ option.value }}
+  </option>
+</select>
 
-  <input [formControl]="control" />
-</div>
+<div class="form-text" *ngIf="params.hint">{{ params.hint }}</div>

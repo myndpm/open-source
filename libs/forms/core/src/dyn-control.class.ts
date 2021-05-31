@@ -58,6 +58,18 @@ implements OnInit, OnChanges, OnDestroy {
   get visibility$(): Observable<DynControlVisibility> {
     return this.node.visibility$.asObservable();
   }
+  get id(): string {
+    if (this._id) {
+      return this._id;
+    }
+    let array = new Uint32Array(8);
+    window?.crypto?.getRandomValues(array);
+    for (let i = 0; i < array.length; i++) {
+      this._id += (i < 2 || i > 5 ? '' : '-') + array[i].toString(16).slice(-4);
+    }
+    return this._id;
+  }
+  private _id: string = '';
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 

@@ -1,6 +1,5 @@
-
-<div class="control">
-  <label *ngIf="params.label">{{ params.label }}</label>
-
-  <input [formControl]="control" />
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" [id]="id" [formControl]="control" />
+  <label class="form-check-label" [for]="id">{{ params.label }}</label>
 </div>
+<div class="form-text" *ngIf="params.hint">{{ params.hint }}</div>

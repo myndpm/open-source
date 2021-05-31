@@ -30,6 +30,7 @@ extends DynFormControl<DynControlMode, DynBsInputParams> {
   completeParams(params: Partial<DynBsInputParams>): DynBsInputParams {
     return {
       ...params,
+      type: params.type || 'text',
     };
   }
 }
