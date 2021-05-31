@@ -249,7 +249,7 @@ export const defaultFunctions: DynControlFunction[] = [
       return (node: DynTreeNode) => {
         const value = node.control.value;
         const option = node.params.options.find((o: any) => o.value === value);
-        return value && option ? option.text : value;
+        return value && option ? option.value : value;
       }
     },
   },

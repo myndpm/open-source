@@ -49,7 +49,7 @@ implements OnInit {
       .subscribe(() => {
         if (!this._internalValueChange) {
           this.params.options.forEach((option, i) => {
-            this.controls[i].setValue(this.hasValue(option.value));
+            this.controls[i].setValue(this.hasValue(option.key));
           });
         }
         this._internalValueChange = false;
@@ -60,7 +60,7 @@ implements OnInit {
       switchMap((params) => {
         // map one control to each option
         this.controls = params.options.map((option) => {
-          return new FormControl(this.hasValue(option.value))
+          return new FormControl(this.hasValue(option.key))
         });
 
         return combineLatest(
@@ -73,7 +73,7 @@ implements OnInit {
           tap((values: boolean[]) => {
             this._internalValueChange = true;
             this.control.setValue(
-              values.map((enabled, i) => enabled ? this.params.options[i].value : null).filter(Boolean),
+              values.map((enabled, i) => enabled ? this.params.options[i].key : null).filter(Boolean),
             );
           }),
         );

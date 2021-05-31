@@ -3,9 +3,9 @@
 <mat-radio-group [formControl]="control">
   <mat-radio-button
     *ngFor="let option of params.options"
-    [value]="option.value"
+    [value]="option.key"
     [disabled]="params.readonly"
   >
-    {{ option.text }}
+    {{ option.value }}
   </mat-radio-button>
 </mat-radio-group>

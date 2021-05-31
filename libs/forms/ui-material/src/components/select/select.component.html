@@ -8,8 +8,8 @@
     [sortComparator]="params.sortComparator"
     [panelClass]="params.panelClass"
   >
-    <mat-option *ngFor="let option of params.options" [value]="option.value">
-      {{ option.text }}
+    <mat-option *ngFor="let option of params.options" [value]="option.key">
+      {{ option.value }}
     </mat-option>
   </mat-select>
 </mat-form-field>
