@@ -62,14 +62,14 @@ implements OnInit, OnChanges, OnDestroy {
     if (this._id) {
       return this._id;
     }
-    let array = new Uint32Array(8);
+    const array = new Uint32Array(8);
     window?.crypto?.getRandomValues(array);
     for (let i = 0; i < array.length; i++) {
       this._id += (i < 2 || i > 5 ? '' : '-') + array[i].toString(16).slice(-4);
     }
     return this._id;
   }
-  private _id: string = '';
+  private _id = '';
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 
