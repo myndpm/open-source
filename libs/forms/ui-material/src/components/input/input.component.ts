@@ -45,8 +45,8 @@ implements OnInit {
       placeholder: params.placeholder || '',
       rows: params.rows || 3,
       errorStateMatcher: {
-        isErrorState: (control, parent) => {
-          return !!(control?.invalid && (control.touched || parent?.submitted));
+        isErrorState: (control) => {
+          return Boolean(control?.invalid && control.touched);
         },
       }
     };

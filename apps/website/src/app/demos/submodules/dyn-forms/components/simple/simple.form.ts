@@ -157,5 +157,23 @@ export function simpleForm(
         ],
       }),
     ],
+    errorMsgs: {
+      firstName: {
+        required: 'First name is required',
+      },
+      lastName: {
+        required: 'Last name is required',
+      },
+      address1: {
+        required: 'Address is required',
+      },
+      product: {
+        required: 'Product name is required',
+      },
+      quantity: {
+        required: 'Quantity is required',
+        min: 'Minimum is 1',
+      },
+    },
   };
 }

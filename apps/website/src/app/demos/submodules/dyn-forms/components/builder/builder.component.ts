@@ -12,7 +12,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DynFormComponent, DynFormConfig } from '@myndpm/dyn-forms';
 import { startWith } from 'rxjs/operators';
-import { markAsUntouched } from '../../../../../layout';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { buildConfig, unitConfig } from './builder.form';
 import { MyndUnitType } from './business.types';
@@ -83,7 +82,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.mode === 'display') {
       // reset invalid styles on display
-      markAsUntouched(this.form);
+      this.form.markAsUntouched();
     }
   }
 }

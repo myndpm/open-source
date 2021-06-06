@@ -10,7 +10,6 @@ import { FormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { BehaviorSubject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { markAsUntouched } from '../../../../../layout';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { simpleData, simpleForm } from './simple.form';
 
@@ -76,9 +75,19 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
   toggleMode(): void {
     this.mode = (this.mode === 'edit') ? 'display' : 'edit';
 
-    if (this.mode === 'display') {
-      // reset invalid styles on display markAllAsPristine
-      markAsUntouched(this.form);
+    // reset previous interactions
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+  }
+
+  onSubmit(): void {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
     }
+
+    console.warn('Submit', this.form.value);
+
+    this.toggleMode();
   }
 }
