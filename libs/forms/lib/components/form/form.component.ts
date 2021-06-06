@@ -145,9 +145,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
   // call a hook in the dynControls using plain/hierarchical data
   callHook(hook: string, payload: any, plain = false): void {
-    if (this.listeners.has(hook)) {
-      this.listeners.get(hook)?.map(listener => listener(payload));
-    }
     this.node.children.forEach(node => {
       const fieldName = node.name;
       // validate the expected payload
@@ -160,6 +157,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         plain,
       });
     });
+    // invoke listeners after the field hooks
+    if (this.listeners.has(hook)) {
+      this.listeners.get(hook)?.map(listener => listener(payload));
+    }
   }
 
   // register hook listener
