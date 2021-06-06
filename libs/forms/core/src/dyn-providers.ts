@@ -195,7 +195,11 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
 
         return config
           ? Object.keys(control.errors).reduce<DynErrorMessage>((result, error) => {
-              return !result && config[error] ? config[error] : result;
+              return result
+                ? result
+                : typeof config === 'object'
+                  ? config[error] ? config[error] : result
+                  : config;
             }, null)
           : null;
       }
@@ -208,7 +212,11 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
         // match the control errors with the configured messages
         return control.errors
           ? Object.keys(control.errors).reduce<DynErrorMessage>((result, error) => {
-              return !result && messages[error] ? messages[error] : result;
+              return result
+                ? result
+                : typeof messages === 'object'
+                  ? messages![error] ? messages![error] : result
+                  : messages;
             }, null)
           : null;
       }
