@@ -170,4 +170,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     }
     this.listeners.get(hook)!.push(listener);
   }
+
+  // submit via FormDirective
+  submit() {
+    const event = new Event('submit', { cancelable: true });
+    this.parent?.ngSubmit.emit(event);
+  }
 }
