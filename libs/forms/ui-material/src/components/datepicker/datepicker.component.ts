@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynMatDatepickerParams } from './datepicker.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatDatepickerComponent
-extends DynFormControl<DynControlMode, DynMatDatepickerParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynMatDatepickerParams> {
 
   static dynControl: 'DATEPICKER' = 'DATEPICKER';
 
@@ -31,10 +30,6 @@ implements OnInit {
   @HostBinding('class.readonly')
   get isReadonly(): boolean {
     return Boolean(this.params.readonly);
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatDatepickerParams>): DynMatDatepickerParams {

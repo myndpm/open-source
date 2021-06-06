@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynMatInputParams } from './input.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatInputComponent
-extends DynFormControl<DynControlMode, DynMatInputParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynMatInputParams> {
 
   static dynControl: 'INPUT' = 'INPUT';
 
@@ -31,10 +30,6 @@ implements OnInit {
   @HostBinding('class.readonly')
   get isReadonly(): boolean {
     return Boolean(this.params.readonly);
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatInputParams>): DynMatInputParams {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynMatCheckboxParams } from './checkbox.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatCheckboxComponent
-extends DynFormControl<DynControlMode, DynMatCheckboxParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynMatCheckboxParams> {
 
   static dynControl: 'CHECKBOX' = 'CHECKBOX';
 
@@ -31,10 +30,6 @@ implements OnInit {
   @HostBinding('class.readonly')
   get isReadonly(): boolean {
     return Boolean(this.params.readonly);
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatCheckboxParams>): DynMatCheckboxParams {

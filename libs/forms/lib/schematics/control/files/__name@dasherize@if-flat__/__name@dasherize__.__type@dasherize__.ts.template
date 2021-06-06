@@ -1,4 +1,4 @@
-import { Component<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';<% if(instance == 'Array') { %>
+import { Component, OnInit<% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%><% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%> } from '@angular/core';<% if(instance == 'Array') { %>
 import { FormGroup } from '@angular/forms';<% } %>
 import {
   DynBaseConfig,
@@ -16,7 +16,8 @@ import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= cla
   changeDetection: ChangeDetectionStrategy.<%= changeDetection %>,<% } %>
 })
 export class <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>
-extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params> {
+extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>
+implements OnInit {
 
   static dynControl: '<%= id %>' = '<%= id %>';
 
@@ -33,6 +34,10 @@ extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><
     return this.control.controls as FormGroup[];
   }
 <% } %>
+  ngOnInit(): void {
+    super.ngOnInit(); // need to initialize the parent class first
+  }
+
   completeParams(params: Partial<<%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>): <%= prefixInterface %><%= classify(prefix) %><%= classify(name) %>Params {
     return {
       ...params,

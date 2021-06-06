@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  OnInit,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -23,7 +22,7 @@ import { DynMatArrayParams } from './array.component.params';
 })
 export class DynMatArrayComponent
 extends DynFormArray<DynControlMode, DynMatArrayParams, DynConfig>
-implements OnInit, AfterViewInit {
+implements AfterViewInit {
 
   static dynControl: 'ARRAY' = 'ARRAY';
 
@@ -45,10 +44,6 @@ implements OnInit, AfterViewInit {
   @HostBinding('class.readonly')
   get isReadonly(): boolean {
     return Boolean(this.params.readonly);
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   ngAfterViewInit(): void {

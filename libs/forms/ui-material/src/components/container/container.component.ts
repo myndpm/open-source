@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynMatContainerParams } from './container.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynMatContainerComponent
-extends DynFormContainer<DynControlMode, DynMatContainerParams>
-implements OnInit {
+extends DynFormContainer<DynControlMode, DynMatContainerParams> {
 
   static dynControl: 'CONTAINER' = 'CONTAINER';
 
@@ -25,16 +24,6 @@ implements OnInit {
     return {
       ...partial,
       control: DynMatContainerComponent.dynControl,
-    };
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-  }
-
-  completeParams(params: Partial<DynMatContainerParams>): DynMatContainerParams {
-    return {
-      ...params,
     };
   }
 }

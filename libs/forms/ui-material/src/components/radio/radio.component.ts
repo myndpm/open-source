@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynMatRadioParams } from './radio.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatRadioComponent
-extends DynFormControl<DynControlMode, DynMatRadioParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynMatRadioParams> {
 
   static dynControl: 'RADIO' = 'RADIO';
 
@@ -26,10 +25,6 @@ implements OnInit {
       ...partial,
       control: DynMatRadioComponent.dynControl,
     };
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatRadioParams>): DynMatRadioParams {

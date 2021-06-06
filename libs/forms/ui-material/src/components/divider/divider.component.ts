@@ -26,8 +26,4 @@ extends DynFormContainer<DynControlMode, DynMatDividerParams> {
   get isInvisible(): boolean {
     return Boolean(this.params.invisible);
   }
-
-  completeParams(params: Partial<DynMatDividerParams>): DynMatDividerParams {
-    return params;
-  }
 }

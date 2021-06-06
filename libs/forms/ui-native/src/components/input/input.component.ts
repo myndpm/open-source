@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   DynConfig,
   DynControlMode,
@@ -14,8 +14,7 @@ import { DynNatInputParams } from './input.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynNatInputComponent
-extends DynFormControl<DynControlMode, DynNatInputParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynNatInputParams> {
 
   static dynControl: 'INPUT' = 'INPUT';
 
@@ -26,10 +25,6 @@ implements OnInit {
       ...partial,
       control: DynNatInputComponent.dynControl,
     };
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynNatInputParams>): DynNatInputParams {

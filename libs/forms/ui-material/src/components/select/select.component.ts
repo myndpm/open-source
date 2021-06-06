@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import {
   DynConfig,
@@ -15,8 +15,7 @@ import { DynMatSelectParams } from './select.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatSelectComponent
-extends DynFormControl<DynControlMode, DynMatSelectParams>
-implements OnInit {
+extends DynFormControl<DynControlMode, DynMatSelectParams> {
 
   static dynControl: 'SELECT' = 'SELECT';
 
@@ -27,10 +26,6 @@ implements OnInit {
       ...partial,
       control: DynMatSelectComponent.dynControl,
     };
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   completeParams(params: Partial<DynMatSelectParams>): DynMatSelectParams {
