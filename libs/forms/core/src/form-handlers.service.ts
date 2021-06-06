@@ -28,6 +28,7 @@ import {
   DynErrorMessages,
 } from './control-validation.types';
 import {
+  defaultAsyncValidators,
   defaultConditions,
   defaultErrorHandlers,
   defaultFunctions,
@@ -44,6 +45,7 @@ import {
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
 } from './form.tokens';
+import { DynTreeNode } from './tree.types';
 
 @Injectable()
 export class DynFormHandlers {
@@ -76,7 +78,7 @@ export class DynFormHandlers {
       this.validators,
     );
     this.reduceProvider(
-      (this.providedAsyncValidators ?? []),
+      (this.providedAsyncValidators ?? []).concat(defaultAsyncValidators),
       this.asyncValidators,
     );
     this.reduceProvider(
@@ -97,10 +99,10 @@ export class DynFormHandlers {
     );
   }
 
-  getControlOptions(config?: DynControlConfig): AbstractControlOptions {
+  getControlOptions(node: DynTreeNode, config?: DynControlConfig): AbstractControlOptions {
     return {
-      validators: this.dynValidators(this.validators, config?.validators),
-      asyncValidators: this.dynValidators(this.asyncValidators, config?.asyncValidators),
+      validators: this.dynValidators(node, this.validators, config?.validators),
+      asyncValidators: this.dynValidators(node, this.asyncValidators, config?.asyncValidators),
       updateOn: config?.updateOn,
     }
   }
@@ -206,6 +208,7 @@ export class DynFormHandlers {
   }
 
   private dynValidators<F extends Function>(
+    node: DynTreeNode,
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
     config?: DynConfigCollection<F>,
   ): F[]|null {
@@ -213,18 +216,19 @@ export class DynFormHandlers {
     if (Array.isArray(config)) {
       // array of ids or [id, args] | F
       validators = config.map(id => {
-        return this.getValidatorFn(id, dictionary);
+        return this.getValidatorFn(node, id, dictionary);
       });
     } else if (config) {
       // object of { id: args }
       Object.keys(config).forEach(id => {
-        validators.push(this.getValidatorFn([id, config[id]], dictionary))
+        validators.push(this.getValidatorFn(node, [id, config[id]], dictionary))
       });
     }
     return validators.length ? validators : null;
   }
 
   private getValidatorFn<F extends Function>(
+    node: DynTreeNode,
     config: DynConfigProvider<F>,
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
   ): F {
@@ -233,10 +237,10 @@ export class DynFormHandlers {
     } else if (Array.isArray(config)) {
       const [id, args] = config;
       if (dictionary.has(id)) {
-        return dictionary.get(id)!(...this.getArgs(args));
+        return dictionary.get(id)!(node, ...this.getArgs(args));
       }
     } else if (dictionary.has(config)) {
-      return dictionary.get(config)!();
+      return dictionary.get(config)!(node);
     }
     throw this.logger.providerNotFound('Validator', config);
   }

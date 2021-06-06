@@ -10,6 +10,7 @@ import { DynControlType, DynInstanceType } from './control.types';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
+import { DynTreeNode } from './tree.types';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls
@@ -24,30 +25,30 @@ export class DynFormFactory {
    */
   register<FormGroup>(
     instance: DynInstanceType.Container | DynInstanceType.Group,
+    node: DynFormTreeNode,
     config: DynBaseConfig,
-    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormGroup;
   register<FormArray>(
     instance: DynInstanceType.Array,
+    node: DynFormTreeNode,
     config: DynBaseConfig,
-    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormArray;
   register<FormControl>(
     instance: DynInstanceType.Control,
+    node: DynFormTreeNode,
     config: DynBaseConfig,
-    parent: DynFormTreeNode,
     recursively?: boolean
   ): FormControl;
   register<T extends AbstractControl>(
     instance: DynInstanceType,
+    node: DynFormTreeNode<any, AbstractControl>,
     config: DynBaseConfig,
-    parent: DynFormTreeNode<any, AbstractControl>,
     recursively = false
   ): T {
     // fail-safe validation
-    if (!parent.control) {
+    if (!node.parent.control) {
       throw new Error(`The parent ControlContainer doesn't have a control`);
     }
 
@@ -55,12 +56,12 @@ export class DynFormFactory {
     if (config.name) {
       let control : AbstractControl|null;
 
-      if (parent.instance === DynInstanceType.Array) {
+      if (node.parent.instance === DynInstanceType.Array) {
         // check if we have a parent FormArray with node.instance
-        control = (parent.control as FormArray).at(parseInt(config.name));
+        control = (node.parent.control as unknown as FormArray).at(parseInt(config.name));
       } else {
         // assumes a parent FormGroup
-        control = parent.control.get(config.name);
+        control = node.parent.control.get(config.name);
       }
       if (control) {
         return control as T;
@@ -68,7 +69,7 @@ export class DynFormFactory {
     }
 
     // looks for an existing deep parent
-    let controlParent = parent.control;
+    let controlParent = node.parent.control as AbstractControl;
     let controlName = config.name;
 
     if (this.isDeepName(controlName)) {
@@ -86,7 +87,7 @@ export class DynFormFactory {
     }
 
     // build the control with the given config
-    const { name, parentControl, control } = this.build(instance as any, config, recursively, controlName);
+    const { name, parentControl, control } = this.build(instance as any, node, config, recursively, controlName);
 
     if (!control) {
       throw new Error(`Could not build a control for ${instance}`);
@@ -104,24 +105,28 @@ export class DynFormFactory {
    */
   build(
     instance: DynInstanceType.Container | DynInstanceType.Group,
+    node: DynTreeNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormGroup };
   build(
     instance: DynInstanceType.Array,
+    node: DynTreeNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormArray };
   build(
     instance: DynInstanceType.Control,
+    node: DynTreeNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormControl };
   build<T extends AbstractControl>(
     instance: DynInstanceType,
+    node: DynTreeNode,
     config: DynBaseConfig,
     recursively = false,
     controlName = config.name,
@@ -134,21 +139,21 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const group = new FormGroup({}, this.handlers.getControlOptions(config));
+        const group = new FormGroup({}, this.handlers.getControlOptions(node, config));
         if (recursively) {
-          this.buildControls(group, config);
+          this.buildControls(group, node, config);
         }
         control = group;
         break;
       }
       case DynInstanceType.Array: {
-        control = new FormArray([], this.handlers.getControlOptions(config));
+        control = new FormArray([], this.handlers.getControlOptions(node, config));
         break;
       }
       case DynInstanceType.Control: {
         control = new FormControl(
           config?.default ?? null,
-          this.handlers.getControlOptions(config)
+          this.handlers.getControlOptions(node, config)
         );
         break;
       }
@@ -174,14 +179,15 @@ export class DynFormFactory {
    */
   buildControls(
     parent: FormGroup,
+    node: DynTreeNode,
     config: DynBaseConfig,
   ): void {
     config.controls?.forEach((item) => {
       if (item.name) {
-        const { name, control } = this.build(this.getInstanceFor(item.control) as any, item, true)
+        const { name, control } = this.build(this.getInstanceFor(item.control) as any, node, item, true)
         parent.addControl(name!, control);
       } else {
-        this.buildControls(parent, item);
+        this.buildControls(parent, node, item);
       }
     });
   }

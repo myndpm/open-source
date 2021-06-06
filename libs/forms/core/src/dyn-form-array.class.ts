@@ -52,9 +52,9 @@ implements OnInit {
   }
 
   addItem(): void {
-    const { control } = this._factory.build(DynInstanceType.Group, this.config, true);
+    // FIXME the node is not the one of the child
+    const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config, true);
     this.control.push(control);
-    // TODO initialize the matchers of the new control
   }
 
   removeItem(index: number): void {

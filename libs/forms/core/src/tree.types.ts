@@ -24,6 +24,7 @@ export interface DynTreeNode<
   control: TControl;
   params: TParams;
 
+  loaded$: Observable<boolean>;
   mode$: Observable<DynControlMode>;
 
   visible(): void;

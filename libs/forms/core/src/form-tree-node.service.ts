@@ -56,6 +56,9 @@ implements DynTreeNode<TParams, TControl> {
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
+  get loaded$(): Observable<boolean> {
+    return this._loaded$.asObservable();
+  }
   get mode$(): Observable<DynControlMode> {
     return this._mode$.asObservable();
   }
@@ -81,6 +84,7 @@ implements DynTreeNode<TParams, TControl> {
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _unsubscribe = new Subject<void>();
+  private _loaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
 
   constructor(
@@ -195,8 +199,8 @@ implements DynTreeNode<TParams, TControl> {
       // register the control into the parent
       this._control = this.formFactory.register(
         instance as any,
+        this as any,
         config,
-        this.parent,
       );
     } else {
       // or takes the parent control
@@ -249,6 +253,8 @@ implements DynTreeNode<TParams, TControl> {
     if (this.parent?.isFormLoaded) {
       this.afterViewInit();
     }
+
+    this._loaded$.next(true);
   }
 
   afterViewInit(): void {

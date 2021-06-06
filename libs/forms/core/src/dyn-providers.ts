@@ -1,16 +1,17 @@
-import { ValidatorFn, Validators } from '@angular/forms';
-import { of } from 'rxjs';
-import { map, mapTo, startWith } from 'rxjs/operators';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import { DynConfigId } from './control-config.types';
 import {
   DynControlCondition,
   DynControlConditionFn,
-  DynControlMatchCondition,
   DynControlMatcher,
   DynControlMatcherFn,
+  DynControlRelated,
 } from './control-matchers.types';
 import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
 import {
+  DynControlAsyncValidator,
   DynControlErrors,
   DynControlValidator,
   DynErrorHandler,
@@ -62,6 +63,27 @@ export const defaultValidators: DynControlValidator[] = [
 /**
  * Default matchers
  */
+export const defaultAsyncValidators: DynControlAsyncValidator[] = [
+  {
+    id: 'RELATED',
+    fn: (node: DynTreeNode, config: DynControlRelated, validator: ValidatorFn = Validators.required) => {
+      return (control: AbstractControl): Observable<ValidationErrors | null> => {
+        return node.loaded$.pipe(
+          first(Boolean),
+          switchMap(() => relatedConditionFn(config)(node)),
+          map(hasMatch => hasMatch ? validator(control) : null),
+          first(),
+        );
+      }
+    }
+  },
+].map(
+  mapPriority<DynControlAsyncValidator>()
+);
+
+/**
+ * Default matchers
+ */
 export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'DISABLE',
@@ -103,19 +125,6 @@ export const defaultMatchers: DynControlMatcher[] = [
       }
     }
   },
-  {
-    id: 'VALIDATE',
-    fn: (validator: ValidatorFn = Validators.required): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
-        const error = hasMatch
-          ? validator(node.control)
-          : null;
-        error
-          ? node.control.setErrors(error)
-          : node.control.updateValueAndValidity();
-      }
-    }
-  },
 ].map(
   mapPriority<DynControlMatcher>()
 );
@@ -127,37 +136,7 @@ export const defaultMatchers: DynControlMatcher[] = [
 export const defaultConditions: DynControlCondition[] = [
   {
     id: 'DEFAULT',
-    fn: ({ path, value, field, negate }: DynControlMatchCondition): DynControlConditionFn => {
-      return (node: DynTreeNode) => {
-        const control = node.query(path);
-        if (!control) {
-          console.error(`Control '${path}' not found inside a Condition`)
-          return of(true); // do not break AND matchers
-        }
-        if (value === undefined) {
-          // triggers with any valueChange
-          return control.valueChanges.pipe(
-            startWith(control.value),
-            mapTo(true),
-          );
-        }
-        return control.valueChanges.pipe(
-          startWith(control.value),
-          // compare the configured value
-          map(controlValue => field && isPlainObject(controlValue)
-            ? controlValue[field]
-            : controlValue
-          ),
-          map(controlValue => {
-            return Array.isArray(value)
-              ? value.includes(controlValue)
-              : value === controlValue;
-          }),
-          // negate the result if needed
-          map(result => negate ? !result : result),
-        );
-      }
-    },
+    fn: relatedConditionFn,
   },
   {
     id: 'MODE',
@@ -272,6 +251,41 @@ export const defaultFunctions: DynControlFunction[] = [
 ].map(
   mapPriority<DynControlCondition>()
 );
+
+/**
+ * Related Condition
+ */
+function relatedConditionFn({ path, value, field, negate }: DynControlRelated): DynControlConditionFn {
+  return (node: DynTreeNode) => {
+    const control = node.query(path);
+    if (!control) {
+      console.error(`Control '${path}' not found inside a Condition`)
+      return of(true); // do not break AND matchers
+    }
+    if (value === undefined) {
+      // triggers with any valueChange
+      return control.valueChanges.pipe(
+        startWith(control.value),
+        mapTo(true),
+      );
+    }
+    return control.valueChanges.pipe(
+      startWith(control.value),
+      // compare the configured value
+      map(controlValue => field && isPlainObject(controlValue)
+        ? controlValue[field]
+        : controlValue
+      ),
+      map(controlValue => {
+        return Array.isArray(value)
+          ? value.includes(controlValue)
+          : value === controlValue;
+      }),
+      // negate the result if needed
+      map(result => negate ? !result : result),
+    );
+  }
+}
 
 /**
  * Utils

@@ -72,20 +72,21 @@ For example the `DISABLE` matcher operates into the form control when the specif
 
 ## Conditional Validators
 
-We have a matcher to conditionally validate a field: `VALIDATE`. The [config-builder demo](https://mynd.dev/demos/dyn-forms/builder) uses it like this:
+We have a AsyncValidator ready to be configured to conditionally validate a field depending on other control: `RELATED`. The [config-builder demo](https://mynd.dev/demos/dyn-forms/builder) uses it like this:
 
 ```typescript
   name: 'serial',
-  match: [{
-    matchers: ['VALIDATE'],
-    when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
-  }],
+  asyncValidators: {
+    RELATED: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+  },
 ```
 
-And the `serial` control will be required when the `accessType` field is equal to `SmartLock`. We can pass a custom `ValidatorFn` to the `VALIDATE` factory:
+And the `serial` control will be required when the `accessType` field is equal to `SmartLock`. We can pass a custom `ValidatorFn` to be used too:
 
 ```typescript
-  matchers: [['VALIDATE', Validators.min(3)]],
+  asyncValidators: {
+    RELATED: [{ path: 'accessType', value: MyndAccessType.SmartLock }, Validators.min(3)],
+  },
 ```
 
 ## Next

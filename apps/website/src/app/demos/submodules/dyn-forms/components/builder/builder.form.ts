@@ -83,10 +83,9 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'CodeBox Serial #' },
-            match: [{
-              matchers: ['VALIDATE'],
-              when: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
-            }],
+            asyncValidators: {
+              RELATED: [{ path: 'accessType', value: MyndAccessType.CodeBox }],
+            },
             errorMsg: {
               required: 'Serial is required',
             },
@@ -104,10 +103,9 @@ export function buildConfig(
           createMatConfig('INPUT', {
             name: 'serial',
             params: { label: 'Smart Lock Serial #' },
-            match: [{
-              matchers: ['VALIDATE'],
-              when: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
-            }],
+            asyncValidators: {
+              RELATED: [{ path: 'accessType', value: MyndAccessType.SmartLock }],
+            },
           }),
           createMatConfig('DATEPICKER', {
             name: 'installDate',

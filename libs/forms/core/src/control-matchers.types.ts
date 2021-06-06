@@ -16,12 +16,15 @@ export interface DynControlMatch {
 /**
  * condition
  */
-export interface DynControlMatchCondition {
-  condition?: DynConfigId | DynControlConditionFn; // defaults to the DEFAULT condition handler
+export interface DynControlRelated {
   path: string; // query relative to the control with the matcher
   field?: string; // field to process if the control value is an object
   value?: DynConfigArgs;
   negate?: boolean; // negate the output of the condition
+}
+
+export interface DynControlMatchCondition extends DynControlRelated {
+  condition?: DynConfigId | DynControlConditionFn; // defaults to the 'DEFAULT' condition handler
   [key: string]: any; // any parameter to the Condition Factory
 }
 
