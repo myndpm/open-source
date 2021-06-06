@@ -89,10 +89,6 @@ implements OnInit, OnChanges, OnDestroy {
     this._handlers = injector.get(DynFormHandlers);
   }
 
-  // complete a partial specification of the required parameters
-  // ensuring that all will be present in the template
-  abstract completeParams(params: Partial<TParams>): TParams;
-
   ngOnInit(): void {
     super.ngOnInit();
 
@@ -125,6 +121,12 @@ implements OnInit, OnChanges, OnDestroy {
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
   ngOnChanges(changes?: SimpleChanges): void {
     // emulated while assigning the params as DynControls has no Inputs
+  }
+
+  // complete a partial specification of the required parameters
+  // ensuring that all will be present in the template to avoid exceptions
+  completeParams(params: Partial<TParams>): TParams {
+    return params as TParams;
   }
 
   ngOnDestroy(): void {
