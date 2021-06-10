@@ -52,8 +52,7 @@ implements OnInit {
   }
 
   addItem(): void {
-    // FIXME the node is not the one of the child
-    const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config, true);
+    const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config);
     this.control.push(control);
   }
 
