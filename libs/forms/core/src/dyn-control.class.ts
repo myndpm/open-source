@@ -144,7 +144,7 @@ implements OnInit, OnChanges, OnDestroy {
   }
 
   // hook to refresh the form status
-  hookPreSubmit(): void {
+  hookUpdateValidity(): void {
     this.control.updateValueAndValidity({ onlySelf: true });
     this._ref.markForCheck();
   }

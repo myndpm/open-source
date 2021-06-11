@@ -61,24 +61,6 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dynForms.forEach(
       dynForm => dynForm.valueChanges().subscribe(console.log),
     );
-
-    // validate on PreSubmit
-    this.dynForms.get(1).addHookListener('PreSubmit', (event: Event) => {
-      this.form.markAllAsTouched();
-
-      if (this.form.invalid) {
-        event.preventDefault();
-      }
-    });
-
-    // listen Submit
-    this.dynForms.get(1).addHookListener('Submit', () => {
-      if (this.form.valid) {
-        console.warn('Submit', this.form.value);
-
-        this.toggleMode();
-      }
-    });
   }
 
   ngOnDestroy(): void {
@@ -91,5 +73,16 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     // reset previous interactions
     this.form.markAsPristine();
     this.form.markAsUntouched();
+  }
+
+  doSave(): void {
+    this.dynForms.get(1).validate();
+    this.form.markAllAsTouched();
+
+    if (this.form.valid) {
+      console.warn('Submit', this.form.value);
+
+      this.toggleMode();
+    }
   }
 }

@@ -2,7 +2,7 @@
   <app-section-badges [badges]="badges"></app-section-badges>
   <app-section-actions [actions]="actions"></app-section-actions>
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="doSave()">
     <h3>Config Builder Form</h3>
 
     <p>

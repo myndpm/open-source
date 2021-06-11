@@ -12,7 +12,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
   DynControlMode,
   DynFormMode,
@@ -63,7 +63,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private readonly ref: ChangeDetectorRef,
     private readonly node: DynFormTreeNode,
     private readonly logger: DynLogger,
-    private readonly parent?: FormGroupDirective,
   ) {}
 
   ngOnInit() {
@@ -109,14 +108,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       ],
     });
 
-    // call hooks when the form is submitted
-    this.parent?.ngSubmit.subscribe((event: Event) => {
-      this.callHook('PreSubmit', event, true);
-      if (!event.defaultPrevented) {
-        this.callHook('Submit', this.form.value);
-      }
-    });
-
     // prevent ExpressionChangedAfterItHasBeenCheckedError
     this.ref.detectChanges();
   }
@@ -141,6 +132,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.callHook('PrePatch', value);
     this.form.patchValue(value);
     this.callHook('PostPatch', value);
+  }
+
+  // update the validators programatically
+  validate(): void {
+    this.callHook('UpdateValidity', null, true);
   }
 
   // call a hook in the dynControls using plain/hierarchical data
@@ -169,11 +165,5 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       this.listeners.set(hook, []);
     }
     this.listeners.get(hook)!.push(listener);
-  }
-
-  // submit via FormDirective
-  submit() {
-    const event = new Event('submit', { cancelable: true });
-    this.parent?.ngSubmit.emit(event);
   }
 }
