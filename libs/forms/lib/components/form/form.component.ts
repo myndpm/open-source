@@ -12,7 +12,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import {
   DynControlMode,
   DynFormMode,
@@ -63,6 +63,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private readonly ref: ChangeDetectorRef,
     private readonly node: DynFormTreeNode,
     private readonly logger: DynLogger,
+    private readonly parent?: FormGroupDirective,
   ) {}
 
   ngOnInit() {
@@ -106,6 +107,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           ],
         }
       ],
+    });
+
+    // update validity when the form is submitted
+    this.parent?.ngSubmit.subscribe(() => {
+      this.validate();
     });
 
     // prevent ExpressionChangedAfterItHasBeenCheckedError

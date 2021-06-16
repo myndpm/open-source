@@ -76,7 +76,6 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   doSave(): void {
-    this.dynForms.get(1).validate();
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
