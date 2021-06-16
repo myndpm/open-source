@@ -50,12 +50,12 @@ export function mapPriority<T extends DynBaseProvider>(priority?: number) {
 export const defaultValidators: DynControlValidator[] = [
   { id: 'required', fn: () => Validators.required },
   { id: 'requiredTrue', fn: () => Validators.requiredTrue },
-  { id: 'pattern', fn: Validators.pattern },
-  { id: 'minLength', fn: Validators.minLength },
-  { id: 'maxLength', fn: Validators.maxLength },
+  { id: 'pattern', fn: (node: DynTreeNode, pattern: string | RegExp) => Validators.pattern(pattern) },
+  { id: 'minLength', fn: (node: DynTreeNode, minLength: number) => Validators.minLength(minLength) },
+  { id: 'maxLength', fn: (node: DynTreeNode, minLength: number) => Validators.maxLength(minLength) },
   { id: 'email', fn: () => Validators.email },
-  { id: 'min', fn: Validators.min },
-  { id: 'max', fn: Validators.max },
+  { id: 'min', fn: (node: DynTreeNode, min: number) => Validators.min(min) },
+  { id: 'max', fn: (node: DynTreeNode, max: number) => Validators.max(max) },
 ].map(
   mapPriority<DynControlValidator>()
 );
