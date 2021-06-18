@@ -24,9 +24,9 @@ The library provides some default functions like `getOptionText`, `getParamsFiel
 We have used the parameters in the `ui-material` to define the labels, placeholders,
 and any kind of data required by the field should be in the `params`.
 
-That's why the Dynamic Control requires the `completeParams` method so we can validate
+That's why the Dynamic Control can implement the `completeParams` method so we can validate
 the incoming params and we complete the missing fields with default values,
-so the Control functionality and template works as expected.
+so the Control functionality and template works without exceptions.
 
 ### Material INPUT
 
