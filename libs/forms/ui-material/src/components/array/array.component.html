@@ -12,6 +12,7 @@
         [name]="i.toString()"
         [group]="item"
         [controls]="config.controls"
+        (ready)="markAsReady()"
       ></dyn-group>
 
       <button

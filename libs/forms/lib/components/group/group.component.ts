@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynBaseConfig, DynControlNode, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'dyn-group',
@@ -18,6 +19,8 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
 
+  @Output() ready = new EventEmitter<void>();
+
   constructor(
     injector: Injector,
     private readonly logger: DynLogger,
@@ -28,10 +31,16 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   ngOnInit(): void {
     super.ngOnInit();
 
+    this.node.markAsDirty();
     this.node.setControl(this.group);
     this.node.load({ name: this.name, isolated: Boolean(this.isolated) });
 
     // log the successful initialization
     this.logger.nodeLoaded('dyn-group', this.node.path);
+
+    this.node.ready$.pipe(
+      takeUntil(this.onDestroy$),
+      filter(Boolean),
+    ).subscribe(() => this.ready.emit());
   }
 }

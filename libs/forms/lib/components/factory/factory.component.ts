@@ -1,15 +1,18 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
+  EventEmitter,
   HostBinding,
   Inject,
   INJECTOR,
   Injector,
   Input,
   OnInit,
+  Output,
   SkipSelf,
   ViewChild,
   ViewContainerRef,
@@ -38,9 +41,11 @@ import { takeUntil } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynFactoryComponent implements OnInit {
+export class DynFactoryComponent implements OnInit, AfterViewInit {
   @Input() config!: DynBaseConfig;
   @Input() injector?: Injector;
+
+  @Output() ready = new EventEmitter<void>();
 
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
@@ -102,6 +107,10 @@ export class DynFactoryComponent implements OnInit {
         config = newConfig;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.ready.emit();
   }
 
   private createFrom(config: DynBaseConfig): void {

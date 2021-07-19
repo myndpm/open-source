@@ -62,18 +62,4 @@ implements AfterViewInit {
       removeColor: params.removeColor || 'accent',
     };
   }
-
-  // matches the incoming quantity of items with the existing controls
-  hookPrePatch(payload: any[]): void {
-    if (Array.isArray(payload)) {
-      const numItems = this.control.controls.length;
-      for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
-        if (i > numItems) {
-          this.addItem();
-        } else if (i >= payload.length) {
-          this.removeItem(i);
-        }
-      }
-    }
-  }
 }

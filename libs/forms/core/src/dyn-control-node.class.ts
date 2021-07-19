@@ -47,6 +47,10 @@ implements OnInit, OnDestroy {
     this.node.onDestroy();
   }
 
+  markAsReady(): void {
+    this.node.markAsReady();
+  }
+
   // propagate hook calls from the top to the bottom of the DynControls tree
   // note: concrete hooks will receive the parent data if they define no config.name
   callHook(event: DynControlHook): void {

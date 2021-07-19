@@ -10,6 +10,7 @@
       [class]="config.cssClass"
       [group]="control"
       [controls]="config.controls"
+      (ready)="markAsReady()"
     ></dyn-group>
   </mat-card-content>
 </mat-card>

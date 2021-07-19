@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -83,9 +83,23 @@ implements DynTreeNode<TParams, TControl> {
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
-  private _unsubscribe = new Subject<void>();
+  private _children$ = new Subject<void>();
+  private _dirty$ = new BehaviorSubject<boolean>(false);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
+  private _unsubscribe = new Subject<void>();
+
+  ready$: Observable<boolean> = this._children$.pipe(
+    startWith(null),
+    switchMap(() => combineLatest([
+      this._dirty$,
+      this._loaded$,
+      ...this.children.map(child => child.ready$),
+    ])),
+    map(([dirty, loaded, ...children]) => {
+      return !dirty && loaded && children.every(Boolean);
+    }),
+  );
 
   constructor(
     private readonly formFactory: DynFormFactory,
@@ -115,10 +129,22 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   /**
+   * State methods
+   */
+
+  markAsDirty(): void {
+    this._dirty$.next(true);
+  }
+
+  markAsReady(): void {
+    this._dirty$.next(false);
+  }
+
+  /**
    * Feature methods
    */
 
-  // let the TreeNode know of an incoming hook
+  // let the ControlNode know of an incoming hook
   callHook(event: DynControlHook): void {
     this.logger.hookCalled(event.hook, this.path, event.payload);
 
@@ -333,6 +359,7 @@ implements DynTreeNode<TParams, TControl> {
    */
   private addChild(node: DynFormTreeNode<any, any>): void {
     this.children.push(node);
+    this._children$.next();
 
     // TODO updateValue and validity? or it's automatically done?
   }

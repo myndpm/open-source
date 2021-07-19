@@ -54,9 +54,24 @@ implements OnInit {
   addItem(): void {
     const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config);
     this.control.push(control);
+    this.node.markAsDirty();
   }
 
   removeItem(index: number): void {
     this.control.removeAt(index);
+  }
+
+  // matches the incoming quantity of items with the existing controls
+  hookPrePatch(payload: any[]): void {
+    if (Array.isArray(payload)) {
+      const numItems = this.control.controls.length;
+      for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
+        if (i > numItems) {
+          this.addItem();
+        } else if (i >= payload.length) {
+          this.removeItem(i);
+        }
+      }
+    }
   }
 }

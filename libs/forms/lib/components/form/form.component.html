@@ -3,8 +3,9 @@
 
 <ng-container *ngIf="config">
   <dyn-factory
-    *ngFor="let control of config.controls"
+    *ngFor="let control of config.controls; last as last"
     [config]="control"
     [injector]="configLayer"
+    (ready)="last ? markAsReady() : null"
   ></dyn-factory>
 </ng-container>

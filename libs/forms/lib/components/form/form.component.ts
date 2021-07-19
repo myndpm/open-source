@@ -22,7 +22,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, first, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -78,6 +78,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     }
 
     // manually register the node
+    this.node.markAsDirty();
     this.node.setControl(this.form)
     this.node.load({
       isolated: Boolean(this.isolated),
@@ -127,11 +128,33 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.mode$.complete();
   }
 
+  /**
+   * API
+   */
+
+  whenReady(): Observable<boolean> {
+    return this.node.ready$.pipe(
+      filter<boolean>(Boolean),
+      first(),
+    );
+  }
+
+  markAsReady(): void {
+    this.node.markAsReady();
+  }
+
   // notify the dynControls about the incoming data
   patchValue(value: any): void {
-    this.callHook('PrePatch', value);
-    this.form.patchValue(value);
-    this.callHook('PostPatch', value);
+    this.whenReady().pipe(
+      switchMap(() => {
+        this.callHook('PrePatch', value);
+        return this.whenReady();
+      }),
+      tap(() => {
+        this.form.patchValue(value);
+        this.callHook('PostPatch', value);
+      }),
+    ).subscribe();
   }
 
   // update the validators programatically
