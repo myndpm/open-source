@@ -32,7 +32,7 @@ export interface DynControlMatchCondition extends DynControlRelated {
  * matcher handlers
  * ie. DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | etc
  */
-export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean) => void;
+export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean, firstTime: boolean) => void;
 export type DynControlMatcher = DynBaseHandler<DynControlMatcherFn>;
 
 /**

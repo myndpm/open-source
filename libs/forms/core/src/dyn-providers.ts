@@ -86,6 +86,16 @@ export const defaultAsyncValidators: DynControlAsyncValidator[] = [
  */
 export const defaultMatchers: DynControlMatcher[] = [
   {
+    id: 'RELATED',
+    fn: (): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean, firstTime?: boolean) => {
+        if (!firstTime) {
+          node.control.updateValueAndValidity();
+        }
+      }
+    }
+  },
+  {
     id: 'DISABLE',
     fn: (): DynControlMatcherFn => {
       return (node: DynTreeNode, hasMatch: boolean) => {

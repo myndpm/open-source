@@ -4,7 +4,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
-import { DynConfigErrors } from './control-config.types';
+import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlMode } from './control-mode.types';
@@ -259,7 +259,7 @@ implements DynTreeNode<TParams, TControl> {
     this._name = config.name ?? '';
 
     // store the matchers to be processed afterViewInit
-    this._matchers = config.match;
+    this._matchers = this.getMatchers(config);
 
     // store the params to be accessible to the handlers
     this._params = config.params as TParams;
@@ -314,6 +314,7 @@ implements DynTreeNode<TParams, TControl> {
     // process the stored matchers
     this._matchers?.map((config) => {
       const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
+      let count = 0;
 
       combineLatest(
         // build an array of observables to listen changes into
@@ -329,9 +330,11 @@ implements DynTreeNode<TParams, TControl> {
         // TODO option for distinctUntilChanged?
       )
       .subscribe(hasMatch => {
+        const firstTime = (count === 0);
         // run the matchers with the conditions result
         // TODO config to run the matcher only if hasMatch? (unidirectional)
-        matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch));
+        matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch, firstTime));
+        count++;
       });
     });
 
@@ -371,6 +374,31 @@ implements DynTreeNode<TParams, TControl> {
 
     // TODO what happen to the data if we remove the control
     // TODO update validity if not isolated
+  }
+
+  // process the config to extract the matchers
+  private getMatchers(config: Partial<DynBaseConfig>): DynControlMatch[] {
+    const matchers = config.match?.slice() || [];
+
+    // listen changes in the RELATED field
+    // with a matcher configured like the asyncValidator
+    if (config.asyncValidators) {
+      const hasRelated = (Array.isArray(config.asyncValidators)
+        ? config.asyncValidators.find((validator) => {
+            return Array.isArray(validator) ?  validator[0] === 'RELATED' : false;
+          })
+        : config.asyncValidators['RELATED']
+      ) as DynConfigPrimitive[];
+
+      if (hasRelated) {
+        matchers.push({
+          matchers: ['RELATED'],
+          when: [hasRelated[0]],
+        } as any);
+      }
+    }
+
+    return matchers;
   }
 
   // error message resolver
