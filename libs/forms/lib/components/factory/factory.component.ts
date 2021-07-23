@@ -1,18 +1,15 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  EventEmitter,
   HostBinding,
   Inject,
   INJECTOR,
   Injector,
   Input,
   OnInit,
-  Output,
   SkipSelf,
   ViewChild,
   ViewContainerRef,
@@ -41,11 +38,9 @@ import { takeUntil } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynFactoryComponent implements OnInit, AfterViewInit {
+export class DynFactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
   @Input() injector?: Injector;
-
-  @Output() ready = new EventEmitter<void>();
 
   @ViewChild('container', { static: true, read: ViewContainerRef })
   container!: ViewContainerRef;
@@ -98,8 +93,7 @@ export class DynFactoryComponent implements OnInit, AfterViewInit {
             this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
           }
         } else {
-          // new config
-          this.logger.controlInstance(newConfig);
+          this.logger.controlInitializing({ control: newConfig.control, name: newConfig.name });
 
           this.container.clear();
           this.createFrom(newConfig);
@@ -107,10 +101,6 @@ export class DynFactoryComponent implements OnInit, AfterViewInit {
         config = newConfig;
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.ready.emit();
   }
 
   private createFrom(config: DynBaseConfig): void {
@@ -148,6 +138,8 @@ export class DynFactoryComponent implements OnInit, AfterViewInit {
 
       this.component.hostView.detectChanges();
 
+      this.logger.controlInstantiated(this.component.instance.node, { control: config.control, name: config.name, controls: config.controls?.length });
+
       // listen control.visibility$
       this.component.instance.visibility$
         .pipe(takeUntil(this.component.instance.onDestroy$))
@@ -157,7 +149,7 @@ export class DynFactoryComponent implements OnInit, AfterViewInit {
         });
 
     } catch(e) {
-      // log any error happening in the control initialization
+      // log any error happening in the control instantiation
       console.error(e);
     }
   }

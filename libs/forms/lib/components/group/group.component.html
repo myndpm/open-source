@@ -1,5 +1,4 @@
 <dyn-factory
   *ngFor="let control of controls; last as last"
   [config]="control"
-  (ready)="last ? markAsReady() : null"
 ></dyn-factory>
