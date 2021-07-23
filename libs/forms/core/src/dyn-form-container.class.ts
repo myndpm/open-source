@@ -29,6 +29,6 @@ implements OnInit {
     super.ngOnInit();
 
     // log the successful initialization
-    this._logger.nodeLoaded('dyn-form-container', this.node.path, this.config.control);
+    this._logger.nodeLoaded('dyn-form-container', this.node);
   }
 }

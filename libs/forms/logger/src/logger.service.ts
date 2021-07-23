@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DynNode } from './interfaces/node.interface';
 import { DynLogDriver } from './log-driver.service';
 import { DynLogLevel } from './log-levels.constant';
 
@@ -57,16 +58,17 @@ export class DynLogger {
   nodeControl(): void {
     this.driver.log({
       level: DynLogLevel.Lifecycle,
-      message: `[DynFormTreeNode] control was manually set`,
+      message: `[DynFormTreeNode] control manually set`,
     });
   }
 
-  nodeLoaded(origin: string, path: string[], control?: string, payload?: any): void {
+  nodeLoaded(origin: string, { deep, dynControl, parent, path }: DynNode, payload?: any): void {
     this.driver.log({
-      level: DynLogLevel.Lifecycle,
-      message: control === undefined && !path.join('.')
-        ? `[${origin}] node initialized`
-        : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
+      deep,
+      level: DynLogLevel.Hierarchy,
+      message: dynControl === undefined && !path.join('.')
+        ? `[${origin}] root node initialized`
+        : `[${origin}] initialized '${path.join('.')}'${parent?.instance ? ` under ${parent?.instance}` : ''}${dynControl ? ` (${dynControl})` : ''}`,
       payload,
     });
   }
@@ -79,10 +81,19 @@ export class DynLogger {
     });
   }
 
-  controlInstance(payload: any): void {
+  controlInitializing(payload: any): void {
     this.driver.log({
+      level: DynLogLevel.Debug,
+      message: `[dyn-factory] instantiating dynamic component`,
+      payload,
+    });
+  }
+
+  controlInstantiated({ deep, dynControl }: DynNode, payload: any): void {
+    this.driver.log({
+      deep,
       level: DynLogLevel.Hierarchy,
-      message: `[dyn-factory] instantiating dynamic control`,
+      message: `[dyn-factory] instantiated dynamic control${dynControl ? ` (${dynControl})` : ''}`,
       payload,
     });
   }
@@ -90,7 +101,7 @@ export class DynLogger {
   hookCalled(hook: string, path: string[], payload?: any): void {
     this.driver.log({
       level: DynLogLevel.Hooks,
-      message: `[hook] '${hook}' called on '${path.join('.')}' with`,
+      message: `'${hook}' called on '${path.join('.')}' with`,
       payload,
     });
   }

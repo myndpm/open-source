@@ -108,7 +108,7 @@ implements OnInit, OnChanges, OnDestroy {
       // emulates ngOnChanges
       const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
       this.params$.next(change.currentValue);
-      this._logger.nodeParamsUpdated(this.constructor.name, this.params);
+      this._logger.nodeParamsUpdated(this.node, this.constructor.name, this.params);
 
       setTimeout(() => {
         // emulates ngOnChanges and async pipe
@@ -123,15 +123,15 @@ implements OnInit, OnChanges, OnDestroy {
     // emulated while assigning the params as DynControls has no Inputs
   }
 
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.params$.complete();
+  }
+
   // complete a partial specification of the required parameters
   // ensuring that all will be present in the template to avoid exceptions
   completeParams(params: Partial<TParams>): TParams {
     return params as TParams;
-  }
-
-  ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.params$.complete();
   }
 
   updateParams(

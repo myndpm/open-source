@@ -2,6 +2,10 @@ import { DynLogLevel } from './log-levels.constant';
 
 export interface DynLog {
   /**
+   * Indent level.
+   */
+  readonly deep?: number;
+  /**
    * Level of severity.
    */
   readonly level: DynLogLevel;

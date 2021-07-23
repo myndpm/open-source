@@ -31,7 +31,7 @@ export class DynLogDriver {
   log(event: DynLog): any {
     // do not log anything on production
     // or below the configured limit
-    if (!isDevMode() || !this.level || !(event.level & this.level)) {
+    if (!isDevMode() || !(event.level & this.level)) {
       return;
     }
 
@@ -52,13 +52,17 @@ export class DynLogDriver {
   }
 
   private format(event: DynLog): any[] {
-    const result = [...this.colorify(event.level), event.message];
+    const result = [
+      ...this.colorify(event.deep || 0, event.level),
+      event.message,
+    ];
     return event.payload ? [...result, event.payload] : result;
   }
 
   private colorify(
+    indent: number,
     level: DynLogLevel,
-    text = `%c[${dynLogLevels.get(level)}]`
+    text = `${''.padStart(2 * (indent || 0), ' ')}%c[${dynLogLevels.get(level)}]`
   ): string[] {
     switch (level) {
       case DynLogLevel.Fatal:

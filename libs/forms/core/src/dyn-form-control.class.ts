@@ -30,6 +30,6 @@ implements OnInit {
     super.ngOnInit();
 
     // log the successful initialization
-    this._logger.nodeLoaded('dyn-form-control', this.node.path, this.config.control, this.node);
+    this._logger.nodeLoaded('dyn-form-control', this.node);
   }
 }
