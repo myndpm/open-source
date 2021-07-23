@@ -17,6 +17,13 @@ While creating a new form, the library recursively instantiates the declared Dyn
 
 Each node is connected with a `DynTreeNode` instance which has the API to be programmatically manipulated, like querying and selecting other fields, accessing the `control` instance, the current `params`, manipulating its visibility, etc.
 
+## Instance Types
+
+1. `Control`: corresponds to the basic `FormControl`
+2. `Group`: component that loads one or more controls via `dyn-factory`
+3. `Container`: component that loads one or more groups via `dyn-group`
+4. `Array`: collection of groups usually loaded via `dyn-group` too.
+
 ## Custom Controls
 
 We can easily create new DynControls with the [@myndpm/dyn-forms:control](https://mynd.dev/docs/dyn-forms/intro/schematics) schematic.

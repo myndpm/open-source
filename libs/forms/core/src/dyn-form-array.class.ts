@@ -31,7 +31,7 @@ implements OnInit {
     super.ngOnInit();
 
     // log the successful initialization
-    this._logger.nodeLoaded('dyn-form-array', this.node.path, this.config.control);
+    this._logger.nodeLoaded('dyn-form-array', this.node);
   }
 
   // hook propagated to child DynControls
@@ -54,14 +54,16 @@ implements OnInit {
   addItem(): void {
     const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config);
     this.control.push(control);
-    this.node.markAsDirty();
+    this.node.childsIncrement();
   }
 
   removeItem(index: number): void {
     this.control.removeAt(index);
+    this.node.childsDecrement();
   }
 
   // matches the incoming quantity of items with the existing controls
+  // do not remove any existing data because this is "patch"
   hookPrePatch(payload: any[]): void {
     if (Array.isArray(payload)) {
       const numItems = this.control.controls.length;

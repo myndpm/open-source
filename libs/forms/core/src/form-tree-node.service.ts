@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest, merge, Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
@@ -26,6 +26,7 @@ export class DynFormTreeNode<
 implements DynTreeNode<TParams, TControl> {
   // form hierarchy
   isolated = false;
+  deep = 0;
   children: DynFormTreeNode[] = [];
 
   // listened by dyn-factory
@@ -35,6 +36,9 @@ implements DynTreeNode<TParams, TControl> {
   hook$ = new Subject<DynControlHook>();
 
   // control config
+  get dynControl(): string|undefined {
+    return this._dynControl;
+  }
   get name(): string|undefined {
     return this._name;
   }
@@ -56,9 +60,6 @@ implements DynTreeNode<TParams, TControl> {
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
-  get loaded$(): Observable<boolean> {
-    return this._loaded$.asObservable();
-  }
   get mode$(): Observable<DynControlMode> {
     return this._mode$.asObservable();
   }
@@ -75,30 +76,69 @@ implements DynTreeNode<TParams, TControl> {
     ].filter(Boolean);
   }
 
+  private _dynControl?: string;
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
+  private _numChilds: number = 0;
   private _matchers?: DynControlMatch[];
   private _params!: TParams;
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _children$ = new Subject<void>();
-  private _dirty$ = new BehaviorSubject<boolean>(false);
+  private _loading$ = new BehaviorSubject<boolean>(true);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe = new Subject<void>();
 
+  loaded$: Observable<boolean> = this._children$.pipe(
+    startWith(null),
+    switchMap(() => combineLatest([
+      this._loaded$,
+      ...this.children.map(child => child.loaded$),
+    ])),
+    map(([loaded, ...children]) => {
+      const childrenLoaded = [DynInstanceType.Container, DynInstanceType.Group].includes(this.instance)
+        ? this._numChilds === children.length && children.every(Boolean)
+        : true;
+      return loaded && childrenLoaded;
+    }),
+    distinctUntilChanged(),
+  );
+
   ready$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
-      this._dirty$,
+      this._loading$,
       this._loaded$,
       ...this.children.map(child => child.ready$),
-    ])),
-    map(([dirty, loaded, ...children]) => {
-      return !dirty && loaded && children.every(Boolean);
-    }),
+    ]).pipe(
+      switchMap(([loading, loaded, ...children]) => {
+        const isArray = this.instance === DynInstanceType.Array;
+        const isControl = this.instance === DynInstanceType.Control;
+        const isGroup = this.instance === DynInstanceType.Group;
+        const hasAllChildren = this._numChilds === children.length;
+        const allChildrenValid = children.every(Boolean);
+        const allChildrenLoaded = hasAllChildren && allChildrenValid;
+        const isLoading = !isControl && !allChildrenLoaded;
+
+        const result = loaded && !isLoading && allChildrenLoaded;
+
+        if (loading && (isGroup || isArray) && allChildrenLoaded) {
+          // FIXME how to cancel the current emission?
+          setTimeout(() => this.markAsReady());
+        }
+
+        this.logger.nodeReady(this, !isControl
+          ? { loading, loaded, numChilds: this._numChilds, result, children }
+          : { loading, loaded, result }
+        );
+
+        return of(result);
+      }),
+    )),
+    distinctUntilChanged(),
   );
 
   constructor(
@@ -132,12 +172,29 @@ implements DynTreeNode<TParams, TControl> {
    * State methods
    */
 
-  markAsDirty(): void {
-    this._dirty$.next(true);
+  childsIncrement(): void {
+    this.logger.nodeMethod(this, 'childsIncrement');
+    this._numChilds++;
+    this.markAsLoading();
+  }
+
+  childsDecrement(): void {
+    this.logger.nodeMethod(this, 'childsDecrement');
+    this._numChilds--;
+  }
+
+  markAsLoading(): void {
+    if (!this._loading$.getValue()) {
+      this.logger.nodeMethod(this, 'markAsLoading');
+      this._loading$.next(true);
+    }
   }
 
   markAsReady(): void {
-    this._dirty$.next(false);
+    if (this._loading$.getValue()) {
+      this.logger.nodeMethod(this, 'markAsReady');
+      this._loading$.next(false);
+    }
   }
 
   /**
@@ -146,7 +203,7 @@ implements DynTreeNode<TParams, TControl> {
 
   // let the ControlNode know of an incoming hook
   callHook(event: DynControlHook): void {
-    this.logger.hookCalled(event.hook, this.path, event.payload);
+    this.logger.hookCalled(this, event.hook, event.payload);
 
     this.hook$.next(event);
   }
@@ -238,8 +295,6 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   setControl(control: TControl, instance = DynInstanceType.Group): void {
-    this.logger.nodeControl();
-
     // manual setup with no wiring nor config validation
     this._instance = instance;
     this._control = control;
@@ -254,9 +309,18 @@ implements DynTreeNode<TParams, TControl> {
 
     // disconnect this node from any parent DynControl
     this.isolated = Boolean(config.isolated);
+    this.deep = this.getDeep();
+
+    // keep the id of the control for the logs
+    this._dynControl = config.control;
 
     // register the name to build the form path
     this._name = config.name ?? '';
+
+    // store the number of configured childs
+    this._numChilds = ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
+      ? config.controls?.length ?? 0
+      : 0;
 
     // store the matchers to be processed afterViewInit
     this._matchers = this.getMatchers(config);
@@ -276,67 +340,70 @@ implements DynTreeNode<TParams, TControl> {
       this.parent?.addChild(this);
     }
 
-    if (this.parent?.isFormLoaded) {
-      this.afterViewInit();
+    // update the status flags
+    if (this._instance === DynInstanceType.Control) {
+      this.markAsReady();
     }
 
     this._loaded$.next(true);
   }
 
   afterViewInit(): void {
-    this._formLoaded = true;
+    if (!this.isFormLoaded) {
+      this._formLoaded = true;
 
-    // listen control changes to update the error
-    merge(
-      this._control.valueChanges,
-      this._control.statusChanges,
-    ).pipe(
-      takeUntil(this._unsubscribe),
-      debounceTime(20), // wait for subcontrols to be updated
-      map(() => this._control.errors),
-      distinctUntilChanged(),
-      withLatestFrom(this._errorMsg$),
-    ).subscribe(([_, currentError]) => {
-      if (this._control.valid) {
-        // reset any existing error
-        if (currentError) {
-          this._errorMsg$.next(null);
-        }
-      } else {
-        // update the error message if needed
-        const errorMsg = this.getErrorMessage();
-        if (currentError !== errorMsg) {
-          this._errorMsg$.next(errorMsg);
-        }
-      }
-    });
-
-    // process the stored matchers
-    this._matchers?.map((config) => {
-      const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
-      let count = 0;
-
-      combineLatest(
-        // build an array of observables to listen changes into
-        config.when
-          .map(condition => this.formHandlers.getCondition(condition)) // handler fn
-          .map(fn => fn(this)) // condition observables
+      // listen control changes to update the error
+      merge(
+        this._control.valueChanges,
+        this._control.statusChanges,
       ).pipe(
-        map(results => config.operator === 'OR' // AND by default
-          ? results.some(Boolean)
-          : results.every(Boolean)
-        ),
         takeUntil(this._unsubscribe),
-        // TODO option for distinctUntilChanged?
-      )
-      .subscribe(hasMatch => {
-        const firstTime = (count === 0);
-        // run the matchers with the conditions result
-        // TODO config to run the matcher only if hasMatch? (unidirectional)
-        matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch, firstTime));
-        count++;
+        debounceTime(20), // wait for subcontrols to be updated
+        map(() => this._control.errors),
+        distinctUntilChanged(),
+        withLatestFrom(this._errorMsg$),
+      ).subscribe(([_, currentError]) => {
+        if (this._control.valid) {
+          // reset any existing error
+          if (currentError) {
+            this._errorMsg$.next(null);
+          }
+        } else {
+          // update the error message if needed
+          const errorMsg = this.getErrorMessage();
+          if (currentError !== errorMsg) {
+            this._errorMsg$.next(errorMsg);
+          }
+        }
       });
-    });
+
+      // process the stored matchers
+      this._matchers?.map((config) => {
+        const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
+        let count = 0;
+
+        combineLatest(
+          // build an array of observables to listen changes into
+          config.when
+            .map(condition => this.formHandlers.getCondition(condition)) // handler fn
+            .map(fn => fn(this)) // condition observables
+        ).pipe(
+          map(results => config.operator === 'OR' // AND by default
+            ? results.some(Boolean)
+            : results.every(Boolean)
+          ),
+          takeUntil(this._unsubscribe),
+          // TODO option for distinctUntilChanged?
+        )
+        .subscribe(hasMatch => {
+          const firstTime = (count === 0);
+          // run the matchers with the conditions result
+          // TODO config to run the matcher only if hasMatch? (unidirectional)
+          matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch, firstTime));
+          count++;
+        });
+      });
+    }
 
     // call the children
     this.children.map(child => child.afterViewInit());
@@ -360,7 +427,13 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Hierarchy methods
    */
+  getDeep(): number {
+    return this.isRoot ? 0 : this.parent?.deep + 1;
+  }
+
   private addChild(node: DynFormTreeNode<any, any>): void {
+    this.logger.nodeMethod(this, 'addChild');
+
     this.children.push(node);
     this._children$.next();
 
@@ -368,9 +441,12 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   private removeChild(node: DynFormTreeNode<any, any>): void {
+    this.logger.nodeMethod(this, 'removeChild');
+
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });
+    this._children$.next();
 
     // TODO what happen to the data if we remove the control
     // TODO update validity if not isolated

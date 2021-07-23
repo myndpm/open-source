@@ -78,13 +78,13 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     }
 
     // manually register the node
-    this.node.markAsDirty();
     this.node.setControl(this.form)
     this.node.load({
       isolated: Boolean(this.isolated),
+      controls: this.config?.controls,
       errorMsgs: this.config?.errorMsgs,
     });
-    this.logger.nodeLoaded('dyn-form', this.node.path);
+    this.logger.nodeLoaded('dyn-form', this.node);
 
     this.configLayer = Injector.create({
       parent: this.injector,
@@ -114,8 +114,13 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngAfterViewInit(): void {
-    // trigger processes once the form is built
-    this.node.afterViewInit()
+    this.node.loaded$
+      .pipe(filter(Boolean))
+      .subscribe(() => {
+        this.logger.formCycle('afterViewInit');
+        // trigger processes once the form hierarchy is built
+        this.node.afterViewInit()
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -139,18 +144,16 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     );
   }
 
-  markAsReady(): void {
-    this.node.markAsReady();
-  }
-
   // notify the dynControls about the incoming data
   patchValue(value: any): void {
     this.whenReady().pipe(
       switchMap(() => {
+        this.logger.formCycle('PrePatch');
         this.callHook('PrePatch', value);
         return this.whenReady();
       }),
       tap(() => {
+        this.logger.formCycle('PostPatch', this.form.value);
         this.form.patchValue(value);
         this.callHook('PostPatch', value);
       }),

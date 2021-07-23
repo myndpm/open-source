@@ -55,26 +55,37 @@ export class DynLogger {
     });
   }
 
-  nodeControl(): void {
-    this.driver.log({
-      level: DynLogLevel.Lifecycle,
-      message: `[DynFormTreeNode] control manually set`,
-    });
-  }
-
   nodeLoaded(origin: string, { deep, dynControl, parent, path }: DynNode, payload?: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hierarchy,
-      message: dynControl === undefined && !path.join('.')
+      message: !deep
         ? `[${origin}] root node initialized`
         : `[${origin}] initialized '${path.join('.')}'${parent?.instance ? ` under ${parent?.instance}` : ''}${dynControl ? ` (${dynControl})` : ''}`,
       payload,
     });
   }
 
-  nodeParamsUpdated(origin: string, payload: any): void {
+  nodeMethod({ deep, dynControl, instance, path }: DynNode, method: string): void {
     this.driver.log({
+      deep,
+      level: DynLogLevel.Debug,
+      message: `[node.${method}] '${path.join('.')}' (${dynControl || instance})`,
+    });
+  }
+
+  nodeReady({ deep, dynControl, instance, path }: DynNode, payload?: any): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Ready,
+      message: `'${path.join('.')}' (${dynControl || instance})`,
+      payload,
+    });
+  }
+
+  nodeParamsUpdated({ deep }: DynNode, origin: string, payload: any): void {
+    this.driver.log({
+      deep,
       level: DynLogLevel.Lifecycle,
       message: `[${origin}] updating params`,
       payload,
@@ -98,8 +109,17 @@ export class DynLogger {
     });
   }
 
-  hookCalled(hook: string, path: string[], payload?: any): void {
+  formCycle(name: string, payload?: any): void {
     this.driver.log({
+      level: DynLogLevel.Lifecycle,
+      message: `[DynForm] ${name}`,
+      payload,
+    });
+  }
+
+  hookCalled({ deep, path }: DynNode, hook: string, payload?: any): void {
+    this.driver.log({
+      deep,
       level: DynLogLevel.Hooks,
       message: `'${hook}' called on '${path.join('.')}' with`,
       payload,
