@@ -56,14 +56,14 @@ export class DynLogger {
 
   nodeControl(): void {
     this.driver.log({
-      level: DynLogLevel.Info,
+      level: DynLogLevel.Lifecycle,
       message: `[DynFormTreeNode] control was manually set`,
     });
   }
 
   nodeLoaded(origin: string, path: string[], control?: string, payload?: any): void {
     this.driver.log({
-      level: DynLogLevel.Info,
+      level: DynLogLevel.Lifecycle,
       message: control === undefined && !path.join('.')
         ? `[${origin}] node initialized`
         : `[${origin}] initialized for '${path.join('.')}' ${control ? `(${control})` : ''}`,
@@ -73,7 +73,7 @@ export class DynLogger {
 
   nodeParamsUpdated(origin: string, payload: any): void {
     this.driver.log({
-      level: DynLogLevel.Verbose,
+      level: DynLogLevel.Lifecycle,
       message: `[${origin}] updating params`,
       payload,
     });
@@ -81,7 +81,7 @@ export class DynLogger {
 
   controlInstance(payload: any): void {
     this.driver.log({
-      level: DynLogLevel.Verbose,
+      level: DynLogLevel.Hierarchy,
       message: `[dyn-factory] instantiating dynamic control`,
       payload,
     });
@@ -89,7 +89,7 @@ export class DynLogger {
 
   hookCalled(hook: string, path: string[], payload?: any): void {
     this.driver.log({
-      level: DynLogLevel.Debug,
+      level: DynLogLevel.Hooks,
       message: `[hook] '${hook}' called on '${path.join('.')}' with`,
       payload,
     });

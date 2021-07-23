@@ -24,29 +24,6 @@ export class DynLogDriver {
     console.log(...this.format(event));
   }
 
-  logDebug = (event: DynLog) => {
-    console.log(...this.format(event));
-  }
-
-  logTrace = (event: DynLog) => {
-    console.log(...this.format(event));
-  }
-
-  logVerbose = (event: DynLog) => {
-    console.log(...this.format(event));
-  }
-
-  /* eslint @typescript-eslint/member-ordering: 0 */
-  loggers = {
-    [DynLogLevel.Fatal]: this.logFatal,
-    [DynLogLevel.Error]: this.logError,
-    [DynLogLevel.Warning]: this.logWarning,
-    [DynLogLevel.Info]: this.logInfo,
-    [DynLogLevel.Debug]: this.logDebug,
-    [DynLogLevel.Trace]: this.logTrace,
-    [DynLogLevel.Verbose]: this.logVerbose,
-  }
-
   constructor(
     @Inject(DYN_LOG_LEVEL) private level: DynLogLevel,
   ) {}
@@ -54,11 +31,24 @@ export class DynLogDriver {
   log(event: DynLog): any {
     // do not log anything on production
     // or below the configured limit
-    if (!isDevMode() || event.level < this.level) {
+    if (!isDevMode() || !this.level || !(event.level & this.level)) {
       return;
     }
 
-    return this.loggers[event.level](event);
+    return this.getLogger(event.level)(event);
+  }
+
+  private getLogger(level: DynLogLevel) {
+    switch (level) {
+      case DynLogLevel.Fatal:
+        return this.logFatal;
+      case DynLogLevel.Error:
+        return this.logError;
+      case DynLogLevel.Warning:
+        return this.logWarning;
+      default:
+        return this.logInfo;
+    }
   }
 
   private format(event: DynLog): any[] {
@@ -77,14 +67,16 @@ export class DynLogDriver {
         return [text, `color: #dc3545`];
       case DynLogLevel.Warning:
         return [text, `color: #fd7e14`];
-      case DynLogLevel.Info:
+      case DynLogLevel.Hierarchy:
         return [text, `color: #0d6efd`];
-      case DynLogLevel.Debug:
+      case DynLogLevel.Lifecycle:
         return [text, `color: #6f42c1`];
-      case DynLogLevel.Trace:
+      case DynLogLevel.Ready:
         return [text, `color: #20c997`];
-      case DynLogLevel.Verbose:
+      case DynLogLevel.Hooks:
         return [text, `color: #adb5bd`];
+      default:
+        return [text, `color: #0d6efd`]; // info
     }
   }
 }

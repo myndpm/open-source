@@ -1,20 +1,22 @@
 
 export enum DynLogLevel {
-  Fatal = 7,
-  Error = 6,
-  Warning = 5,
-  Info = 4,
-  Debug = 3,
-  Trace = 2,
-  Verbose = 1,
+  All = 2**7 - 1,
+  Hooks = 64,
+  Ready = 32,
+  Lifecycle = 16,
+  Hierarchy = 8,
+  Warning = 4,
+  Error = 2,
+  Fatal = 1,
+  None = 0,
 }
 
 export const dynLogLevels = new Map<number, string>([
-  [7, 'FATAL'],
-  [6, 'ERROR'],
-  [5, 'WARN'],
-  [4, 'INFO'],
-  [3, 'DEBUG'],
-  [2, 'TRACE'],
-  [1, 'VERBOSE'],
+  [DynLogLevel.Hooks, 'HOOKS'],
+  [DynLogLevel.Ready, 'READY'],
+  [DynLogLevel.Lifecycle, 'CYCLE'],
+  [DynLogLevel.Hierarchy, 'SETUP'],
+  [DynLogLevel.Warning, 'WARN'],
+  [DynLogLevel.Error, 'ERROR'],
+  [DynLogLevel.Fatal, 'FATAL'],
 ]);
