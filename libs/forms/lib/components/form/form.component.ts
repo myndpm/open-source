@@ -140,7 +140,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
    */
 
   whenReady(): Observable<boolean> {
-    return this.node.ready$.pipe(
+    return this.node.loaded$.pipe(
       filter<boolean>(Boolean),
       first(),
     );

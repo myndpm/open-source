@@ -1,8 +1,7 @@
 
 export enum DynLogLevel {
-  All = 2**9 - 1,
-  Hooks = 2**8,
-  Ready = 2**7,
+  All = 2**8 - 1,
+  Hooks = 2**7,
   Load = 2**6,
   Lifecycle = 2**5,
   Hierarchy = 2**4,
@@ -14,7 +13,6 @@ export enum DynLogLevel {
 
 export const dynLogLevels = new Map<number, string>([
   [DynLogLevel.Hooks, 'HOOKS'],
-  [DynLogLevel.Ready, 'READY'],
   [DynLogLevel.Load, 'LOAD'],
   [DynLogLevel.Lifecycle, 'CYCLE'],
   [DynLogLevel.Hierarchy, 'SETUP'],

@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Subject, combineLatest, merge, Observable, of } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
@@ -83,7 +83,6 @@ implements DynTreeNode<TParams, TControl> {
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _children$ = new Subject<void>();
-  private _loading$ = new BehaviorSubject<boolean>(true);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe = new Subject<void>();
@@ -91,11 +90,10 @@ implements DynTreeNode<TParams, TControl> {
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
-      this._loading$,
       this._loaded$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([loading, loaded, ...children]) => {
+    map(([loaded, ...children]) => {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = this._numChilds === children.length;
       const allChildrenValid = children.every(Boolean);
@@ -103,41 +101,13 @@ implements DynTreeNode<TParams, TControl> {
 
       const result = loaded && allChildrenLoaded;
 
-      if (loading && !isControl && allChildrenLoaded) {
-        // FIXME how to cancel the current emission?
-        setTimeout(() => this.markAsReady());
-      }
-
-      this.logger.nodeLoad(this, { result, loading, loaded, allChildrenLoaded, numChilds: this._numChilds, children });
+      this.logger.nodeLoad(this, !isControl
+        ? { result, loaded, numChilds: this._numChilds, children }
+        : { result, loaded }
+      );
 
       return result;
     }),
-    distinctUntilChanged(),
-  );
-
-  ready$: Observable<boolean> = this._children$.pipe(
-    startWith(null),
-    switchMap(() => combineLatest([
-      this._loaded$,
-      ...this.children.map(child => child.ready$),
-    ]).pipe(
-      switchMap(([loaded, ...children]) => {
-        const isControl = this.instance === DynInstanceType.Control;
-        const hasAllChildren = this._numChilds === children.length;
-        const allChildrenValid = children.every(Boolean);
-        const allChildrenLoaded = hasAllChildren && allChildrenValid;
-        const isLoading = !isControl && !allChildrenLoaded;
-
-        const result = loaded && !isLoading && allChildrenLoaded;
-
-        this.logger.nodeReady(this, !isControl
-          ? { result, loaded, numChilds: this._numChilds, children }
-          : { result, loaded }
-        );
-
-        return of(result);
-      }),
-    )),
     distinctUntilChanged(),
   );
 
@@ -175,28 +145,12 @@ implements DynTreeNode<TParams, TControl> {
   childsIncrement(): void {
     this._numChilds++;
     this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChilds });
-    this.markAsLoading();
+    this._loaded$.next(true);
   }
 
   childsDecrement(): void {
     this._numChilds--;
     this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChilds });
-  }
-
-  markAsLoading(): void {
-    if (!this._loading$.getValue()) {
-      this.logger.nodeMethod(this, 'markAsLoading');
-      this._loading$.next(true);
-    }
-  }
-
-  markAsReady(): void {
-    if (this._loading$.getValue()) {
-      if (this.instance !== DynInstanceType.Control) {
-        this.logger.nodeMethod(this, 'markAsReady');
-      }
-      this._loading$.next(false);
-    }
   }
 
   /**
@@ -338,11 +292,6 @@ implements DynTreeNode<TParams, TControl> {
       : config.errorMsg
         ? this.formHandlers.getErrorHandlers(config.errorMsg)
         : [];
-
-    // update the status flags
-    if (this._instance === DynInstanceType.Control) {
-      this.markAsReady();
-    }
 
     if (!this.isolated) {
       // register the node with its parent
