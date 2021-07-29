@@ -114,12 +114,14 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngAfterViewInit(): void {
+    this.node.afterViewInit();
+
     this.node.loaded$
       .pipe(filter(Boolean))
       .subscribe(() => {
         this.logger.formCycle('afterViewInit');
         // trigger processes once the form hierarchy is built
-        this.node.afterViewInit()
+        this.node.setupListeners();
       });
   }
 

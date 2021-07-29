@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   Injector,
@@ -32,7 +33,7 @@ export abstract class DynControl<
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
 extends DynControlNode<TParams, TControl>
-implements OnInit, OnChanges, OnDestroy {
+implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   // central place to define the provided Type
   static dynControl: DynControlType = '';
@@ -116,6 +117,10 @@ implements OnInit, OnChanges, OnDestroy {
         this._ref.markForCheck();
       }, 1);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.node.afterViewInit()
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */

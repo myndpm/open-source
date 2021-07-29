@@ -47,6 +47,8 @@ implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     if (this.params.initItem && !this.control.length) {
       this.addItem();
       this._ref.markForCheck();

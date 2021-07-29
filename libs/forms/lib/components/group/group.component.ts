@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynBaseConfig, DynControlNode, DynFormTreeNode, DynInstanceType } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -12,7 +12,7 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 /**
  * This component just wraps the incoming controls in a FormGroup.
  */
-export class DynGroupComponent extends DynControlNode<any, FormGroup> implements OnInit {
+export class DynGroupComponent extends DynControlNode<any, FormGroup> implements OnInit, AfterViewInit {
   @Input() isolated = false;
   @Input() group!: FormGroup;
   @Input() name?: string;
@@ -41,5 +41,9 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
 
     // log the successful initialization
     this.logger.nodeLoaded('dyn-group', this.node);
+  }
+
+  ngAfterViewInit() {
+    this.node.afterViewInit();
   }
 }

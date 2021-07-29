@@ -348,7 +348,9 @@ implements DynTreeNode<TParams, TControl> {
       // register the node with its parent
       this.parent?.addChild(this);
     }
+  }
 
+  afterViewInit(): void {
     this._loaded$.next(true);
   }
 
