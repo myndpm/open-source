@@ -40,6 +40,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class DynFactoryComponent implements OnInit {
   @Input() config!: DynBaseConfig;
+  @Input() index?: number;
   @Input() injector?: Injector;
 
   @ViewChild('container', { static: true, read: ViewContainerRef })
@@ -72,6 +73,7 @@ export class DynFactoryComponent implements OnInit {
     private readonly resolver: ComponentFactoryResolver,
     private readonly registry: DynFormRegistry,
     private readonly logger: DynLogger,
+    private readonly node: DynFormTreeNode,
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +95,7 @@ export class DynFactoryComponent implements OnInit {
             this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
           }
         } else {
-          this.logger.controlInitializing({ control: newConfig.control, name: newConfig.name });
+          this.logger.controlInitializing(this.node, { control: newConfig.control, name: newConfig.name });
 
           this.container.clear();
           this.createFrom(newConfig);
@@ -133,12 +135,13 @@ export class DynFactoryComponent implements OnInit {
         newInjectionLayer,
       );
       this.component.instance.config = config;
+      this.component.instance.node.setIndex(this.index);
       // we let the corresponding DynFormTreeNode to initialize the control
       // and register itself in the Form Tree in the lifecycle methods
 
       this.component.hostView.detectChanges();
 
-      this.logger.controlInstantiated(this.component.instance.node, { control: config.control, name: config.name, controls: config.controls?.length });
+      this.logger.controlInstantiated(this.component.instance.node, { control: config.control, name: config.name, controls: config.controls?.length || 0 });
 
       // listen control.visibility$
       this.component.instance.visibility$

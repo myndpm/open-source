@@ -3,8 +3,9 @@
 
 <ng-container *ngIf="config">
   <dyn-factory
-    *ngFor="let control of config.controls"
+    *ngFor="let control of config.controls; index as i"
     [config]="control"
     [injector]="configLayer"
+    [index]="i"
   ></dyn-factory>
 </ng-container>

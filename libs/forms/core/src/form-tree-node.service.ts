@@ -26,7 +26,10 @@ export class DynFormTreeNode<
 implements DynTreeNode<TParams, TControl> {
   // form hierarchy
   isolated = false;
+  index?: number = 0;
   deep = 0;
+  path: string[] = [];
+  route: string[] = [];
   children: DynFormTreeNode[] = [];
 
   // listened by dyn-factory
@@ -68,13 +71,6 @@ implements DynTreeNode<TParams, TControl> {
   get root(): DynFormTreeNode<any, any> {
     return this.isRoot ? this : this.parent.root;
   }
-  // control.path relative to the root
-  get path(): string[] {
-    return [
-      ...(!this.isRoot ? this.parent.path : []),
-      this._name ?? '',
-    ].filter(Boolean);
-  }
 
   private _dynControl?: string;
   private _name?: string;
@@ -95,14 +91,26 @@ implements DynTreeNode<TParams, TControl> {
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
+      this._loading$,
       this._loaded$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([loaded, ...children]) => {
-      const childrenLoaded = [DynInstanceType.Container, DynInstanceType.Group].includes(this.instance)
-        ? this._numChilds === children.length && children.every(Boolean)
-        : true;
-      return loaded && childrenLoaded;
+    map(([loading, loaded, ...children]) => {
+      const isControl = this.instance === DynInstanceType.Control;
+      const hasAllChildren = this._numChilds === children.length;
+      const allChildrenValid = children.every(Boolean);
+      const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
+
+      const result = loaded && allChildrenLoaded;
+
+      if (loading && !isControl && allChildrenLoaded) {
+        // FIXME how to cancel the current emission?
+        setTimeout(() => this.markAsReady());
+      }
+
+      this.logger.nodeLoad(this, { result, loading, loaded, allChildrenLoaded, numChilds: this._numChilds, children });
+
+      return result;
     }),
     distinctUntilChanged(),
   );
@@ -110,14 +118,11 @@ implements DynTreeNode<TParams, TControl> {
   ready$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
-      this._loading$,
       this._loaded$,
       ...this.children.map(child => child.ready$),
     ]).pipe(
-      switchMap(([loading, loaded, ...children]) => {
-        const isArray = this.instance === DynInstanceType.Array;
+      switchMap(([loaded, ...children]) => {
         const isControl = this.instance === DynInstanceType.Control;
-        const isGroup = this.instance === DynInstanceType.Group;
         const hasAllChildren = this._numChilds === children.length;
         const allChildrenValid = children.every(Boolean);
         const allChildrenLoaded = hasAllChildren && allChildrenValid;
@@ -125,14 +130,9 @@ implements DynTreeNode<TParams, TControl> {
 
         const result = loaded && !isLoading && allChildrenLoaded;
 
-        if (loading && (isGroup || isArray) && allChildrenLoaded) {
-          // FIXME how to cancel the current emission?
-          setTimeout(() => this.markAsReady());
-        }
-
         this.logger.nodeReady(this, !isControl
-          ? { loading, loaded, numChilds: this._numChilds, result, children }
-          : { loading, loaded, result }
+          ? { result, loaded, numChilds: this._numChilds, children }
+          : { result, loaded }
         );
 
         return of(result);
@@ -173,14 +173,14 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   childsIncrement(): void {
-    this.logger.nodeMethod(this, 'childsIncrement');
     this._numChilds++;
+    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChilds });
     this.markAsLoading();
   }
 
   childsDecrement(): void {
-    this.logger.nodeMethod(this, 'childsDecrement');
     this._numChilds--;
+    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChilds });
   }
 
   markAsLoading(): void {
@@ -192,7 +192,9 @@ implements DynTreeNode<TParams, TControl> {
 
   markAsReady(): void {
     if (this._loading$.getValue()) {
-      this.logger.nodeMethod(this, 'markAsReady');
+      if (this.instance !== DynInstanceType.Control) {
+        this.logger.nodeMethod(this, 'markAsReady');
+      }
       this._loading$.next(false);
     }
   }
@@ -307,22 +309,24 @@ implements DynTreeNode<TParams, TControl> {
       throw this.logger.nodeWithoutControl();
     }
 
-    // disconnect this node from any parent DynControl
-    this.isolated = Boolean(config.isolated);
-    this.deep = this.getDeep();
-
     // keep the id of the control for the logs
     this._dynControl = config.control;
 
     // register the name to build the form path
     this._name = config.name ?? '';
 
+    // disconnect this node from any parent DynControl
+    this.isolated = Boolean(config.isolated);
+    this.deep = this.getDeep();
+    this.path = this.getPath();
+    this.route = this.getRoute();
+
     // store the number of configured childs
     this._numChilds = ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
       ? config.controls?.length ?? 0
       : 0;
 
-    // store the matchers to be processed afterViewInit
+    // store the matchers to be processed in setupListeners
     this._matchers = this.getMatchers(config);
 
     // store the params to be accessible to the handlers
@@ -335,20 +339,20 @@ implements DynTreeNode<TParams, TControl> {
         ? this.formHandlers.getErrorHandlers(config.errorMsg)
         : [];
 
-    if (!this.isolated) {
-      // register the node with its parent
-      this.parent?.addChild(this);
-    }
-
     // update the status flags
     if (this._instance === DynInstanceType.Control) {
       this.markAsReady();
     }
 
+    if (!this.isolated) {
+      // register the node with its parent
+      this.parent?.addChild(this);
+    }
+
     this._loaded$.next(true);
   }
 
-  afterViewInit(): void {
+  setupListeners(): void {
     if (!this.isFormLoaded) {
       this._formLoaded = true;
 
@@ -406,7 +410,7 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     // call the children
-    this.children.map(child => child.afterViewInit());
+    this.children.map(child => child.setupListeners());
   }
 
   onDestroy(): void {
@@ -427,12 +431,33 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Hierarchy methods
    */
+  setIndex(index?: number) {
+    this.index = index;
+  }
+
   getDeep(): number {
     return this.isRoot ? 0 : this.parent?.deep + 1;
   }
 
+  // control.path relative to the root
+  getPath(): string[] {
+    return [
+      ...(!this.isRoot ? this.parent.path : []),
+      this._name ?? '',
+    ].filter(Boolean);
+  }
+
+  // control.route relative to the root
+  getRoute(): string[] {
+    return [
+      ...(!this.isRoot ? this.parent.route : []),
+      this.dynControl || this.instance +
+      `${this.index !== undefined ? `[${this.index}]` : ''}`,
+    ];
+  }
+
   private addChild(node: DynFormTreeNode<any, any>): void {
-    this.logger.nodeMethod(this, 'addChild');
+    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChilds, children: this.children.length });
 
     this.children.push(node);
     this._children$.next();

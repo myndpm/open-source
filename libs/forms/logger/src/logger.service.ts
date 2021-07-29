@@ -55,30 +55,40 @@ export class DynLogger {
     });
   }
 
-  nodeLoaded(origin: string, { deep, dynControl, parent, path }: DynNode, payload?: any): void {
+  nodeLoaded(origin: string, { deep, path, route }: DynNode, payload?: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hierarchy,
       message: !deep
         ? `[${origin}] root node initialized`
-        : `[${origin}] initialized '${path.join('.')}'${parent?.instance ? ` under ${parent?.instance}` : ''}${dynControl ? ` (${dynControl})` : ''}`,
+        : `[${origin}] initialized '${path.join('.')}' (${route.join('/')})`,
       payload,
     });
   }
 
-  nodeMethod({ deep, dynControl, instance, path }: DynNode, method: string): void {
+  nodeMethod({ deep, path, route }: DynNode, method: string, payload?: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Debug,
-      message: `[node.${method}] '${path.join('.')}' (${dynControl || instance})`,
+      message: `[node.${method}] '${path.join('.')}' (${route.join('/')})`,
+      payload,
     });
   }
 
-  nodeReady({ deep, dynControl, instance, path }: DynNode, payload?: any): void {
+  nodeLoad({ deep, path, route }: DynNode, payload?: any): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Load,
+      message: `'${path.join('.')}' (${route.join('/')})`,
+      payload,
+    });
+  }
+
+  nodeReady({ deep, path, route }: DynNode, payload?: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Ready,
-      message: `'${path.join('.')}' (${dynControl || instance})`,
+      message: `'${path.join('.')}' (${route.join('/')})`,
       payload,
     });
   }
@@ -92,8 +102,9 @@ export class DynLogger {
     });
   }
 
-  controlInitializing(payload: any): void {
+  controlInitializing({ deep }: DynNode, payload: any): void {
     this.driver.log({
+      deep,
       level: DynLogLevel.Debug,
       message: `[dyn-factory] instantiating dynamic component`,
       payload,

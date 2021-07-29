@@ -1,4 +1,5 @@
 <dyn-factory
-  *ngFor="let control of controls; last as last"
+  *ngFor="let control of controls; index as i"
   [config]="control"
+  [index]="i"
 ></dyn-factory>
