@@ -68,7 +68,7 @@ export const defaultAsyncValidators: DynControlAsyncValidator[] = [
     id: 'RELATED',
     fn: (node: DynTreeNode, config: DynControlRelated, validator: ValidatorFn = Validators.required) => {
       return (control: AbstractControl): Observable<ValidationErrors | null> => {
-        return node.loaded$.pipe(
+        return node.root.loaded$.pipe(
           first(Boolean),
           switchMap(() => relatedConditionFn(config)(node)),
           map(hasMatch => hasMatch ? validator(control) : null),
@@ -91,6 +91,22 @@ export const defaultMatchers: DynControlMatcher[] = [
       return (node: DynTreeNode, hasMatch: boolean, firstTime?: boolean) => {
         if (!firstTime) {
           node.control.updateValueAndValidity();
+        }
+      }
+    }
+  },
+  {
+    id: 'VALIDATE',
+    fn: (error: ValidationErrors, validator: ValidatorFn = Validators.required): DynControlMatcherFn => {
+      return (node: DynTreeNode, hasMatch: boolean) => {
+        if (hasMatch) {
+          if (validator(node.control)) {
+            node.control.setErrors(error);
+          } else {
+            node.control.updateValueAndValidity();
+          }
+        } else {
+          node.control.setErrors(null);
         }
       }
     }
