@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "ng serve",
-    "build:forms": "run-s 'rm -Rf dist/libs/forms' 'build forms -- --prod' 'nx postbuild forms'",
+    "clean:forms": "rimraf dist/libs/forms",
+    "build:forms": "run-s 'clean:forms' 'build forms -- --prod' 'nx postbuild forms'",
     "build:libs": "run-s 'build forms' 'build demos --prod'",
     "build:prod": "run-s 'build forms' 'nx postbuild forms' 'build demos --prod' 'yarn' 'build --prod'",
     "build": "ng build",
