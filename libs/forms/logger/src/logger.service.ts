@@ -119,12 +119,20 @@ export class DynLogger {
     });
   }
 
+  setupListeners({ deep, path, route }: DynNode): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Debug,
+      message: `'${path.join('.')}' setupListeners (${route.join('/')})`,
+    });
+  }
+
   hookCalled({ deep, path }: DynNode, hook: string, payload?: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hooks,
-      message: `'${hook}' called on '${path.join('.')}' with`,
-      payload,
+      message: `'${hook}' called on '${path.join('.')}'`,
+      payload: payload && typeof payload === 'object' ? payload : JSON.stringify(payload),
     });
   }
 }

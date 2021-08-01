@@ -305,6 +305,7 @@ implements DynTreeNode<TParams, TControl> {
 
   setupListeners(): void {
     if (!this.isFormLoaded) {
+      this.logger.setupListeners(this);
       this._formLoaded = true;
 
       // listen control changes to update the error
