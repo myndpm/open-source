@@ -7,6 +7,6 @@
   "assets": [
     "schematics.json"
   ],
-  "deleteDestPath": true,
+  "deleteDestPath": false,
   "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge"]
 }
