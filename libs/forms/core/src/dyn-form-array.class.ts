@@ -74,6 +74,7 @@ implements OnInit {
           this.removeItem(i);
         }
       }
+      this._ref.markForCheck();
     }
   }
 }
