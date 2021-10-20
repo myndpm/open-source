@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, shareReplay, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -76,13 +76,13 @@ implements DynTreeNode<TParams, TControl> {
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
-  private _numChilds: number = 0;
   private _matchers?: DynControlMatch[];
   private _params!: TParams;
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _children$ = new Subject<void>();
+  private _numChild$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe = new Subject<void>();
@@ -90,25 +90,27 @@ implements DynTreeNode<TParams, TControl> {
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
+      this._numChild$,
       this._loaded$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([loaded, ...children]) => {
+    map(([numChilds, loaded, ...children]) => {
       const isControl = this.instance === DynInstanceType.Control;
-      const hasAllChildren = this._numChilds === children.length;
+      const hasAllChildren = numChilds === children.length;
       const allChildrenValid = children.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = loaded && allChildrenLoaded;
+      const result = Boolean(loaded) && allChildrenLoaded;
 
       this.logger.nodeLoad(this, !isControl
-        ? { result, loaded, numChilds: this._numChilds, children }
+        ? { result, loaded, numChilds, children }
         : { result, loaded }
       );
 
       return result;
     }),
     distinctUntilChanged(),
+    shareReplay(1),
   );
 
   constructor(
@@ -143,14 +145,13 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   childsIncrement(): void {
-    this._numChilds++;
-    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChilds });
-    this._loaded$.next(true);
+    this._numChild$.next(this._numChild$.getValue() + 1);
+    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.getValue() });
   }
 
   childsDecrement(): void {
-    this._numChilds--;
-    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChilds });
+    this._numChild$.next(this._numChild$.getValue() - 1);
+    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.getValue() });
   }
 
   /**
@@ -276,9 +277,11 @@ implements DynTreeNode<TParams, TControl> {
     this.route = this.getRoute();
 
     // store the number of configured childs
-    this._numChilds = ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
-      ? config.controls?.length ?? 0
-      : 0;
+    this._numChild$.next(
+      ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
+        ? config.controls?.length ?? 0
+        : 0
+    );
 
     // store the matchers to be processed in setupListeners
     this._matchers = this.getMatchers(config);
@@ -409,7 +412,7 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   private addChild(node: DynFormTreeNode<any, any>): void {
-    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChilds, children: this.children.length });
+    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChild$.getValue(), children: this.children.length });
 
     this.children.push(node);
     this._children$.next();
