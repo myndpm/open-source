@@ -302,7 +302,11 @@ implements DynTreeNode<TParams, TControl> {
     }
   }
 
-  afterViewInit(): void {
+  markAsPending(): void {
+    this._loaded$.next(false);
+  }
+
+  markAsLoaded(): void {
     this._loaded$.next(true);
   }
 

@@ -22,7 +22,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter, first, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, delay, filter, first, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -114,7 +114,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngAfterViewInit(): void {
-    this.node.afterViewInit();
+    this.node.markAsLoaded();
 
     this.node.loaded$
       .pipe(filter(Boolean))
@@ -149,9 +149,14 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   // notify the dynControls about the incoming data
   patchValue(value: any): void {
     this.whenReady().pipe(
-      switchMap(() => {
+      tap(() => {
+        this.node.markAsPending();
         this.logger.formCycle('PrePatch');
         this.callHook('PrePatch', value);
+      }),
+      delay(20), // waits any PrePatch loading change
+      switchMap(() => {
+        this.node.markAsLoaded();
         return this.whenReady();
       }),
       tap(() => {

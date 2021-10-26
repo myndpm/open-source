@@ -44,6 +44,6 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   }
 
   ngAfterViewInit() {
-    this.node.afterViewInit();
+    this.node.markAsLoaded();
   }
 }

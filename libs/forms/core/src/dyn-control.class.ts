@@ -120,7 +120,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.node.afterViewInit()
+    this.node.markAsLoaded();
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
