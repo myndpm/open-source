@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import * as marked from 'marked';
+import { marked } from 'marked';
 import { Observable } from 'rxjs';
 
 declare var Prism: {
@@ -35,7 +35,7 @@ export class ContentService {
   compile(markdown: string, decodeHtml = false): string {
     const trimmed = this.trimIndentation(markdown);
     const decoded = decodeHtml ? this.decodeHtml(trimmed) : trimmed;
-    const compiled = marked.parse(decoded, {
+    const compiled = marked(decoded, {
       renderer: new marked.Renderer(),
       breaks: false,
       gfm: true,

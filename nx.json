@@ -1,5 +1,9 @@
 {
   "npmScope": "myndpm",
+  "defaultProject": "website",
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
   "affected": {
     "defaultBase": "master"
   },
@@ -17,19 +21,40 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test"
+        ]
       }
     }
   },
-  "projects": {
-    "website": {
-      "tags": []
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "styl",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     },
-    "forms": {
-      "tags": ["shared"]
+    "@nrwl/angular:library": {
+      "style": "styl",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "strict": true
     },
-    "demos": {
-      "tags": []
+    "@nrwl/angular:storybook-configuration": {
+      "linter": "eslint"
+    },
+    "@schematics/angular:component": {
+      "style": "styl",
+      "changeDetection": "OnPush"
     }
   }
 }

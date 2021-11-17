@@ -6,7 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "declaration": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
@@ -18,11 +17,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@myndpm/demos/*": ["dist/libs/demos/*", "libs/demos/*"],
       "@myndpm/demos": ["dist/libs/demos", "libs/demos/index.ts"],
+      "@myndpm/demos/*": ["dist/libs/demos/*", "libs/demos/*"],
       "@myndpm/dyn-forms": ["libs/forms/index.ts"],
-      "@myndpm/dyn-forms/logger": ["libs/forms/logger"],
       "@myndpm/dyn-forms/core": ["libs/forms/core"],
+      "@myndpm/dyn-forms/logger": ["libs/forms/logger"],
       "@myndpm/dyn-forms/ui-material": ["libs/forms/ui-material"],
       "@myndpm/dyn-forms/ui-native": ["libs/forms/ui-native"]
     }

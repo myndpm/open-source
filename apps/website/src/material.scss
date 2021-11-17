@@ -1,4 +1,5 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
+@use '~@angular/material/core/theming/palette' as palette;
 
 $dark-primary-text: rgba(black, 0.95);
 $light-primary-text: white;
@@ -9,9 +10,9 @@ $mynd-primary: (
   500: #38B87C,
   900: #084E2D,
   contrast: (
-    100: $dark-primary-text,
-    500: $light-primary-text,
-    900: $light-primary-text,
+    100: palette.$dark-primary-text,
+    500: palette.$light-primary-text,
+    900: palette.$light-primary-text,
   )
 );
 
@@ -20,9 +21,9 @@ $mynd-secondary: (
   500: #2495E5,
   900: #004576,
   contrast: (
-    100: $dark-primary-text,
-    500: $light-primary-text,
-    900: $light-primary-text,
+    100: palette.$dark-primary-text,
+    500: palette.$light-primary-text,
+    900: palette.$light-primary-text,
   )
 );
 
@@ -31,25 +32,25 @@ $mynd-negative: (
   500: #FC595B,
   900: #5D0B0C,
   contrast: (
-    100: $dark-primary-text,
-    500: $light-primary-text,
-    900: $light-primary-text,
+    100: palette.$dark-primary-text,
+    500: palette.$light-primary-text,
+    900: palette.$light-primary-text,
   )
 );
 
 
 // Material
-$mynd-typography: mat-typography-config(
+$mynd-typography: mat.define-typography-config(
   $font-family: 'Inter, monospace',
 );
 
-@include mat-core($mynd-typography);
+@include mat.core($mynd-typography);
 
-$color-primary: mat-palette($mynd-primary);
-$color-accent:  mat-palette($mynd-secondary);
-$color-warn:    mat-palette($mynd-negative);
+$color-primary: mat.define-palette($mynd-primary);
+$color-accent:  mat.define-palette($mynd-secondary);
+$color-warn:    mat.define-palette($mynd-negative);
 
-$mynd-theme: mat-light-theme((
+$mynd-theme: mat.define-light-theme((
   color: (
     primary: $color-primary,
     accent: $color-accent,
@@ -57,4 +58,4 @@ $mynd-theme: mat-light-theme((
   )
 ));
 
-@include angular-material-theme($mynd-theme);
+@include mat.all-component-themes($mynd-theme);

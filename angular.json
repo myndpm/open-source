@@ -1,194 +1,36 @@
 {
   "version": 1,
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "defaultProject": "website",
-  "schematics": {
-    "@nrwl/angular:application": {
-      "style": "styl",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:library": {
-      "style": "styl",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "strict": true
-    },
-    "@nrwl/angular:storybook-configuration": {
-      "linter": "eslint"
-    },
-    "@schematics/angular:component": {
-      "style": "styl",
-      "changeDetection": "OnPush"
-    }
-  },
   "projects": {
-    "website": {
-      "projectType": "application",
-      "root": "apps/website",
-      "sourceRoot": "apps/website/src",
-      "prefix": "app",
+    "demos": {
+      "projectType": "library",
+      "root": "libs/demos",
+      "sourceRoot": "libs/demos/src",
+      "prefix": "demo",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@nrwl/angular:package",
           "options": {
-            "outputPath": "dist/website/browser",
-            "index": "apps/website/src/index.html",
-            "main": "apps/website/src/main.ts",
-            "polyfills": "apps/website/src/polyfills.ts",
-            "tsConfig": "apps/website/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "apps/website/src/favicon.jpg",
-              "apps/website/src/assets",
-              {
-                "glob": "**/*",
-                "input": "docs",
-                "output": "static"
-              },
-              {
-                "glob": "**/*",
-                "input": "libs/demos/dyn-forms",
-                "output": "static/dyn-forms"
-              }
-            ],
-            "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "apps/website/src/prism-mynd.css",
-              "apps/website/src/material.scss",
-              "apps/website/src/styles.styl"
-            ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/prismjs/prism.js",
-              "node_modules/prismjs/components/prism-scss.min.js",
-              "node_modules/prismjs/components/prism-typescript.js",
-              "node_modules/prismjs/components/prism-bash.js"
-            ]
+            "tsConfig": "libs/demos/tsconfig.lib.json",
+            "project": "libs/demos/ng-package.json"
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/website/src/environments/environment.ts",
-                  "with": "apps/website/src/environments/environment.prod.ts"
-                }
-              ],
-              "tsConfig": "apps/website/tsconfig.app.prod.json",
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
+              "tsConfig": "libs/demos/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "website:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "website:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "website:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/website/src/**/*.ts",
-              "apps/website/src/**/*.html"
+              "libs/demos/src/**/*.ts",
+              "libs/demos/src/**/*.html"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/website"],
-          "options": {
-            "jestConfig": "apps/website/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "deploy": {
-          "builder": "angular-cli-ghpages:deploy",
-          "options": {
-            "baseHref": "/open-source/",
-            "name": "Mynd Frontend Team",
-            "email": "eng.frontend@mynd.co",
-            "cname": "false",
-            "message": "build: github pages ci release"
-          }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/website/server",
-            "main": "apps/website/server.ts",
-            "tsConfig": "apps/website/tsconfig.server.json"
           },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "apps/website/src/environments/environment.ts",
-                  "with": "apps/website/src/environments/environment.prod.ts"
-                }
-              ],
-              "sourceMap": false,
-              "optimization": true
-            }
-          }
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "options": {
-            "browserTarget": "website:build",
-            "serverTarget": "website:server"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "website:build:production",
-              "serverTarget": "website:server:production"
-            }
-          }
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "browserTarget": "website:build:production",
-            "serverTarget": "website:server:production",
-            "routes": ["/"]
-          },
-          "configurations": {
-            "production": {}
-          }
+          "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": []
     },
     "forms": {
       "projectType": "library",
@@ -222,7 +64,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/forms/**/*.ts", "libs/forms/**/*.html"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -232,36 +75,184 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["shared"]
     },
-    "demos": {
-      "projectType": "library",
-      "root": "libs/demos",
-      "sourceRoot": "libs/demos/src",
-      "prefix": "demo",
+    "website": {
+      "projectType": "application",
+      "root": "apps/website",
+      "sourceRoot": "apps/website/src",
+      "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@nrwl/angular:package",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "tsConfig": "libs/demos/tsconfig.lib.json",
-            "project": "libs/demos/ng-package.json"
+            "outputPath": "dist/website/browser",
+            "index": "apps/website/src/index.html",
+            "main": "apps/website/src/main.ts",
+            "polyfills": "apps/website/src/polyfills.ts",
+            "tsConfig": "apps/website/tsconfig.app.json",
+            "assets": [
+              "apps/website/src/favicon.jpg",
+              "apps/website/src/assets",
+              {
+                "glob": "**/*",
+                "input": "docs",
+                "output": "static"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/demos/dyn-forms",
+                "output": "static/dyn-forms"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "apps/website/src/prism-mynd.css",
+              "apps/website/src/material.scss",
+              "apps/website/src/styles.styl"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-scss.min.js",
+              "node_modules/prismjs/components/prism-typescript.js",
+              "node_modules/prismjs/components/prism-bash.js"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
-              "tsConfig": "libs/demos/tsconfig.lib.prod.json"
+              "fileReplacements": [
+                {
+                  "replace": "apps/website/src/environments/environment.ts",
+                  "with": "apps/website/src/environments/environment.prod.ts"
+                }
+              ],
+              "tsConfig": "apps/website/tsconfig.app.prod.json",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
             }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "website:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "website:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "website:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/demos/src/**/*.ts",
-              "libs/demos/src/**/*.html"
+              "apps/website/src/**/*.ts",
+              "apps/website/src/**/*.html"
             ]
+          },
+          "outputs": ["{options.outputFile}"]
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/website"],
+          "options": {
+            "jestConfig": "apps/website/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/open-source/",
+            "name": "Mynd Frontend Team",
+            "email": "eng.frontend@mynd.co",
+            "cname": "false",
+            "message": "build: github pages ci release"
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/website/server",
+            "main": "apps/website/server.ts",
+            "tsConfig": "apps/website/tsconfig.server.json",
+            "sourceMap": true,
+            "optimization": false
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "apps/website/src/environments/environment.ts",
+                  "with": "apps/website/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "website:build",
+            "serverTarget": "website:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "website:build:production",
+              "serverTarget": "website:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "website:build:production",
+            "serverTarget": "website:server:production",
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {}
           }
         }
-      }
+      },
+      "tags": []
     }
   }
 }
