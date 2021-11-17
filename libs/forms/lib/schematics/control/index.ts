@@ -1,5 +1,5 @@
 import { strings } from '@angular-devkit/core';
- import {
+import {
    FileOperator,
    Rule,
    SchematicsException,

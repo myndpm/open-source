@@ -1,4 +1,4 @@
-import { ChangeDetection, ViewEncapsulation } from '@angular/cli/lib/config/schema';
+import { ChangeDetection, ViewEncapsulation } from '@schematics/angular/component/schema';
 
 export class Schema {
   /**
