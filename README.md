@@ -35,6 +35,7 @@ Thanks goes to these wonderful people:
 <table>
   <tr>
     <td align="center"><a href="http://matheo.co"><img src="https://avatars.githubusercontent.com/u/260185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mateo Tibaquirá</b></sub></a><br /><a href="#projectManagement-matheo" title="Project Management">📆</a> <a href="#example-matheo" title="Examples">💡</a> <a href="#ideas-matheo" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Code">💻</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/nikita-emelianov"><img src="https://avatars.githubusercontent.com/u/42650220?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nikita Emelianov</b></sub></a><br /><a href="https://github.com/myndpm/open-source/commits?author=nikita-emelianov" title="Code">💻</a></td>
   </tr>
 </table>
 
