@@ -136,10 +136,10 @@ async function convertTsInlineUrlExtension(filePath: string): Promise<void> {
 
 export default {
   async start(): Promise<void> {
-    console.info(`@myndpm/pug-html-converter started at ${path.resolve()}`);
+    console.info(`@myndpm/pug2html started at ${path.resolve()}`);
 
     await forEachFileInFolder(await getFolderPath(), [convertPugContent, convertComponentTsContent]);
 
-    console.info('@myndpm/pug-html-converter succeeded');
+    console.info('@myndpm/pug2html succeeded');
   }
 }

@@ -1,4 +1,3 @@
-
 # @myndpm/pug2html
 
 - converts pug content to html
@@ -7,7 +6,8 @@
 
 ## Usage
 
-```
+```bash
 npx @myndpm/pug2html [PATH]
 ```
+
 `[PATH]` - Path to the directory for conversion. Default is current directory
