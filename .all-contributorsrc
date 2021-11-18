@@ -17,6 +17,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "nikita-emelianov",
+      "name": "Nikita Emelianov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42650220?v=4",
+      "profile": "https://github.com/nikita-emelianov",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
