@@ -21,8 +21,7 @@
     "test": "ng test"
   },
   "engines": {
-    "npm": "please-use-yarn",
-    "node": ">=14.0.0"
+    "npm": "please-use-yarn"
   },
   "type": "module",
   "main": "./src/index.ts",
