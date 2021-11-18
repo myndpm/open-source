@@ -20,9 +20,6 @@
     "start": "node --loader ts-node/esm src/index.ts",
     "test": "ng test"
   },
-  "engines": {
-    "npm": "please-use-yarn"
-  },
   "type": "module",
   "main": "./src/index.ts",
   "dependencies": {
@@ -30,10 +27,7 @@
     "pug": "~3.0.2"
   },
   "devDependencies": {
-    "@types/node": "~16.11.7",
     "@types/prettier": "~2.4.2",
-    "@types/pug": "~2.0.5",
-    "ts-node": "*",
-    "typescript": "*"
+    "@types/pug": "~2.0.5"
   }
 }

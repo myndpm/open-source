@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "libs/**/*"
+    "dist/libs/*"
   ],
   "engines": {
     "npm": "please-use-yarn",
@@ -14,17 +14,18 @@
     "start": "ng serve",
     "clean:forms": "rimraf dist/libs/forms",
     "build:forms": "run-s 'clean:forms' 'build forms -- --configuration production' 'nx postbuild forms'",
-    "build:libs": "run-s 'build forms' 'build demos --configuration production'",
-    "build:tools": "run-s 'build:pug2html'",
+    "build:demos": "run-s 'build demos -- --configuration production'",
     "build:pug2html": "run-s 'build pug2html' 'nx postbuild pug2html'",
-    "build:prod": "run-s 'build forms' 'nx postbuild forms' 'build demos --configuration production' 'yarn' 'build --configuration production'",
+    "build:libs": "run-s 'build:forms' 'build:demos' 'build:tools'",
+    "build:tools": "run-s 'build:pug2html'",
+    "build:prod": "run-s 'build:forms' 'build:demos' 'build:tools' 'yarn' 'build --configuration production'",
     "build": "ng build",
     "test": "ng test",
     "test:tdd": "ng test --bail 5 --cache --notify --notify-mode change --only-changed --watch",
     "lint": "nx workspace-lint && ng lint",
     "npm:publish": "npm publish --access=public",
     "npm:dyn-forms": "run-s 'build:forms' 'tools:postbuild libs/forms' 'npm:publish dist/libs/forms' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/forms' 'tools:tag libs/forms'",
-    "npm:pug2html": "run-s 'build:pug2html' 'npm:publish dist/libs/tools/pug2html' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/tools/pug2html' 'tools:tag libs/tools/pug2html'",
+    "npm:pug2html": "run-s 'build:pug2html' 'npm:publish dist/libs/pug2html' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/pug2html' 'tools:tag libs/tools/pug2html'",
     "tools:postbuild": "ts-node tools/scripts/post-build",
     "tools:tag": "ts-node tools/scripts/git-tag",
     "ssr:dev": "ng run website:serve-ssr",

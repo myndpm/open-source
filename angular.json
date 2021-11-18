@@ -87,7 +87,7 @@
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/libs/tools/pug2html",
+            "outputPath": "dist/libs/pug2html",
             "tsConfig": "libs/tools/pug2html/tsconfig.lib.json",
             "packageJson": "libs/tools/pug2html/package.json",
             "main": "libs/tools/pug2html/src/index.ts",
@@ -98,7 +98,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "chmod +x dist/libs/tools/pug2html/src/*.js"
+              "chmod +x dist/libs/pug2html/src/*.js"
             ]
           }
         },
