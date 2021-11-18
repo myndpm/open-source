@@ -78,7 +78,7 @@
       },
       "tags": ["shared"]
     },
-    "tools-pug2html": {
+    "pug2html": {
       "root": "libs/tools/pug2html",
       "sourceRoot": "libs/tools/pug2html/src",
       "projectType": "library",
@@ -92,6 +92,14 @@
             "packageJson": "libs/tools/pug2html/package.json",
             "main": "libs/tools/pug2html/src/index.ts",
             "assets": ["libs/tools/pug2html/*.md"]
+          }
+        },
+        "postbuild": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "chmod +x dist/libs/tools/pug2html/src/*.js"
+            ]
           }
         },
         "lint": {
@@ -109,8 +117,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "website": {
       "projectType": "application",

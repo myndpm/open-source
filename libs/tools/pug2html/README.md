@@ -1,7 +1,13 @@
-# tools-pug2html
 
-This library was generated with [Nx](https://nx.dev).
+# @myndpm/pug2html
 
-## Running unit tests
+- converts pug content to html
+- converts inline `template` content from pug to html
+- converts .pug extension to .html
 
-Run `nx test tools-pug2html` to execute the unit tests via [Jest](https://jestjs.io).
+## Usage
+
+```
+npx @myndpm/pug2html [PATH]
+```
+`[PATH]` - Path to the directory for conversion. Default is current directory

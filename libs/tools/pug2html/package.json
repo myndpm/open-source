@@ -1,4 +1,40 @@
 {
   "name": "@myndpm/pug2html",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "keywords": [
+    "pug",
+    "html",
+    "converter"
+  ],
+  "license": "MIT",
+  "homepage": "https://mynd.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:myndpm/open-source.git",
+    "directory": "libs/tools/pug2html"
+  },
+  "bin": {
+    "pug2html": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node --loader ts-node/esm src/index.ts",
+    "test": "ng test"
+  },
+  "engines": {
+    "npm": "please-use-yarn",
+    "node": ">=14.0.0"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "prettier": "*",
+    "pug": "~3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "~16.11.7",
+    "@types/prettier": "~2.4.2",
+    "@types/pug": "~2.0.5",
+    "ts-node": "*",
+    "typescript": "*"
+  }
 }

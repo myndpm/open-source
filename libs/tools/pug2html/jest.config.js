@@ -1,5 +1,5 @@
-module.exports = {
-  displayName: 'tools-pug2html',
+export default {
+  displayName: 'pug2html',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
