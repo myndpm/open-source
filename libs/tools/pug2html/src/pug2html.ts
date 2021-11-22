@@ -15,7 +15,7 @@ const prettierOptions: Options = {
   semi: true,
   singleQuote: true,
   trailingComma: 'none',
-  htmlWhitespaceSensitivity: 'ignore',
+  htmlWhitespaceSensitivity: 'strict',
   bracketSpacing: true,
   arrowParens: 'always',
   proseWrap: 'always',
