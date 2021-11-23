@@ -33,11 +33,14 @@ function formatHtmlContent(content: string): string {
        * *ngSwitchDefault="*ngSwitchDefault" -> *ngSwitchDefault
        * | @css="@css" -> @css
        * #template="#template" -> #template
+       */
+      .replace(/([*@#][\S]*?)="\1"/g, (match: string, g1: string) => g1)
+      /**
        * ngFor="ngFor" -> ngFor
        * download="download" -> download
        * custom-directive="custom-directive" -> custom-directive
        */
-      .replace(/[*@#\s]([\S]*?)="\1"/g, (match: string, g1: string) => g1)
+      .replace(/[\s]([\S]*?)="\1"/g, (match: string, g1: string) => ` ${g1}`)
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
