@@ -27,16 +27,17 @@ function formatHtmlContent(content: string): string {
   const pugRenderResult =
     pug
       .render(content.trim(), { pretty: true })
-      /**
-       * #template="#template" -> #template
-       * | @css="@css" -> @css
-       * *ngSwitchDefault="*ngSwitchDefault" -> *ngSwitchDefault
-       */
-      .replace(/([*@#][\S]*?)="\1"/g, (match: string, g1: string) => g1)
       // let-column="let-column" -> let-column="column"
       .replace(/(let-([\S]*?))="\1"/g, (match: string, g1: string, g2: string) => `${g1}="${g2}"`)
-      // ngFor="ngFor" -> ngFor
-      .replace(/(ngFor)="\1"/g, (match: string, g1: string) => g1)
+      /**
+       * *ngSwitchDefault="*ngSwitchDefault" -> *ngSwitchDefault
+       * | @css="@css" -> @css
+       * #template="#template" -> #template
+       * ngFor="ngFor" -> ngFor
+       * download="download" -> download
+       * custom-directive="custom-directive" -> custom-directive
+       */
+      .replace(/[*@#\s]([\S]*?)="\1"/g, (match: string, g1: string) => g1)
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
