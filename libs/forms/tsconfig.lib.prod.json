@@ -6,6 +6,6 @@
     "noUnusedLocals": true
   },
   "angularCompilerOptions": {
-    "compilationMode": "partial"
+    "enableIvy": false
   }
 }
