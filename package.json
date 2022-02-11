@@ -13,6 +13,7 @@
   "scripts": {
     "start": "ng serve",
     "clean:forms": "rimraf dist/libs/forms",
+    "build:all": "nx run-many --all --target build",
     "build:forms": "run-s 'clean:forms' 'build forms -- --configuration production' 'nx postbuild forms'",
     "build:demos": "run-s 'build demos -- --configuration production'",
     "build:pug2html": "run-s 'build pug2html' 'nx postbuild pug2html'",
@@ -112,6 +113,7 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-url": "^10.1.1",
     "prettier": "2.4.1",
+    "pug": "~3.0.2",
     "shelljs": "~0.8.4",
     "ts-jest": "27.0.5",
     "ts-node": "~10.4.0",
