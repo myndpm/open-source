@@ -37,6 +37,10 @@ export function buildConfig(
           createMatConfig('CHECKBOX', {
             name: 'isRequired',
             params: { label: 'Agent is required?' },
+            match: [{
+              matchers: ['PARAMS'],
+              when: [() => unit$],
+            }],
             modes: {
               display: {
                 control: 'INPUT',
@@ -126,7 +130,7 @@ function isUnitParking(unit$: Observable<IMyndUnit>): DynControlConditionFn {
 // custom matcher factory for AccessType
 let previousType: MyndAccessType = null;
 function confirmTypeChange(dialog: MatDialog): DynControlMatcherFn {
-  return (node: DynTreeNode) => {
+  return ({ node }) => {
     // will be triggered each time the node changes value
     const currentType = node.control.value;
     // process any previously selected type

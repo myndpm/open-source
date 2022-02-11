@@ -86,9 +86,17 @@ export const defaultAsyncValidators: DynControlAsyncValidator[] = [
  */
 export const defaultMatchers: DynControlMatcher[] = [
   {
+    id: 'PARAMS',
+    fn: (): DynControlMatcherFn => {
+      return ({ node, results }) => {
+        node.updateParams(results.reduce((res, obj) => ({ ...res, ...obj }), {}))
+      }
+    }
+  },
+  {
     id: 'RELATED',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean, firstTime?: boolean) => {
+      return ({ node, firstTime }) => {
         if (!firstTime) {
           node.control.updateValueAndValidity();
         }
@@ -98,7 +106,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'VALIDATE',
     fn: (error: ValidationErrors, validator: ValidatorFn = Validators.required): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         if (hasMatch) {
           if (validator(node.control)) {
             node.control.setErrors(error);
@@ -114,7 +122,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'DISABLE',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         hasMatch ? node.control.disable() : node.control.enable();
       }
     }
@@ -122,7 +130,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'ENABLE',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         hasMatch ? node.control.enable() : node.control.disable();
       }
     }
@@ -130,7 +138,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'SHOW',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         hasMatch ? node.visible() : node.hidden();
       }
     }
@@ -138,7 +146,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'INVISIBLE',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         hasMatch ? node.invisible() : node.visible();
       }
     }
@@ -146,7 +154,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   {
     id: 'HIDE',
     fn: (): DynControlMatcherFn => {
-      return (node: DynTreeNode, hasMatch: boolean) => {
+      return ({ node, hasMatch }) => {
         hasMatch ? node.hidden() : node.visible();
       }
     }

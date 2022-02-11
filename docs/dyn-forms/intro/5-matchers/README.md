@@ -14,7 +14,7 @@ To match a special requirement, we need to define one or more conditions, so whe
 
 ```typescript
 interface DynControlConditionFn {
-  (node: DynTreeNode): Observable<boolean>;
+  (node: DynTreeNode): Observable<any>;
 }
 ```
 
@@ -53,7 +53,7 @@ One matcher consists of a function which performs a task in the form hierarchy; 
 
 ```typescript
 interface DynControlMatcherFn {
-  (node: DynTreeNode, hasMatch: boolean): void;
+  (args: { node: DynTreeNode, hasMatch: boolean }): void;
 }
 ```
 
@@ -63,7 +63,7 @@ For example the `DISABLE` matcher operates into the form control when the specif
 {
   id: 'DISABLE',
   fn: (): DynControlMatcherFn => {
-    return (node: DynTreeNode, hasMatch: boolean) => {
+    return ({ node, hasMatch }) => {
       hasMatch ? node.control.disable() : node.control.enable();
     }
   }

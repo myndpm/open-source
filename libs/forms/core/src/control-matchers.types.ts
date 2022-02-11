@@ -32,13 +32,19 @@ export interface DynControlMatchCondition extends DynControlRelated {
  * matcher handlers
  * ie. DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | etc
  */
-export type DynControlMatcherFn = (node: DynTreeNode, hasMatch: boolean, firstTime: boolean) => void;
+export interface DynControlMatcherArgs {
+  node: DynTreeNode;
+  hasMatch: boolean;
+  firstTime: boolean;
+  results: any[];
+};
+export type DynControlMatcherFn = (args: DynControlMatcherArgs) => void;
 export type DynControlMatcher = DynBaseHandler<DynControlMatcherFn>;
 
 /**
  * condition handlers
  */
-export type DynControlConditionFn = (node: DynTreeNode) => Observable<boolean>;
+export type DynControlConditionFn = (node: DynTreeNode) => Observable<any>;
 export type DynControlCondition = DynBaseHandler<DynControlConditionFn>;
 
 /**

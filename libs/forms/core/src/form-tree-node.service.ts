@@ -158,6 +158,10 @@ implements DynTreeNode<TParams, TControl> {
    * Feature methods
    */
 
+  updateParams(params: Partial<TParams>): void {
+    this.paramsUpdates$.next(params);
+  }
+
   // let the ControlNode know of an incoming hook
   callHook(event: DynControlHook): void {
     this.logger.hookCalled(this, event.hook, event.payload);
@@ -351,18 +355,25 @@ implements DynTreeNode<TParams, TControl> {
             .map(condition => this.formHandlers.getCondition(condition)) // handler fn
             .map(fn => fn(this)) // condition observables
         ).pipe(
-          map(results => config.operator === 'OR' // AND by default
-            ? results.some(Boolean)
-            : results.every(Boolean)
-          ),
+          map<any[], { hasMatch: boolean, results: any[] }>(results => ({
+            hasMatch: config.operator === 'OR' // AND by default
+              ? results.some(Boolean)
+              : results.every(Boolean),
+            results,
+          })),
           takeUntil(this._unsubscribe),
           // TODO option for distinctUntilChanged?
         )
-        .subscribe(hasMatch => {
+        .subscribe(({ hasMatch, results }) => {
           const firstTime = (count === 0);
           // run the matchers with the conditions result
           // TODO config to run the matcher only if hasMatch? (unidirectional)
-          matchers.map(matcher => matcher(this, config.negate ? !hasMatch : hasMatch, firstTime));
+          matchers.map(matcher => matcher({
+            node: this,
+            hasMatch: config.negate ? !hasMatch : hasMatch,
+            firstTime,
+            results,
+          }));
           count++;
         });
       });
