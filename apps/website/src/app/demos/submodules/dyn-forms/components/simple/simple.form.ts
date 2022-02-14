@@ -99,12 +99,12 @@ export function simpleForm(
             match: [
               {
                 matchers: ['ENABLE'],
-                negate: true,
                 operator: 'AND',
                 when: [
                   { path: 'firstName', value: 'Mateo' },
                   { path: 'country', value: 'CO' },
-                ]
+                ],
+                negate: true
               },
               {
                 matchers: ['HIDE'],

@@ -8,9 +8,9 @@ import { DynTreeNode } from './tree.types';
  */
 export interface DynControlMatch {
   matchers: DynConfigProvider<DynControlMatcherFn>[]; // [matcher id | [id, args] | DynControlMatcherFn]
-  negate?: boolean; // negate the input of the matcher
   operator?: 'AND' | 'OR'; // triggers the matcher with all/one truthy condition
   when: Array<DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition>;
+  negate?: boolean; // negate the result of the conditions
 }
 
 /**
@@ -20,7 +20,7 @@ export interface DynControlRelated {
   path: string; // query relative to the control with the matcher
   field?: string; // field to process if the control value is an object
   value?: DynConfigArgs;
-  negate?: boolean; // negate the output of the condition
+  negate?: boolean; // negate the result of the condition
 }
 
 export interface DynControlMatchCondition extends DynControlRelated {

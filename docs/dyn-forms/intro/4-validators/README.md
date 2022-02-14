@@ -20,6 +20,9 @@ validators: ['required', ['min', 1] ],
 
 // with parameters as object
 validators: { required: null, minLength: 4 },
+
+// with an inline ValidatorFn or ValidatorFn factory
+validators: [myValidatorFn, myValidatorFactory(args)],
 ```
 
 ## Typings

@@ -18,7 +18,7 @@ interface DynControlConditionFn {
 }
 ```
 
-it streams a boolean whenever the condition is fulfilled or not, for example, we could check if a specific control has the expected value:
+it streams a truthy value whenever the condition is fulfilled or not, for example, we could check if a specific control has the expected value:
 
 ```typescript
 (node: DynTreeNode) => {
@@ -39,7 +39,8 @@ match: [
   {
     matchers: ['DISABLE'], // one or more matchers
     when: [{
-      // the library provides a DEFAULT condition handler to process path, value and negate
+      // the library provides a DEFAULT condition handler
+      // to process path, value and negation
       path: 'other.field',
       value: 'expectedValue'
     }]
@@ -53,7 +54,12 @@ One matcher consists of a function which performs a task in the form hierarchy; 
 
 ```typescript
 interface DynControlMatcherFn {
-  (args: { node: DynTreeNode, hasMatch: boolean }): void;
+  (args: {
+    node: DynTreeNode;
+    hasMatch: boolean;
+    firstTime: boolean;
+    results: any[];
+  }): void;
 }
 ```
 
