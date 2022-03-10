@@ -23,6 +23,14 @@
   "type": "module",
   "main": "./src/index.ts",
   "dependencies": {
-    "sass-migrator": "^1.5.4"
+    "commander": "^9.0.0",
+    "sass-migrator": "^1.5.4",
+    "stylus": "^0.56.0"
+  },
+  "devDependencies": {
+    "@types/stylus": "^0.48.36"
+  },
+  "engines": {
+    "node": ">=14"
   }
 }

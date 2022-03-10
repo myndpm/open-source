@@ -9,9 +9,9 @@
     }
   ],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "es2020",
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true

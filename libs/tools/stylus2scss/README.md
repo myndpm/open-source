@@ -6,7 +6,9 @@ It also updates Angular Components metadata.
 ## Usage
 
 ```bash
-npx @myndpm/stylus2scss [PATH]
+npx @myndpm/stylus2scss [--path <path>] [--diagnose] [--only-migrate]
 ```
 
-`[PATH]` - Path to the directory for conversion. Default is current directory
+`<path>` - Path to the directory for conversion. Default is current directory
+`diagnose` - Show a report of the existing stylesheets in the directory
+`only-migrate` - Only run the sass-migration tool on the SCSS files
