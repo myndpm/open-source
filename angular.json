@@ -129,7 +129,7 @@
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/libs/tools/stylus2scss",
+            "outputPath": "dist/libs/stylus2scss",
             "tsConfig": "libs/tools/stylus2scss/tsconfig.lib.json",
             "packageJson": "libs/tools/stylus2scss/package.json",
             "main": "libs/tools/stylus2scss/src/index.ts",
