@@ -117,7 +117,42 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["tools"]
+    },
+    "stylus2scss": {
+      "root": "libs/tools/stylus2scss",
+      "sourceRoot": "libs/tools/stylus2scss/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/tools/stylus2scss",
+            "tsConfig": "libs/tools/stylus2scss/tsconfig.lib.json",
+            "packageJson": "libs/tools/stylus2scss/package.json",
+            "main": "libs/tools/stylus2scss/src/index.ts",
+            "assets": ["libs/tools/stylus2scss/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/tools/stylus2scss/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/tools/stylus2scss"],
+          "options": {
+            "jestConfig": "libs/tools/stylus2scss/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["tools"]
     },
     "website": {
       "projectType": "application",
