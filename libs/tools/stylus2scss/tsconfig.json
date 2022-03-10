@@ -1,7 +1,5 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "files": [],
-  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
@@ -11,6 +9,8 @@
     }
   ],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,

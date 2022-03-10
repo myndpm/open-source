@@ -1,6 +1,27 @@
 {
   "name": "@myndpm/stylus2scss",
   "version": "0.0.1",
+  "keywords": [
+    "stylus",
+    "scss",
+    "converter"
+  ],
+  "license": "MIT",
+  "homepage": "https://mynd.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:myndpm/open-source.git",
+    "directory": "libs/tools/stylus2scss"
+  },
+  "bin": {
+    "stylus2scss": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node --loader ts-node/esm src/index.ts",
+    "test": "ng test"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
   "dependencies": {
     "sass-migrator": "^1.5.4"
   }

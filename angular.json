@@ -136,6 +136,14 @@
             "assets": ["libs/tools/stylus2scss/*.md"]
           }
         },
+        "postbuild": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "chmod +x dist/libs/stylus2scss/src/index.js"
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
