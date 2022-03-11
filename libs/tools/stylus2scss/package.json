@@ -24,6 +24,7 @@
   "main": "./src/index.ts",
   "dependencies": {
     "commander": "^9.0.0",
+    "invariant": "^2.2.4",
     "sass-migrator": "^1.5.4",
     "stylus": "^0.56.0"
   },

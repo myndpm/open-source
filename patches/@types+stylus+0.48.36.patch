@@ -1,0 +1,1412 @@
+diff --git a/node_modules/@types/stylus/index.d.ts b/node_modules/@types/stylus/index.d.ts
+index 2f27407..7ee062e 100755
+--- a/node_modules/@types/stylus/index.d.ts
++++ b/node_modules/@types/stylus/index.d.ts
+@@ -643,6 +643,8 @@ declare namespace Stylus {
+     }
+ 
+     export class Parser {
++      constructor(val: string);
++      parse(): Nodes.Root; // abstract syntax tree
+     }
+ 
+     export class Evaluator {
+@@ -651,718 +653,730 @@ declare namespace Stylus {
+     export class Compiler {
+     }
+ 
++    //#region Internal Interfaces
++
++    export interface Dictionary<T> {
++        [key: string]: T;
++    }
++
++    export interface UrlOptions {
++        limit?: number | false | null | undefined;
++        paths?: string[] | undefined;
++    }
++
++    export interface LiteralFunction {
++        (url: string): Nodes.Literal;
++        raw: boolean;
++    }
++
++    export interface ExceptionOptions {
++        filename: string;
++        context: number;
++        lineno: number;
++        column: number;
++        input: string;
++    }
++
+     //#endregion
++}
+ 
+-    //#region Nodes Classes
+-
+-    export module Nodes {
+-        export class Node {
+-            lineno: number;
+-            column: number;
+-            filename: string;
+-
+-            first: Node;
+-            hash: string;
+-            nodeName: string;
+-
+-            constructor();
+-
+-            /**
+-             * Return a clone of this node.
+-             */
+-            clone(): Node;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { lineno: number; column: number; filename: string };
+-
+-            /**
+-             * Nodes by default evaluate to themselves.
+-             */
+-            eval(): Node;
+-
+-            /**
+-             * Return true.
+-             */
+-            // tslint:disable-next-line no-unnecessary-qualifier
+-            toBoolean(): Nodes.Boolean;
+-
+-            /**
+-             * Return the expression, or wrap this node in an expression.
+-             */
+-            toExpression(): Expression;
+-
+-            /**
+-             * Return false if `op` is generally not coerced.
+-             */
+-            shouldCoerce(op: string): boolean;
+-
+-            /**
+-             * Operate on `right` with the given `op`.
+-             */
+-            operate(op: string, right: Node): Node;
+-
+-            /**
+-             *  Default coercion throws.
+-             */
+-            coerce(other: Node): Node;
+-        }
+-
+-        export class Root extends Node {
+-            nodes: Node[];
+-
+-            /**
+-             * Push a `node` to this block.
+-             */
+-            push(node: Node): void;
+-
+-            /**
+-             * Unshift a `node` to this block.
+-             */
+-            unshift(node: Node): void;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { nodes: Node[]; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class String extends Node {
+-            val: string;
+-            string: string;
+-            prefixed: boolean;
+-            quote: string;
+-
+-            constructor(val: string);
+-            constructor(val: string, quote: string);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { val: string; quote: string; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Number extends Node { }
+-
+-        export class Boolean extends Node {
+-            val: boolean;
+-            isTrue: boolean;
+-            isFalse: boolean;
+-
+-            constructor();
+-            constructor(val: boolean);
+-
+-            /**
+-             * Negate the value.
+-             */
+-            // tslint:disable-next-line no-unnecessary-qualifier
+-            negate(): Nodes.Boolean;
+-
+-            /**
+-             * Return 'Boolean'.
+-             */
+-            inspect(): string;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Object extends Node {
+-            vals: Dictionary<Node>;
+-            length: number;
+-
+-            constructor();
+-
+-            /**
+-             * Set `key` to `val`.
+-             */
+-            set(key: string, value: Node): this;
+-
+-            /**
+-             * Get `key`.
+-             */
+-            get(key: string): Node;
+-
+-            /**
+-             * Has `key`?
+-             */
+-            has(key: string): boolean;
+-
+-            /**
+-             * Convert object to string with properties.
+-             */
+-            toBlock(): string;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; vals: Dictionary<Node>; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Null extends Node {
+-            isNull: boolean;
+-
+-            constructor();
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Ident extends Node {
+-            name: string;
+-            string: string;
+-            val: Node;
+-            mixin: boolean;
+-
+-            isEmpty: boolean;
+-
+-            constructor(name: string, val: Node);
+-            constructor(name: string, val: Node, mixin: boolean);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; name: string; val: Node; mixin: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Literal extends Node {
+-            val: string;
+-            string: string;
+-            prefixed: boolean;
+-
+-            constructor(str: string);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; string: string; val: string; prefixed: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Unit extends Node {
+-            val: number;
+-            type: string;
+-
+-            constructor(val: number, type: string);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: number; type: string; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class RGBA extends Node {
+-            r: number;
+-            g: number;
+-            b: number;
+-            a: number;
+-            rgba: RGBA;
+-            hsla: HSLA;
+-
+-            constructor(r: number, g: number, b: number, a: number);
+-
+-            /**
+-             * Return an `RGBA` without clamping values.
+-             */
+-            static withoutClamping(r: number, g: number, b: number, a: number): RGBA;
+-
+-            /**
+-             * Return a `RGBA` from the given `hsla`.
+-             */
+-            static fromHSLA(hsla: HSLA): RGBA;
+-
+-            /**
+-             * Add r,g,b,a to the current component values
+-             */
+-            add(r: number, g: number, b: number, a: number): RGBA;
+-
+-            /**
+-             * Subtract r,g,b,a from the current component values
+-             */
+-            substract(r: number, g: number, b: number, a: number): RGBA;
+-
+-            /**
+-             * Multiply rgb components by `n`.
+-             */
+-            multiply(n: number): RGBA;
+-
+-            /**
+-             * Divide rgb components by `n`.
+-             */
+-            divide(n: number): RGBA;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; r: number; g: number; b: number; a: number; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class HSLA extends Node {
+-            h: number;
+-            s: number;
+-            l: number;
+-            a: number;
+-            hsla: HSLA;
+-            rgba: RGBA;
+-
+-            constructor(h: number, s: number, l: number, a: number);
+-
+-            /**
+-             * Return a `HSLA` from the given `hsla`.
+-             */
+-            static fromRGBA(rgba: RGBA): HSLA;
+-
+-            /**
+-             * Add h,s,l to the current component values
+-             */
+-            add(h: number, s: number, l: number): HSLA;
+-
+-            /**
+-             * Subtract h,s,l from the current component values
+-             */
+-            substract(h: number, s: number, l: number): HSLA;
+-
+-            /**
+-             * Adjust lightness by `percent`.
+-             */
+-            adjustLightness(percent: number): HSLA;
+-
+-            /**
+-             * djust hue by `deg`.
+-             */
+-            adjustHue(deg: number): HSLA;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; h: number; s: number; l: number; a: number; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Block extends Node {
+-            nodes: Node[];
+-            parent: Block;
+-            node: Node;
+-            scope: boolean;
+-
+-            hasProperties: boolean;
+-            hasMedia: boolean;
+-            isEmpty: boolean;
+-
+-            constructor(parent: Block);
+-            constructor(parent: Block, node: Node);
+-
+-            /**
+-             * Push a `node` to this block.
+-             */
+-            push(node: Node): void;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: Node[]; scope: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Group extends Node {
+-            nodes: Node[];
+-            block: Block;
+-
+-            hasOnlyPlaceholders: boolean;
+-
+-            constructor();
+-
+-            /**
+-             * Push the given `selector` node.
+-             */
+-            push(node: Node): void;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: Node[]; block: Block; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Expression extends Node {
+-            nodes: Node[];
+-            isList: boolean;
+-
+-            isEmpty: boolean;
+-            first: Node;
+-
+-            constructor(isList: boolean);
+-
+-            /**
+-             * Push the given node.
+-             */
+-            push(node: Node): void;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: Node[]; isList: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Property extends Node {
+-            segments: Node[];
+-            expr: Expression;
+-
+-            constructor(segs: Node[], expr: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; segments: Node[]; name: string; expr?: Expression | undefined; literal?: Literal | undefined; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Each extends Node {
+-            val: string;
+-            key: string;
+-            expr: Expression;
+-            block: Block;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: string; key: string; expr: Expression; block: Block; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class If extends Node {
+-            cond: Expression;
+-            elses: Expression[];
+-            block: Block;
+-            negate: boolean;
+-
+-            constructor(cond: Expression, negate: boolean);
+-            constructor(cond: Expression, block: Block);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; cond: Expression; elses: Expression[]; block: Block; negate: boolean; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Call extends Node {
+-            name: string;
+-            args: Expression;
+-
+-            constructor(name: string, args: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; name: string; args: Expression; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class UnaryOp extends Node {
+-            op: string;
+-            expr: Expression;
+-
+-            constructor(op: string, expr: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; op: string; expr: Expression; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class BinOp extends Node {
+-            op: string;
+-            left: Expression;
+-            right: Expression;
+-
+-            constructor(op: string, left: Expression, right: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; op: string; left: Expression; right: Expression; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Ternary extends Node {
+-            op: string;
+-            trueExpr: Expression;
+-            falseExpr: Expression;
+-
+-            constructor(op: string, trueExpr: Expression, falseExpr: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; op: string; trueExpr: Expression; falseExpr: Expression; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Return extends Node {
+-            expr: Expression;
+-
+-            constructor(expr: Expression);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; expr: Expression; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Media extends Node {
+-            val: string;
+-
+-            constructor(val: string);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class QueryList extends Node {
+-            nodes: Node[];
+-
+-            constructor();
+-
+-            /**
+-             * Push the given `node`.
+-             */
+-            push(node: Node): void;
+-
+-            /**
+-             * Merges this query list with the `other`.
+-             */
+-            merge(other: QueryList): QueryList;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Query extends Node {
+-            nodes: QueryExpr[];
+-            type: string;
+-            predicate: string;
+-
+-            resolvedType: string;
+-            resolvedPredicate: string;
+-
+-            constructor();
++export module Nodes {
++    export class Node {
++        lineno: number;
++        column: number;
++        filename: string;
+ 
+-            /**
+-             * Push the given `expr`.
+-             */
+-            push(expr: QueryExpr): void;
+-
+-            /**
+-             * Merges this query with the `other`.
+-             */
+-            merge(other: Query): Query;
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: QueryExpr[]; predicate: string; type: string; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class QueryExpr extends Node {
+-            segments: Node[];
+-            expr: Expression;
+-
+-            constructor(segs: Node[]);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; segments: Node[]; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Params extends Node {
+-            nodes: Node[];
+-
+-            length: number;
+-
+-            /**
+-             * Push the given `node`.
+-             */
+-            push(node: Node): void;
++        first: Node;
++        hash: string;
++        nodeName: string;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Comment extends Node {
+-            str: string;
+-            suppress: boolean;
+-            inline: boolean;
++        __type: string;
++        type: any;
++        block: Block;
++        name: string;
++        val: any; // FIXME
++        segments: Node[];
+ 
+-            constructor(str: string, suppress: boolean, inline: boolean);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; str: string; suppress: boolean; inline: boolean; lineno: number; column: number; filename: string };
+-        }
++        constructor();
+ 
+-        export class Keyframes extends Node {
+-            segments: Node[];
+-            prefix: string;
++        /**
++         * Return a clone of this node.
++         */
++        clone(): Node;
+ 
+-            constructor(segs: Node[]);
+-            constructor(segs: Node[], prefix: string);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; segments: Node[]; prefix: string; block: Block; lineno: number; column: number; filename: string };
+-        }
+-
+-        export class Member extends Node {
+-            left: Node;
+-            right: Node;
+-
+-            constructor(left: Node, right: Node);
+-
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; left: Node; right: Node; val?: string | undefined; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; lineno: number; column: number; filename: string; val: Node };
+ 
+-        export class Charset extends Node {
+-            val: string;
++        /**
++         * Nodes by default evaluate to themselves.
++         */
++        eval(): Node;
+ 
+-            constructor(val: string);
++        /**
++         * Return true.
++         */
++        // tslint:disable-next-line no-unnecessary-qualifier
++        toBoolean(): Nodes.Boolean;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Return the expression, or wrap this node in an expression.
++         */
++        toExpression(): Expression;
+ 
+-        export class Namespace extends Node {
+-            val: string;
+-            prefix: string;
++        /**
++         * Return false if `op` is generally not coerced.
++         */
++        shouldCoerce(op: string): boolean;
+ 
+-            constructor(val: string, prefix: string);
++        /**
++         * Operate on `right` with the given `op`.
++         */
++        operate(op: string, right: Node): Node;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; val: string; prefix: string; lineno: number; column: number; filename: string };
+-        }
++        /**
++         *  Default coercion throws.
++         */
++        coerce(other: Node): Node;
++    }
+ 
+-        export class Import extends Node {
+-            path: Expression;
+-            once: boolean;
++    export class Root extends Node {
++        nodes: Node[];
+ 
+-            constructor(path: Expression);
+-            constructor(path: Expression, once: boolean);
++        /**
++         * Push a `node` to this block.
++         */
++        push(node: Node): void;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; path: Expression; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Unshift a `node` to this block.
++         */
++        unshift(node: Node): void;
+ 
+-        export class Extend extends Node {
+-            selectors: Selector[];
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { nodes: Node[]; lineno: number; column: number; filename: string };
++    }
+ 
+-            constructor(selectors: Selector[]);
++    export class String extends Node {
++        val: string;
++        string: string;
++        prefixed: boolean;
++        quote: string;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; selectors: Selector[]; lineno: number; column: number; filename: string };
+-        }
++        constructor(val: string);
++        constructor(val: string, quote: string);
+ 
+-        export class Function extends Node {
+-            name: string;
+-            params: Params;
+-            body: Block;
+-
+-            constructor(name: string, params: Params, body: Block);
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { val: string; quote: string; lineno: number; column: number; filename: string };
++    }
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; name: string; params: Params; body: Block; lineno: number; column: number; filename: string };
+-        }
++    export class Supports extends Node {
++      condition: any; // FIXME
++    }
+ 
+-        export class Selector extends Node {
+-            inherits: boolean;
+-            segments: Node[];
++    export class Number extends Node { }
+ 
+-            constructor(segs: Node[]);
++    export class Boolean extends Node {
++        val: boolean;
++        isTrue: boolean;
++        isFalse: boolean;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; segments: Node[]; inherits: boolean; val: string; lineno: number; column: number; filename: string };
+-        }
++        constructor();
++        constructor(val: boolean);
+ 
+-        export class Arguments extends Expression {
+-            map: Dictionary<Node>;
++        /**
++         * Negate the value.
++         */
++        // tslint:disable-next-line no-unnecessary-qualifier
++        negate(): Nodes.Boolean;
+ 
+-            constructor();
++        /**
++         * Return 'Boolean'.
++         */
++        inspect(): string;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; map: Dictionary<Node>; isList: boolean; preserve: boolean; nodes: Node[]; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: boolean; lineno: number; column: number; filename: string };
++    }
+ 
+-        export class Atblock extends Node {
+-            block: Block;
+-            nodes: Node[];
++    export class Object extends Node {
++        vals: Dictionary<Node>;
++        length: number;
+ 
+-            constructor();
++        constructor();
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; block: Block; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Set `key` to `val`.
++         */
++        set(key: string, value: Node): this;
+ 
+-        export class Atrule extends Node {
+-            type: string;
++        /**
++         * Get `key`.
++         */
++        get(key: string): Node;
+ 
+-            hasOnlyProperties: boolean;
++        /**
++         * Has `key`?
++         */
++        has(key: string): boolean;
+ 
+-            constructor(type: string);
++        /**
++         * Convert object to string with properties.
++         */
++        toBlock(): string;
+ 
+-            /**
+-             * Return a JSON representation of this node.
+-             */
+-            toJSON(): { __type: string; type: string; segments: Node[]; block?: Block | undefined; lineno: number; column: number; filename: string };
+-        }
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; vals: Dictionary<Node>; lineno: number; column: number; filename: string };
+     }
+ 
+-    //#endregion
++    export class Null extends Node {
++        isNull: boolean;
+ 
+-    //#region Internal Interfaces
++        constructor();
+ 
+-    export interface Dictionary<T> {
+-        [key: string]: T;
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; lineno: number; column: number; filename: string };
+     }
+ 
+-    export interface UrlOptions {
+-        limit?: number | false | null | undefined;
+-        paths?: string[] | undefined;
++    export class Ident extends Node {
++        name: string;
++        string: string;
++        rest: any;
++        val: any;
++        mixin: boolean;
++        property: any;
++
++        isEmpty: boolean;
++
++        constructor(name: string, val: Node);
++        constructor(name: string, val: Node, mixin: boolean);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; val: Node; mixin: boolean; lineno: number; column: number; filename: string };
+     }
+ 
+-    export interface LiteralFunction {
+-        (url: string): Nodes.Literal;
+-        raw: boolean;
++    export class Literal extends Node {
++        val: string;
++        string: string;
++        prefixed: boolean;
++
++        constructor(str: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; string: string; val: string; prefixed: boolean; lineno: number; column: number; filename: string };
+     }
+ 
+-    export interface ExceptionOptions {
+-        filename: string;
+-        context: number;
+-        lineno: number;
+-        column: number;
+-        input: string;
++    export class Unit extends Node {
++        val: number;
++        type: string;
++
++        constructor(val: number, type: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: number; type: string; lineno: number; column: number; filename: string };
+     }
+ 
+-    //#endregion
++    export class RGBA extends Node {
++        r: number;
++        g: number;
++        b: number;
++        a: number;
++        rgba: RGBA;
++        hsla: HSLA;
++        raw: string;
++
++        constructor(r: number, g: number, b: number, a: number);
++
++        /**
++         * Return an `RGBA` without clamping values.
++         */
++        static withoutClamping(r: number, g: number, b: number, a: number): RGBA;
++
++        /**
++         * Return a `RGBA` from the given `hsla`.
++         */
++        static fromHSLA(hsla: HSLA): RGBA;
++
++        /**
++         * Add r,g,b,a to the current component values
++         */
++        add(r: number, g: number, b: number, a: number): RGBA;
++
++        /**
++         * Subtract r,g,b,a from the current component values
++         */
++        substract(r: number, g: number, b: number, a: number): RGBA;
++
++        /**
++         * Multiply rgb components by `n`.
++         */
++        multiply(n: number): RGBA;
++
++        /**
++         * Divide rgb components by `n`.
++         */
++        divide(n: number): RGBA;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; r: number; g: number; b: number; a: number; lineno: number; column: number; filename: string };
++    }
++
++    export class HSLA extends Node {
++        h: number;
++        s: number;
++        l: number;
++        a: number;
++        hsla: HSLA;
++        rgba: RGBA;
++
++        constructor(h: number, s: number, l: number, a: number);
++
++        /**
++         * Return a `HSLA` from the given `hsla`.
++         */
++        static fromRGBA(rgba: RGBA): HSLA;
++
++        /**
++         * Add h,s,l to the current component values
++         */
++        add(h: number, s: number, l: number): HSLA;
++
++        /**
++         * Subtract h,s,l from the current component values
++         */
++        substract(h: number, s: number, l: number): HSLA;
++
++        /**
++         * Adjust lightness by `percent`.
++         */
++        adjustLightness(percent: number): HSLA;
++
++        /**
++         * djust hue by `deg`.
++         */
++        adjustHue(deg: number): HSLA;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; h: number; s: number; l: number; a: number; lineno: number; column: number; filename: string };
++    }
++
++    export class Block extends Node {
++        nodes: Node[];
++        parent: Block;
++        node: Node;
++        scope: boolean;
++
++        hasProperties: boolean;
++        hasMedia: boolean;
++        isEmpty: boolean;
++
++        constructor(parent: Block);
++        constructor(parent: Block, node: Node);
++
++        /**
++         * Push a `node` to this block.
++         */
++        push(node: Node): void;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: Node[]; scope: boolean; lineno: number; column: number; filename: string };
++    }
++
++    export class Group extends Node {
++        nodes: Node[];
++        block: Block;
++
++        hasOnlyPlaceholders: boolean;
++
++        constructor();
++
++        /**
++         * Push the given `selector` node.
++         */
++        push(node: Node): void;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: Node[]; block: Block; lineno: number; column: number; filename: string };
++    }
++
++    export class Expression extends Node {
++        nodes: Node[];
++        isList: boolean;
++
++        isEmpty: boolean;
++        first: Node;
++
++        constructor(isList: boolean);
++
++        /**
++         * Push the given node.
++         */
++        push(node: Node): void;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: Node[]; isList: boolean; lineno: number; column: number; filename: string };
++    }
++
++    export class Property extends Node {
++        segments: Node[];
++        expr: Expression;
++
++        constructor(segs: Node[], expr: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; segments: Node[]; name: string; expr?: Expression | undefined; literal?: Literal | undefined; lineno: number; column: number; filename: string };
++    }
++
++    export class Each extends Node {
++        val: string;
++        key: string;
++        expr: Expression;
++        block: Block;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: string; key: string; expr: Expression; block: Block; lineno: number; column: number; filename: string };
++    }
++
++    export class If extends Node {
++        cond: Expression;
++        elses: Expression[];
++        block: Block;
++        negate: boolean;
++        elses: Expression[];
++
++        constructor(cond: Expression, negate: boolean);
++        constructor(cond: Expression, block: Block);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; cond: Expression; elses: Expression[]; block: Block; negate: boolean; lineno: number; column: number; filename: string };
++    }
++
++    export class Call extends Node {
++        name: string;
++        args: Expression;
++
++        constructor(name: string, args: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; args: Expression; lineno: number; column: number; filename: string; val: any };
++    }
++
++    export class UnaryOp extends Node {
++        op: string;
++        expr: Expression;
++
++        constructor(op: string, expr: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; op: string; expr: Expression; lineno: number; column: number; filename: string };
++    }
++
++    export class BinOp extends Node {
++        op: string;
++        left: Expression;
++        right: Expression;
++
++        constructor(op: string, left: Expression, right: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; op: string; left: Expression; right: Expression; lineno: number; column: number; filename: string };
++    }
++
++    export class Ternary extends Node {
++        op: string;
++        trueExpr: Expression;
++        falseExpr: Expression;
++        cond: Nodes.BinOp;
++
++        constructor(op: string, trueExpr: Expression, falseExpr: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; op: string; trueExpr: Expression; falseExpr: Expression; lineno: number; column: number; filename: string };
++    }
++
++    export class Return extends Node {
++        expr: Expression;
++
++        constructor(expr: Expression);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; expr: Expression; lineno: number; column: number; filename: string };
++    }
++
++    export class Media extends Node {
++        val: string;
++
++        constructor(val: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
++    }
++
++    export class QueryList extends Node {
++        nodes: Node[];
++
++        constructor();
++
++        /**
++         * Push the given `node`.
++         */
++        push(node: Node): void;
++
++        /**
++         * Merges this query list with the `other`.
++         */
++        merge(other: QueryList): QueryList;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
++    }
++
++    export class Query extends Node {
++        nodes: QueryExpr[];
++        type: any; // FIXME
++        predicate: string;
++
++        resolvedType: string;
++        resolvedPredicate: string;
++
++        constructor();
++
++        /**
++         * Push the given `expr`.
++         */
++        push(expr: QueryExpr): void;
++
++        /**
++         * Merges this query with the `other`.
++         */
++        merge(other: Query): Query;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: QueryExpr[]; predicate: string; type: string; lineno: number; column: number; filename: string };
++    }
++
++    export class QueryExpr extends Node {
++        segments: Node[];
++        expr: Expression;
++
++        constructor(segs: Node[]);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; segments: Node[]; lineno: number; column: number; filename: string };
++    }
++
++    export class Params extends Node {
++        nodes: Node[];
++
++        length: number;
++
++        /**
++         * Push the given `node`.
++         */
++        push(node: Node): void;
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
++    }
++
++    export class Comment extends Node {
++        str: string;
++        suppress: boolean;
++        inline: boolean;
++
++        constructor(str: string, suppress: boolean, inline: boolean);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; str: string; suppress: boolean; inline: boolean; lineno: number; column: number; filename: string };
++    }
++
++    export class Keyframes extends Node {
++        segments: Node[];
++        prefix: string;
++
++        constructor(segs: Node[]);
++        constructor(segs: Node[], prefix: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; segments: Node[]; prefix: string; block: Block; lineno: number; column: number; filename: string };
++    }
++
++    export class Member extends Node {
++        left: Node;
++        right: Node;
++
++        constructor(left: Node, right: Node);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; left: Node; right: Node; val?: string | undefined; lineno: number; column: number; filename: string };
++    }
++
++    export class Charset extends Node {
++        val: any;
++
++        constructor(val: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
++    }
++
++    export class Namespace extends Node {
++        val: any;
++        prefix: string;
++
++        constructor(val: string, prefix: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; val: string; prefix: string; lineno: number; column: number; filename: string };
++    }
++
++    export class Import extends Node {
++        path: Expression;
++        once: boolean;
++
++        constructor(path: Expression);
++        constructor(path: Expression, once: boolean);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; path: Expression; lineno: number; column: number; filename: string };
++    }
++
++    export class Extend extends Node {
++        selectors: Selector[];
++
++        constructor(selectors: Selector[]);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; selectors: Selector[]; lineno: number; column: number; filename: string };
++    }
++
++    export class Function extends Node {
++        name: string;
++        params: Params;
++        body: Block;
++
++        constructor(name: string, params: Params, body: Block);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; params: Params; body: Block; lineno: number; column: number; filename: string };
++    }
++
++    export class Selector extends Node {
++        inherits: boolean;
++        segments: Node[];
++
++        constructor(segs: Node[]);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; name: string; segments: Node[]; inherits: boolean; val: any; lineno: number; column: number; filename: string };
++    }
++
++    export class Arguments extends Expression {
++        map: Dictionary<Node>;
++
++        constructor();
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; map: Dictionary<Node>; isList: boolean; preserve: boolean; nodes: Node[]; lineno: number; column: number; filename: string };
++    }
++
++    export class Atblock extends Node {
++        block: Block;
++        nodes: Node[];
++
++        constructor();
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; block: Block; lineno: number; column: number; filename: string };
++    }
++
++    export class Atrule extends Node {
++        block: Block;
++        type: string;
++        segments: Node[];
++
++        hasOnlyProperties: boolean;
++
++        constructor(type: string);
++
++        /**
++         * Return a JSON representation of this node.
++         */
++        toJSON(): { __type: string; type: string; segments: Node[]; block?: Block | undefined; lineno: number; column: number; filename: string };
++    }
+ }
