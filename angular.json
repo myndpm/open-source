@@ -173,7 +173,7 @@
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/libs/tools/utils",
+            "outputPath": "dist/libs/utils",
             "tsConfig": "libs/tools/utils/tsconfig.lib.json",
             "packageJson": "libs/tools/utils/package.json",
             "main": "libs/tools/utils/src/index.ts",
