@@ -164,6 +164,40 @@
       },
       "tags": ["tools"]
     },
+    "utils": {
+      "root": "libs/tools/utils",
+      "sourceRoot": "libs/tools/utils/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/tools/utils",
+            "tsConfig": "libs/tools/utils/tsconfig.lib.json",
+            "packageJson": "libs/tools/utils/package.json",
+            "main": "libs/tools/utils/src/index.ts",
+            "assets": ["libs/tools/utils/*.md"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/tools/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/tools/utils"],
+          "options": {
+            "jestConfig": "libs/tools/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["tools"]
+    },
     "website": {
       "projectType": "application",
       "root": "apps/website",
