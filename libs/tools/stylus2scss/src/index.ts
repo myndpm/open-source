@@ -1,21 +1,19 @@
 #!/usr/bin/env node
 
-import { FsTree } from '@myndpm/utils';
+import { FsTree, jsonRead } from '@myndpm/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
-import { readFileSync } from 'fs';
-import { dirname, join, relative } from 'path';
-import { fileURLToPath } from 'url';
-import { parseOptions } from './schema.js';
-
-const pkgjson = join(dirname(fileURLToPath(import.meta.url)), '../package.json');
-const metadata = JSON.parse(readFileSync(pkgjson).toString());
+import { join, relative } from 'path';
+import { of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { Options, parseOptions } from './schema';
 
 const program = new Command();
+const version = jsonRead(join(__dirname, '../package.json'), 'version');
 
 program
   .name('stylus2scss')
-  .version(metadata.version)
+  .version(`v${version}`)
   .description('CLI util to convert Stylus to SCSS');
 
 program
@@ -37,25 +35,33 @@ fstree.visit(options.path, (path) => {
     return;
   }
 
-  let filepath = path;
+  options.file = path;
 
-  // diagnose
-  if (options.diagnose && !options.onlyMigrate) {
-    console.log(chalk.dim('>', relative(options.path, path)));
-  }
-
-  // convert
-  if (!options.diagnose && !options.onlyMigrate) {
-    filepath = filepath.replace(/\.styl$/, '.scss');
-    // TODO perform conversion
-  }
-
-  // migrate
-  if (filepath.endsWith('.scss')) {
-    if (options.diagnose) {
-      console.log(chalk.dim('>', relative(options.path, filepath)));
-    } else {
-      // TODO perform migration
-    }
-  }
+  of(options as Required<Options>).pipe(
+    // diagnose
+    tap(({ path, diagnose, onlyMigrate, file }) => {
+      if (diagnose && !onlyMigrate) {
+        console.log(chalk.dim('>', relative(path, file)));
+      }
+    }),
+    // convert
+    switchMap((options) => {
+      if (!options.diagnose && !options.onlyMigrate) {
+        // TODO perform conversion
+        options.file = options.file.replace(/\.styl$/, '.scss');
+      }
+      return of(options);
+    }),
+    // migrate
+    switchMap((options) => {
+      if (options.file.endsWith('.scss')) {
+        if (options.diagnose) {
+          console.log(chalk.dim('>', relative(options.path, options.file)));
+        } else {
+          // TODO perform migration
+        }
+      }
+      return of(options);
+    }),
+  ).subscribe();
 })
