@@ -20,8 +20,6 @@
     "start": "node --loader ts-node/esm src/index.ts",
     "test": "ng test"
   },
-  "type": "module",
-  "main": "./src/index.ts",
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^9.0.0",
