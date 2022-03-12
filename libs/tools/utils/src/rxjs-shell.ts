@@ -1,4 +1,4 @@
-import { dim } from 'chalk';
+import chalk from 'chalk';
 import { ExecOptions, SpawnOptions } from 'child_process';
 import { sync as spawnSync } from 'cross-spawn';
 import { Observable, of } from 'rxjs';
@@ -26,7 +26,7 @@ export function exec(cmd: string, args: string[], options: IExecOptions = {}): O
 
   if (opts.log || opts.dryRun) {
     // log the executed command
-    console.log(dim('>', cmd, args.join(' '))); // tslint:disable-line: no-console
+    console.log(chalk.dim('>', cmd, args.join(' '))); // tslint:disable-line: no-console
 
     // returns if dry-run
     if (opts.dryRun) {
@@ -51,7 +51,7 @@ export function spawn(cmd: string, args: string[], options: ISpawnOptions = {}):
 
   if (opts.log || opts.dryRun) {
     // log the executed command
-    console.log(dim('>', cmd, args.join(' '))); // tslint:disable-line: no-console
+    console.log(chalk.dim('>', cmd, args.join(' '))); // tslint:disable-line: no-console
 
     // returns if dry-run
     if (opts.dryRun) {

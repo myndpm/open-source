@@ -23,6 +23,7 @@
   "type": "module",
   "main": "./src/index.ts",
   "dependencies": {
+    "chalk": "^4.0.0",
     "commander": "^9.0.0",
     "invariant": "^2.2.4",
     "sass-migrator": "^1.5.4",
