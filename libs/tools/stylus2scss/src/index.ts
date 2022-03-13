@@ -20,7 +20,11 @@ program
 program
   .option('-p, --path <path>', 'Path to convert. Defaults to current', '.')
   .option('--diagnose', 'List the files to process in the folder', false)
-  .option('--only-migrate', 'Only run sass-migration on SCSS files', false);
+  .option('--only-migrate', 'Only run sass-migration on SCSS files', false)
+  .option('--quote', 'single / double', 'single')
+  .option('--indent', 'Additional indent', '0')
+  .option('--no-autoprefixer', 'Consider autoprefixer', false)
+  .option('--sign-comments', 'Convert double slash comments', false);
 
 program.parse(process.argv);
 

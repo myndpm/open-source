@@ -4,6 +4,12 @@ export interface Options {
   path: string;
   diagnose: boolean; // dry run
   onlyMigrate: boolean; // only sass-migrate
+  // converter
+  quote: 'single' | 'double';
+  autoprefixer: boolean;
+  indent: string;
+  signComments: boolean;
+  // execution
   file?: string;
 }
 
