@@ -35,32 +35,32 @@ treeVisit(options.path).pipe(
     return file.endsWith('.styl') || options.onlyMigrate && file.endsWith('.scss');
   }),
   map((file) => ({ ...options, file })),
-  concatMap((options) => {
+  concatMap((opts) => {
     // diagnose
-    if (!options.onlyMigrate) {
-      console.log(chalk.dim(options.diagnose ? '>' : '-', relative(options.path, options.file)));
+    if (!opts.onlyMigrate) {
+      console.log(chalk.dim(opts.diagnose ? '>' : '-', relative(opts.path, opts.file)));
       if (options.diagnose) {
         counter++;
       }
     }
     // convert
     if (!options.diagnose && !options.onlyMigrate) {
-      const file = options.file.replace(/\.styl$/, '.scss');
+      const file = opts.file.replace(/\.styl$/, '.scss');
       // TODO perform conversion
-      return exec('git', ['mv', options.file, file]).pipe(
-        mapTo({ ...options, file }),
+      return exec('git', ['mv', opts.file, file]).pipe(
+        mapTo({ ...opts, file }),
       );
     }
-    return of(options);
+    return of(opts);
   }),
-  mergeMap((options) => {
+  mergeMap((opts) => {
     // migrate
-    if (options.file.endsWith('.scss')) {
-      console.log(chalk.dim(options.diagnose ? '>' : '+', relative(options.path, options.file)));
+    if (opts.file.endsWith('.scss')) {
+      console.log(chalk.dim(opts.diagnose ? '>' : '+', relative(opts.path, opts.file)));
       counter++;
       // TODO perform migration
     }
-    return of(options);
+    return of(opts);
   }),
 ).subscribe({
   complete: () => {
