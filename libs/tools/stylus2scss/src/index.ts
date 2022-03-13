@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { Command } from 'commander';
 import { join, relative } from 'path';
 import { of } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, tap } from 'rxjs/operators';
 import { parseOptions } from './schema';
 
 const program = new Command();
@@ -23,6 +23,7 @@ program
 
 program.parse(process.argv);
 
+let counter = 0;
 const options = parseOptions(program.opts());
 
 console.log(chalk.cyanBright(`stylus2scss ${
@@ -41,10 +42,11 @@ treeVisit(options.path).pipe(
   tap(({ path, diagnose, onlyMigrate, file }) => {
     if (diagnose && !onlyMigrate) {
       console.log(chalk.dim('>', relative(path, file)));
+      counter++;
     }
   }),
   // convert
-  switchMap((options) => {
+  mergeMap((options) => {
     if (!options.diagnose && !options.onlyMigrate) {
       // TODO perform conversion
       options.file = options.file.replace(/\.styl$/, '.scss');
@@ -52,14 +54,18 @@ treeVisit(options.path).pipe(
     return of(options);
   }),
   // migrate
-  switchMap((options) => {
+  mergeMap((options) => {
     if (options.file.endsWith('.scss')) {
-      if (options.diagnose) {
-        console.log(chalk.dim('>', relative(options.path, options.file)));
-      } else {
-        // TODO perform migration
-      }
+      console.log(chalk.dim('>', relative(options.path, options.file)));
+      counter++;
+      // TODO perform migration
     }
     return of(options);
   }),
-).subscribe();
+).subscribe({
+  complete: () => {
+    console.log(chalk.yellow(
+      `${counter} files ${options.diagnose ? 'to process' : 'processed'}`
+    ));
+  },
+});
