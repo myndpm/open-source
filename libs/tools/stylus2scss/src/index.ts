@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { FsTree, jsonRead } from '@myndpm/utils';
+import { jsonRead, treeVisit } from '@myndpm/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { join, relative } from 'path';
 import { of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { Options, parseOptions } from './schema';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { parseOptions } from './schema';
 
 const program = new Command();
 const version = jsonRead(join(__dirname, '../package.json'), 'version');
@@ -24,44 +24,42 @@ program
 program.parse(process.argv);
 
 const options = parseOptions(program.opts());
-const fstree = new FsTree();
 
 console.log(chalk.cyanBright(`stylus2scss ${
   options.diagnose ? 'diagnosis' : (options.onlyMigrate ? 'migration' : 'conversion')
 }`));
 
-fstree.visit(options.path, (path) => {
-  if (!(path.endsWith('.styl') || options.onlyMigrate && path.endsWith('.scss'))) {
-    return;
-  }
-
-  options.file = path;
-
-  of(options as Required<Options>).pipe(
-    // diagnose
-    tap(({ path, diagnose, onlyMigrate, file }) => {
-      if (diagnose && !onlyMigrate) {
-        console.log(chalk.dim('>', relative(path, file)));
+treeVisit(options.path).pipe(
+  filter((file) => {
+    return file.endsWith('.styl') || options.onlyMigrate && file.endsWith('.scss');
+  }),
+  map((file) => ({
+    ...options,
+    file,
+  })),
+  // diagnose
+  tap(({ path, diagnose, onlyMigrate, file }) => {
+    if (diagnose && !onlyMigrate) {
+      console.log(chalk.dim('>', relative(path, file)));
+    }
+  }),
+  // convert
+  switchMap((options) => {
+    if (!options.diagnose && !options.onlyMigrate) {
+      // TODO perform conversion
+      options.file = options.file.replace(/\.styl$/, '.scss');
+    }
+    return of(options);
+  }),
+  // migrate
+  switchMap((options) => {
+    if (options.file.endsWith('.scss')) {
+      if (options.diagnose) {
+        console.log(chalk.dim('>', relative(options.path, options.file)));
+      } else {
+        // TODO perform migration
       }
-    }),
-    // convert
-    switchMap((options) => {
-      if (!options.diagnose && !options.onlyMigrate) {
-        // TODO perform conversion
-        options.file = options.file.replace(/\.styl$/, '.scss');
-      }
-      return of(options);
-    }),
-    // migrate
-    switchMap((options) => {
-      if (options.file.endsWith('.scss')) {
-        if (options.diagnose) {
-          console.log(chalk.dim('>', relative(options.path, options.file)));
-        } else {
-          // TODO perform migration
-        }
-      }
-      return of(options);
-    }),
-  ).subscribe();
-})
+    }
+    return of(options);
+  }),
+).subscribe();
