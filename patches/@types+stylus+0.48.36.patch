@@ -1,7 +1,16 @@
 diff --git a/node_modules/@types/stylus/index.d.ts b/node_modules/@types/stylus/index.d.ts
-index 2f27407..7ee062e 100755
+index 2f27407..33489d9 100755
 --- a/node_modules/@types/stylus/index.d.ts
 +++ b/node_modules/@types/stylus/index.d.ts
+@@ -111,7 +111,7 @@ declare namespace Stylus {
+         Media: typeof Nodes.Media;
+         QueryList: typeof Nodes.QueryList;
+         Query: typeof Nodes.Query;
+-        QueryExpr: typeof Nodes.QueryExpr;
++        Feature: typeof Nodes.Feature;
+         Params: typeof Nodes.Params;
+         Comment: typeof Nodes.Comment;
+         Keyframes: typeof Nodes.Keyframes;
 @@ -643,6 +643,8 @@ declare namespace Stylus {
      }
  
@@ -11,7 +20,7 @@ index 2f27407..7ee062e 100755
      }
  
      export class Evaluator {
-@@ -651,718 +653,730 @@ declare namespace Stylus {
+@@ -651,718 +653,1043 @@ declare namespace Stylus {
      export class Compiler {
      }
  
@@ -592,12 +601,7 @@ index 2f27407..7ee062e 100755
 -            str: string;
 -            suppress: boolean;
 -            inline: boolean;
-+        __type: string;
-+        type: any;
-+        block: Block;
-+        name: string;
 +        val: any; // FIXME
-+        segments: Node[];
  
 -            constructor(str: string, suppress: boolean, inline: boolean);
 -
@@ -639,7 +643,11 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; lineno: number; column: number; filename: string; val: Node };
++        toJSON(): {
++          lineno: number;
++          column: number;
++          filename: string;
++        };
  
 -        export class Charset extends Node {
 -            val: string;
@@ -718,7 +726,13 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { nodes: Node[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          nodes: Node[];
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
  
 -            constructor(selectors: Selector[]);
@@ -745,7 +759,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { val: string; quote: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          quote: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
  
 -            /**
@@ -753,38 +774,50 @@ index 2f27407..7ee062e 100755
 -             */
 -            toJSON(): { __type: string; name: string; params: Params; body: Block; lineno: number; column: number; filename: string };
 -        }
-+    export class Supports extends Node {
-+      condition: any; // FIXME
-+    }
++    export class Supports extends AtRule {
++      condition: Node;
  
 -        export class Selector extends Node {
 -            inherits: boolean;
 -            segments: Node[];
-+    export class Number extends Node { }
++      /**
++       * Return a JSON representation of this node.
++       */
++      toJSON(): {
++        __type: string;
++        condition: Node;
++        block: Block;
++        lineno: number;
++        column: number;
++        filename: string;
++      };
++    }
  
 -            constructor(segs: Node[]);
-+    export class Boolean extends Node {
-+        val: boolean;
-+        isTrue: boolean;
-+        isFalse: boolean;
++    export class Number extends Node { }
  
 -            /**
 -             * Return a JSON representation of this node.
 -             */
 -            toJSON(): { __type: string; segments: Node[]; inherits: boolean; val: string; lineno: number; column: number; filename: string };
 -        }
-+        constructor();
-+        constructor(val: boolean);
++    export class Boolean extends Node {
++        val: boolean;
++        isTrue: boolean;
++        isFalse: boolean;
  
 -        export class Arguments extends Expression {
 -            map: Dictionary<Node>;
++        constructor();
++        constructor(val: boolean);
+ 
+-            constructor();
 +        /**
 +         * Negate the value.
 +         */
 +        // tslint:disable-next-line no-unnecessary-qualifier
 +        negate(): Nodes.Boolean;
- 
--            constructor();
++
 +        /**
 +         * Return 'Boolean'.
 +         */
@@ -798,7 +831,10 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: boolean;
++        };
 +    }
  
 -        export class Atblock extends Node {
@@ -806,39 +842,34 @@ index 2f27407..7ee062e 100755
 -            nodes: Node[];
 +    export class Object extends Node {
 +        vals: Dictionary<Node>;
-+        length: number;
++        keys: Dictionary<Node>;
  
 -            constructor();
-+        constructor();
++        length: number;
  
 -            /**
 -             * Return a JSON representation of this node.
 -             */
 -            toJSON(): { __type: string; block: Block; lineno: number; column: number; filename: string };
 -        }
++        constructor();
+ 
+-        export class Atrule extends Node {
+-            type: string;
++        setValue(key: string, value: Node): this;
++        setKey(key: string, value: Node): ThisParameterType;
+ 
+-            hasOnlyProperties: boolean;
 +        /**
 +         * Set `key` to `val`.
 +         */
 +        set(key: string, value: Node): this;
  
--        export class Atrule extends Node {
--            type: string;
+-            constructor(type: string);
 +        /**
 +         * Get `key`.
 +         */
 +        get(key: string): Node;
- 
--            hasOnlyProperties: boolean;
-+        /**
-+         * Has `key`?
-+         */
-+        has(key: string): boolean;
- 
--            constructor(type: string);
-+        /**
-+         * Convert object to string with properties.
-+         */
-+        toBlock(): string;
  
 -            /**
 -             * Return a JSON representation of this node.
@@ -846,9 +877,26 @@ index 2f27407..7ee062e 100755
 -            toJSON(): { __type: string; type: string; segments: Node[]; block?: Block | undefined; lineno: number; column: number; filename: string };
 -        }
 +        /**
++         * Has `key`?
++         */
++        has(key: string): boolean;
++
++        /**
++         * Convert object to string with properties.
++         */
++        toBlock(): string;
++
++        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; vals: Dictionary<Node>; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          vals: Dictionary<Node>;
++          keys: Dictionary<Node>;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
      }
  
 -    //#endregion
@@ -863,7 +911,12 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
      }
  
 -    export interface UrlOptions {
@@ -872,12 +925,11 @@ index 2f27407..7ee062e 100755
 +    export class Ident extends Node {
 +        name: string;
 +        string: string;
-+        rest: any;
 +        val: any;
 +        mixin: boolean;
-+        property: any;
 +
 +        isEmpty: boolean;
++        hash: string;
 +
 +        constructor(name: string, val: Node);
 +        constructor(name: string, val: Node, mixin: boolean);
@@ -885,7 +937,17 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; val: Node; mixin: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          name: string;
++          val: Node;
++          mixin: boolean;
++          property?: any; // FIXME
++          rest?: any; // FIXME
++          lineno: number;
++          column: number;
++          filename: string;
++        };
      }
  
 -    export interface LiteralFunction {
@@ -901,7 +963,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; string: string; val: string; prefixed: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          string: string;
++          prefixed: boolean;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
      }
  
 -    export interface ExceptionOptions {
@@ -919,7 +989,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: number; type: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: number;
++          type: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
      }
  
 -    //#endregion
@@ -929,6 +1006,7 @@ index 2f27407..7ee062e 100755
 +        b: number;
 +        a: number;
 +        rgba: RGBA;
++
 +        hsla: HSLA;
 +        raw: string;
 +
@@ -967,7 +1045,18 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; r: number; g: number; b: number; a: number; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          r: number;
++          g: number;
++          b: number;
++          a: number;
++          raw: string;
++          name: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class HSLA extends Node {
@@ -1008,7 +1097,16 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; h: number; s: number; l: number; a: number; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          h: number;
++          s: number;
++          l: number;
++          a: number;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Block extends Node {
@@ -1032,13 +1130,21 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: Node[]; scope: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          scope: boolean;
++          lineno: number;
++          column: number;
++          filename: string;
++          nodes: Node[];
++        };
 +    }
 +
 +    export class Group extends Node {
 +        nodes: Node[];
-+        block: Block;
++        extends: Node[];
 +
++        block: Block; // nodes[0].block
 +        hasOnlyPlaceholders: boolean;
 +
 +        constructor();
@@ -1051,7 +1157,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: Node[]; block: Block; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          nodes: Node[];
++          block: Block;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Expression extends Node {
@@ -1071,7 +1184,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: Node[]; isList: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          isList: boolean;
++          preserve: boolean;
++          lineno: number;
++          column: number;
++          filename: string;
++          nodes: Node[];
++        };
 +    }
 +
 +    export class Property extends Node {
@@ -1083,7 +1204,16 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; segments: Node[]; name: string; expr?: Expression | undefined; literal?: Literal | undefined; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          segments: Node[];
++          name: string;
++          lineno: number;
++          column: number;
++          filename: string;
++          expr?: Expression;
++          literal?: Literal;
++        };
 +    }
 +
 +    export class Each extends Node {
@@ -1092,10 +1222,21 @@ index 2f27407..7ee062e 100755
 +        expr: Expression;
 +        block: Block;
 +
++        constructor(val: string, key: string, expr: Expression);
++
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: string; key: string; expr: Expression; block: Block; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          key: string;
++          expr: Expression;
++          block: Block;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class If extends Node {
@@ -1103,7 +1244,6 @@ index 2f27407..7ee062e 100755
 +        elses: Expression[];
 +        block: Block;
 +        negate: boolean;
-+        elses: Expression[];
 +
 +        constructor(cond: Expression, negate: boolean);
 +        constructor(cond: Expression, block: Block);
@@ -1111,7 +1251,17 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; cond: Expression; elses: Expression[]; block: Block; negate: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          cond: Expression;
++          block: Block;
++          elses: Expression[];
++          negate: boolean;
++          postfix: any; // FIXME
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Call extends Node {
@@ -1123,7 +1273,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; args: Expression; lineno: number; column: number; filename: string; val: any };
++        toJSON(): {
++          __type: string;
++          name: string;
++          args: Expression;
++          lineno: number;
++          column: number;
++          filename: string;
++          block?: Block;
++        };
 +    }
 +
 +    export class UnaryOp extends Node {
@@ -1135,7 +1293,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; op: string; expr: Expression; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          op: string;
++          expr: Expression;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class BinOp extends Node {
@@ -1148,21 +1313,39 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; op: string; left: Expression; right: Expression; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          left: Expression;
++          right: Expression;
++          op: string;
++          lineno: number;
++          column: number;
++          filename: string;
++          val?: Node;
++        };
 +    }
 +
 +    export class Ternary extends Node {
-+        op: string;
++        cond: Nodes.BinOp;
 +        trueExpr: Expression;
 +        falseExpr: Expression;
-+        cond: Nodes.BinOp;
++
++        op: string;
 +
 +        constructor(op: string, trueExpr: Expression, falseExpr: Expression);
 +
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; op: string; trueExpr: Expression; falseExpr: Expression; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          cond: Nodes.BinOp;
++          trueExpr: Expression;
++          falseExpr: Expression;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Return extends Node {
@@ -1173,10 +1356,16 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; expr: Expression; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          expr: Expression;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
-+    export class Media extends Node {
++    export class Media extends AtRule {
 +        val: string;
 +
 +        constructor(val: string);
@@ -1184,7 +1373,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          block: Block;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class QueryList extends Node {
@@ -1205,23 +1401,29 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          nodes: Node[];
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Query extends Node {
-+        nodes: QueryExpr[];
-+        type: any; // FIXME
++        nodes: Feature[];
++        type: string;
 +        predicate: string;
 +
-+        resolvedType: string;
-+        resolvedPredicate: string;
++        resolvedType: string | undefined;
++        resolvedPredicate: string | undefined;
 +
 +        constructor();
 +
 +        /**
 +         * Push the given `expr`.
 +         */
-+        push(expr: QueryExpr): void;
++        push(expr: Feature): void;
 +
 +        /**
 +         * Merges this query with the `other`.
@@ -1231,10 +1433,18 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: QueryExpr[]; predicate: string; type: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          predicate: string;
++          type: string;
++          nodes: QueryExpr[];
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
-+    export class QueryExpr extends Node {
++    export class Feature extends Node {
 +        segments: Node[];
 +        expr: Expression;
 +
@@ -1243,7 +1453,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; segments: Node[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          segments: Node[];
++          lineno: number;
++          column: number;
++          filename: string;
++          expr?: Expression;
++          name?: string;
++        };
 +    }
 +
 +    export class Params extends Node {
@@ -1259,7 +1477,13 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; nodes: Node[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          nodes: Node[];
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Comment extends Node {
@@ -1272,7 +1496,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; str: string; suppress: boolean; inline: boolean; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          str: string;
++          suppress: boolean;
++          inline: boolean;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Keyframes extends Node {
@@ -1285,7 +1517,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; segments: Node[]; prefix: string; block: Block; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          segments: Node[];
++          prefix: string;
++          block: Block;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Member extends Node {
@@ -1297,7 +1537,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; left: Node; right: Node; val?: string | undefined; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          left: Node;
++          right: Node;
++          lineno: number;
++          column: number;
++          filename: string;
++          val?: string;
++        };
 +    }
 +
 +    export class Charset extends Node {
@@ -1308,7 +1556,13 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Namespace extends Node {
@@ -1320,7 +1574,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; val: string; prefix: string; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          val: string;
++          prefix: string;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Import extends Node {
@@ -1333,7 +1594,15 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; path: Expression; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          path: Expression;
++          once: boolean;
++          mtime: number;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Extend extends Node {
@@ -1344,32 +1613,62 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; selectors: Selector[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          selectors: Selector[];
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Function extends Node {
 +        name: string;
 +        params: Params;
 +        body: Block;
++        fn?: Function;
++
++        arity: number;
 +
 +        constructor(name: string, params: Params, body: Block);
 +
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; params: Params; body: Block; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          name: string;
++          lineno: number;
++          column: number;
++          filename: string;
++          fn?: Function;
++          params?: Params;
++          body?: Block;
++        };
 +    }
 +
 +    export class Selector extends Node {
 +        inherits: boolean;
 +        segments: Node[];
++        optional: boolean;
++
++        isPlaceholder: boolean;
 +
 +        constructor(segs: Node[]);
 +
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; name: string; segments: Node[]; inherits: boolean; val: any; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          inherits: boolean;
++          segments: Node[];
++          optional: boolean;
++          val: any;
++          lineno: number;
++          column: number;
++          filename: string;
++        };
 +    }
 +
 +    export class Arguments extends Expression {
@@ -1380,7 +1679,16 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; map: Dictionary<Node>; isList: boolean; preserve: boolean; nodes: Node[]; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          map: Dictionary<Node>;
++          isList: boolean;
++          preserve: boolean;
++          lineno: number;
++          column: number;
++          filename: string;
++          nodes: Node[];
++        };
 +    }
 +
 +    export class Atblock extends Node {
@@ -1392,7 +1700,13 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; block: Block; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          block: Block;
++          lineno: number;
++          column: number;
++          fileno: string;
++        };
 +    }
 +
 +    export class Atrule extends Node {
@@ -1407,6 +1721,14 @@ index 2f27407..7ee062e 100755
 +        /**
 +         * Return a JSON representation of this node.
 +         */
-+        toJSON(): { __type: string; type: string; segments: Node[]; block?: Block | undefined; lineno: number; column: number; filename: string };
++        toJSON(): {
++          __type: string;
++          type: string;
++          segments: Node[];
++          lineno: number;
++          column: number;
++          filename: string;
++          block?: Block | undefined;
++        };
 +    }
  }

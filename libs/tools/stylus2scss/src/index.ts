@@ -4,9 +4,10 @@ import { exec, jsonRead, treeVisit } from '@myndpm/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { join, relative } from 'path';
-import { of } from 'rxjs';
-import { concatMap, filter, map, mapTo, mergeMap } from 'rxjs/operators';
-import { parseOptions } from './schema';
+import { from, of } from 'rxjs';
+import { concatMap, filter, last, map, mapTo, mergeMap, scan } from 'rxjs/operators';
+import { stylusParse } from './converter/stylus2scss';
+import { Options, parseOptions } from './schema';
 
 const program = new Command();
 const version = jsonRead(join(__dirname, '../package.json'), 'version');
@@ -35,7 +36,7 @@ treeVisit(options.path).pipe(
     return file.endsWith('.styl') || options.onlyMigrate && file.endsWith('.scss');
   }),
   map((file) => ({ ...options, file })),
-  concatMap((opts) => {
+  mergeMap((opts) => {
     // diagnose
     if (!opts.onlyMigrate) {
       console.log(chalk.dim(opts.diagnose ? '>' : '-', relative(opts.path, opts.file)));
@@ -43,6 +44,20 @@ treeVisit(options.path).pipe(
         counter++;
       }
     }
+    // analyze
+    return !opts.diagnose
+      ? stylusParse(opts.file).pipe(
+        mapTo(opts)
+      )
+      : of(opts);
+  }),
+  scan<Required<Options>, Required<Options>[]>(
+    (all, opts) => all.concat(opts), [],
+  ),
+  last(), // wait until all files are analyzed
+  filter(all => Boolean(all.length)), // prevents EmptyError
+  mergeMap(all => from(all)), // emit the files one by one
+  concatMap((opts) => {
     // convert
     if (!options.diagnose && !options.onlyMigrate) {
       const file = opts.file.replace(/\.styl$/, '.scss');

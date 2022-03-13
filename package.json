@@ -51,7 +51,8 @@
     "help": "nx help",
     "nx": "nx",
     "yarn": "yarn",
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package"
+    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package && yarn clean:rxjs",
+    "clean:rxjs": "rm -Rf libs/tools/utils/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
   },
   "dependencies": {
     "@angular/animations": "12.2.13",
