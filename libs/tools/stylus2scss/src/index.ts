@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { jsonRead, treeVisit } from '@myndpm/utils';
+import { exec, jsonRead, treeVisit } from '@myndpm/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { join, relative } from 'path';
 import { of } from 'rxjs';
-import { filter, map, mergeMap, tap } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, mergeMap } from 'rxjs/operators';
 import { parseOptions } from './schema';
 
 const program = new Command();
@@ -34,29 +34,29 @@ treeVisit(options.path).pipe(
   filter((file) => {
     return file.endsWith('.styl') || options.onlyMigrate && file.endsWith('.scss');
   }),
-  map((file) => ({
-    ...options,
-    file,
-  })),
-  // diagnose
-  tap(({ path, diagnose, onlyMigrate, file }) => {
-    if (diagnose && !onlyMigrate) {
-      console.log(chalk.dim('>', relative(path, file)));
-      counter++;
+  map((file) => ({ ...options, file })),
+  concatMap((options) => {
+    // diagnose
+    if (!options.onlyMigrate) {
+      console.log(chalk.dim(options.diagnose ? '>' : '-', relative(options.path, options.file)));
+      if (options.diagnose) {
+        counter++;
+      }
     }
-  }),
-  // convert
-  mergeMap((options) => {
+    // convert
     if (!options.diagnose && !options.onlyMigrate) {
+      const file = options.file.replace(/\.styl$/, '.scss');
       // TODO perform conversion
-      options.file = options.file.replace(/\.styl$/, '.scss');
+      return exec('git', ['mv', options.file, file]).pipe(
+        mapTo({ ...options, file }),
+      );
     }
     return of(options);
   }),
-  // migrate
   mergeMap((options) => {
+    // migrate
     if (options.file.endsWith('.scss')) {
-      console.log(chalk.dim('>', relative(options.path, options.file)));
+      console.log(chalk.dim(options.diagnose ? '>' : '+', relative(options.path, options.file)));
       counter++;
       // TODO perform migration
     }

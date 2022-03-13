@@ -20,7 +20,7 @@ export function exec(cmd: string, args: string[], options: IExecOptions = {}): O
   const opts = {
     cwd: process.cwd(),
     env: process.env,
-    log: true,
+    log: false,
     ...options,
   };
 
@@ -43,7 +43,7 @@ export function spawn(cmd: string, args: string[], options: ISpawnOptions = {}):
   const opts: ISpawnOptions = {
     cwd: process.cwd(),
     env: process.env,
-    log: true,
+    log: false,
     shell: true,
     stdio: 'inherit',
     ...options,
