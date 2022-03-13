@@ -1,10 +1,10 @@
 import { join } from 'path';
 import { from, Observable, of, throwError } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
-import { readDir, readFile, stat } from './rxjs-fs';
+import { mergeMap } from 'rxjs/operators';
+import { readDir, stat } from './rxjs-fs';
 
 /**
- * Similar to @angular-devkit's Tree methods.
+ * Similar to @angular-devkit's Tree.visit.
  */
 
 export function treeVisit(path: string): Observable<string> {
@@ -20,11 +20,5 @@ export function treeVisit(path: string): Observable<string> {
       }
       return throwError(`Not a directory nor file: ${path}`);
     }),
-  );
-}
-
-export function treeRead(filepath: string): Observable<string> {
-  return readFile(filepath).pipe(
-    map(buffer => buffer?.toString()),
   );
 }
