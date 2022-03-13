@@ -4,7 +4,9 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "dist/libs/*"
+    "libs/forms",
+    "libs/tools/*",
+    "dist/libs/demos"
   ],
   "engines": {
     "npm": "please-use-yarn",

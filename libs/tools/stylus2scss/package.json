@@ -21,6 +21,7 @@
     "test": "ng test"
   },
   "dependencies": {
+    "@myndpm/utils": "0.0.1",
     "chalk": "^4.0.0",
     "commander": "^9.0.0",
     "invariant": "^2.2.4",

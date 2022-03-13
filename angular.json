@@ -177,7 +177,8 @@
             "tsConfig": "libs/tools/utils/tsconfig.lib.json",
             "packageJson": "libs/tools/utils/package.json",
             "main": "libs/tools/utils/src/index.ts",
-            "assets": ["libs/tools/utils/*.md"]
+            "assets": ["libs/tools/utils/*.md"],
+            "deleteOutputPath": false
           }
         },
         "lint": {
