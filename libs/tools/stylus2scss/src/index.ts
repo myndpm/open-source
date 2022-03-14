@@ -3,10 +3,10 @@
 import { exec, jsonRead, treeVisit } from '@myndpm/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
-import { join, relative } from 'path';
+import { dirname, join, relative } from 'path';
 import { from, of } from 'rxjs';
 import { concatMap, filter, last, map, mapTo, mergeMap, scan } from 'rxjs/operators';
-import { stylusParse } from './converter/stylus2scss';
+import { stylusConvert, stylusParse } from './converter/stylus2scss';
 import { Options, parseOptions } from './schema';
 
 const program = new Command();
@@ -43,7 +43,7 @@ treeVisit(options.path).pipe(
   mergeMap((opts) => {
     // diagnose
     if (!opts.onlyMigrate) {
-      console.log(chalk.dim(opts.diagnose ? '>' : '-', relative(opts.path, opts.file)));
+      console.log(chalk.dim(opts.diagnose ? '>' : '-', relative(dirname(opts.path), opts.file)));
       if (options.diagnose) {
         counter++;
       }
@@ -65,8 +65,9 @@ treeVisit(options.path).pipe(
     // convert
     if (!options.diagnose && !options.onlyMigrate) {
       const file = opts.file.replace(/\.styl$/, '.scss');
-      // TODO perform conversion
-      return exec('git', ['mv', opts.file, file]).pipe(
+      return stylusConvert(opts).pipe(
+        concatMap(() => exec('git', ['add', opts.file])),
+        concatMap(() => exec('git', ['mv', opts.file, file])),
         mapTo({ ...opts, file }),
       );
     }
@@ -75,7 +76,7 @@ treeVisit(options.path).pipe(
   mergeMap((opts) => {
     // migrate
     if (opts.file.endsWith('.scss')) {
-      console.log(chalk.dim(opts.diagnose ? '>' : '+', relative(opts.path, opts.file)));
+      console.log(chalk.dim(opts.diagnose ? '>' : '+', relative(dirname(opts.path), opts.file)));
       counter++;
       // TODO perform migration
     }

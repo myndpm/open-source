@@ -29,35 +29,3 @@ export function replaceFirstATSymbol(str: string, temp = '$'): string {
 export function getCharLength(str: string, char: string): number {
   return str.split(char).length - 1
 }
-
-export function nodesToJSON(nodes: any[]): any[] {
-  return nodes.map(node =>
-    Object.assign(
-      {
-        // default in case not in node
-        nodes: []
-      },
-      node.toJSON()
-    )
-  )
-}
-
-export function get(obj: any, pathArray: any, defaultValue?: any) {
-  if (obj == null) {
-    return defaultValue;
-  }
-
-  let value = obj
-
-  pathArray = [].concat(pathArray)
-
-  for (let i = 0; i < pathArray.length; i += 1) {
-    const key = pathArray[i]
-    value = value[key];
-    if (value == null) {
-      return defaultValue;
-    }
-  }
-
-  return value;
-}

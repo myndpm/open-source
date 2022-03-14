@@ -1,5 +1,5 @@
 diff --git a/node_modules/@types/stylus/index.d.ts b/node_modules/@types/stylus/index.d.ts
-index 2f27407..33489d9 100755
+index 2f27407..91df82d 100755
 --- a/node_modules/@types/stylus/index.d.ts
 +++ b/node_modules/@types/stylus/index.d.ts
 @@ -111,7 +111,7 @@ declare namespace Stylus {
@@ -20,7 +20,7 @@ index 2f27407..33489d9 100755
      }
  
      export class Evaluator {
-@@ -651,718 +653,1043 @@ declare namespace Stylus {
+@@ -651,718 +653,1045 @@ declare namespace Stylus {
      export class Compiler {
      }
  
@@ -602,6 +602,7 @@ index 2f27407..33489d9 100755
 -            suppress: boolean;
 -            inline: boolean;
 +        val: any; // FIXME
++        block: Block;
  
 -            constructor(str: string, suppress: boolean, inline: boolean);
 -
@@ -644,6 +645,7 @@ index 2f27407..33489d9 100755
 +         * Return a JSON representation of this node.
 +         */
 +        toJSON(): {
++          __type: string;
 +          lineno: number;
 +          column: number;
 +          filename: string;
@@ -774,7 +776,7 @@ index 2f27407..33489d9 100755
 -             */
 -            toJSON(): { __type: string; name: string; params: Params; body: Block; lineno: number; column: number; filename: string };
 -        }
-+    export class Supports extends AtRule {
++    export class Supports extends Atrule {
 +      condition: Node;
  
 -        export class Selector extends Node {
@@ -1365,8 +1367,8 @@ index 2f27407..33489d9 100755
 +        };
 +    }
 +
-+    export class Media extends AtRule {
-+        val: string;
++    export class Media extends Atrule {
++        val: any;
 +
 +        constructor(val: string);
 +

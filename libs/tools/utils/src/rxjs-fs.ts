@@ -14,8 +14,11 @@ export {
   writeFile,
 } from '@ckapp/rxjs-node-fs';
 
-export function readFile(filepath: string): Observable<string> {
-  return rxReadFile(filepath).pipe(
+export function readFile(
+  filepath: string,
+  options?: { encoding?: BufferEncoding; flag?: string } | null,
+): Observable<string> {
+  return rxReadFile(filepath, options as any).pipe(
     map(buffer => buffer?.toString()),
   );
 }
