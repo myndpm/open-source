@@ -5,10 +5,11 @@ import { nodesToJSON } from '../parser/utils';
 import { Options } from '../schema';
 import { getCharLength, repeatString, replaceFirstATSymbol, trimFirst } from '../utils';
 
-let MIXINS: string[] = [];
-let VARIABLES: string[] = [];
+let LANG = 'scss';
 let QUOTE = `'`;
 let AUTOPREFIXER = true;
+let VARIABLES: string[] = [];
+let MIXINS: string[] = [];
 
 let FNPARAMS: string[] = [];
 let KEYLIST: string[] = [];
@@ -43,6 +44,15 @@ let nodesLength = 0;
 let oldLineno = 1;
 let paramsLength = 0;
 let selectorLength = 0;
+
+const TARGETS = new Map([
+  ['scss', {
+    variable: '$'
+  }],
+  ['less', {
+    variable: '@'
+  }],
+]);
 
 const OPERATION_MAP = new Map([
   ['&&', 'and'],
@@ -116,6 +126,7 @@ function getHandler(node: Nodes.Node): (node: any) => string {
   const type = node.toJSON().__type;
   switch (type) {
     case 'Arguments': return handleArguments;
+    case 'Atblock': return handleAtblock;
     case 'Atrule': return handleAtrule;
     case 'BinOp': return handleBinOp;
     case 'Block': return handleBlock;
@@ -152,6 +163,7 @@ function getHandler(node: Nodes.Node): (node: any) => string {
     case 'Ternary': return handleTernary;
     case 'UnaryOp': return handleUnaryOp;
     case 'Unit': return handleUnit;
+    default: throw new Error(`No handler for '${type}`);
   }
   return () => '';
 }
@@ -190,6 +202,14 @@ function handleAtrule({ type, block, lineno, segments }: Nodes.Atrule): string {
   oldLineno = lineno;
   const typeText = segments.length ? `@${type} ` : `@${type}`;
   return `${before + typeText + handleNodes(segments) + handleBlock(block)}`;
+}
+
+function handleAtblock(node: Nodes.Atblock): string {
+  const before = handleLinenoAndIndentation(node);
+  oldLineno = node.lineno;
+  const valText = handleNode(node.val);
+  const block = handleBlock(node.block);
+  return `${before}@mixin ${valText + block}`;
 }
 
 function handleBinOp({ op, left, right }: Nodes.BinOp): string {
@@ -306,7 +326,7 @@ function handleEach(node: Nodes.Each): string {
   let exprText = `@each $${node.val} in `;
   VARIABLES.push(node.val);
   node.expr.nodes.forEach((node, idx) => {
-    const prefix = node instanceof nodes.Ident ? '$' : '';
+    const prefix = node instanceof nodes.Ident ? TARGETS.get(LANG)?.variable : '';
     const exp = prefix + handleNode(node);
     exprText += idx ? `, ${exp}` : exp;
   });
@@ -317,7 +337,7 @@ function handleEach(node: Nodes.Each): string {
 
   const blank = getIndentation();
   before += blank;
-  const block = handleBlock(node.block).replace(`$${node.key}`, '');
+  const block = handleBlock(node.block).replace(`${TARGETS.get(LANG)?.variable}${node.key}`, '');
   return before + exprText + block;
 }
 
@@ -478,8 +498,11 @@ function handleIdent(node: Nodes.Ident): string {
       return `#{${node.name}}`;
     }
     if (node.mixin) {
+      const before = handleLinenoAndIndentation(node.val);
+      oldLineno = node.val.lineno;
+      const mixinValue = node.name === 'block' ? '@content;' : `@include ${replaceFirstATSymbol(node.name, '')};`;
       identLength--;
-      return node.name === 'block' ? '@content;' : `#{$${node.name}}`;
+      return `${before}${mixinValue}`;
     }
     let nameText = (VARLIST.includes(node.name) || VARIABLES.includes(node.name))
       ? replaceFirstATSymbol(node.name)
@@ -492,6 +515,7 @@ function handleIdent(node: Nodes.Ident): string {
   }
 
   if (node.val instanceof nodes.Expression) {
+    const comments: Nodes.Comment[] = [];
     if (findNodesType(node.val.nodes, 'Object')) {
       KEYLIST.push(node.name);
     }
@@ -499,11 +523,19 @@ function handleIdent(node: Nodes.Ident): string {
     oldLineno = node.val.lineno;
     let expText = '';
     (node.val.nodes || []).forEach((node, idx) => {
-      expText += idx ? ` ${handleNode(node)}` : handleNode(node);
-    })
+      if (node instanceof nodes.Comment) {
+        comments.push(node);
+      } else {
+        expText += idx ? ` ${handleNode(node)}` : handleNode(node);
+      }
+    });
+    const commentText = comments
+      .map(node => handleNode(node))
+      .join(' ')
+      .replace(/^ +/, ' ');
     VARLIST.push(node.name);
     identLength--;
-    return `${before}${replaceFirstATSymbol(node.name)}: ${trimFnSemicolon(expText)};`;
+    return `${before}${replaceFirstATSymbol(node.name)}: ${trimFnSemicolon(expText)}; ${commentText}`;
   }
 
   if (node.val instanceof nodes.Function) {
@@ -605,8 +637,11 @@ function handleLiteral(node: Nodes.Literal): string {
 function handleMedia(node: Nodes.Media): string {
   const before = handleLinenoAndIndentation(node);
   oldLineno = node.lineno;
-  const valText = handleNode(node.val);
+  let valText = handleNode(node.val);
   const block = handleBlock(node.block);
+  if (valText[0] === '$') {
+    valText = `#{${valText}}`
+  }
   return `${before}@media ${valText + block}`;
 }
 
@@ -669,7 +704,7 @@ function handleProperty({ expr, lineno, segments }: Nodes.Property): string {
         const beforeExpText = before + trimFirst(handleExpression(expr));
         const expText = `${before}${segmentsText}: $${expNode.name};`;
         isProperty = false;
-        PROPLIST.unshift({ prop: segmentsText, value: '$' + expNode.name });
+        PROPLIST.unshift({ prop: segmentsText, value: TARGETS.get(LANG)?.variable + expNode.name });
         return beforeExpText + expText;
       }
     }
