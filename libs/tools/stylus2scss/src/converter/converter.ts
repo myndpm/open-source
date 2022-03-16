@@ -12,7 +12,7 @@ export function converter(
     return content;
   }
 
-  if (options.signComments) {
+  if (options.comments) {
     content = content.replace(/\/\/\s(.*)/g, '/* !#sign#! $1 */');
   }
 

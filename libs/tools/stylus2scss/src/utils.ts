@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 export function repeatString(str: string, num: number): string {
   return num > 0 ? str.repeat(num) : ''
 }
@@ -28,4 +30,19 @@ export function replaceFirstATSymbol(str: string, temp = '$'): string {
 
 export function getCharLength(str: string, char: string): number {
   return str.split(char).length - 1
+}
+
+// logging
+
+export function logTitle(...rest: string[]): void {
+  console.log(chalk.cyanBright(rest));
+}
+
+export function logInfo(...rest: string[]): false {
+  console.log(chalk.dim(...rest));
+  return false;
+}
+
+export function logFooter(...rest: string[]): void {
+  console.log(chalk.yellow(rest));
 }

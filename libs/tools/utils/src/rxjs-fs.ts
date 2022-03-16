@@ -1,5 +1,6 @@
 import { readFile as rxReadFile } from '@ckapp/rxjs-node-fs';
-import { Observable } from 'rxjs';
+import { rename } from 'fs';
+import { bindNodeCallback, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -22,3 +23,6 @@ export function readFile(
     map(buffer => buffer?.toString()),
   );
 }
+
+export const renameFile: (oldPath: string, newPath: string) => Observable<void>
+  = bindNodeCallback(rename);

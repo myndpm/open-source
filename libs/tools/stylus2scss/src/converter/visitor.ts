@@ -90,7 +90,7 @@ export function visitor(
   MIXINS = [];
   VARIABLES = [];
 
-  const indent = ' '.repeat(Number(options.indent))
+  const indent = ' '.repeat(Number(options.indent));
   result = result.replace(/(.*\S.*)/g, `${indent}$1`);
   result = result.replace(/(.*)>>>(.*)/g, `$1/deep/$2`);
   return result + '\n';
