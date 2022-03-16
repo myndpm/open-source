@@ -79,10 +79,10 @@ export function visitor(
   AUTOPREFIXER = options.autoprefixer;
   VARIABLES = variables;
   MIXINS = mixins;
+  oldLineno = 1;
 
   let result = handleNodes(ast.nodes) || '';
 
-  oldLineno = 1;
   FNPARAMS = [];
   KEYLIST = [];
   PROPLIST = [];
@@ -91,6 +91,7 @@ export function visitor(
   VARIABLES = [];
 
   const indent = ' '.repeat(Number(options.indent));
+  result = result.replace(/^\n+/, '');
   result = result.replace(/(.*\S.*)/g, `${indent}$1`);
   result = result.replace(/(.*)>>>(.*)/g, `$1/deep/$2`);
   return result + '\n';
@@ -101,12 +102,7 @@ function handleNodes(items: Nodes.Node[] = []) {
   nodesLength = items.length;
   items.forEach((node, i) => {
     nodesIndex = i;
-    if (node instanceof nodes.Comment) {
-      const isInlineComment = items[i - 1] && (items[i - 1].lineno === node.lineno);
-      text += handleComment(node, isInlineComment);
-    } else {
-      text += handleNode(node);
-    }
+    text += handleNode(node);
   });
   nodesIndex = 0;
   nodesLength = 0;
@@ -283,11 +279,12 @@ function handleCall({ name, args, lineno, block }: Nodes.Call): string {
   callName = name;
 
   let blockText = '';
-  let before = handleLineno(lineno);
-  oldLineno = lineno;
+  let before = '';
+  if (!isExpression) {
+    before = handleLineno(lineno);
+    oldLineno = lineno;
+  }
   if (isCallMixin() || block || selectorLength || MIXINS.includes(callName)) {
-    before = before || '\n';
-    before += getIndentation();
     before += '@include ';
   }
   const argsText = handleArguments(args).replace(/;/g, '');
@@ -306,16 +303,16 @@ function handleCharset({ val: { val: value, quote }, lineno }: Nodes.Charset): s
   return `${before}@charset ${quote + value + quote};`;
 }
 
-function handleComment(node: Nodes.Comment, isInlineComment?: boolean): string {
-  const before = isInlineComment ? ' ' : handleLinenoAndIndentation(node);
+function handleComment(node: Nodes.Comment): string {
+  const before = node.inline ? ' ' : handleLinenoAndIndentation(node);
   const matches = node.str.match(/\n/g);
   oldLineno = node.lineno;
   if (Array.isArray(matches)) {
     oldLineno += matches.length;
   }
-  return before + node.suppress
-    ? node.str
-    : node.str.replace(/^\/\*/, '/*!');
+  return node.suppress
+    ? before + node.str
+    : before + node.str.replace(/^\/\*/, '/*!');
 }
 
 function handleEach(node: Nodes.Each): string {
@@ -362,18 +359,18 @@ function handleExpression(node: Nodes.Expression): string {
 
   let space = '';
   if (subLineno > node.lineno) {
-    before = handleLineno(subLineno);
+    before = handleLinenoAndIndentation({ lineno: subLineno });
     oldLineno = subLineno;
     if (subLineno > lastPropertyLineno) {
       space = repeatString(' ', lastPropertyLength);
     }
   } else {
-    before = handleLineno(node.lineno);
+    before = handleLinenoAndIndentation(node);
+    oldLineno = node.lineno;
     const callNode = node.nodes.find(node => node instanceof nodes.Call);
     if (callNode && !isObject && !isCallMixin()) {
       space = repeatString(' ', lastPropertyLength);
     }
-    oldLineno = node.lineno;
   }
 
   node.nodes.forEach((node, idx) => {
@@ -383,7 +380,7 @@ function handleExpression(node: Nodes.Expression): string {
     } else {
       const nodeText = handleNode(node);
       const symbol = isProperty && (node as Nodes.Root).nodes.length ? ',' : '';
-      result += idx ? symbol + ' ' + nodeText : nodeText;
+      result += idx ? `${symbol} ${nodeText}` : nodeText;
     }
   })
 
@@ -403,14 +400,16 @@ function handleExpression(node: Nodes.Expression): string {
   }
 
   if (!returnSymbol || isIfExpression) {
-    return (before && space) ? trimSemicolon(before + getIndentation() + space + result, ';') : result;
+    return before && space
+      ? trimSemicolon(`${before}${getIndentation()}${space}${result}`, ';')
+      : `${before}${result}`;
   }
 
   let symbol = '';
   if (nodesIndex + 1 === nodesLength) {
     symbol = returnSymbol;
   }
-  return before + getIndentation() + symbol + result;
+  return `${before}${getIndentation()}${symbol}${result}`;
 }
 
 function handleExtend(node: Nodes.Extend) {
@@ -483,7 +482,7 @@ function handleIdent(node: Nodes.Ident): string {
   identLength++;
   const { rest, property } = node.toJSON();
 
-  if (node.val instanceof nodes.Null || !node.val) {
+  if (!node.val || node.val instanceof nodes.Null) {
     if (isExpression) {
       if (property || isCall) {
         const propertyVal = PROPLIST.find(item => item.prop === node.name);
@@ -498,8 +497,11 @@ function handleIdent(node: Nodes.Ident): string {
       return `#{${node.name}}`;
     }
     if (node.mixin) {
-      const before = handleLinenoAndIndentation(node.val);
-      oldLineno = node.val.lineno;
+      let before = '';
+      if (node.val?.lineno) {
+        before = handleLinenoAndIndentation(node.val);
+        oldLineno = node.val.lineno;
+      }
       const mixinValue = node.name === 'block' ? '@content;' : `@include ${replaceFirstATSymbol(node.name, '')};`;
       identLength--;
       return `${before}${mixinValue}`;
