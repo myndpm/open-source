@@ -24,12 +24,14 @@
     "@myndpm/utils": "0.0.1",
     "chalk": "^4.0.0",
     "commander": "^9.0.0",
+    "inquirer": "^8.0.0",
     "invariant": "^2.2.4",
     "lodash.get": "4.4.2",
     "sass-migrator": "^1.5.4",
     "stylus": "0.56.0"
   },
   "devDependencies": {
+    "@types/inquirer": "^8.0.0",
     "@types/lodash.get": "4.4.6",
     "@types/stylus": "0.48.36"
   },

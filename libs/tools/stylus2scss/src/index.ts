@@ -2,8 +2,9 @@
 
 import { exec, jsonRead, renameFile, treeVisit } from '@myndpm/utils';
 import { Command } from 'commander';
+import { prompt } from 'inquirer';
 import { dirname, join, relative } from 'path';
-import { Observable, OperatorFunction, from, of } from 'rxjs';
+import { Observable, OperatorFunction, from, of, BehaviorSubject } from 'rxjs';
 import { concatMap, filter, last, mapTo, mergeMap, scan } from 'rxjs/operators';
 import { stylusConvert, stylusParse } from './converter/stylus2scss';
 import { replaceCRLF } from './parser/line-ending';
@@ -36,26 +37,30 @@ program.parse(process.argv);
 
 let counter = 0;
 const opts = new Schema(program.opts());
+const question = (message: string) => ([{
+  message,
+  type: 'input',
+  name: 'message',
+}]);
 
 logTitle(`stylus2scss ${opts.diagnose ? 'diagnosis' : (opts.migrate ? 'migration' : 'conversion')}`);
 
 treeVisit(opts.path).pipe(
   filter((file) => opts.isValid(file)),
   concatMap((file) => {
-    // diagnose
     if (!opts.onlyMigrate) {
       logInfo(opts.diagnose ? '>' : '-', relative(dirname(opts.path), file));
       if (opts.onlyDiagnose) {
         counter++;
       }
     }
-    return of(opts).pipe(
-      concatMap(() => replaceCRLF(opts.withFile(file))),
-      concatMap(() => opts.shouldAnalize(file)
-        ? stylusParse(opts.withFile(file)).pipe(mapTo(file))
-        : of(file)
-      ),
-    );
+    // diagnose
+    return opts.shouldAnalize(file)
+      ? replaceCRLF(opts.withFile(file)).pipe(
+          concatMap(() => stylusParse(opts.withFile(file))),
+          mapTo(file),
+        )
+      : of(file);
   }),
   waitForAll(),
   concatMap(files => from(files)), // re-emit the files one by one
@@ -75,8 +80,10 @@ treeVisit(opts.path).pipe(
   waitForAll(),
   concatMap((files) => {
     return opts.shouldCommit()
-      ? exec('git', ['status'], { dryRun: opts.dryRun }).pipe(
-          concatMap(() => exec('git', ['commit', '--no-verify'], { dryRun: opts.dryRun })),
+      ? prompt(question('Message for the convert commit:')).ui.process.pipe(
+          concatMap(({ answer }) => {
+            return exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })
+          }),
           mergeMap(() => from(files)),
         )
       : from(files);
@@ -105,8 +112,8 @@ treeVisit(opts.path).pipe(
   waitForAll(),
   concatMap((files) => {
     return opts.shouldCommit()
-      ? exec('git', ['status'], { dryRun: opts.dryRun }).pipe(
-          concatMap(() => exec('git', ['commit', '--no-verify'], { dryRun: opts.dryRun })),
+      ? prompt(question('Message for the rename commit:')).ui.process.pipe(
+          concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
           mapTo(files),
         )
       : of(files);
