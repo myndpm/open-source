@@ -29,8 +29,7 @@ program
   .option('--migrate', 'Only run sass-migration on SCSS files', false)
   .option('--quote <quote>', '[convert] use single or double quote', 'single')
   .option('--indent', '[convert] additional output indent', '0')
-  .option('--autoprefixer', '[convert] consider autoprefixer', false)
-  .option('--comments', '[convert] special inline comments processing', true);
+  .option('--autoprefixer', '[convert] autoprefixer output', false);
 
 program.parse(process.argv);
 

@@ -13,7 +13,6 @@ export interface Options {
   quote: 'single' | 'double';
   indent: string;
   autoprefixer: boolean;
-  comments: boolean;
   // runtime
   file?: string;
 }
@@ -29,7 +28,6 @@ export class Schema implements Options {
   quote: 'single' | 'double' = 'single';
   indent = '0';
   autoprefixer = false;
-  comments = true;
   file?: string;
 
   get onlyDiagnose(): boolean {
