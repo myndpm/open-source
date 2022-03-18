@@ -6,6 +6,7 @@ import { prompt } from 'inquirer';
 import { dirname, join, relative } from 'path';
 import { Observable, OperatorFunction, from, of } from 'rxjs';
 import { concatMap, filter, last, mapTo, mergeMap, scan } from 'rxjs/operators';
+import { componentUpdate } from './converter/component';
 import { stylusConvert, stylusParse } from './converter/stylus2scss';
 import { replaceCRLF } from './parser/line-ending';
 import { Schema } from './schema';
@@ -87,14 +88,27 @@ treeVisit(opts.path).pipe(
       : from(files);
   }),
   concatMap((file) => {
+    // check angular component
+    if (opts.shouldCheckComponent(file)) {
+      const tsFile = file.replace(/\.styl$/, `.ts`);
+      return componentUpdate(file, opts.withFile(tsFile)).pipe(
+        concatMap(() => opts.git
+          ? exec('git', ['add', tsFile], { dryRun: opts.dryRun }).pipe(mapTo(file))
+          : of(file)
+        ),
+      );
+    }
+    return of(file);
+  }),
+  concatMap((file) => {
     // finish conversion
     if (opts.shouldConvert(file)) {
       const newFile = file.replace(/\.styl$/, `.scss`);
       return opts.git
-        ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(mapTo(file))
+        ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(mapTo(newFile))
         : !opts.dryRun
-          ? renameFile(file, newFile).pipe(mapTo(file))
-          : logInfo(`> mv ${file} ${newFile}`) || of(file);
+          ? renameFile(file, newFile).pipe(mapTo(newFile))
+          : logInfo(`> mv ${file} ${newFile}`) || of(newFile);
     }
     return of(file);
   }),

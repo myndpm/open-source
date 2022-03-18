@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { resolve } from 'path';
 
 export interface Options {
@@ -59,12 +60,20 @@ export class Schema implements Options {
     return file.endsWith('.styl');
   }
 
+  tsExists(file: string): boolean {
+    return existsSync(file.replace(/\.styl$/, '.ts'));
+  }
+
   shouldAnalize(file: string): boolean {
     return this.isStylus(file) && !this.onlyDiagnose && !this.onlyMigrate;
   }
 
   shouldConvert(file: string): boolean {
     return this.isStylus(file) && !this.onlyDiagnose && !this.onlyMigrate;
+  }
+
+  shouldCheckComponent(file: string): boolean {
+    return this.tsExists(file) && !this.onlyDiagnose && !this.onlyMigrate;
   }
 
   shouldMigrate(file: string): boolean {

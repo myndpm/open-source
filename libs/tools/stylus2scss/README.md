@@ -44,10 +44,10 @@ Only convert with some custom options:
 npx @myndpm/stylus2scss --convert --quote double --autoprefixer
 ```
 
-Only migrate the files and commit to git:
+Only migrate the files but do not add the changes to git:
 
 ```bash
-npx @myndpm/stylus2scss --migrate --commit
+npx @myndpm/stylus2scss --migrate --no-git
 ```
 
 ## Troubleshooting
