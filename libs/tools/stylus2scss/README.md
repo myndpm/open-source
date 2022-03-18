@@ -21,8 +21,39 @@ npx @myndpm/stylus2scss [--path <path>] [--commit] [--no-git] [--dry-run]
   * `--quote` Whether to use single or double quotes. Default is single
   * `--indent` Additional indent, useful for Vue
   * `--autoprefixer` Enable autoprefixed keyframes
-  * `--sign-comments` Sign inline comments for a safe conversion
+  * `--comments` Safe conversion of inline comments
 - `--migrate` Only run the sass-migration tool on the existing SCSS files
+
+## Examples
+
+List, convert and migrate a path renaming the files:
+
+```bash
+npx @myndpm/stylus2scss --path relative/path/
+```
+
+Convert and migrate the current folder and commit to git:
+
+```bash
+npx @myndpm/stylus2scss --commit
+```
+
+Only convert with some custom options:
+
+```bash
+npx @myndpm/stylus2scss --convert --quote double --autoprefixer
+```
+
+Only migrate the files and commit to git:
+
+```bash
+npx @myndpm/stylus2scss --migrate --commit
+```
+
+## Troubleshooting
+
+If the sass-migrator fails because the stylus file had a faulty conversion,
+this script can re-run with the migration only.
 
 ## Credits
 

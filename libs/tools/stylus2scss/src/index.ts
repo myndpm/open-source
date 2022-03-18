@@ -27,10 +27,10 @@ program
   .option('--diagnose', 'List the files to process in the folder', false)
   .option('--convert', 'Convert the file contents only', false)
   .option('--migrate', 'Only run sass-migration on SCSS files', false)
-  .option('--quote', '[convert] use single or double quote', 'single')
+  .option('--quote <quote>', '[convert] use single or double quote', 'single')
   .option('--indent', '[convert] additional output indent', '0')
-  .option('--no-autoprefixer', '[convert] consider autoprefixer', false)
-  .option('--no-comments', '[convert] special inline comments processing', true);
+  .option('--autoprefixer', '[convert] consider autoprefixer', false)
+  .option('--comments', '[convert] special inline comments processing', true);
 
 program.parse(process.argv);
 

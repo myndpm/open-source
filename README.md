@@ -16,6 +16,26 @@ Abstract layer to easily generate Dynamic Forms for Angular.
 
 [Library README](https://github.com/myndpm/open-source/blob/master/libs/forms/README.md)
 
+### @myndpm/stylus2scss
+
+[![npm badge](https://badge.fury.io/js/%40myndpm%stylus2scss.svg)](https://www.npmjs.com/package/@myndpm/stylus2scss)
+[![npm downloads](https://img.shields.io/npm/dm/@myndpm/stylus2scss.svg?style=flat)](https://npmcharts.com/compare/@myndpm/stylus2scss?minimal=true)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/stylus2scss)](https://bundlephobia.com/result?p=@myndpm/stylus2scss)
+
+CLI utility to convert `styl` files to `scss`.
+
+[Library README](https://github.com/myndpm/open-source/blob/master/libs/tools/stylus2scss/README.md)
+
+### @myndpm/utils
+
+[![npm badge](https://badge.fury.io/js/%40myndpm%2Futils.svg)](https://www.npmjs.com/package/@myndpm/utils)
+[![npm downloads](https://img.shields.io/npm/dm/@myndpm/utils.svg?style=flat)](https://npmcharts.com/compare/@myndpm/utils?minimal=true)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/utils)](https://bundlephobia.com/result?p=@myndpm/utils)
+
+NPM package with misc utilities.
+
+[Library README](https://github.com/myndpm/open-source/blob/master/libs/tools/utils/README.md)
+
 ## How can I contribute?
 
 - Star our GitHub repo :star:
@@ -36,6 +56,7 @@ Thanks goes to these wonderful people:
   <tr>
     <td align="center"><a href="http://matheo.co"><img src="https://avatars.githubusercontent.com/u/260185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mateo Tibaquirá</b></sub></a><br /><a href="#projectManagement-matheo" title="Project Management">📆</a> <a href="#example-matheo" title="Examples">💡</a> <a href="#ideas-matheo" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Code">💻</a> <a href="https://github.com/myndpm/open-source/commits?author=matheo" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/nikita-emelianov"><img src="https://avatars.githubusercontent.com/u/42650220?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nikita Emelianov</b></sub></a><br /><a href="https://github.com/myndpm/open-source/commits?author=nikita-emelianov" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Aden-git"><img src="https://avatars.githubusercontent.com/u/11654514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stas Vladykov</b></sub></a><br /><a title="Examples">💡</a> <a title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
