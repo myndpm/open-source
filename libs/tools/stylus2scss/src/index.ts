@@ -21,7 +21,6 @@ program
 
 program
   .option('--path <path>', 'Path to convert. Defaults to current', process.cwd())
-  .option('--lang', 'Target language (scss or less)', 'scss')
   .option('--commit', 'Interactively asks for the commit message after convert and migrate', false)
   .option('--no-git', 'Adds and move the files with GIT control version', true)
   .option('--dry-run', 'Do not execute and print the steps', false)
@@ -91,7 +90,7 @@ treeVisit(opts.path).pipe(
   concatMap((file) => {
     // finish conversion
     if (opts.shouldConvert(file)) {
-      const newFile = file.replace(/\.styl$/, `.${opts.lang}`);
+      const newFile = file.replace(/\.styl$/, `.scss`);
       return opts.git
         ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(mapTo(file))
         : !opts.dryRun

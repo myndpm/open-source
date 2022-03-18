@@ -2,7 +2,6 @@ import { resolve } from 'path';
 
 export interface Options {
   path: string;
-  lang: string;
   commit: boolean;
   git: boolean;
   dryRun: boolean;
@@ -21,7 +20,6 @@ export interface Options {
 
 export class Schema implements Options {
   path = '.';
-  lang = 'scss';
   commit = true;
   git = true;
   dryRun = false;

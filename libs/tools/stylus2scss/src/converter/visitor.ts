@@ -5,7 +5,6 @@ import { nodesToJSON } from '../parser/utils';
 import { Options } from '../schema';
 import { getCharLength, repeatString, replaceFirstATSymbol, trimFirst } from '../utils';
 
-let LANG = 'scss';
 let QUOTE = `'`;
 let AUTOPREFIXER = true;
 let VARIABLES: string[] = [];
@@ -45,15 +44,6 @@ let oldLineno = 1;
 let paramsLength = 0;
 let selectorLength = 0;
 
-const TARGETS = new Map([
-  ['scss', {
-    variable: '$'
-  }],
-  ['less', {
-    variable: '@'
-  }],
-]);
-
 const OPERATION_MAP = new Map([
   ['&&', 'and'],
   ['!', 'not'],
@@ -75,7 +65,6 @@ export function visitor(
   variables: string[],
   mixins: string[],
 ): string {
-  LANG = ['scss', 'less'].includes(options.lang) ? options.lang : 'scss';
   QUOTE = options.quote === 'single' ? `'` : `"`;
   AUTOPREFIXER = options.autoprefixer;
   VARIABLES = variables;
@@ -324,7 +313,7 @@ function handleEach(node: Nodes.Each): string {
   let exprText = `@each $${node.val} in `;
   VARIABLES.push(node.val);
   node.expr.nodes.forEach((node, idx) => {
-    const prefix = node instanceof nodes.Ident ? TARGETS.get(LANG)?.variable : '';
+    const prefix = node instanceof nodes.Ident ? '$' : '';
     const exp = prefix + handleNode(node);
     exprText += idx ? `, ${exp}` : exp;
   });
@@ -335,7 +324,7 @@ function handleEach(node: Nodes.Each): string {
 
   const blank = getIndentation();
   before += blank;
-  const block = handleBlock(node.block).replace(`${TARGETS.get(LANG)?.variable}${node.key}`, '');
+  const block = handleBlock(node.block).replace(`$${node.key}`, '');
   return before + exprText + block;
 }
 
@@ -707,7 +696,7 @@ function handleProperty({ expr, lineno, segments }: Nodes.Property): string {
         const beforeExpText = before + trimFirst(handleExpression(expr));
         const expText = `${before}${segmentsText}: $${expNode.name};`;
         isProperty = false;
-        PROPLIST.unshift({ prop: segmentsText, value: TARGETS.get(LANG)?.variable + expNode.name });
+        PROPLIST.unshift({ prop: segmentsText, value: '$' + expNode.name });
         return beforeExpText + expText;
       }
     }

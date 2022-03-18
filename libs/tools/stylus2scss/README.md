@@ -6,14 +6,13 @@ It also updates Angular Components metadata.
 ## Usage
 
 ```bash
-npx @myndpm/stylus2scss [--path <path>] [--lang scss|less] [--commit] [--no-git] [--dry-run]
+npx @myndpm/stylus2scss [--path <path>] [--commit] [--no-git] [--dry-run]
   [--diagnose]
   [--convert] [--quote single|double] [--indent 2] [--autoprefixer] [--sign-comments]
   [--migrate]
 ```
 
 - `--path <path>` Path to the directory for conversion. Default is current directory
-- `--lang <lang>` Target language. Default is scss
 - `--commit` Interactively asks for the commit message after convert and migrate
 - `--no-git` Adds and move the files with GIT control version
 - `--dry-run` Do not execute and print the steps
