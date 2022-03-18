@@ -91,7 +91,8 @@
             "tsConfig": "libs/tools/pug2html/tsconfig.lib.json",
             "packageJson": "libs/tools/pug2html/package.json",
             "main": "libs/tools/pug2html/src/index.ts",
-            "assets": ["libs/tools/pug2html/*.md"]
+            "assets": ["libs/tools/pug2html/*.md"],
+            "deleteOutputPath": false
           }
         },
         "postbuild": {
@@ -117,7 +118,86 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["tools"]
+    },
+    "stylus2scss": {
+      "root": "libs/tools/stylus2scss",
+      "sourceRoot": "libs/tools/stylus2scss/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/stylus2scss",
+            "tsConfig": "libs/tools/stylus2scss/tsconfig.lib.json",
+            "packageJson": "libs/tools/stylus2scss/package.json",
+            "main": "libs/tools/stylus2scss/src/index.ts",
+            "assets": ["libs/tools/stylus2scss/*.md"],
+            "deleteOutputPath": false
+          }
+        },
+        "postbuild": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "chmod +x dist/libs/stylus2scss/src/index.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/tools/stylus2scss/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/tools/stylus2scss"],
+          "options": {
+            "jestConfig": "libs/tools/stylus2scss/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["tools"]
+    },
+    "utils": {
+      "root": "libs/tools/utils",
+      "sourceRoot": "libs/tools/utils/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/utils",
+            "tsConfig": "libs/tools/utils/tsconfig.lib.json",
+            "packageJson": "libs/tools/utils/package.json",
+            "main": "libs/tools/utils/src/index.ts",
+            "assets": ["libs/tools/utils/*.md"],
+            "deleteOutputPath": false
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/tools/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/tools/utils"],
+          "options": {
+            "jestConfig": "libs/tools/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["tools"]
     },
     "website": {
       "projectType": "application",

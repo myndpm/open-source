@@ -4,7 +4,9 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "dist/libs/*"
+    "libs/forms",
+    "libs/tools/*",
+    "dist/libs/demos"
   ],
   "engines": {
     "npm": "please-use-yarn",
@@ -18,8 +20,8 @@
     "build:demos": "run-s 'build demos -- --configuration production'",
     "build:pug2html": "run-s 'build pug2html' 'nx postbuild pug2html'",
     "build:libs": "run-s 'build:forms' 'build:demos' 'build:tools'",
-    "build:tools": "run-s 'build:pug2html'",
-    "build:prod": "run-s 'build:forms' 'build:demos' 'build:tools' 'yarn' 'build --configuration production'",
+    "build:tools": "run-s 'build:utils' 'build:stylus2scss' 'build:pug2html'",
+    "build:prod": "run-s 'build:forms' 'build:demos' 'yarn' 'build --configuration production'",
     "build": "ng build",
     "test": "ng test",
     "test:tdd": "ng test --bail 5 --cache --notify --notify-mode change --only-changed --watch",
@@ -49,7 +51,8 @@
     "help": "nx help",
     "nx": "nx",
     "yarn": "yarn",
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main"
+    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package && yarn clean:rxjs",
+    "clean:rxjs": "rimraf libs/tools/stylus2scss/node_modules/rxjs libs/tools/utils/node_modules/rxjs libs/tools/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
   },
   "dependencies": {
     "@angular/animations": "12.2.13",
@@ -93,6 +96,7 @@
     "@nrwl/tao": "13.1.4",
     "@nrwl/workspace": "13.1.4",
     "@types/express": "^4.17.11",
+    "@types/invariant": "^2.2.35",
     "@types/is-callable": "~1.1.0",
     "@types/jest": "27.0.2",
     "@types/marked": "^4.0.0",
@@ -109,6 +113,7 @@
     "jest-preset-angular": "10.0.1",
     "ng-mocks": "~12.5.0",
     "ng-packagr": "12.2.5",
+    "patch-package": "^6.4.7",
     "postcss": "^8.3.9",
     "postcss-import": "^14.0.2",
     "postcss-preset-env": "^6.7.0",

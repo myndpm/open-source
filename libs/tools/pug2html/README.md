@@ -1,8 +1,7 @@
 # @myndpm/pug2html
 
-- converts pug content to html
-- converts inline `template` content from pug to html
-- converts .pug extension to .html
+CLI utility to convert `pug` content to `html`.  
+Also converts inline `template` metadata and rename `.pug` extension to `.html`
 
 ## Usage
 
