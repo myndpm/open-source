@@ -19,6 +19,8 @@
     "build:forms": "run-s 'clean:forms' 'build forms -- --configuration production' 'nx postbuild forms'",
     "build:demos": "run-s 'build demos -- --configuration production'",
     "build:pug2html": "run-s 'build pug2html' 'nx postbuild pug2html'",
+    "build:stylus2scss": "run-s 'build stylus2scss' 'nx postbuild stylus2scss'",
+    "build:utils": "run-s 'build utils' 'rimraf dist/libs/utils/node_modules/rxjs'",
     "build:libs": "run-s 'build:forms' 'build:demos' 'build:tools'",
     "build:tools": "run-s 'build:utils' 'build:stylus2scss' 'build:pug2html'",
     "build:prod": "run-s 'build:forms' 'build:demos' 'yarn' 'build --configuration production'",

@@ -70,7 +70,7 @@ export class Schema implements Options {
   }
 
   shouldMigrate(file: string): boolean {
-    return !this.onlyDiagnose && (this.dryRun || file.endsWith('.scss'));
+    return file.endsWith('.scss') && (!this.onlyDiagnose || this.dryRun);
   }
 
   shouldCommit(): boolean {

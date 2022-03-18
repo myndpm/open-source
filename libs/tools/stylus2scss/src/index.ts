@@ -104,7 +104,15 @@ treeVisit(opts.path).pipe(
     if (opts.shouldMigrate(file)) {
       logInfo(opts.diagnose ? '>' : '+', relative(dirname(opts.path), file));
       counter++;
-      // TODO perform migration
+      const args: string[] = ['sass-migrator', 'division'];
+      if (opts.dryRun) {
+        args.push('--dry-run');
+      }
+      args.push(file);
+      return exec('npx', args, { cwd: __dirname }).pipe(
+        concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun })),
+        mapTo(file),
+      );
     }
     return of(file);
   }),
