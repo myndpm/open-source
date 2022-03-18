@@ -30,6 +30,7 @@
     "lint": "nx workspace-lint && ng lint",
     "npm:publish": "npm publish --access=public",
     "npm:dyn-forms": "run-s 'build:forms' 'tools:postbuild libs/forms' 'npm:publish dist/libs/forms' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/forms' 'tools:tag libs/forms'",
+    "npm:stylus2scss": "run-s 'build:stylus2scss' 'npm:publish dist/libs/stylus2scss' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/stylus2scss' 'tools:tag libs/tools/stylus2scss'",
     "npm:pug2html": "run-s 'build:pug2html' 'npm:publish dist/libs/pug2html' 'npm:publish --registry=https://npm.pkg.github.com dist/libs/pug2html' 'tools:tag libs/tools/pug2html'",
     "npm:utils": "run-s 'build utils' 'npm:publish dist/libs/utils' 'npm:publish -- --registry=https://npm.pkg.github.com dist/libs/utils' 'tools:tag libs/tools/utils'",
     "tools:postbuild": "ts-node tools/scripts/post-build",
