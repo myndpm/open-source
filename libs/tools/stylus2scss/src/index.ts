@@ -4,7 +4,7 @@ import { exec, jsonRead, renameFile, treeVisit } from '@myndpm/utils';
 import { Command } from 'commander';
 import { prompt } from 'inquirer';
 import { dirname, join, relative } from 'path';
-import { Observable, OperatorFunction, from, of, BehaviorSubject } from 'rxjs';
+import { Observable, OperatorFunction, from, of } from 'rxjs';
 import { concatMap, filter, last, mapTo, mergeMap, scan } from 'rxjs/operators';
 import { stylusConvert, stylusParse } from './converter/stylus2scss';
 import { replaceCRLF } from './parser/line-ending';
@@ -91,7 +91,7 @@ treeVisit(opts.path).pipe(
   concatMap((file) => {
     // finish conversion
     if (opts.shouldConvert(file)) {
-      const newFile = file.replace(/\.styl$/, '.scss');
+      const newFile = file.replace(/\.styl$/, `.${opts.lang}`);
       return opts.git
         ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(mapTo(file))
         : !opts.dryRun

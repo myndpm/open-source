@@ -75,6 +75,7 @@ export function visitor(
   variables: string[],
   mixins: string[],
 ): string {
+  LANG = ['scss', 'less'].includes(options.lang) ? options.lang : 'scss';
   QUOTE = options.quote === 'single' ? `'` : `"`;
   AUTOPREFIXER = options.autoprefixer;
   VARIABLES = variables;
