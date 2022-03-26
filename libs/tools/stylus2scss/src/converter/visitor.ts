@@ -701,7 +701,7 @@ function handleProperty({ expr, lineno, segments }: Nodes.Property): string {
   }
 
   const expText = handleExpression(expr);
-  PROPLIST.unshift({ prop: segmentsText, value: expText });
+  PROPLIST.unshift({ prop: segmentsText, value: segmentsText.startsWith('--') ? segmentsText : expText });
   isProperty = false;
   return /\/\//.test(expText)
     ? `${before + segmentsText.replace(/^$/, '')}: ${expText}`
