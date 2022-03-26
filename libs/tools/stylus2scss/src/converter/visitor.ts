@@ -343,7 +343,7 @@ function handleExpression(node: Nodes.Expression): string {
   let result = '';
   let before = '';
 
-  if (node.nodes.every(node => !(node instanceof nodes.Expression))) {
+  if (node.nodes?.every(node => !(node instanceof nodes.Expression))) {
     subLineno = node.nodes.map(node => node.lineno).sort((curr, next) => next - curr)[0];
   }
 
@@ -357,13 +357,13 @@ function handleExpression(node: Nodes.Expression): string {
   } else {
     before = handleLinenoAndIndentation(node);
     oldLineno = node.lineno;
-    const callNode = node.nodes.find(node => node instanceof nodes.Call);
+    const callNode = node.nodes?.find(node => node instanceof nodes.Call);
     if (callNode && !isObject && !isCallMixin()) {
       space = repeatString(' ', lastPropertyLength);
     }
   }
 
-  node.nodes.forEach((node, idx) => {
+  node.nodes?.forEach((node, idx) => {
     // handle inline comment
     if (node instanceof nodes.Comment) {
       comments.push(node);
@@ -428,7 +428,7 @@ function handleFunction(node: Nodes.Function): string {
   const params = nodesToJSON(node.params.nodes || []);
   FNPARAMS = params.map(par => par.name);
   let paramsText = '';
-  params.forEach((node, idx) => {
+  (node.params.nodes || []).forEach((node, idx) => {
     const prefix = idx ? ', ' : '';
     const nodeText = handleNode(node);
     VARLIST.push(nodeText);
@@ -473,13 +473,11 @@ function handleIdent(node: Nodes.Ident): string {
   const { rest, property } = node.toJSON();
 
   if (!node.val || node.val instanceof nodes.Null) {
-    if (isExpression) {
-      if (property || isCall) {
-        const propertyVal = PROPLIST.find(item => item.prop === node.name);
-        if (propertyVal) {
-          identLength--;
-          return propertyVal.value;
-        }
+    if (isExpression && (property || isCall)) {
+      const propertyVal = PROPLIST.find(item => item.prop === node.name);
+      if (propertyVal) {
+        identLength--;
+        return propertyVal.value;
       }
     }
     if (selectorLength && isExpression && !binOpLength) {
