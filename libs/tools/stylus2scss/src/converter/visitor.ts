@@ -28,6 +28,7 @@ let isCond = false;
 let isExpression = false;
 let isFunction = false;
 let isIfExpression = false;
+let isImport = false;
 let isKeyframes = false;
 let isNamespace = false;
 let isNegate = false;
@@ -270,12 +271,14 @@ function handleCall({ name, args, lineno, block }: Nodes.Call): string {
 
   let blockText = '';
   let before = '';
-  if (!isExpression) {
-    before = handleLineno(lineno);
-    oldLineno = lineno;
-  }
-  if (isCallMixin() || block || selectorLength || MIXINS.includes(callName)) {
-    before += '@include ';
+  if (!isImport) {
+    if (!isExpression && lineno) {
+      before = handleLineno(lineno);
+      oldLineno = lineno;
+    }
+    if (isCallMixin() || block || selectorLength || MIXINS.includes(callName)) {
+      before += '@include ';
+    }
   }
   const argsText = handleArguments(args).replace(/;/g, '');
   isCallParams = false;
@@ -348,15 +351,13 @@ function handleExpression(node: Nodes.Expression): string {
   }
 
   let space = '';
+  before = handleLinenoAndIndentation({ lineno: subLineno });
+  oldLineno = subLineno;
   if (subLineno > node.lineno) {
-    before = handleLinenoAndIndentation({ lineno: subLineno });
-    oldLineno = subLineno;
     if (subLineno > lastPropertyLineno) {
       space = repeatString(' ', lastPropertyLength);
     }
   } else {
-    before = handleLinenoAndIndentation(node);
-    oldLineno = node.lineno;
     const callNode = node.nodes?.find(node => node instanceof nodes.Call);
     if (callNode && !isObject && !isCallMixin()) {
       space = repeatString(' ', lastPropertyLength);
@@ -372,7 +373,8 @@ function handleExpression(node: Nodes.Expression): string {
       const symbol = isProperty && (node as Nodes.Root).nodes.length ? ',' : '';
       result += idx ? `${symbol} ${nodeText}` : nodeText;
     }
-  })
+  });
+  result = result.replace(' / ', '/'); // font-size
 
   let commentText = comments.map(node => handleNode(node)).join(' ');
   commentText = commentText.replace(/^ +/, ' ');
@@ -441,7 +443,7 @@ function handleFunction(node: Nodes.Function): string {
   returnSymbol = '';
   isFunction = false;
   FNPARAMS = [];
-  return before + fnName + block
+  return before + fnName + block;
 }
 
 function handleGroup(node: Nodes.Group): string {
@@ -577,20 +579,18 @@ function handleIf(node: Nodes.If, symbol = '@if '): string {
 
 function handleImport(node: Nodes.Import): string {
   invariant(node, 'Missing node param');
+  isImport = true;
   const before = handleLineno(node.lineno) + '@import ';
   oldLineno = node.lineno;
 
-  let quote = '';
   let text = '';
   (node.path.nodes || []).forEach(node => {
-    text += node.val;
-    if (!quote && get(node, 'quote')) {
-      quote = get(node, 'quote');
-    }
+    text += handleNode(node);
   });
 
-  const result = text.replace(/\.styl$/g, '.scss');
-  return `${before}${quote}${result}${quote};`;
+  isImport = false;
+  const result = trimSemicolon(text.replace(/\.styl$/g, ''));
+  return `${before}${result};`;
 }
 
 function handleKeyframes(node: Nodes.Keyframes): string {
@@ -619,8 +619,11 @@ function handleKeyframes(node: Nodes.Keyframes): string {
 
 function handleLiteral(node: Nodes.Literal): string {
   invariant(node, 'Missing node param');
-  const before = handleLineno(node.lineno);
-  oldLineno = node.lineno;
+  let before = '';
+  if (node.lineno) {
+    before = handleLineno(node.lineno);
+    oldLineno = node.lineno;
+  }
   return before + (node.val || '');
 }
 
@@ -630,7 +633,7 @@ function handleMedia(node: Nodes.Media): string {
   let valText = handleNode(node.val);
   const block = handleBlock(node.block);
   if (valText[0] === '$') {
-    valText = `#{${valText}}`
+    valText = `#{${valText}}`;
   }
   return `${before}@media ${valText + block}`;
 }
@@ -705,7 +708,7 @@ function handleProperty({ expr, lineno, segments }: Nodes.Property): string {
   isProperty = false;
   return /\/\//.test(expText)
     ? `${before + segmentsText.replace(/^$/, '')}: ${expText}`
-    : trimSemicolon(`${before + segmentsText.replace(/^$/, '')}: ${expText + suffix}`, ';')
+    : trimSemicolon(`${before + segmentsText.replace(/^$/, '')}: ${expText + suffix}`, ';');
 }
 
 function handleQuery(node: Nodes.Query): string {
