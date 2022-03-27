@@ -82,10 +82,9 @@ export function visitor(
   VARIABLES = [];
 
   const indent = ' '.repeat(Number(options.indent));
-  result = result.replace(/^\n+/, '');
   result = result.replace(/(.*\S.*)/g, `${indent}$1`);
   result = result.replace(/(.*)>>>(.*)/g, `$1/deep/$2`);
-  return result + '\n';
+  return (result + '\n').replace(/^\n+/, '');
 }
 
 function handleNodes(items: Nodes.Node[] = []) {
