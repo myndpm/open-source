@@ -5,12 +5,12 @@ import { Command } from 'commander';
 import { prompt } from 'inquirer';
 import { dirname, join, relative } from 'path';
 import { Observable, OperatorFunction, from, of } from 'rxjs';
-import { concatMap, filter, last, mapTo, mergeMap, scan } from 'rxjs/operators';
+import { catchError, concatMap, delay, filter, last, mapTo, mergeMap, scan } from 'rxjs/operators';
 import { componentUpdate } from './converter/component';
 import { stylusConvert, stylusParse } from './converter/stylus2scss';
 import { replaceCRLF } from './parser/line-ending';
 import { Schema } from './schema';
-import { logFooter, logInfo, logTitle } from './utils';
+import { logInfo, logNote, logTitle } from './utils';
 
 const program = new Command();
 const version = jsonRead(join(__dirname, '../package.json'), 'version');
@@ -78,7 +78,7 @@ treeVisit(opts.path).pipe(
   }),
   waitForAll(),
   concatMap((files) => {
-    return opts.shouldCommit()
+    return !opts.onlyDiagnose && !opts.onlyMigrate && opts.shouldCommit()
       ? prompt(question('Message for the convert commit:')).ui.process.pipe(
           concatMap(({ answer }) => {
             return exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })
@@ -93,19 +93,22 @@ treeVisit(opts.path).pipe(
       const tsFile = file.replace(/\.styl$/, `.ts`);
       return componentUpdate(file, opts.withFile(tsFile)).pipe(
         concatMap(() => opts.git
-          ? exec('git', ['add', tsFile], { dryRun: opts.dryRun }).pipe(mapTo(file))
+          ? exec('git', ['add', tsFile], { dryRun: opts.dryRun }).pipe(delay(50), mapTo(file))
           : of(file)
         ),
+        catchError(() => of(file)),
       );
     }
     return of(file);
   }),
+  waitForAll(),
+  concatMap(files => from(files)),
   concatMap((file) => {
     // finish conversion
-    if (opts.shouldConvert(file)) {
+    if (opts.shouldRename(file)) {
       const newFile = file.replace(/\.styl$/, `.scss`);
       return opts.git
-        ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(mapTo(newFile))
+        ? exec('git', ['mv', file, newFile], { dryRun: opts.dryRun }).pipe(delay(50), mapTo(newFile))
         : !opts.dryRun
           ? renameFile(file, newFile).pipe(mapTo(newFile))
           : logInfo(`> mv ${file} ${newFile}`) || of(newFile);
@@ -131,7 +134,7 @@ treeVisit(opts.path).pipe(
   }),
   waitForAll(),
   concatMap((files) => {
-    return opts.shouldCommit()
+    return !opts.onlyDiagnose && opts.shouldCommit()
       ? prompt(question('Message for the rename commit:')).ui.process.pipe(
           concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
           mapTo(files),
@@ -140,7 +143,7 @@ treeVisit(opts.path).pipe(
   }),
 ).subscribe({
   error: (err) => console.error(err),
-  complete: () => logFooter(`${counter} files ${opts.diagnose ? 'to process' : 'processed'}`),
+  complete: () => logNote(`${counter} files ${opts.diagnose ? 'to process' : 'processed'}`),
 });
 
 function waitForAll(): OperatorFunction<string, string[]> {

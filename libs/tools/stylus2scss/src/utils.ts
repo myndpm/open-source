@@ -43,6 +43,6 @@ export function logInfo(...rest: string[]): false {
   return false;
 }
 
-export function logFooter(...rest: string[]): void {
+export function logNote(...rest: string[]): void {
   console.log(chalk.yellow(rest));
 }

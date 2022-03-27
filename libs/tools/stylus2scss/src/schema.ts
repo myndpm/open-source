@@ -73,7 +73,11 @@ export class Schema implements Options {
   }
 
   shouldCheckComponent(file: string): boolean {
-    return this.tsExists(file) && !this.onlyDiagnose && !this.onlyMigrate;
+    return this.tsExists(file) && !this.onlyDiagnose;
+  }
+
+  shouldRename(file: string): boolean {
+    return file.endsWith('.styl') && (!this.onlyDiagnose || this.dryRun);
   }
 
   shouldMigrate(file: string): boolean {

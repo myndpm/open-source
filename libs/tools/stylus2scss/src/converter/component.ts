@@ -1,6 +1,5 @@
 import { readFile, writeFile } from '@myndpm/utils';
-import { basename } from 'path';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { Schema } from '../schema';
 import { logInfo } from '../utils';
@@ -12,10 +11,10 @@ export function componentUpdate(styl: string, opts: Required<Schema>): Observabl
   }
   return readFile(opts.file).pipe(
     concatMap((content) => {
-      return writeFile(
-        opts.file,
-        content.replace(basename(styl), basename(styl).replace(/\.styl$/, `.scss`)),
-      );
+      const source = content.replace(/\.styl$/g, `.scss`);
+      return source === content
+        ? writeFile(opts.file, source)
+        : throwError(null);
     }),
   );
 }
