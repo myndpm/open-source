@@ -47,11 +47,9 @@ logTitle(`stylus2scss ${opts.diagnose ? 'diagnosis' : (opts.migrate ? 'migration
 treeVisit(opts.path).pipe(
   filter((file) => opts.isValid(file)),
   concatMap((file) => {
-    if (!opts.onlyMigrate) {
-      logInfo(opts.diagnose ? '>' : '-', relative(dirname(opts.path), file));
-      if (opts.onlyDiagnose) {
-        counter++;
-      }
+    if (!opts.onlyMigrate && opts.onlyDiagnose) {
+      logInfo('-', relative(dirname(opts.path), file));
+      counter++;
     }
     // diagnose
     return opts.shouldAnalize(file)
@@ -88,7 +86,7 @@ treeVisit(opts.path).pipe(
       : from(files);
   }),
   concatMap((file) => {
-    // check angular component
+    // check related component
     if (opts.shouldCheckComponent(file)) {
       const tsFile = file.replace(/\.styl$/, `.ts`);
       return componentUpdate(file, opts.withFile(tsFile)).pipe(
@@ -118,13 +116,11 @@ treeVisit(opts.path).pipe(
   concatMap((file) => {
     // migrate
     if (opts.shouldMigrate(file)) {
-      logInfo(opts.diagnose ? '>' : '+', relative(dirname(opts.path), file));
-      counter++;
-      const args: string[] = ['sass-migrator', 'division'];
-      if (opts.dryRun) {
-        args.push('--dry-run');
+      if (opts.onlyDiagnose) {
+        logInfo('+', relative(dirname(opts.path), file));
       }
-      args.push(file);
+      counter++;
+      const args: string[] = ['sass-migrator', 'division', opts.dryRun ? '--dry-run' : null, file].filter(Boolean);
       return exec('npx', args, { cwd: __dirname }).pipe(
         concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun })),
         mapTo(file),
