@@ -12,7 +12,7 @@ export function componentUpdate(styl: string, opts: Required<Schema>): Observabl
   return readFile(opts.file).pipe(
     concatMap((content) => {
       const source = content.replace(/\.styl$/g, `.scss`);
-      return source === content
+      return source !== content
         ? writeFile(opts.file, source)
         : throwError(null);
     }),

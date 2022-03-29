@@ -312,11 +312,10 @@ function handleEach(node: Nodes.Each): string {
   let before = handleLineno(node.lineno);
   oldLineno = node.lineno;
 
-  let exprText = `@each $${node.val} in `;
+  let exprText = `@each ${node.val}${node.key ? `, ${node.key}` : ''} in `;
   VARIABLES.push(node.val);
   node.expr.nodes.forEach((node, idx) => {
-    const prefix = node instanceof nodes.Ident ? '$' : '';
-    const exp = prefix + handleNode(node);
+    const exp = handleNode(node);
     exprText += idx ? `, ${exp}` : exp;
   });
 
@@ -326,8 +325,7 @@ function handleEach(node: Nodes.Each): string {
 
   const blank = getIndentation();
   before += blank;
-  const block = handleBlock(node.block).replace(`$${node.key}`, '');
-  return before + exprText + block;
+  return before + exprText + handleBlock(node.block);
 }
 
 function handleFeature(node: Nodes.Property) {
@@ -341,7 +339,7 @@ function handleExpression(node: Nodes.Expression): string {
   isExpression = true;
 
   const comments: Nodes.Comment[] = [];
-  let subLineno = 0;
+  let subLineno = node.lineno;
   let result = '';
   let before = '';
 
@@ -588,7 +586,7 @@ function handleImport(node: Nodes.Import): string {
   });
 
   isImport = false;
-  const result = trimSemicolon(text.replace(/\.styl$/g, ''));
+  const result = trimSemicolon(text.replace(/\.styl/g, ''));
   return `${before}${result};`;
 }
 
@@ -663,9 +661,10 @@ function handleObject({ vals, lineno }: Nodes.Object): string {
   indentationLevel++;
 
   const before = repeatString(' ', indentationLevel * 2);
-  let result = ``;
+  let result = '';
   let count = 0;
   for (const key in vals) {
+    oldLineno = vals[key].lineno;
     const resultVal = handleNode(vals[key]).replace(/;/, '');
     const symbol = count ? ',' : '';
     result += `${symbol}\n${before + QUOTE + key + QUOTE}: ${resultVal}`;
@@ -775,7 +774,7 @@ function handleTernary({ cond, lineno }: Nodes.Ternary): string {
 }
 
 function handleUnaryOp({ op, expr }: Nodes.UnaryOp): string {
-  return `${OPERATION_MAP.get(op) || op}(${handleExpression(expr)})`;
+  return `${OPERATION_MAP.get(op) || op}(${handleNode(expr)})`;
 }
 
 function handleUnit({ val, type }: Nodes.Unit): string {
