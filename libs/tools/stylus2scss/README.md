@@ -6,15 +6,15 @@ It also updates Angular Components metadata.
 ## Usage
 
 ```bash
-npx @myndpm/stylus2scss [--path <path>] [--commit] [--no-git] [--dry-run]
+npx @myndpm/stylus2scss [--path <path>] [--git] [--dry-run]
   [--diagnose]
   [--convert] [--quote single|double] [--indent 2] [--autoprefixer] [--sign-comments]
+  [--move]
   [--migrate]
 ```
 
 - `--path <path>` Path to the directory for conversion. Default is current directory
-- `--commit` Interactively asks for the commit message after convert and migrate
-- `--no-git` Adds and move the files with GIT control version
+- `--git` Convert and move files keeping the GIT history
 - `--dry-run` Do not execute and print the steps
 - `--diagnose` Only list and detect line endings on the existing stylesheets in the directory
 - `--convert` Only convert the stylus contents to the target language
@@ -22,21 +22,15 @@ npx @myndpm/stylus2scss [--path <path>] [--commit] [--no-git] [--dry-run]
   - `--indent` Additional indent, useful for Vue
   - `--autoprefixer` Enable autoprefixed keyframes
   - `--comments` Safe conversion of inline comments
-- `--move` Only move the stylus files to SCSS
+- `--move` Only move the stylus files to SCSS and update the related TS file
 - `--migrate` Only run the sass-migration tool on the existing SCSS files
 
 ## Examples
 
-List, convert and migrate a path renaming the files:
+Only diagnose the given path listing the files to process:
 
 ```bash
-npx @myndpm/stylus2scss --path relative/path/
-```
-
-Convert and migrate the current folder and commit to git:
-
-```bash
-npx @myndpm/stylus2scss --commit
+npx @myndpm/stylus2scss --path relative/path/ --diagnose [--git]
 ```
 
 Only convert with some custom options:
@@ -45,10 +39,28 @@ Only convert with some custom options:
 npx @myndpm/stylus2scss --convert --quote double --autoprefixer
 ```
 
-Only migrate the files but do not add the changes to git:
+Only move the files and update the components but do not add the changes to git:
 
 ```bash
-npx @myndpm/stylus2scss --migrate --no-git
+npx @myndpm/stylus2scss --move
+```
+
+Only migrate the existing scss files:
+
+```bash
+npx @myndpm/stylus2scss --migrate
+```
+
+Prints the files and commands that will be executed:
+
+```bash
+npx @myndpm/stylus2scss --dry-run [--git]
+```
+
+Perform all the conversion steps on the current folder and commits to git:
+
+```bash
+npx @myndpm/stylus2scss --git
 ```
 
 ## Troubleshooting
