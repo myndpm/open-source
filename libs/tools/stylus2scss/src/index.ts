@@ -4,7 +4,7 @@ import { exec, jsonRead, renameFile, treeVisit } from '@myndpm/utils';
 import { Command } from 'commander';
 import { prompt } from 'inquirer';
 import { dirname, join, relative } from 'path';
-import { Observable, OperatorFunction, from, of } from 'rxjs';
+import { Observable, OperatorFunction, from, of, throwError } from 'rxjs';
 import { catchError, concatMap, delay, filter, last, mapTo, scan } from 'rxjs/operators';
 import { componentUpdate } from './converter/component';
 import { stylusConvert, stylusParse } from './converter/stylus2scss';
@@ -46,6 +46,9 @@ logTitle(`stylus2scss ${opts.onlyDiagnose ? 'diagnosis' : (opts.onlyMigrate ? 'm
 
 treeVisit(opts.path).pipe(
   filter((file) => opts.isValid(file)),
+  waitForAll(),
+  concatMap((files) => gitCheck(files)),
+  concatMap(files => from(files)),
   // diagnose
   concatMap((file) => {
     if (opts.onlyDiagnose) {
@@ -59,7 +62,6 @@ treeVisit(opts.path).pipe(
         )
       : of(file);
   }),
-  waitForAll(),
   concatMap(files => from(files)),
   // convert
   concatMap((file) => {
@@ -135,7 +137,7 @@ treeVisit(opts.path).pipe(
       : of(files);
   }),
 ).subscribe({
-  error: (err) => console.error(err),
+  error: (err) => logNote(err),
   complete: () => logNote(`${counter} files ${opts.diagnose ? 'to process' : 'processed'}`),
 });
 
@@ -146,6 +148,13 @@ function waitForAll(): OperatorFunction<string, string[]> {
     filter(all => Boolean(all.length)), // prevents EmptyError
   );
   // use concatMap(files => from(files)) to re-emit the files one by one
+}
+
+function gitCheck<T>(files: T): Observable<T> {
+  return exec('git', ['status']).pipe(
+    mapTo(files),
+    catchError(() => throwError('Do not use --git outside a repository')),
+  );
 }
 
 function gitCommit<T>(files: T, ask: string): Observable<T> {
@@ -161,9 +170,6 @@ function gitCommit<T>(files: T, ask: string): Observable<T> {
         : of(files);
     }),
     mapTo(files),
-    catchError(() => {
-      logNote('Do not use --git outside a repository');
-      return of(files);
-    }),
+    catchError(() => throwError('Do not use --git outside a repository')),
   );
 }
