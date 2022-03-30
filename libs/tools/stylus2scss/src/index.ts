@@ -60,7 +60,7 @@ treeVisit(opts.path).pipe(
       : of(file);
   }),
   waitForAll(),
-  concatMap(files => from(files)), // re-emit the files one by one
+  concatMap(files => from(files)),
   // convert
   concatMap((file) => {
     if (opts.shouldConvert(file)) {
@@ -77,14 +77,10 @@ treeVisit(opts.path).pipe(
   waitForAll(),
   concatMap((files) => {
     return opts.shouldConvertCommit()
-      ? prompt(question('Message for the convert commit:')).ui.process.pipe(
-          concatMap(({ answer }) => {
-            return exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })
-          }),
-          concatMap(() => from(files)),
-        )
-      : from(files);
+      ? gitCommit(files, 'Message for the convert commit:')
+      : of(files);
   }),
+  concatMap(files => from(files)),
   // move
   concatMap((file) => {
     if (opts.shouldCheckComponent(file)) {
@@ -117,10 +113,7 @@ treeVisit(opts.path).pipe(
   waitForAll(),
   concatMap((files) => {
     return opts.shouldCommitMove()
-      ? prompt(question('Message for the move commit:')).ui.process.pipe(
-          concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
-          mapTo(files),
-        )
+      ? gitCommit(files, 'Message for the move commit:')
       : of(files);
   }),
   concatMap(files => from(files)),
@@ -138,10 +131,7 @@ treeVisit(opts.path).pipe(
   waitForAll(),
   concatMap((files) => {
     return opts.shouldCommitMigration()
-      ? prompt(question('Message for the migrate commit:')).ui.process.pipe(
-          concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
-          mapTo(files),
-        )
+      ? gitCommit(files, 'Message for the migrate commit:')
       : of(files);
   }),
 ).subscribe({
@@ -154,5 +144,26 @@ function waitForAll(): OperatorFunction<string, string[]> {
     scan<string, string[]>((all, file) => all.concat(file), []),
     last(), // wait until all files are processed
     filter(all => Boolean(all.length)), // prevents EmptyError
+  );
+  // use concatMap(files => from(files)) to re-emit the files one by one
+}
+
+function gitCommit<T>(files: T, ask: string): Observable<T> {
+  return exec('git', ['status']).pipe(
+    concatMap(() => exec('git', ['diff', '--cached', '--numstat'])),
+    concatMap((output) => {
+      const lines = (output.stdout?.toString() || '').split('\n').filter(Boolean).length;
+      const answer = !opts.dryRun ? prompt(question(ask)).ui.process : of({ name: '', answer: 'msg' });
+      return lines
+        ? answer.pipe(
+            concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
+          )
+        : of(files);
+    }),
+    mapTo(files),
+    catchError(() => {
+      logNote('Do not use --git outside a repository');
+      return of(files);
+    }),
   );
 }
