@@ -3,12 +3,12 @@ import { resolve } from 'path';
 
 export interface Options {
   path: string;
-  commit: boolean;
   git: boolean;
   dryRun: boolean;
   // steps
   diagnose: boolean;
   convert: boolean;
+  move: boolean;
   migrate: boolean;
   // converter
   quote: 'single' | 'double';
@@ -20,11 +20,11 @@ export interface Options {
 
 export class Schema implements Options {
   path = '.';
-  commit = true;
   git = true;
   dryRun = false;
   diagnose = false;
   convert = false;
+  move = false;
   migrate = false;
   quote: 'single' | 'double' = 'single';
   indent = '0';
@@ -32,18 +32,33 @@ export class Schema implements Options {
   file?: string;
 
   get onlyDiagnose(): boolean {
-    return !this.migrate && this.diagnose && !this.convert;
+    return this.diagnose && !this.convert && !this.move && !this.migrate;
+  }
+
+  get onlyConvert(): boolean {
+    return !this.diagnose && this.convert && !this.move && !this.migrate;
+  }
+
+  get onlyMove(): boolean {
+    return !this.diagnose && !this.convert && this.move && !this.migrate;
   }
 
   get onlyMigrate(): boolean {
-    return this.migrate && !this.diagnose && !this.convert;
+    return !this.diagnose && !this.convert && !this.move && this.migrate;
   }
 
-  constructor(options: Options) {
+  constructor(opts: Options) {
+    const allSteps = !opts.diagnose && !opts.convert && !opts.move && !opts.migrate;
     Object.assign(
       this,
-      options,
-      { path: resolve(options.path) },
+      {
+        ...opts,
+        path: resolve(opts.path),
+        diagnose: allSteps || opts.diagnose,
+        convert: allSteps || opts.convert,
+        move: allSteps || opts.move,
+        migrate: allSteps || opts.migrate,
+      },
     );
   }
 
@@ -52,8 +67,7 @@ export class Schema implements Options {
   }
 
   isValid(file: string): boolean {
-    return !file.includes('node_modules') &&
-      (file.endsWith('.styl') || this.migrate && file.endsWith('.scss'));
+    return !file.includes('node_modules') && (this.isStylus(file) || this.shouldMigrate(file));
   }
 
   isStylus(file: string): boolean {
@@ -65,26 +79,38 @@ export class Schema implements Options {
   }
 
   shouldAnalize(file: string): boolean {
-    return this.isStylus(file) && !this.onlyDiagnose && !this.onlyMigrate;
+    return (this.diagnose || this.convert) && this.isStylus(file);
   }
 
   shouldConvert(file: string): boolean {
-    return this.isStylus(file) && !this.onlyDiagnose && !this.onlyMigrate;
+    return this.convert && this.isStylus(file);
+  }
+
+  shouldConvertCommit(): boolean {
+    return this.convert && this.shouldCommit();
   }
 
   shouldCheckComponent(file: string): boolean {
-    return this.tsExists(file) && !this.onlyDiagnose;
+    return this.shouldMove(file) && this.tsExists(file);
   }
 
-  shouldRename(file: string): boolean {
-    return file.endsWith('.styl') && (!this.onlyDiagnose || this.dryRun);
+  shouldMove(file: string): boolean {
+    return this.move && file.endsWith('.styl');
+  }
+
+  shouldCommitMove(): boolean {
+    return this.move && this.shouldCommit();
   }
 
   shouldMigrate(file: string): boolean {
-    return file.endsWith('.scss') && (!this.onlyDiagnose || this.dryRun);
+    return this.migrate && file.endsWith('.scss');
   }
 
-  shouldCommit(): boolean {
-    return this.git && !this.onlyDiagnose && this.commit;
+  shouldCommitMigration(): boolean {
+    return this.migrate && this.shouldCommit();
+  }
+
+  private shouldCommit(): boolean {
+    return !this.onlyDiagnose && this.git;
   }
 }

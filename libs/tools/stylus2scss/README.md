@@ -18,10 +18,11 @@ npx @myndpm/stylus2scss [--path <path>] [--commit] [--no-git] [--dry-run]
 - `--dry-run` Do not execute and print the steps
 - `--diagnose` Only list and detect line endings on the existing stylesheets in the directory
 - `--convert` Only convert the stylus contents to the target language
-  * `--quote` Whether to use single or double quotes. Default is single
-  * `--indent` Additional indent, useful for Vue
-  * `--autoprefixer` Enable autoprefixed keyframes
-  * `--comments` Safe conversion of inline comments
+  - `--quote` Whether to use single or double quotes. Default is single
+  - `--indent` Additional indent, useful for Vue
+  - `--autoprefixer` Enable autoprefixed keyframes
+  - `--comments` Safe conversion of inline comments
+- `--move` Only move the stylus files to SCSS
 - `--migrate` Only run the sass-migration tool on the existing SCSS files
 
 ## Examples
@@ -53,7 +54,7 @@ npx @myndpm/stylus2scss --migrate --no-git
 ## Troubleshooting
 
 If the sass-migrator fails because the stylus file had a faulty conversion,
-this script can re-run with the migration only.
+you can re-run with the `--migration` only option as many times as needed.
 
 ## Credits
 

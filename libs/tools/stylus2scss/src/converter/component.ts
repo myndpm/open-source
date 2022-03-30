@@ -4,7 +4,7 @@ import { concatMap } from 'rxjs/operators';
 import { Schema } from '../schema';
 import { logInfo } from '../utils';
 
-export function componentUpdate(styl: string, opts: Required<Schema>): Observable<any> {
+export function componentUpdate(opts: Required<Schema>): Observable<any> {
   if (opts.dryRun) {
     logInfo('> Updating component');
     return of(true);
