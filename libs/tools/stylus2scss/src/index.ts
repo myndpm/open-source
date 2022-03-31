@@ -62,7 +62,6 @@ treeVisit(opts.path).pipe(
         )
       : of(file);
   }),
-  concatMap(files => from(files)),
   // convert
   concatMap((file) => {
     if (opts.shouldConvert(file)) {
@@ -122,6 +121,10 @@ treeVisit(opts.path).pipe(
   // migrate
   concatMap((file) => {
     if (opts.shouldMigrate(file)) {
+      if (opts.onlyMigrate) {
+        logInfo('>', relative(dirname(opts.path), file));
+        counter++;
+      }
       const args: string[] = ['sass-migrator', 'division', opts.dryRun ? '--dry-run' : null, file].filter(Boolean);
       return exec('npx', args, { cwd: __dirname, dryRun: opts.dryRun }).pipe(
         concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun })),
