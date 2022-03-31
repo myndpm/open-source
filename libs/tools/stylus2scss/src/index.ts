@@ -141,7 +141,7 @@ treeVisit(opts.path).pipe(
   }),
 ).subscribe({
   error: (err) => logNote(err),
-  complete: () => logNote(`${counter} files ${opts.diagnose ? 'to process' : 'processed'}`),
+  complete: () => logNote(`${counter} files ${opts.onlyDiagnose ? 'to process' : 'processed'}`),
 });
 
 function waitForAll(): OperatorFunction<string, string[]> {
@@ -165,9 +165,8 @@ function gitCommit<T>(files: T, ask: string): Observable<T> {
     concatMap(() => exec('git', ['diff', '--cached', '--numstat'])),
     concatMap((output) => {
       const lines = (output.stdout?.toString() || '').split('\n').filter(Boolean).length;
-      const answer = !opts.dryRun ? prompt(question(ask)).ui.process : of({ name: '', answer: 'msg' });
       return lines
-        ? answer.pipe(
+        ? (!opts.dryRun ? prompt(question(ask)).ui.process : of({ name: '', answer: 'msg' })).pipe(
             concatMap(({ answer }) => exec('git', ['commit', '--no-verify', '-m', `"${answer}"`], { dryRun: opts.dryRun })),
           )
         : of(files);

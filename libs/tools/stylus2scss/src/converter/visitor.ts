@@ -343,7 +343,7 @@ function handleExpression(node: Nodes.Expression): string {
   let result = '';
   let before = '';
 
-  if (node.nodes?.every(node => !(node instanceof nodes.Expression))) {
+  if (node.nodes?.length && node.nodes.every(node => !(node instanceof nodes.Expression))) {
     subLineno = node.nodes.map(node => node.lineno).sort((curr, next) => next - curr)[0];
   }
 
@@ -518,13 +518,11 @@ function handleIdent(node: Nodes.Ident): string {
         expText += idx ? ` ${handleNode(node)}` : handleNode(node);
       }
     });
-    const commentText = comments
-      .map(node => handleNode(node))
-      .join(' ')
-      .replace(/^ +/, ' ');
+    let commentText = comments.map(node => handleNode(node)).join(' ').replace(/^ +/, '');
+    commentText = commentText ? ` ${commentText}` : '';
     VARLIST.push(node.name);
     identLength--;
-    return `${before}${replaceFirstATSymbol(node.name)}: ${trimFnSemicolon(expText)}; ${commentText}`;
+    return `${before}${replaceFirstATSymbol(node.name)}: ${trimFnSemicolon(expText)};${commentText}`;
   }
 
   if (node.val instanceof nodes.Function) {
