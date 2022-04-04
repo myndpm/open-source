@@ -402,8 +402,8 @@ function handleExpression(node: Nodes.Expression): string {
 }
 
 function handleExtend(node: Nodes.Extend) {
-  const before = handleLinenoAndIndentation(node);
-  oldLineno = node.lineno;
+  const before = handleLinenoAndIndentation(node.selectors[0]);
+  oldLineno = node.selectors[0].lineno;
   const text = handleNodes(node.selectors);
   return `${before}@extend ${trimFirst(text)};`;
 }
