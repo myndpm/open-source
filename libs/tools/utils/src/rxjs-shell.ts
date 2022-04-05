@@ -99,3 +99,7 @@ export const spawnSafeSync = (
 
   return result;
 };
+
+// everything
+
+export * from 'rxjs-shell';

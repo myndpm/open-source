@@ -1,6 +1,6 @@
 {
   "name": "@myndpm/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
     "@ckapp/rxjs-node-fs": "^0.5.0",
     "chalk": "^4.0.0",

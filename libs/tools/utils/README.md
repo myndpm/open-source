@@ -4,4 +4,4 @@ NPM package with misc utilities.
 
 ## Usage
 
-Basically a `dependency` of other packages like `@myndpm/stylus2scss`
+It's a base `dependency` of other packages like `@myndpm/stylus2scss` for JSON and RxJS filesystem manipulations.
