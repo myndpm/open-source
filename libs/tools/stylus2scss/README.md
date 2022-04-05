@@ -65,8 +65,10 @@ npx @myndpm/stylus2scss --git
 
 ## Troubleshooting
 
-If the sass-migrator fails because the stylus file had a faulty conversion,
-you can re-run with the `--migration` only option as many times as needed.
+- Before you commit each step you can review the staged files in your IDE.
+
+- If the sass-migrator fails because the stylus file had a faulty conversion,
+  you can re-run with the `--migration` only option as many times as needed.
 
 ## Credits
 
