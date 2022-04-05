@@ -208,11 +208,15 @@ function handleBinOp({ op, left, right }: Nodes.BinOp): string {
     return op === '==' ? '!=' : '==';
   }
 
-  if (op === '[]') {
+  if (isBlock) {
     const leftText = handleNode(left);
-    const rightText = handleNode(right);
-    binOpLength--;
-    if (isBlock) {
+    if (op === '%' && leftText.includes('%s')) {
+      const result = handleInterpolation({ left, right });
+      binOpLength--;
+      return result;
+    } else if (op === '[]') {
+      const rightText = handleNode(right);
+      binOpLength--;
       return `map-get(${leftText}, ${rightText});`;
     }
   }
@@ -452,7 +456,7 @@ function handleGroup(node: Nodes.Group): string {
   node.nodes.forEach((node, idx) => {
     const temp = handleNode(node);
     const result = /^\n/.test(temp) ? temp : temp.replace(/^\s*/, '');
-    selector += idx ? ', ' + result : result;
+    selector += idx ? `,${result.startsWith('\n') ? '' : ' '}${result}` : result;
   })
 
   const block = handleBlock(node.block);
@@ -511,11 +515,11 @@ function handleIdent(node: Nodes.Ident): string {
     const before = handleLinenoAndIndentation(node.val);
     oldLineno = node.val.lineno;
     let expText = '';
-    (node.val.nodes || []).forEach((node, idx) => {
-      if (node instanceof nodes.Comment) {
-        comments.push(node);
+    (node.val.nodes || []).forEach((item, idx) => {
+      if (item instanceof nodes.Comment) {
+        comments.push(item);
       } else {
-        expText += idx ? ` ${handleNode(node)}` : handleNode(node);
+        expText += (idx ? `${node.val.isList ? ',' : ''} ` : '') + handleNode(item);
       }
     });
     let commentText = comments.map(node => handleNode(node)).join(' ').replace(/^ +/, '');
@@ -586,6 +590,17 @@ function handleImport(node: Nodes.Import): string {
   isImport = false;
   const result = trimSemicolon(text.replace(/\.styl/g, ''));
   return `${before}${result};`;
+}
+
+function handleInterpolation({ left, right }: Pick<Nodes.BinOp, 'left' | 'right'>): string {
+  const vars: Nodes.Node[] = right instanceof nodes.Expression ? right.nodes : [right];
+
+  let i = -1;
+  return handleNode(left).replace(/%s/g, (substring: string) => {
+    i++;
+    const item = vars?.length > i ? handleNode(vars[i]) : substring;
+    return item.startsWith('$') ? `#{${item}}` : item;
+  });
 }
 
 function handleKeyframes(node: Nodes.Keyframes): string {
@@ -755,7 +770,7 @@ function handleSelector(node: Nodes.Selector): string {
 }
 
 function handleString({ val, quote }: Nodes.String): string {
-  return quote + val + quote;
+  return val.startsWith('calc(') ? val : quote + val + quote;
 }
 
 function handleSupports({ block, lineno, condition }: Nodes.Supports): string {
