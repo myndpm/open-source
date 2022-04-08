@@ -316,10 +316,11 @@ function handleEach(node: Nodes.Each): string {
   let before = handleLineno(node.lineno);
   oldLineno = node.lineno;
 
-  let exprText = `@each ${node.val}${node.key ? `, ${node.key}` : ''} in `;
+  let exprText = `@each $${node.val}${node.key ? `, $${node.key}` : ''} in `;
   VARIABLES.push(node.val);
   node.expr.nodes.forEach((node, idx) => {
-    const exp = handleNode(node);
+    const prefix = node instanceof nodes.Ident ? '$' : '';
+    const exp = prefix + handleNode(node);
     exprText += idx ? `, ${exp}` : exp;
   });
 
