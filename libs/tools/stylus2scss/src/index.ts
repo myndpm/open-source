@@ -129,6 +129,10 @@ treeVisit(opts.path).pipe(
       return exec('npx', args, { cwd: __dirname, dryRun: opts.dryRun }).pipe(
         concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun })),
         mapTo(file),
+        catchError((err) => {
+          console.error(err);
+          return throwError(err);
+        }),
       );
     }
     return of(file);
