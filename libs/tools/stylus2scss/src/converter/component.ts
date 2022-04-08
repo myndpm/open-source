@@ -11,7 +11,7 @@ export function componentUpdate(opts: Required<Schema>): Observable<any> {
   }
   return readFile(opts.file).pipe(
     concatMap((content) => {
-      const source = content.replace(/\.styl/g, `.scss`);
+      const source = content.replace(/\.styl(\'|\"|\`)/g, '.scss$1');
       return source !== content
         ? writeFile(opts.file, source)
         : throwError(null);
