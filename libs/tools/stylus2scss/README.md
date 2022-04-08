@@ -70,6 +70,9 @@ npx @myndpm/stylus2scss --git
 - If the sass-migrator fails because the stylus file had a faulty conversion,
   you can re-run with the `--migration` only option as many times as needed.
 
+- The selector `&#id` produces a conversion error,
+  you need to remove `&` and restore it later on.
+
 ## Credits
 
 Based on [stylus-converter](https://github.com/txs1992/stylus-converter)

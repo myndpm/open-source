@@ -51,17 +51,23 @@ treeVisit(opts.path).pipe(
   concatMap(files => from(files)),
   // diagnose
   concatMap((file) => {
+    logInfo('-', relative(dirname(opts.path), file));
     if (opts.onlyDiagnose) {
-      logInfo('-', relative(dirname(opts.path), file));
       counter++;
     }
     return opts.shouldAnalize(file)
       ? replaceCRLF(opts.withFile(file)).pipe(
           concatMap(() => opts.onlyDiagnose ? of(file) : stylusParse(opts.withFile(file))),
+          catchError((err) => {
+            logNote(`stylusParse error at ${relative(dirname(opts.path), file)}`);
+            return throwError(err);
+          }),
           mapTo(file),
         )
       : of(file);
   }),
+  waitForAll(),
+  concatMap(files => from(files)),
   // convert
   concatMap((file) => {
     if (opts.shouldConvert(file)) {
@@ -70,6 +76,10 @@ treeVisit(opts.path).pipe(
           ? exec('git', ['add', file], { dryRun: opts.dryRun })
           : of({}),
         ),
+        catchError((err) => {
+          logNote(`stylusConvert error at ${relative(dirname(opts.path), file)}`);
+          return throwError(err);
+        }),
         mapTo(file),
       );
     }

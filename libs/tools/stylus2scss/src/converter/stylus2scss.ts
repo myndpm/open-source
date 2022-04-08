@@ -48,6 +48,9 @@ export function stylusConvert(opts: Required<Schema>): Observable<any> {
         source = source.replace(/transparentify\(/g, 'rgba(')
       }
       // known issues
+      if (source.indexOf('&#') !== -1) {
+        logNote(`&# detected, please remove it temporarily at: ${file}`);
+      }
       if (source.indexOf('%s') !== -1) {
         logNote(`! interpolation %s detected: ${file}`);
       }
