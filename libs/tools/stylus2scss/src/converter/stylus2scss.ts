@@ -38,7 +38,7 @@ export function stylusConvert(opts: Required<Schema>): Observable<any> {
       let source = converter(content, opts, GLOBAL_VARIABLES, GLOBAL_MIXINS);
       // replace functions
       if (source.indexOf('alpha(') !== -1) {
-        source = source.replace(/alpha\((.*)?\,/g, 'adjust-color($1, $alpha:')
+        source = source.replace(/alpha\((.*)?\,/g, 'change-color($1, $alpha:')
       }
       if (source.indexOf('embedurl(') !== -1) {
         source = source.replace(/embedurl\(/g, 'url(')
