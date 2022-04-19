@@ -95,7 +95,31 @@ And the `serial` control will be required when the `accessType` field is equal t
   },
 ```
 
+## Dependency between fields
+
+Sometimes controls depends on other control values, if we use a custom function for the output value we can refresh our control specifying the dependencies:
+
+```typescript
+  params: {
+    getValue: (node: DynTreeNode) => {
+      const value1 = node.query('anotherControl1').value;
+      const value2 = node.query('anotherControl2').value;
+      return value1 || value2;
+    },
+  }
+  match: [
+    {
+      matchers: ['UPDATEDBY'],
+      operator: 'OR',
+      when: [
+        { path: 'anotherControl1' },
+        { path: 'anotherControl2' }
+      ],
+    }
+  ],
+```
+
 ## Next
 
-- Check the article about [Conditional Matchers](https://dev.to/myndpm/conditional-tasks-in-dynamic-forms-h8) at DEV.to
+- Check the article about [Conditional Tasks](https://dev.to/myndpm/conditional-tasks-in-dynamic-forms-h8) at DEV.to
 - What else can we implement to support business-logic? join [this discussion](https://github.com/myndpm/open-source/discussions/4).

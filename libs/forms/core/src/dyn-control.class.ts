@@ -153,4 +153,9 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     this.control.updateValueAndValidity({ onlySelf: true });
     this._ref.markForCheck();
   }
+
+  // hook to detect changes on this control
+  hookDetectChanges(): void {
+    this._ref.markForCheck();
+  }
 }

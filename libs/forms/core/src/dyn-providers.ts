@@ -94,6 +94,16 @@ export const defaultMatchers: DynControlMatcher[] = [
     }
   },
   {
+    id: 'UPDATEDBY',
+    fn: (): DynControlMatcherFn => {
+      return ({ node, firstTime }) => {
+        if (!firstTime) {
+          node.callHook({ hook: 'DetectChanges' });
+        }
+      }
+    }
+  },
+  {
     id: 'RELATED',
     fn: (): DynControlMatcherFn => {
       return ({ node, firstTime }) => {

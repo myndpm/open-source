@@ -172,8 +172,13 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.callHook('UpdateValidity', null, true);
   }
 
+  // trigger change detection programatically
+  detectChanges(): void {
+    this.callHook('DetectChanges', null, true);
+  }
+
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload: any, plain = false): void {
+  callHook(hook: string, payload?: any, plain = false): void {
     this.node.children.forEach(node => {
       const fieldName = node.name;
       // validate the expected payload

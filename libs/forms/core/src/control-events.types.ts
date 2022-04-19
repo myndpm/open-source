@@ -8,6 +8,6 @@ export type DynControlVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
  */
 export interface DynControlHook {
   hook: string;
-  payload: any;
+  payload?: any;
   plain?: boolean; // propagate the payload without modifications
 }
