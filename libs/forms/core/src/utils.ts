@@ -1,5 +1,7 @@
 // customized yeikos/js.merge
 
+import { isObservable } from 'rxjs';
+
 export function merge(clone: boolean, ...items: any[]): any
 export function merge(...items: any[]): any
 export function merge(...items: any[]) {
@@ -13,7 +15,10 @@ export function recursive(...items: any[]) {
 }
 
 export function clone<T>(input: T): T {
-	if (Array.isArray(input)) {
+	if (isObservable(input) || typeof input === 'function') {
+    return input;
+
+	} else if (Array.isArray(input)) {
     return input.map(clone) as any;
 
 	} else if (isPlainObject(input)) {
