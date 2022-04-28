@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import deepEqual from 'fast-deep-equal';
-import { BehaviorSubject, isObservable } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlConfig } from './control-config.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
@@ -77,12 +78,23 @@ export class DynFormMode {
     if (Object.prototype.hasOwnProperty.call(mode, 'errorMsg')) {
       config.errorMsg = mode.errorMsg;
     }
-    // do not override an existing observable (because of modeParams)
-    // an observable will need to take in account the mode changes inside
-    if (mode.params && !isObservable(config.params)) {
-      config.params = !isObservable(mode.params)
-        ? merge(true, config.params, mode.params)
-        : mode.params;
+    if (mode.params) {
+      if (isObservable(config.params) && isObservable(mode.params)) {
+        config.params = combineLatest([config.params, mode.params]).pipe(
+          map(([params, modeParams]) => merge(params, modeParams))
+        );
+      } else if (isObservable(config.params)) {
+        config.params = config.params.pipe(
+          map(params => merge(params, mode.params))
+        );
+      } else if (isObservable(mode.params)) {
+        const params = config.params;
+        config.params = mode.params.pipe(
+          map(modeParams => merge(params, modeParams))
+        );
+      } else {
+        config.params = merge(true, config.params, mode.params);
+      }
     }
     if (Object.prototype.hasOwnProperty.call(mode, 'paramFns')) {
       config.paramFns = merge(true, config.paramFns, mode.paramFns);
