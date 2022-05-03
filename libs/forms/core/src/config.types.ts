@@ -1,4 +1,5 @@
 import { DynControlConfig } from './control-config.types';
+import { DynControlVisibility } from './control-events.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 
@@ -11,6 +12,7 @@ TParams extends DynControlParams = DynControlParams
   name?: string; // optional fieldName
   controls?: DynBaseConfig<TMode>[];
   modes?: DynControlModes<TMode>;
+  visibility?: DynControlVisibility;
   isolated?: boolean; // not part of the form hierarchy
 }
 

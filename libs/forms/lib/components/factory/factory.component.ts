@@ -29,7 +29,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'dyn-factory',
@@ -145,10 +145,15 @@ export class DynFactoryComponent implements OnInit {
 
       // listen control.visibility$
       this.component.instance.visibility$
-        .pipe(takeUntil(this.component.instance.onDestroy$))
+        .pipe(
+          startWith(config.visibility || 'VISIBLE'),
+          takeUntil(this.component.instance.onDestroy$),
+        )
         .subscribe((visibility) => {
-          this.visibility = visibility;
-          this.ref.markForCheck();
+          if (this.visibility !== visibility) {
+            this.visibility = visibility;
+            this.ref.markForCheck();
+          }
         });
 
     } catch(e) {
