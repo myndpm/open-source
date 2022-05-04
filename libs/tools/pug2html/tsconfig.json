@@ -9,12 +9,10 @@
     }
   ],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
     "strict": true,
-    "skipLibCheck": true,
-    "sourceMap": false
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   }
 }

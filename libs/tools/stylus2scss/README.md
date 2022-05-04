@@ -15,7 +15,7 @@ npx @myndpm/stylus2scss [--path <path>] [--git] [--dry-run]
 
 - `--path <path>` Path to the directory for conversion. Default is current directory
 - `--git` Convert and move files keeping the GIT history
-- `--dry-run` Do not execute and print the steps
+- `--dry-run` Do not execute and just print the steps
 - `--diagnose` Only list and detect line endings on the existing stylesheets in the directory
 - `--convert` Only convert the stylus contents to the target language
   - `--quote` Whether to use single or double quotes. Default is single
@@ -76,3 +76,10 @@ npx @myndpm/stylus2scss --git
 ## Credits
 
 Based on [stylus-converter](https://github.com/txs1992/stylus-converter)
+
+## TODO
+
+Block variable converted to invalid mixin
+Why `background-image: url('data:image/png;base64,` gets modified?
+Warn to review the output of @each
+Remove second parameter of embedurl

@@ -20,14 +20,12 @@
     "start": "node --loader ts-node/esm src/index.ts",
     "test": "ng test"
   },
-  "type": "module",
-  "main": "./src/index.ts",
   "dependencies": {
     "prettier": "*",
     "pug": "~3.0.2"
   },
   "devDependencies": {
-    "@types/prettier": "~2.4.2",
-    "@types/pug": "~2.0.5"
+    "@types/prettier": "~2.6.0",
+    "@types/pug": "~2.0.6"
   }
 }

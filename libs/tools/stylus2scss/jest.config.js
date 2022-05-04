@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'tools-stylus2scss',
+  displayName: 'stylus2scss',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/tools/stylus2scss',
+  coverageDirectory: '../../../coverage/libs/stylus2scss',
 };
