@@ -56,7 +56,7 @@
     "nx": "nx",
     "yarn": "yarn",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package && yarn clean:rxjs",
-    "clean:rxjs": "rimraf libs/tools/stylus2scss/node_modules/rxjs libs/tools/utils/node_modules/rxjs libs/tools/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
+    "clean:rxjs": "rimraf libs/tools/pug2html/node_modules/rxjs libs/tools/stylus2scss/node_modules/rxjs libs/tools/utils/node_modules/rxjs libs/tools/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
   },
   "dependencies": {
     "@angular/animations": "12.2.13",

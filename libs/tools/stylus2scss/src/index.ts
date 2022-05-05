@@ -23,7 +23,7 @@ program
 program
   .option('--path <path>', 'Path to convert. Defaults to current', process.cwd())
   .option('--git', 'Convert and move files keeping the GIT history', false)
-  .option('--dry-run', 'Do not execute and print the steps', false)
+  .option('--dry-run', 'Do not execute and just print the steps', false)
   .option('--diagnose', 'List the files to process in the folder', false)
   .option('--convert', 'Convert the file contents only', false)
   .option('--move', 'Only move the .styl files to .scss and update the related components', false)
@@ -47,7 +47,7 @@ logTitle(`stylus2scss ${opts.onlyDiagnose ? 'diagnosis' : (opts.onlyMigrate ? 'm
 treeVisit(opts.path).pipe(
   filter((file) => opts.isValid(file)),
   waitForAll(),
-  concatMap((files) => gitCheck(files)),
+  concatMap((files) => opts.git ? gitCheck(files) : of(files)),
   concatMap(files => from(files)),
   // diagnose
   concatMap((file) => {
