@@ -51,6 +51,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.node.control;
   }
 
+  get controls() {
+    return this.config?.controls.filter(Boolean);
+  }
+
   // works in AfterViewInit
   valueChanges = (time: number = 50): Observable<any> => {
     // this omit the consecutive changes while patching a Form Array
@@ -81,7 +85,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.node.setControl(this.form)
     this.node.load({
       isolated: Boolean(this.isolated),
-      controls: this.config?.controls,
+      controls: this.controls,
       errorMsgs: this.config?.errorMsgs,
     });
     this.logger.nodeLoaded('dyn-form', this.node);

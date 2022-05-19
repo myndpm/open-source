@@ -215,7 +215,7 @@ export class DynFormHandlers {
     let validators: F[] = [];
     if (Array.isArray(config)) {
       // array of ids or [id, args] | F
-      validators = config.map(id => {
+      validators = config.filter(Boolean).map(id => {
         return this.getValidatorFn(node, id, dictionary);
       });
     } else if (config) {

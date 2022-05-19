@@ -24,7 +24,11 @@ export class DynFormMode {
   // this algorithm decides how to override the main config with mode customizations
   getModeConfig(config: DynBaseConfig): DynBaseConfig {
     const mode = this.mode$.getValue();
-    let result: DynBaseConfig = { ...config, modes: undefined };
+    let result: DynBaseConfig = {
+      ...config,
+      controls: config.controls?.filter(Boolean),
+      modes: undefined,
+    };
 
     if (!mode) {
       return result;
