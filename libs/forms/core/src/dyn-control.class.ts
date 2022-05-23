@@ -100,7 +100,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
     // listen parameters changes after the control is ready
     combineLatest([
-      isObservable(this.config.params) ? this.config.params : of(this.config.params),
+      isObservable(this.config.params) ? this.config.params.pipe(startWith({})) : of(this.config.params),
       this.node.paramsUpdates$.pipe(startWith({})),
     ]).pipe(
       scan<any>((params, [config, updates]) => merge(true, params, config, updates)),
