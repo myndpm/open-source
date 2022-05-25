@@ -84,6 +84,7 @@ implements DynTreeNode<TParams, TControl> {
   private _children$ = new Subject<void>();
   private _numChild$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
+  private _paramsLoaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe = new Subject<void>();
 
@@ -92,19 +93,20 @@ implements DynTreeNode<TParams, TControl> {
     switchMap(() => combineLatest([
       this._numChild$,
       this._loaded$,
+      this._paramsLoaded$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([numChilds, loaded, ...children]) => {
+    map(([numChilds, loaded, paramsLoaded, ...children]) => {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = numChilds === children.length;
       const allChildrenValid = children.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loaded) && allChildrenLoaded;
+      const result = Boolean(loaded && paramsLoaded) && allChildrenLoaded;
 
       this.logger.nodeLoad(this, !isControl
-        ? { result, loaded, numChilds, children }
-        : { result, loaded }
+        ? { result, loaded, paramsLoaded, numChilds, children }
+        : { result, loaded, paramsLoaded }
       );
 
       return result;
@@ -304,6 +306,10 @@ implements DynTreeNode<TParams, TControl> {
       // register the node with its parent
       this.parent?.addChild(this);
     }
+  }
+
+  markParamsAsLoaded(): void {
+    this._paramsLoaded$.next(true);
   }
 
   markAsPending(): void {
