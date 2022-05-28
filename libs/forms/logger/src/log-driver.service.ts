@@ -38,6 +38,10 @@ export class DynLogDriver {
     return this.getLogger(event.level)(event);
   }
 
+  setLevel(level: number): void {
+    this.level = level;
+  }
+
   private getLogger(level: DynLogLevel) {
     switch (level) {
       case DynLogLevel.Fatal:

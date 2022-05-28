@@ -28,6 +28,7 @@ export interface DynModuleProviders {
   matchers?: DynControlMatcher[];
   conditions?: DynControlCondition[];
   priority?: number;
+  debug?: number;
 }
 
 // utility used by DynFormsModule.forFeature
@@ -35,7 +36,7 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
   return [
     {
       provide: DYN_LOG_LEVEL,
-      useValue: DynLogLevel.Fatal,
+      useValue: args?.debug || DynLogLevel.Fatal,
     },
     DynLogDriver,
     DynLogger,

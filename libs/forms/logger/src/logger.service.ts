@@ -10,6 +10,10 @@ export class DynLogger {
     private readonly driver: DynLogDriver,
   ) {}
 
+  setLevel(level: number): void {
+    this.driver.setLevel(level);
+  }
+
   rootForm(): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,

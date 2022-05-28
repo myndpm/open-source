@@ -60,7 +60,7 @@ export class DynFactoryComponent implements OnInit {
   }
 
   // DynControl
-  private component!: ComponentRef<AbstractDynControl>
+  private component!: ComponentRef<AbstractDynControl>;
 
   // retrieved from the proper injector
   private _injector!: Injector;

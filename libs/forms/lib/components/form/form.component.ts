@@ -20,7 +20,7 @@ import {
   DYN_MODE,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
-import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
+import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, delay, filter, first, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
@@ -29,7 +29,11 @@ import { DynFormConfig } from './form.config';
   selector: 'dyn-form',
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormTreeNode],
+  providers: [
+    DynLogDriver,
+    DynLogger,
+    DynFormTreeNode,
+  ],
 })
 export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() isolated = false;
@@ -70,6 +74,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   ) {}
 
   ngOnInit() {
+    if (this.config?.debug) {
+      this.logger.setLevel(this.config.debug);
+    }
+
     // figure out the control to use
     if (!this.isolated && !this.form && this.node.parent) {
       // use the parent DynFormTreeNode control
@@ -88,6 +96,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       controls: this.controls,
       errorMsgs: this.config?.errorMsgs,
     });
+    this.node.markParamsAsLoaded();
     this.logger.nodeLoaded('dyn-form', this.node);
 
     this.configLayer = Injector.create({
@@ -110,14 +119,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
             DYN_MODE_DEFAULTS,
           ],
         },
-        this.config?.debug ? [
-          {
-            provide: DYN_LOG_LEVEL,
-            useValue: this.config.debug,
-          },
-          DynLogDriver,
-          DynLogger,
-        ] : [],
       ],
     });
 

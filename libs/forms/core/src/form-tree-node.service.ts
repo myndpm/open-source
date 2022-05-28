@@ -100,14 +100,12 @@ implements DynTreeNode<TParams, TControl> {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = numChilds === children.length;
       const allChildrenValid = children.every(Boolean);
-      const allChildrenLoaded = this.instance === DynInstanceType.Control
-        ? Boolean(paramsLoaded)
-        : hasAllChildren && allChildrenValid;
+      const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loaded) && allChildrenLoaded;
+      const result = Boolean(loaded && paramsLoaded) && allChildrenLoaded;
 
       this.logger.nodeLoad(this, !isControl
-        ? { result, loaded, numChilds, children }
+        ? { result, loaded, paramsLoaded, numChilds, children }
         : { result, loaded, paramsLoaded }
       );
 
@@ -317,11 +315,15 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   markAsPending(): void {
-    this._loaded$.next(false);
+    if (this._loaded$.value) {
+      this._loaded$.next(false);
+    }
   }
 
   markAsLoaded(): void {
-    this._loaded$.next(true);
+    if (!this._loaded$.value) {
+      this._loaded$.next(true);
+    }
   }
 
   setupListeners(): void {

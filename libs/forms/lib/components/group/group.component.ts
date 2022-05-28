@@ -38,6 +38,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
       controls: this.controls,
       isolated: Boolean(this.isolated),
     });
+    this.node.markParamsAsLoaded();
 
     // log the successful initialization
     this.logger.nodeLoaded('dyn-group', this.node);
