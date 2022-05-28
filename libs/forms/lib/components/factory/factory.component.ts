@@ -149,7 +149,11 @@ export class DynFactoryComponent implements OnInit {
 
       this.component.hostView.detectChanges();
 
-      this.logger.controlInstantiated(this.component.instance.node, { control: config.control, name: config.name, controls: config.controls?.length || 0 });
+      this.logger.controlInstantiated(this.component.instance.node, {
+        control: config.control,
+        name: config.name,
+        controls: config.controls?.length || 0,
+      });
 
       // listen control.visibility$
       this.component.instance.visibility$

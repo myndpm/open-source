@@ -96,17 +96,17 @@ implements DynTreeNode<TParams, TControl> {
       this._paramsLoaded$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([numChilds, loaded, paramsLoaded, ...children]) => {
+    map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
-      const hasAllChildren = numChilds === children.length;
-      const allChildrenValid = children.every(Boolean);
+      const hasAllChildren = children === childrenLoaded.length;
+      const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loaded && paramsLoaded) && allChildrenLoaded;
+      const result = Boolean(loadedComponent && loadedParams) && allChildrenLoaded;
 
       this.logger.nodeLoad(this, !isControl
-        ? { result, loaded, paramsLoaded, numChilds, children }
-        : { result, loaded, paramsLoaded }
+        ? { loaded$: result, loadedComponent, loadedParams, children, childrenLoaded }
+        : { loaded$: result, loadedComponent, loadedParams }
       );
 
       return result;

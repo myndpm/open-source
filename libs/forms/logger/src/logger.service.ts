@@ -65,7 +65,7 @@ export class DynLogger {
       level: DynLogLevel.Hierarchy,
       message: !deep
         ? `[${origin}] root node initialized`
-        : `[${origin}] initialized '${path.join('.')}' (${route.join('/')})`,
+        : `[${origin}] '${path.join('.')}' initialized (${route.join('/')})`,
       payload,
     });
   }
@@ -88,11 +88,11 @@ export class DynLogger {
     });
   }
 
-  nodeParamsUpdated({ deep }: DynNode, origin: string, payload: any): void {
+  nodeParamsUpdated({ deep, path }: DynNode, origin: string, payload: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Lifecycle,
-      message: `[${origin}] updating params`,
+      message: `[${origin}] '${path.join('.')}' params update`,
       payload,
     });
   }
@@ -101,16 +101,16 @@ export class DynLogger {
     this.driver.log({
       deep,
       level: DynLogLevel.Debug,
-      message: `[dyn-factory] instantiating dynamic component`,
+      message: `[dyn-factory] instantiating`,
       payload,
     });
   }
 
-  controlInstantiated({ deep, dynControl }: DynNode, payload: any): void {
+  controlInstantiated({ deep, dynControl, path }: DynNode, payload: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hierarchy,
-      message: `[dyn-factory] instantiated dynamic control${dynControl ? ` (${dynControl})` : ''}`,
+      message: `[dyn-factory] '${path.join('.')}' instantiated${dynControl ? ` (${dynControl})` : ''}`,
       payload,
     });
   }
@@ -127,7 +127,7 @@ export class DynLogger {
     this.driver.log({
       deep,
       level: DynLogLevel.Debug,
-      message: `'${path.join('.')}' setupListeners (${route.join('/')})`,
+      message: `'${path.join('.')}' setup listeners (${route.join('/')})`,
     });
   }
 
