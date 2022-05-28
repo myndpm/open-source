@@ -20,7 +20,7 @@ import {
   DYN_MODE,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
-import { DynLogger } from '@myndpm/dyn-forms/logger';
+import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, delay, filter, first, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
@@ -109,7 +109,15 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
             DYN_MODE,
             DYN_MODE_DEFAULTS,
           ],
-        }
+        },
+        this.config?.debug ? [
+          {
+            provide: DYN_LOG_LEVEL,
+            useValue: this.config.debug,
+          },
+          DynLogDriver,
+          DynLogger,
+        ] : [],
       ],
     });
 

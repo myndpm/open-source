@@ -12,4 +12,5 @@ export interface DynFormConfig<M extends DynControlMode = DynControlMode> {
   controls: Array<DynBaseConfig<M> | DynConfig<M>>;
   errorMsgs?: DynConfigErrors<DynErrorMessages>;
   modes?: DynControlModes<M>; // default partial configs per mode
+  debug?: number;
 }

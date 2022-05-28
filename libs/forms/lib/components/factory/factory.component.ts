@@ -27,7 +27,7 @@ import {
   DynFormRegistry,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
-import { DynLogger } from '@myndpm/dyn-forms/logger';
+import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
@@ -125,6 +125,14 @@ export class DynFactoryComponent implements OnInit {
               [new SkipSelf(), DynFormTreeNode],
             ],
           },
+          config?.debug ? [
+            {
+              provide: DYN_LOG_LEVEL,
+              useValue: config.debug,
+            },
+            DynLogDriver,
+            DynLogger,
+          ] : [],
         ],
         parent: this._injector,
       });

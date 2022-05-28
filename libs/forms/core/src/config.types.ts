@@ -14,6 +14,7 @@ TParams extends DynControlParams = DynControlParams
   modes?: DynControlModes<TMode>;
   visibility?: DynControlVisibility;
   isolated?: boolean; // not part of the form hierarchy
+  debug?: number;
 }
 
 // single form control config
