@@ -73,7 +73,9 @@ treeVisit(opts.path).pipe(
     if (opts.shouldConvert(file)) {
       return stylusConvert(opts.withFile(file)).pipe(
         concatMap(() => opts.git
-          ? exec('git', ['add', file], { dryRun: opts.dryRun })
+          ? exec('git', ['add', file], { dryRun: opts.dryRun }).pipe(
+              catchError(() => of({})),
+            )
           : of({}),
         ),
         catchError((err) => {
@@ -137,7 +139,9 @@ treeVisit(opts.path).pipe(
       }
       const args: string[] = ['sass-migrator', 'division', opts.dryRun ? '--dry-run' : null, file].filter(Boolean);
       return exec('npx', args, { cwd: __dirname, dryRun: opts.dryRun }).pipe(
-        concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun })),
+        concatMap(() => exec('git', ['add', file], { dryRun: opts.dryRun }).pipe(
+          catchError(() => of(file)),
+        )),
         mapTo(file),
         catchError((err) => {
           console.error(err);
