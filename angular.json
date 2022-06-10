@@ -78,6 +78,78 @@
       },
       "tags": ["shared"]
     },
+    "nx": {
+      "root": "libs/nx",
+      "sourceRoot": "libs/nx/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/nx/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/nx"],
+          "options": {
+            "jestConfig": "libs/nx/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/nx",
+            "tsConfig": "libs/nx/tsconfig.lib.json",
+            "packageJson": "libs/nx/package.json",
+            "main": "libs/nx/src/index.ts",
+            "assets": [
+              "libs/nx/*.md",
+              {
+                "input": "./libs/nx/src",
+                "glob": "**/!(*.ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/nx/src",
+                "glob": "**/*.d.ts",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/nx",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/nx",
+                "glob": "executors.json",
+                "output": "."
+              }
+            ]
+          }
+        }
+      },
+      "tags": ["plugin"]
+    },
+    "nx-e2e": {
+      "root": "apps/nx-e2e",
+      "projectType": "application",
+      "sourceRoot": "apps/nx-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "nx:build",
+            "jestConfig": "apps/nx-e2e/jest.config.js"
+          }
+        }
+      },
+      "tags": ["plugin"],
+      "implicitDependencies": ["nx"]
+    },
     "pug2html": {
       "root": "libs/tools/pug2html",
       "sourceRoot": "libs/tools/pug2html/src",
@@ -98,9 +170,7 @@
         "postbuild": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "chmod +x dist/libs/pug2html/src/index.js"
-            ]
+            "commands": ["chmod +x dist/libs/pug2html/src/index.js"]
           }
         },
         "lint": {
@@ -141,9 +211,7 @@
         "postbuild": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "chmod +x dist/libs/stylus2scss/src/index.js"
-            ]
+            "commands": ["chmod +x dist/libs/stylus2scss/src/index.js"]
           }
         },
         "lint": {
