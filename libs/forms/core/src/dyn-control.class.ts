@@ -15,7 +15,7 @@ import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rx
 import { filter, scan, startWith } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigMap, DynConfigProvider } from './control-config.types';
-import { DynControlVisibility } from './control-events.types';
+import { DynControlVisibility, DynHookUpdateValidity } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlFunctionFn, DynControlParams } from './control-params.types';
 import { DynControlType, DynInstanceType } from './control.types';
@@ -150,8 +150,8 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   }
 
   // hook to refresh the form status
-  hookUpdateValidity(): void {
-    this.control.updateValueAndValidity({ onlySelf: true });
+  hookUpdateValidity(opts: DynHookUpdateValidity = { onlySelf: true }): void {
+    this.control.updateValueAndValidity(opts);
     this._ref.markForCheck();
   }
 

@@ -17,6 +17,7 @@ import {
   DynControlMode,
   DynFormMode,
   DynFormTreeNode,
+  DynHookUpdateValidity,
   DYN_MODE,
   DYN_MODE_DEFAULTS,
 } from '@myndpm/dyn-forms/core';
@@ -181,8 +182,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // update the validators programatically
-  validate(): void {
-    this.callHook('UpdateValidity', null, true);
+  validate(opts?: DynHookUpdateValidity): void {
+    this.callHook('UpdateValidity', opts, true);
   }
 
   // trigger change detection programatically
