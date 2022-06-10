@@ -1,6 +1,11 @@
 {
   "$schema": "http://json-schema.org/schema",
   "executors": {
+    "deploy-docker": {
+      "implementation": "./src/executors/deploy-docker/executor",
+      "schema": "./src/executors/deploy-docker/schema.json",
+      "description": "deploy-docker executor"
+    },
     "deploy-npm": {
       "implementation": "./src/executors/deploy-npm/executor",
       "schema": "./src/executors/deploy-npm/schema.json",
