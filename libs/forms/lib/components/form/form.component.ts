@@ -196,12 +196,12 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.node.children.forEach(node => {
       const fieldName = node.name;
       // validate the expected payload
-      if (!plain && (!payload || !fieldName || !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+      if (!plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
         return;
       }
       node.callHook({
         hook,
-        payload: !plain ? payload[fieldName!] : payload,
+        payload: !plain && fieldName ? payload[fieldName!] : payload,
         plain,
       });
     });
