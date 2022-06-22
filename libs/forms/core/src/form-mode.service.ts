@@ -1,18 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import deepEqual from 'fast-deep-equal';
-import { BehaviorSubject, combineLatest, isObservable } from 'rxjs';
+import { combineLatest, isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlConfig } from './control-config.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
-import { DYN_MODE, DYN_MODE_DEFAULTS } from './form.tokens';
+import { DYN_MODE_DEFAULTS } from './form.tokens';
 import { merge } from './utils';
 
 @Injectable()
 // provided by the dyn-form component next to the internal tokens
 export class DynFormMode {
   constructor(
-    @Inject(DYN_MODE) private readonly mode$: BehaviorSubject<DynControlMode>,
     @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
   ) {}
 
@@ -22,8 +21,7 @@ export class DynFormMode {
 
   // resolves the config to be used by dyn-factory
   // this algorithm decides how to override the main config with mode customizations
-  getModeConfig(config: DynBaseConfig): DynBaseConfig {
-    const mode = this.mode$.getValue();
+  getModeConfig(mode: DynControlMode, config: DynBaseConfig): DynBaseConfig {
     let result: DynBaseConfig = {
       ...config,
       controls: config.controls?.filter(Boolean),

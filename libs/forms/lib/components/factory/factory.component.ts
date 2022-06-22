@@ -84,8 +84,8 @@ export class DynFactoryComponent implements OnInit {
 
     // process the dynamic component with each mode change
     let config: DynBaseConfig;
-    this._mode$.subscribe(() => {
-      const newConfig = this._formMode.getModeConfig(this.config);
+    this._mode$.subscribe((mode) => {
+      const newConfig = this._formMode.getModeConfig(mode, this.config);
 
       // do not re-create the control if the config is the same
       if (!this._formMode.deepEqual(config, newConfig)) {

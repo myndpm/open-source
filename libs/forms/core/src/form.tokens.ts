@@ -47,6 +47,10 @@ export const DYN_MODE = new InjectionToken<BehaviorSubject<DynControlMode>>(
   '@myndpm/dyn-forms/internal/mode'
 );
 
+export const DYN_MODE_CHILD = new InjectionToken<BehaviorSubject<DynControlMode>>(
+  '@myndpm/dyn-forms/internal/mode/child'
+);
+
 export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
   '@myndpm/dyn-forms/internal/mode-defaults'
 );

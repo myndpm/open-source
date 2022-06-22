@@ -32,13 +32,7 @@ implements DynTreeNode<TParams, TControl> {
   route: string[] = [];
   children: DynFormTreeNode[] = [];
 
-  // listened by dyn-factory
-  visibility$ = new Subject<DynControlVisibility>();
-  // listened by DynControl
-  paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
-  hook$ = new Subject<DynControlHook>();
-
-  // control config
+  // node API
   get dynControl(): string|undefined {
     return this._dynControl;
   }
@@ -63,8 +57,14 @@ implements DynTreeNode<TParams, TControl> {
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
-  get mode$(): Observable<DynControlMode> {
-    return this._mode$.asObservable();
+  get hook$(): Observable<DynControlHook> {
+    return this._hook$.asObservable();
+  }
+  get paramsUpdates$(): Observable<Partial<TParams>> {
+    return this._paramsUpdates$.asObservable();
+  }
+  get visibility$(): Observable<DynControlVisibility> {
+    return this._visibility$.asObservable();
   }
 
   // form root node
@@ -87,6 +87,12 @@ implements DynTreeNode<TParams, TControl> {
   private _paramsLoaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe = new Subject<void>();
+
+  // listened by dyn-factory
+  private _visibility$ = new Subject<DynControlVisibility>();
+  // listened by DynControl
+  private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
+  private _hook$ = new Subject<DynControlHook>();
 
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
@@ -120,7 +126,7 @@ implements DynTreeNode<TParams, TControl> {
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
     @Optional() @Inject(DYN_MODE)
-    private readonly _mode$: BehaviorSubject<DynControlMode>,
+    public readonly mode$: Observable<DynControlMode>,
     // parent node should be set for all except the root
     @Optional() @SkipSelf()
     public readonly parent: DynFormTreeNode<any>,
@@ -131,15 +137,15 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   visible(): void {
-    this.visibility$.next('VISIBLE');
+    this._visibility$.next('VISIBLE');
   }
 
   invisible(): void {
-    this.visibility$.next('INVISIBLE');
+    this._visibility$.next('INVISIBLE');
   }
 
   hidden(): void {
-    this.visibility$.next('HIDDEN');
+    this._visibility$.next('HIDDEN');
   }
 
   /**
@@ -161,14 +167,14 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   updateParams(params: Partial<TParams>): void {
-    this.paramsUpdates$.next(params);
+    this._paramsUpdates$.next(params);
   }
 
   // let the ControlNode know of an incoming hook
   callHook(event: DynControlHook): void {
     this.logger.hookCalled(this, event.hook, event.payload);
 
-    this.hook$.next(event);
+    this._hook$.next(event);
   }
 
   // query for a control upper in the tree
@@ -402,9 +408,9 @@ implements DynTreeNode<TParams, TControl> {
       this.parent?.removeChild(this);
     }
 
-    this.hook$.complete();
-    this.paramsUpdates$.complete();
-    this.visibility$.complete();
+    this._hook$.complete();
+    this._paramsUpdates$.complete();
+    this._visibility$.complete();
     this._errorMsg$.complete();
     this._unsubscribe.next();
     this._unsubscribe.complete();

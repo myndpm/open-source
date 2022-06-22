@@ -53,11 +53,14 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   }
 
   // utility properties
+  get mode$(): Observable<DynControlMode> {
+    return this.node.mode$;
+  }
   get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
     return this.node.parent.control;
   }
   get visibility$(): Observable<DynControlVisibility> {
-    return this.node.visibility$.asObservable();
+    return this.node.visibility$;
   }
   get id(): string {
     if (this._id) {
@@ -144,7 +147,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     newParams?: Partial<TParams>,
     newParamFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>
   ): void {
-    this.node.paramsUpdates$.next(
+    this.node.updateParams(
       merge(true, newParams, this._handlers.getFunctions(newParamFns))
     );
   }

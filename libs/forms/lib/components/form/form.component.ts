@@ -116,7 +116,6 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           provide: DynFormMode,
           useClass: DynFormMode,
           deps: [ // FIXME added for Stackblitz
-            DYN_MODE,
             DYN_MODE_DEFAULTS,
           ],
         },
