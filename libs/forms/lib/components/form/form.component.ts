@@ -140,6 +140,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode) {
+      this.logger.modeForm(this.node, this.mode);
       this.mode$.next(this.mode);
     }
   }

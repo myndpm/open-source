@@ -134,9 +134,25 @@ export class DynLogger {
   hookCalled({ deep, path }: DynNode, hook: string, payload?: any): void {
     this.driver.log({
       deep,
-      level: DynLogLevel.Hooks,
+      level: DynLogLevel.Runtime,
       message: `'${hook}' called on '${path.join('.')}'`,
       payload: payload && typeof payload === 'object' ? payload : JSON.stringify(payload),
+    });
+  }
+
+  modeForm({ deep, path }: DynNode, mode: string | undefined): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Runtime,
+      message: `[DynForm] '${path.join('.')}' new mode: '${mode}'`
+    });
+  }
+
+  modeGroup({ deep, path }: DynNode, name: string, mode: string): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Runtime,
+      message: `[DynGroup] '${path.join('.')}${name ? `.${name}` : ''}' new mode: '${mode}'`
     });
   }
 }

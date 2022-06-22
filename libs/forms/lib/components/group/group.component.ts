@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnInit, SkipSelf } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  DYN_GROUP_NAME,
   DYN_MODE,
   DYN_MODE_CHILD,
   DynBaseConfig,
@@ -11,14 +12,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { merge, Observable, Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
-
-export function modeFactory(
-  parent$: Observable<DynControlMode>,
-  child$: Observable<DynControlMode>,
-): Observable<DynControlMode> {
-  return merge(parent$, child$).pipe(shareReplay(1));
-}
+import { shareReplay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'dyn-group',
@@ -40,6 +34,18 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     this.mode$.next(mode);
   }
 
+  @Input()
+  modeFactory = (
+    name: string,
+    parent$: Observable<DynControlMode>,
+    child$: Observable<DynControlMode>,
+  ): Observable<DynControlMode> => {
+    return merge(parent$, child$).pipe(
+      tap(mode => this.logger.modeGroup(this.node, name, mode)),
+      shareReplay(1),
+    );
+  }
+
   // stream mode changes via DYN_MODE
   protected mode$ = new Subject<DynControlMode | undefined>();
 
@@ -47,32 +53,37 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   configLayer?: Injector;
 
   constructor(
-    injector: Injector,
+    private readonly injector: Injector,
     private readonly logger: DynLogger,
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
 
     this.configLayer = Injector.create({
-      parent: injector,
+      parent: this.injector,
       providers: [
+        {
+          provide: DYN_GROUP_NAME,
+          useValue: this.name,
+        },
         {
           provide: DYN_MODE_CHILD,
           useValue: this.mode$.asObservable(),
         },
         {
           provide: DYN_MODE,
-          useFactory: modeFactory,
+          useFactory: this.modeFactory,
           deps: [
+            DYN_GROUP_NAME,
             [new SkipSelf(), DYN_MODE],
             DYN_MODE_CHILD,
           ],
         },
       ],
     });
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
 
     if (this.node.parent?.instance === DynInstanceType.Container) {
       this.node.parent.childsIncrement();
