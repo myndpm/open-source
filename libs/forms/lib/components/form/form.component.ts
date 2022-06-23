@@ -133,6 +133,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           provide: DynFormConfigResolver,
           useClass: DynFormConfigResolver,
           deps: [ // FIXME added for Stackblitz
+            DynLogger,
             DYN_MODE_DEFAULTS,
           ],
         },

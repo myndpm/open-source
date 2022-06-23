@@ -90,7 +90,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     this._mode$
       .pipe(takeUntil(this._unsubscribe))
       .subscribe((mode) => {
-        const newConfig = this._configs.getModeConfig(mode, this.config);
+        const newConfig = this._configs.getModeConfig(mode, this.config, this.node);
 
         // do not re-create the control if the config is the same
         if (!this._configs.areEqual(config, newConfig)) {

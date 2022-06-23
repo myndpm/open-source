@@ -97,6 +97,15 @@ export class DynLogger {
     });
   }
 
+  controlModes({ deep }: DynNode, mode: string, payload: any): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Debug,
+      message: `[dyn-config] merging mode '${mode}'`,
+      payload,
+    });
+  }
+
   controlInitializing({ deep }: DynNode, payload: any): void {
     this.driver.log({
       deep,

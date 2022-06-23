@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
+import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { combineLatest, isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynControlConfig } from './control-config.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
+import { DynFormTreeNode } from './form-tree-node.service';
 import { DYN_MODE_DEFAULTS } from './form.tokens';
 import { merge } from './utils';
 
@@ -12,6 +14,7 @@ import { merge } from './utils';
 // provided by the dyn-form and dyn-group components next to the internal tokens
 export class DynFormConfigResolver {
   constructor(
+    private readonly logger: DynLogger,
     @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
   ) {}
 
@@ -30,7 +33,7 @@ export class DynFormConfigResolver {
 
   // resolves the config to be used by dyn-factory
   // this algorithm decides how to override the main config with mode customizations
-  getModeConfig(mode: DynControlMode, config: DynBaseConfig): DynBaseConfig {
+  getModeConfig(mode: DynControlMode, config: DynBaseConfig, node: DynFormTreeNode): DynBaseConfig {
     let result: DynBaseConfig = {
       ...config,
       controls: config.controls?.filter(Boolean),
@@ -43,6 +46,7 @@ export class DynFormConfigResolver {
 
     // overrides any partial config set in the form.modes[mode]
     if (this.modes && Object.prototype.hasOwnProperty.call(this.modes, mode)) {
+      this.logger.controlModes(node, mode, this.modes[mode])
       result = this.mergeConfigs(result, this.modes[mode]!);
     }
 

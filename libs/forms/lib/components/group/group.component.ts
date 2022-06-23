@@ -109,6 +109,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
           provide: DynFormConfigResolver,
           useClass: DynFormConfigResolver,
           deps: [ // FIXME added for Stackblitz
+            DynLogger,
             DYN_MODE_DEFAULTS,
           ],
         },
