@@ -9,6 +9,7 @@ import {
   INJECTOR,
   Injector,
   Input,
+  OnDestroy,
   OnInit,
   SkipSelf,
   ViewChild,
@@ -28,7 +29,7 @@ import {
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -38,7 +39,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynFactoryComponent implements OnInit {
+export class DynFactoryComponent implements OnInit, OnDestroy {
   @Input() config!: DynBaseConfig;
   @Input() index?: number;
   @Input() injector?: Injector;
@@ -67,6 +68,8 @@ export class DynFactoryComponent implements OnInit {
   private _mode$!: BehaviorSubject<DynControlMode>;
   private _configs!: DynFormConfigResolver;
 
+  private _unsubscribe = new Subject<void>();
+
   constructor(
     @Inject(INJECTOR) private readonly parent: Injector,
     private readonly ref: ChangeDetectorRef,
@@ -84,25 +87,32 @@ export class DynFactoryComponent implements OnInit {
 
     // process the dynamic component with each mode change
     let config: DynBaseConfig;
-    this._mode$.subscribe((mode) => {
-      const newConfig = this._configs.getModeConfig(mode, this.config);
+    this._mode$
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe((mode) => {
+        const newConfig = this._configs.getModeConfig(mode, this.config);
 
-      // do not re-create the control if the config is the same
-      if (!this._configs.areEqual(config, newConfig)) {
-        // check if the params are the only changed ones
-        if (this._configs.areEquivalent(config, newConfig)) {
-          if (newConfig.params || newConfig.paramFns) {
-            this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
+        // do not re-create the control if the config is the same
+        if (!this._configs.areEqual(config, newConfig)) {
+          // check if the params are the only changed ones
+          if (this._configs.areEquivalent(config, newConfig)) {
+            if (newConfig.params || newConfig.paramFns) {
+              this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
+            }
+          } else {
+            this.logger.controlInitializing(this.node, { control: newConfig.control, name: newConfig.name });
+
+            this.container.clear();
+            this.createFrom(newConfig);
           }
-        } else {
-          this.logger.controlInitializing(this.node, { control: newConfig.control, name: newConfig.name });
-
-          this.container.clear();
-          this.createFrom(newConfig);
+          config = newConfig;
         }
-        config = newConfig;
-      }
-    });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
   }
 
   private createFrom(config: DynBaseConfig): void {
