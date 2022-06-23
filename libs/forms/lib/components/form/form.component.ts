@@ -10,16 +10,21 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   SimpleChanges,
+  SkipSelf,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  DYN_MODE,
+  DYN_MODE_DEFAULTS,
+  DYN_MODE_LOCAL,
   DynControlMode,
+  DynControlModes,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynHookUpdateValidity,
-  DYN_MODE,
-  DYN_MODE_DEFAULTS,
+  recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -42,6 +47,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() config?: DynFormConfig;
   @Input() mode?: DynControlMode;
 
+  @Input()
+  modesMerge = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+    return parent && local ? recursive(true, parent, local) : local ?? parent;
+  }
+
   // internal injector with config values
   configLayer?: Injector;
 
@@ -51,7 +61,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   // registered hook listeners
   protected listeners = new Map<string, Function[]>();
 
-  // easier <dyn-form #dyn> and dyn.control.*
+  // easier access <dyn-form #dyn> to dyn.control.*
   get control() {
     return this.node.control;
   }
@@ -107,10 +117,17 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           provide: DYN_MODE,
           useValue: this.mode$,
         },
-        // TODO merge with parent values
+        {
+          provide: DYN_MODE_LOCAL,
+          useValue: this.config?.modes,
+        },
         {
           provide: DYN_MODE_DEFAULTS,
-          useValue: this.config?.modes,
+          useFactory: this.modesMerge,
+          deps: [
+            [new SkipSelf(), new Optional(), DYN_MODE_DEFAULTS],
+            DYN_MODE_LOCAL,
+          ],
         },
         {
           provide: DynFormConfigResolver,

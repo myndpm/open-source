@@ -41,24 +41,24 @@ export const DYN_ERROR_HANDLERS_TOKEN = new InjectionToken<DynErrorHandler[]>(
 );
 
 /**
- * internal tokens managed by the dyn-form component
+ * internal tokens managed by the dyn-form and dyn-group components
  */
 export const DYN_MODE = new InjectionToken<BehaviorSubject<DynControlMode>>(
   '@myndpm/dyn-forms/internal/mode'
-);
-
-export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
-  '@myndpm/dyn-forms/internal/mode-defaults'
-);
-
-/**
- * internal tokens managed by the dyn-group component
- */
-export const DYN_GROUP_NAME = new InjectionToken<BehaviorSubject<string>>(
-  '@myndpm/dyn-forms/internal/group-name'
 );
 
 export const DYN_MODE_CHILD = new InjectionToken<BehaviorSubject<DynControlMode>>(
   '@myndpm/dyn-forms/internal/mode-child'
 );
 
+export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
+  '@myndpm/dyn-forms/internal/mode-defaults'
+);
+
+export const DYN_MODE_LOCAL = new InjectionToken<DynControlModes>(
+  '@myndpm/dyn-forms/internal/mode-local'
+);
+
+export const DYN_GROUP_NAME = new InjectionToken<BehaviorSubject<string>>(
+  '@myndpm/dyn-forms/internal/group-name'
+);

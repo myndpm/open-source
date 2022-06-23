@@ -4,6 +4,7 @@
     [class]="config.cssClass"
     [group]="control"
     [controls]="config.controls"
+    [modes]="config.modes"
   ></dyn-group>
 </div>
 <% }else if(instance == 'Array') { %>
@@ -14,6 +15,7 @@
       [name]="i.toString()"
       [group]="item"
       [controls]="config.controls"
+      [modes]="config.modes"
     ></dyn-group>
   </div>
 </div>
@@ -23,6 +25,7 @@
     [class]="config.cssClass"
     [group]="control"
     [controls]="config.controls"
+    [modes]="config.modes"
   ></dyn-group>
 </div>
 <% }else if(instance == 'Control') { %>

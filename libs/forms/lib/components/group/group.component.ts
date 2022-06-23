@@ -1,14 +1,19 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnInit, SkipSelf } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnInit, Optional, SkipSelf } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   DYN_GROUP_NAME,
   DYN_MODE,
   DYN_MODE_CHILD,
+  DYN_MODE_DEFAULTS,
+  DYN_MODE_LOCAL,
   DynBaseConfig,
   DynControlMode,
+  DynControlModes,
   DynControlNode,
+  DynFormConfigResolver,
   DynFormTreeNode,
   DynInstanceType,
+  recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { merge, Observable, Subject } from 'rxjs';
@@ -28,6 +33,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
+  @Input() modes?: DynControlModes;
 
   @Input()
   set mode(mode: DynControlMode) {
@@ -44,6 +50,11 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
       tap(mode => this.logger.modeGroup(this.node, name, mode)),
       shareReplay(1),
     );
+  }
+
+  @Input()
+  modesMerge = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+    return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
 
   // stream mode changes via DYN_MODE
@@ -80,6 +91,25 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
             DYN_GROUP_NAME,
             [new SkipSelf(), DYN_MODE],
             DYN_MODE_CHILD,
+          ],
+        },
+        {
+          provide: DYN_MODE_LOCAL,
+          useValue: this.modes,
+        },
+        {
+          provide: DYN_MODE_DEFAULTS,
+          useFactory: this.modesMerge,
+          deps: [
+            [new SkipSelf(), new Optional(), DYN_MODE_DEFAULTS],
+            DYN_MODE_LOCAL,
+          ],
+        },
+        {
+          provide: DynFormConfigResolver,
+          useClass: DynFormConfigResolver,
+          deps: [ // FIXME added for Stackblitz
+            DYN_MODE_DEFAULTS,
           ],
         },
       ],
