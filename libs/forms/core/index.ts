@@ -20,7 +20,7 @@ export * from './src/dyn-form-group.class';
 export * from './src/module.providers';
 
 export * from './src/form.tokens';
-export * from './src/form-mode.service';
+export * from './src/form-config-resolver.service';
 export * from './src/form-registry.service';
 export * from './src/form-factory.service';
 export * from './src/form-handlers.service';

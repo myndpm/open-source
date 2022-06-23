@@ -15,7 +15,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import {
   DynControlMode,
-  DynFormMode,
+  DynFormConfigResolver,
   DynFormTreeNode,
   DynHookUpdateValidity,
   DYN_MODE,
@@ -113,8 +113,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           useValue: this.config?.modes,
         },
         {
-          provide: DynFormMode,
-          useClass: DynFormMode,
+          provide: DynFormConfigResolver,
+          useClass: DynFormConfigResolver,
           deps: [ // FIXME added for Stackblitz
             DYN_MODE_DEFAULTS,
           ],

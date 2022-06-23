@@ -20,9 +20,9 @@ import {
   DynBaseConfig,
   DynControlMode,
   DynControlVisibility,
+  DynFormConfigResolver,
   DynFormFactory,
   DynFormHandlers,
-  DynFormMode,
   DynFormTreeNode,
   DynFormRegistry,
   DYN_MODE,
@@ -65,7 +65,7 @@ export class DynFactoryComponent implements OnInit {
   // retrieved from the proper injector
   private _injector!: Injector;
   private _mode$!: BehaviorSubject<DynControlMode>;
-  private _formMode!: DynFormMode;
+  private _configs!: DynFormConfigResolver;
 
   constructor(
     @Inject(INJECTOR) private readonly parent: Injector,
@@ -80,17 +80,17 @@ export class DynFactoryComponent implements OnInit {
     // resolve the injector to use and get providers
     this._injector = this.injector ?? this.parent;
     this._mode$ = this._injector.get(DYN_MODE);
-    this._formMode = this._injector.get(DynFormMode);
+    this._configs = this._injector.get(DynFormConfigResolver);
 
     // process the dynamic component with each mode change
     let config: DynBaseConfig;
     this._mode$.subscribe((mode) => {
-      const newConfig = this._formMode.getModeConfig(mode, this.config);
+      const newConfig = this._configs.getModeConfig(mode, this.config);
 
       // do not re-create the control if the config is the same
-      if (!this._formMode.deepEqual(config, newConfig)) {
+      if (!this._configs.areEqual(config, newConfig)) {
         // check if the params are the only changed ones
-        if (this._formMode.areConfigsEquivalent(config, newConfig)) {
+        if (this._configs.areEquivalent(config, newConfig)) {
           if (newConfig.params || newConfig.paramFns) {
             this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
           }

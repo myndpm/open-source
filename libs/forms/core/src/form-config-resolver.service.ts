@@ -9,14 +9,23 @@ import { DYN_MODE_DEFAULTS } from './form.tokens';
 import { merge } from './utils';
 
 @Injectable()
-// provided by the dyn-form component next to the internal tokens
-export class DynFormMode {
+// provided by the dyn-form and dyn-group components next to the internal tokens
+export class DynFormConfigResolver {
   constructor(
     @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
   ) {}
 
-  deepEqual(a: any, b: any): boolean {
+  areEqual(a: any, b: any): boolean {
     return deepEqual(a, b);
+  }
+
+  areEquivalent(config: DynBaseConfig, newConfig: DynBaseConfig): boolean {
+    return config?.control === newConfig.control &&
+      deepEqual(config?.default, newConfig.default) &&
+      deepEqual(config?.validators, newConfig.validators) &&
+      deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
+      deepEqual(config?.updateOn, newConfig.updateOn) &&
+      deepEqual(config?.match, newConfig.match);
   }
 
   // resolves the config to be used by dyn-factory
@@ -43,15 +52,6 @@ export class DynFormMode {
     }
 
     return result;
-  }
-
-  areConfigsEquivalent(config: DynBaseConfig, newConfig: DynBaseConfig): boolean {
-    return config?.control === newConfig.control &&
-      deepEqual(config?.default, newConfig.default) &&
-      deepEqual(config?.validators, newConfig.validators) &&
-      deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
-      deepEqual(config?.updateOn, newConfig.updateOn) &&
-      deepEqual(config?.match, newConfig.match);
   }
 
   private mergeConfigs(config: DynBaseConfig, mode: Partial<DynControlConfig>): DynBaseConfig {
