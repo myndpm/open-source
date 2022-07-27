@@ -7,7 +7,7 @@
     ></dyn-factory>
   </td>
 
-  <td class="dyn-table-controls mat-cell">
+  <td class="dyn-table-controls mat-cell" *ngIf="mode !== 'display'">
     <button
       *ngIf="mode !== 'edit'"
       mat-icon-button

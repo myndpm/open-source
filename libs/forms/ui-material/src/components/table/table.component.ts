@@ -78,6 +78,8 @@ implements OnInit {
   }
 
   modeFactory = (mode: DynControlMode, index?: string): DynControlMode => {
-    return this.itemIndexForEditing === Number(index) ? 'edit' : 'display';
+    return mode !== 'display'
+      ? this.itemIndexForEditing === Number(index) ? 'edit' : 'row'
+      : mode;
   }
 }

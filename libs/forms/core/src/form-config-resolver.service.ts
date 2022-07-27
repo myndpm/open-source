@@ -37,7 +37,6 @@ export class DynFormConfigResolver {
     let result: DynBaseConfig = {
       ...config,
       controls: config.controls?.filter(Boolean),
-      modes: undefined,
     };
 
     if (!mode) {
