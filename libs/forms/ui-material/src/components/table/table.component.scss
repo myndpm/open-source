@@ -68,4 +68,20 @@ $row-horizontal-padding: 24px;
     word-wrap: break-word;
     min-height: inherit;
   }
+
+  // FIXME temporary style customizations to INPUT only
+  .mat-cell {
+    .mat-form-field-infix {
+      border-top: 0;
+    }
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+    .mat-form-field-label-wrapper {
+      display: none !important;
+    }
+    input.mat-input-element {
+      margin-top: 0 !important;
+    }
+  }
 }
