@@ -157,7 +157,7 @@ export class DynLogger {
     });
   }
 
-  modeGroup({ deep, path }: DynNode, name: string, mode: string): void {
+  modeGroup({ deep, path }: DynNode, mode: string, name?: string): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Runtime,

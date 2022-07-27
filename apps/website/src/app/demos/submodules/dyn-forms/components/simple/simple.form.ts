@@ -133,13 +133,14 @@ export function simpleForm(
           },
         },
       }),
-      createMatConfig('ARRAY', {
+      createMatConfig('TABLE', {
         name: 'products',
         cssClass: 'row',
         params: {
-          title: 'Products',
-          subtitle: 'Items to checkout',
-          initItem: true,
+          title: 'Product',
+          headers: ['Product Name', 'Quality'],
+          // subtitle: 'Items to checkout',
+          // initItem: true,
         },
         controls: [
           createMatConfig('INPUT', {

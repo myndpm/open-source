@@ -1,0 +1,37 @@
+<div *ngIf="!items?.length" class="alert alert-light" role="alert">
+  {{ params.emptyText }}
+
+  <button mat-button color="accent" (click)="addItem(true)">
+    {{ params.addNewButtonText }}
+  </button>
+</div>
+
+<ng-container *ngIf="node.mode$ | async as mode">
+
+  <table class="mat-table mat-elevation-z2" *ngIf="items?.length">
+    <tr class="mat-header-row">
+      <th *ngFor="let header of params.headers" class="mat-header-cell">
+        {{ header }}
+      </th>
+      <th *ngIf="mode === 'edit'" class="mat-header-cell">
+        <button mat-button color="accent" (click)="addItem(true)">
+          {{ params.addNewButtonText }}
+        </button>
+      </th>
+    </tr>
+
+    <dyn-mat-table-row
+      *ngFor="let item of items; let i = index"
+      [controls]="config.controls"
+      [modes]="config.modes"
+      [group]="item"
+      [name]="i.toString()"
+      [mode]="itemIndexForEditing == i ? 'edit' : 'display'"
+      [modeFactory]="modeFactory"
+      (edit)="editItem(i)"
+      (remove)="removeItem(i)"
+      (cancel)="cancelItemEditing()"
+    ></dyn-mat-table-row>
+  </table>
+
+</ng-container>

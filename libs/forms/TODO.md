@@ -2,6 +2,7 @@
 
 ## Form Controls
 
+- HIDDEN DynControl not rendering completely is really necessary or enough to setup manually in the FormGroup? it needs special count treatment
 - Check FormDirectives responsibilities to apply in DynFormTreeNode if the validators doesn't work
 - Provide config for appearance (theme, full-width, inline)
 - Extensible handlers for different modes (panel, filter, table-cell, mobile?)
@@ -45,6 +46,10 @@ Fill a DataSource with a Dynamically generated Form.
 
 - Inheritance of DynControls
 - Composition of FormControls
+
+## Troubleshoot
+
+- Buttons without type can trigger `dyn-form` buttons
 
 ## Check the approach of similar projects
 

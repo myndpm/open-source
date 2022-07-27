@@ -27,6 +27,8 @@ import {
   DynMatRadioParams,
   DynMatSelectComponent,
   DynMatSelectParams,
+  DynMatTableComponent,
+  DynMatTableParams,
 } from './components';
 
 // type overloads
@@ -70,6 +72,10 @@ export function createMatConfig<M extends DynControlMode>(
   type: typeof DynMatSelectComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatSelectParams>>
 ): DynConfig<M>;
+export function createMatConfig<M extends DynControlMode>(
+  type: typeof DynMatTableComponent.dynControl,
+  partial: DynPartialControlConfig<M, Partial<DynMatTableParams>>
+): DynConfig<M>;
 
 // factory
 export function createMatConfig<M extends DynControlMode>(
@@ -100,11 +106,14 @@ export function createMatConfig<M extends DynControlMode>(
     case DynMatMulticheckboxComponent.dynControl:
       return DynMatMulticheckboxComponent.createConfig(partial);
 
+    case DynMatRadioComponent.dynControl:
+      return DynMatRadioComponent.createConfig(partial);
+
     case DynMatSelectComponent.dynControl:
       return DynMatSelectComponent.createConfig(partial);
 
-    case DynMatRadioComponent.dynControl:
-      return DynMatRadioComponent.createConfig(partial);
+    case DynMatTableComponent.dynControl:
+      return DynMatTableComponent.createConfig(partial);
 
     case DynMatInputComponent.dynControl:
     default:

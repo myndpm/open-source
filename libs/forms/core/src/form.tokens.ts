@@ -58,7 +58,3 @@ export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
 export const DYN_MODE_LOCAL = new InjectionToken<DynControlModes>(
   '@myndpm/dyn-forms/internal/mode-local'
 );
-
-export const DYN_GROUP_NAME = new InjectionToken<BehaviorSubject<string>>(
-  '@myndpm/dyn-forms/internal/group-name'
-);

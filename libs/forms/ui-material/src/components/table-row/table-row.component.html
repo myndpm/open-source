@@ -1,0 +1,33 @@
+<tr class="mat-row">
+  <td class="mat-cell" *ngFor="let control of controls; index as i">
+    <dyn-factory
+      [config]="control"
+      [injector]="configLayer"
+      [index]="i"
+    ></dyn-factory>
+  </td>
+
+  <td class="dyn-table-controls mat-cell">
+    <button
+      *ngIf="mode !== 'edit'"
+      mat-icon-button
+      type="button"
+      (click)="edit.emit()"
+    ><mat-icon>edit</mat-icon></button>
+
+    <button
+      *ngIf="mode !== 'edit'"
+      mat-icon-button
+      type="button"
+      (click)="remove.emit()"
+    ><mat-icon>delete</mat-icon></button>
+
+    <button
+      *ngIf="mode === 'edit'"
+      mat-icon-button
+      type="button"
+      [disabled]="!node.control.valid"
+      (click)="cancel.emit()"
+    ><mat-icon>done</mat-icon></button>
+  </td>
+</tr>

@@ -18,3 +18,6 @@ export * from './radio/radio.component';
 export * from './radio/radio.component.params';
 export * from './select/select.component';
 export * from './select/select.component.params';
+export * from './table/table.component';
+export * from './table/table.component.params';
+export * from './table-row/table-row.component';
