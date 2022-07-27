@@ -27,7 +27,7 @@ export const simpleData = {
 
 export function simpleForm(
   obsParams: Observable<DynControlParams>
-): DynFormConfig<'edit'|'display'> { // typed mode
+): DynFormConfig<'edit'|'display'|'row'> { // typed mode
   return {
     modes: {
       edit: { params: { readonly: false } },
@@ -133,13 +133,14 @@ export function simpleForm(
           },
         },
       }),
-      createMatConfig('ARRAY', {
+      createMatConfig('TABLE', {
         name: 'products',
         cssClass: 'row',
         params: {
-          title: 'Products',
-          subtitle: 'Items to checkout',
-          initItem: true,
+          title: 'Product',
+          headers: ['Product Name', 'Quality'],
+          // subtitle: 'Items to checkout',
+          // initItem: true,
         },
         controls: [
           createMatConfig('INPUT', {
@@ -155,6 +156,11 @@ export function simpleForm(
             params: { label: 'Quantity *', type: 'number' },
           }),
         ],
+        modes: {
+          row: {
+            params: { readonly: true },
+          },
+        }
       }),
     ],
     errorMsgs: {

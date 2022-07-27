@@ -25,6 +25,8 @@ import {
   DynMatMulticheckboxComponent,
   DynMatRadioComponent,
   DynMatSelectComponent,
+  DynMatTableComponent,
+  DynMatTableRowComponent,
 } from './components';
 
 export const PROVIDERS = getModuleProviders({
@@ -82,6 +84,11 @@ export const PROVIDERS = getModuleProviders({
       instance: DynMatSelectComponent.dynInstance,
       component: DynMatSelectComponent,
     },
+    {
+      control: DynMatTableComponent.dynControl,
+      instance: DynMatTableComponent.dynInstance,
+      component: DynMatTableComponent,
+    },
   ],
 });
 
@@ -113,6 +120,8 @@ export const PROVIDERS = getModuleProviders({
     DynMatMulticheckboxComponent,
     DynMatRadioComponent,
     DynMatSelectComponent,
+    DynMatTableComponent,
+    DynMatTableRowComponent,
   ],
   // FIXME added for Stackblitz
   entryComponents: [
@@ -126,6 +135,8 @@ export const PROVIDERS = getModuleProviders({
     DynMatMulticheckboxComponent,
     DynMatRadioComponent,
     DynMatSelectComponent,
+    DynMatTableComponent,
+    DynMatTableRowComponent,
   ],
   exports: [
     // reduce the boilerplate

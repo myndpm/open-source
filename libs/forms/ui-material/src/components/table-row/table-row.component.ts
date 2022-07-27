@@ -2,10 +2,12 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Injector,
   Input,
   OnInit,
   Optional,
+  Output,
   SkipSelf,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -24,20 +26,19 @@ import {
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { merge, Observable, Subject } from 'rxjs';
+import { merge, BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'dyn-group',
-  templateUrl: './group.component.html',
+  selector: 'dyn-mat-table-row',
+  templateUrl: './table-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DynFormTreeNode],
 })
 /**
- * This component just wraps the incoming controls in a FormGroup.
+ * This component just wraps the rows and its mat-cells.
  */
-export class DynGroupComponent extends DynControlNode<any, FormGroup> implements OnInit, AfterViewInit {
-  @Input() isolated = false;
+export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> implements OnInit, AfterViewInit {
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
@@ -62,8 +63,12 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     return mode;
   }
 
+  @Output() edit = new EventEmitter<void>();
+  @Output() remove = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
+
   // stream mode changes via DYN_MODE
-  protected mode$ = new Subject<DynControlMode | undefined>();
+  protected mode$ = new BehaviorSubject<DynControlMode>('');
 
   // internal injector with mode override
   configLayer?: Injector;
@@ -127,15 +132,15 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     this.node.load({
       name: this.name,
       controls: this.controls,
-      isolated: Boolean(this.isolated),
+      isolated: false,
     });
     this.node.markParamsAsLoaded();
 
     // log the successful initialization
-    this.logger.nodeLoaded('dyn-group', this.node);
+    this.logger.nodeLoaded('dyn-mat-table-row', this.node);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.node.markAsLoaded();
   }
 
