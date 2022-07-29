@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -191,8 +191,24 @@ implements DynTreeNode<TParams, TControl> {
     this._control.reset(value, options);
   }
 
-  patchValue(value: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
-    this._control.patchValue(value, options);
+  patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
+    this.whenReady().pipe(
+      tap(() => {
+        this.markAsPending();
+        this.logger.formCycle('PrePatch');
+        this.callHook({ hook: 'PrePatch', payload, plain: false });
+      }),
+      delay(20), // waits any PrePatch loading change
+      switchMap(() => {
+        this.markAsLoaded();
+        return this.whenReady();
+      }),
+      tap(() => {
+        this.logger.formCycle('PostPatch', this.control.value);
+        this.control.patchValue(payload, options);
+        this.callHook({ hook: 'PostPatch', payload, plain: false });
+      }),
+    ).subscribe();
   }
 
   /**
