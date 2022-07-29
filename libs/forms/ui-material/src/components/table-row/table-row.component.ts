@@ -46,11 +46,11 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
 
   @Input()
   set mode(mode: DynControlMode) {
-    this.mode$.next(mode);
+    this.modeLocal$.next(mode);
   }
 
   get mode(): DynControlMode {
-    return this.modeLocal;
+    return this.mode$.getValue();
   }
 
   @Input()
@@ -66,15 +66,16 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   @Output() edit = new EventEmitter<void>();
   @Output() remove = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() save = new EventEmitter<void>();
+
+  // keeps track of the local input
+  protected modeLocal$ = new BehaviorSubject<DynControlMode>('');
 
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynControlMode>('');
 
   // internal injector with mode override
   configLayer?: Injector;
-
-  // local control variable
-  modeLocal: DynControlMode = '';
 
   constructor(
     private readonly injector: Injector,
@@ -86,12 +87,14 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   ngOnInit(): void {
     super.ngOnInit();
 
+    this.node.mode = this.mode$;
+
     this.configLayer = Injector.create({
       parent: this.injector,
       providers: [
         {
           provide: DYN_MODE_CHILD,
-          useValue: this.mode$.asObservable(),
+          useValue: this.modeLocal$.asObservable(),
         },
         {
           provide: DYN_MODE,
@@ -144,6 +147,20 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
     this.node.markAsLoaded();
   }
 
+  onEdit(): void {
+    this.node.track();
+    this.edit.emit();
+  }
+
+  onCancel(): void {
+    this.node.untrack('row');
+    this.cancel.emit();
+  }
+
+  onSave(): void {
+    this.save.emit();
+  }
+
   modeCalculator = (
     parent$: Observable<DynControlMode>,
     child$: Observable<DynControlMode>,
@@ -153,7 +170,7 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
       distinctUntilChanged(),
       tap(mode => {
         this.logger.modeGroup(this.node, mode, this.name);
-        this.modeLocal = mode;
+        this.mode$.next(mode);
       }),
       shareReplay(1),
     );

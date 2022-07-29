@@ -28,7 +28,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, delay, filter, first, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, delay, filter, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
 
 @Component({
@@ -48,7 +48,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() mode?: DynControlMode;
 
   @Input()
-  modesMerge = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+  modeConfigs = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
     return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
 
@@ -123,7 +123,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         },
         {
           provide: DYN_MODE_DEFAULTS,
-          useFactory: this.modesMerge,
+          useFactory: this.modeConfigs,
           deps: [
             [new SkipSelf(), new Optional(), DYN_MODE_DEFAULTS],
             DYN_MODE_LOCAL,
@@ -172,10 +172,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
    */
 
   whenReady(): Observable<boolean> {
-    return this.node.loaded$.pipe(
-      filter<boolean>(Boolean),
-      first(),
-    );
+    return this.node.whenReady();
   }
 
   // notify the dynControls about the incoming data
@@ -184,7 +181,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       tap(() => {
         this.node.markAsPending();
         this.logger.formCycle('PrePatch');
-        this.callHook('PrePatch', value);
+        this.callHook('PrePatch', value, false);
       }),
       delay(20), // waits any PrePatch loading change
       switchMap(() => {
@@ -194,39 +191,41 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       tap(() => {
         this.logger.formCycle('PostPatch', this.form.value);
         this.form.patchValue(value);
-        this.callHook('PostPatch', value);
+        this.callHook('PostPatch', value, false);
       }),
     ).subscribe();
   }
 
   // update the validators programatically
   validate(opts?: DynHookUpdateValidity): void {
-    this.callHook('UpdateValidity', opts, true);
+    this.callHook('UpdateValidity', opts);
   }
 
   // trigger change detection programatically
   detectChanges(): void {
-    this.callHook('DetectChanges', null, true);
+    this.callHook('DetectChanges');
   }
 
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload?: any, plain = false): void {
-    this.node.children.forEach(node => {
-      const fieldName = node.name;
-      // validate the expected payload
-      if (!plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
-        return;
-      }
-      node.callHook({
-        hook,
-        payload: !plain && fieldName ? payload[fieldName!] : payload,
-        plain,
+  callHook(hook: string, payload?: any, plain = true): void {
+    this.whenReady().subscribe(() => {
+      this.node.children.forEach(node => {
+        const fieldName = node.name;
+        // validate the expected payload
+        if (!plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+          return;
+        }
+        node.callHook({
+          hook,
+          payload: !plain && fieldName ? payload[fieldName!] : payload,
+          plain,
+        });
       });
+      // invoke listeners after the field hooks
+      if (this.listeners.has(hook)) {
+        this.listeners.get(hook)?.map(listener => listener(payload));
+      }
     });
-    // invoke listeners after the field hooks
-    if (this.listeners.has(hook)) {
-      this.listeners.get(hook)?.map(listener => listener(payload));
-    }
   }
 
   // register hook listener

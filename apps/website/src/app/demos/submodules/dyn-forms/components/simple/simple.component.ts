@@ -87,7 +87,11 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
     }
 
     console.warn('Submit', this.form.value);
+    this.toggleMode();
+  }
 
+  onCancel(): void {
+    this.dynForm.callHook('Untrack', 'display');
     this.toggleMode();
   }
 }

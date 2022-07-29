@@ -12,7 +12,7 @@
       *ngIf="mode !== 'edit'"
       mat-icon-button
       type="button"
-      (click)="edit.emit()"
+      (click)="onEdit()"
     ><mat-icon>edit</mat-icon></button>
 
     <button
@@ -27,7 +27,14 @@
       mat-icon-button
       type="button"
       [disabled]="!node.control.valid"
-      (click)="cancel.emit()"
+      (click)="onSave()"
     ><mat-icon>done</mat-icon></button>
+
+    <button
+      *ngIf="mode === 'edit'"
+      mat-icon-button
+      type="button"
+      (click)="onCancel()"
+    ><mat-icon>close</mat-icon></button>
   </td>
 </tr>

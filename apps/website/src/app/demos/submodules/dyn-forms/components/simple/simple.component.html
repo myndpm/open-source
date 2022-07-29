@@ -17,8 +17,12 @@
           Submit
         </button>
 
-        <button type="button" mat-raised-button color="accent" (click)="toggleMode()">
-          {{ mode === 'edit' ? 'Cancel' : 'Edit' }}
+        <button type="button" mat-raised-button color="accent" *ngIf="mode === 'edit'" (click)="onCancel()">
+          Cancel
+        </button>
+
+        <button type="button" mat-raised-button color="accent" *ngIf="mode !== 'edit'" (click)="toggleMode()">
+          Edit
         </button>
       </div>
 

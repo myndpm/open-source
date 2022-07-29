@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, shareReplay, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './config.types';
 import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
 import { DynControlHook, DynControlVisibility } from './control-events.types';
@@ -60,6 +60,9 @@ implements DynTreeNode<TParams, TControl> {
   get hook$(): Observable<DynControlHook> {
     return this._hook$.asObservable();
   }
+  get mode$(): Observable<DynControlMode> {
+    return this._modeLocal$ ?? this._mode$;
+  }
   get paramsUpdates$(): Observable<Partial<TParams>> {
     return this._paramsUpdates$.asObservable();
   }
@@ -70,6 +73,11 @@ implements DynTreeNode<TParams, TControl> {
   // form root node
   get root(): DynFormTreeNode<any, any> {
     return this.isRoot ? this : this.parent.root;
+  }
+
+  // mode$ override
+  set mode(mode$: Observable<DynControlMode>) {
+    this._modeLocal$ = mode$;
   }
 
   private _dynControl?: string;
@@ -86,7 +94,11 @@ implements DynTreeNode<TParams, TControl> {
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _paramsLoaded$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe$ = new Subject<void>();
+  private _untrack$ = new Subject<void>();
+  private _modeLocal$?: Observable<DynControlMode>;
+
+  private _snapshots: Record<DynControlMode, any> = {};
 
   // listened by dyn-factory
   private _visibility$ = new Subject<DynControlVisibility>();
@@ -126,7 +138,7 @@ implements DynTreeNode<TParams, TControl> {
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
     @Optional() @Inject(DYN_MODE)
-    public readonly mode$: Observable<DynControlMode>,
+    private readonly _mode$: Observable<DynControlMode>,
     // parent node should be set for all except the root
     @Optional() @SkipSelf()
     public readonly parent: DynFormTreeNode<any>,
@@ -149,22 +161,50 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   /**
-   * State methods
+   * Snapshots
    */
-
-  childsIncrement(): void {
-    this._numChild$.next(this._numChild$.getValue() + 1);
-    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.getValue() });
+  track(): void {
+    this.loaded$.pipe(
+      filter(Boolean),
+      switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
+      takeUntil(this._untrack$)
+    ).subscribe(([mode, event]) => {
+      if (!event || event.hook === 'PostPatch') {
+        this._snapshots[mode] = this.control.value;
+      }
+    });
   }
 
-  childsDecrement(): void {
-    this._numChild$.next(this._numChild$.getValue() - 1);
-    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.getValue() });
+  untrack(mode?: DynControlMode): void {
+    this._untrack$.next();
+    if (mode && this._snapshots[mode]) {
+      this.control.patchValue(this._snapshots[mode]);
+    }
+    this._snapshots = {};
+  }
+
+  /**
+   * Forms API
+   */
+
+  reset(value?: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
+    this._control.reset(value, options);
+  }
+
+  patchValue(value: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
+    this._control.patchValue(value, options);
   }
 
   /**
    * Feature methods
    */
+
+  whenReady(): Observable<boolean> {
+    return this.loaded$.pipe(
+      filter<boolean>(Boolean),
+      first(),
+    );
+  }
 
   updateParams(params: Partial<TParams>): void {
     this._paramsUpdates$.next(params);
@@ -342,7 +382,7 @@ implements DynTreeNode<TParams, TControl> {
         this._control.valueChanges,
         this._control.statusChanges,
       ).pipe(
-        takeUntil(this._unsubscribe),
+        takeUntil(this._unsubscribe$),
         debounceTime(20), // wait for subcontrols to be updated
         map(() => this._control.errors),
         distinctUntilChanged(),
@@ -379,7 +419,7 @@ implements DynTreeNode<TParams, TControl> {
               : results.every(Boolean),
             results,
           })),
-          takeUntil(this._unsubscribe),
+          takeUntil(this._unsubscribe$),
           // TODO option for distinctUntilChanged?
         )
         .subscribe(({ hasMatch, results }) => {
@@ -412,8 +452,20 @@ implements DynTreeNode<TParams, TControl> {
     this._paramsUpdates$.complete();
     this._visibility$.complete();
     this._errorMsg$.complete();
-    this._unsubscribe.next();
-    this._unsubscribe.complete();
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
+    this._untrack$.next();
+    this._untrack$.complete();
+  }
+
+  childsIncrement(): void {
+    this._numChild$.next(this._numChild$.getValue() + 1);
+    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.getValue() });
+  }
+
+  childsDecrement(): void {
+    this._numChild$.next(this._numChild$.getValue() - 1);
+    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.getValue() });
   }
 
   /**

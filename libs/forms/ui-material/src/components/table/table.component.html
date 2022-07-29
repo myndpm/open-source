@@ -30,7 +30,8 @@
       [modeFactory]="modeFactory"
       (edit)="editItem(i)"
       (remove)="removeItem(i)"
-      (cancel)="cancelItemEditing()"
+      (cancel)="cancelItem(i)"
+      (save)="cancelItem()"
     ></dyn-mat-table-row>
   </table>
 

@@ -152,6 +152,20 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     );
   }
 
+  /**
+   * Hooks
+   */
+
+  // start tracking
+  hookTrack(): void {
+    this.node.track();
+  }
+
+  // untrack signal
+  hookUntrack(mode?: string): void {
+    this.node.untrack(mode);
+  }
+
   // hook to refresh the form status
   hookUpdateValidity(opts: DynHookUpdateValidity = { onlySelf: true }): void {
     this.control.updateValueAndValidity(opts);

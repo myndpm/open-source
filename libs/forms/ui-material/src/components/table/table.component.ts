@@ -31,6 +31,7 @@ implements OnInit {
   }
 
   itemIndexForEditing?: number;
+  itemIndexForAdding?: number;
 
   constructor(
     injector: Injector,
@@ -52,12 +53,15 @@ implements OnInit {
   addItem(userAction?: boolean): void {
     super.addItem();
     if (userAction) {
-      this.itemIndexForEditing = this.items.length - 1;
+      this.itemIndexForEditing = this.itemIndexForAdding = this.items.length - 1;
     }
   }
 
-  cancelItemEditing(): void {
-    this.itemIndexForEditing = undefined;
+  cancelItem(index?: number): void {
+    if (index !== undefined && this.itemIndexForAdding === this.itemIndexForEditing) {
+      this.removeItem(index);
+    }
+    this.itemIndexForEditing = this.itemIndexForAdding = undefined;
   }
 
   editItem(index: number): void {
