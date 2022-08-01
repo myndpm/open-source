@@ -67,11 +67,11 @@ implements OnInit {
   hookPrePatch(payload: any[]): void {
     if (Array.isArray(payload)) {
       const numItems = this.control.controls.length;
-      for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
+      for (let i = Math.max(numItems, payload.length); i >= 1; i--) {
         if (i > numItems) {
           this.addItem();
         } else if (i > payload.length) {
-          this.removeItem(i);
+          this.removeItem(i - 1);
         }
       }
       this._ref.markForCheck();
