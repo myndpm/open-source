@@ -180,7 +180,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   untrack(mode?: DynControlMode): void {
-    this.callHook('Untrack', mode, false, true);
+    this.callHook('Untrack', mode, true);
   }
 
   // notify the dynControls about the incoming data
@@ -219,18 +219,18 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload?: any, hierarchical = true, force = false): void {
+  callHook(hook: string, payload?: any, plain = true, force = false): void {
     this.whenReady().subscribe(() => {
       this.node.children.forEach(node => {
         const fieldName = node.name;
         // validate the expected payload
-        if (!force && hierarchical && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+        if (!force && !plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
           return;
         }
         node.callHook({
           hook,
-          payload: !force && hierarchical && fieldName ? payload[fieldName!] : payload,
-          plain: !hierarchical,
+          payload: !force && !plain && fieldName ? payload[fieldName!] : payload,
+          plain,
         });
       });
       // invoke listeners after the field hooks
