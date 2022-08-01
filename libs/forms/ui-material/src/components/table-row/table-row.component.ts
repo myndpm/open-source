@@ -148,7 +148,7 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   }
 
   onEdit(): void {
-    this.node.track();
+    this.node.track('row');
     this.edit.emit();
   }
 

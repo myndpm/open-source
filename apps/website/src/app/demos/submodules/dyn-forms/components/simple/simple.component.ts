@@ -61,6 +61,9 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
             : 'Billing information complete',
       });
     });
+
+    // initial state of the form is `edit` mode
+    this.dynForm.track('display');
   }
 
   ngOnDestroy(): void {
@@ -90,8 +93,13 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
     this.toggleMode();
   }
 
+  onEdit(): void {
+    this.dynForm.track('display');
+    this.toggleMode();
+  }
+
   onCancel(): void {
-    this.dynForm.callHook('Untrack', 'display');
+    this.dynForm.untrack('display');
     this.toggleMode();
   }
 }

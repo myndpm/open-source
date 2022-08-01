@@ -70,7 +70,7 @@ implements OnInit {
       for (let i = 1; i <= Math.max(numItems, payload.length); i++) {
         if (i > numItems) {
           this.addItem();
-        } else if (i >= payload.length) {
+        } else if (i > payload.length) {
           this.removeItem(i);
         }
       }

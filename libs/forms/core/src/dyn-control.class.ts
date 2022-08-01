@@ -157,12 +157,12 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
    */
 
   // start tracking
-  hookTrack(): void {
-    this.node.track();
+  hookTrack(mode?: DynControlMode): void {
+    this.node.track(mode);
   }
 
   // untrack signal
-  hookUntrack(mode?: string): void {
+  hookUntrack(mode?: DynControlMode): void {
     this.node.untrack(mode);
   }
 

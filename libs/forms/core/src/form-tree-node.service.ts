@@ -98,7 +98,7 @@ implements DynTreeNode<TParams, TControl> {
   private _untrack$ = new Subject<void>();
   private _modeLocal$?: Observable<DynControlMode>;
 
-  private _snapshots: Record<DynControlMode, any> = {};
+  private _snapshots = new Map<DynControlMode, any>();
 
   // listened by dyn-factory
   private _visibility$ = new Subject<DynControlVisibility>();
@@ -163,24 +163,30 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Snapshots
    */
-  track(): void {
+  track(defaultMode?: DynControlMode): void {
+    this._untrack$.next();
     this.loaded$.pipe(
       filter(Boolean),
       switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
       takeUntil(this._untrack$)
-    ).subscribe(([mode, event]) => {
-      if (!event || event.hook === 'PostPatch') {
-        this._snapshots[mode] = this.control.value;
+    ).subscribe(([currentMode, event]) => {
+      if (defaultMode && !event && !this._snapshots.size) {
+        // snapshot of the initial mode
+        this._snapshots.set(defaultMode, this.control.value);
+      } else if (!event || event.hook === 'PostPatch') {
+        // updates the default snapshot or the current mode
+        const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
+        this._snapshots.set(mode, this.control.value);
       }
     });
   }
 
   untrack(mode?: DynControlMode): void {
     this._untrack$.next();
-    if (mode && this._snapshots[mode]) {
-      this.control.patchValue(this._snapshots[mode]);
+    if (mode && this._snapshots.has(mode)) {
+      this.patchValue(this._snapshots.get(mode));
     }
-    this._snapshots = {};
+    this._snapshots.clear();
   }
 
   /**
@@ -204,8 +210,8 @@ implements DynTreeNode<TParams, TControl> {
         return this.whenReady();
       }),
       tap(() => {
-        this.logger.formCycle('PostPatch', this.control.value);
         this.control.patchValue(payload, options);
+        this.logger.formCycle('PostPatch', this.control.value);
         this.callHook({ hook: 'PostPatch', payload, plain: false });
       }),
     ).subscribe();

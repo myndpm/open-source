@@ -175,8 +175,16 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.node.whenReady();
   }
 
+  track(mode?: DynControlMode): void {
+    this.callHook('Track', mode, false, true);
+  }
+
+  untrack(mode?: DynControlMode): void {
+    this.callHook('Untrack', mode, false, true);
+  }
+
   // notify the dynControls about the incoming data
-  patchValue(value: any): void {
+  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): void {
     this.whenReady().pipe(
       tap(() => {
         this.node.markAsPending();
@@ -193,7 +201,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         this.form.patchValue(value);
         this.callHook('PostPatch', value, false);
       }),
-    ).subscribe();
+    ).subscribe(() => {
+      if (callback) {
+        callback(this.node);
+      }
+    });
   }
 
   // update the validators programatically
@@ -207,18 +219,18 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload?: any, plain = true): void {
+  callHook(hook: string, payload?: any, hierarchical = true, force = false): void {
     this.whenReady().subscribe(() => {
       this.node.children.forEach(node => {
         const fieldName = node.name;
         // validate the expected payload
-        if (!plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+        if (!force && hierarchical && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
           return;
         }
         node.callHook({
           hook,
-          payload: !plain && fieldName ? payload[fieldName!] : payload,
-          plain,
+          payload: !force && hierarchical && fieldName ? payload[fieldName!] : payload,
+          plain: !hierarchical,
         });
       });
       // invoke listeners after the field hooks

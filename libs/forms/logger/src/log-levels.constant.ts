@@ -9,6 +9,7 @@ export enum DynLogLevel {
   Warning = 2**2,
   Error = 2**1,
   Fatal = 2**0,
+  None = 0,
 }
 
 export const dynLogLevels = new Map<number, string>([
