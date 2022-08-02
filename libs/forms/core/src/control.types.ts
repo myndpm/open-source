@@ -1,4 +1,4 @@
-export type DynControlType = string; // Control ID
+export type DynControlId = string; // Control ID
 
 // Form Control Type
 export enum DynInstanceType {

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { DynControlMatch } from './control-matchers.types';
 import { DynControlFunctionFn, DynControlParams } from './control-params.types';
 import { DynControlErrors, DynErrorHandlerFn } from './control-validation.types';
-import { DynControlType } from './control.types';
+import { DynControlId } from './control.types';
 
 // a given id to a validator/async-validator/error-handler/function
 export type DynConfigId = string;
@@ -30,7 +30,7 @@ export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T
  */
 export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
   // config
-  control: DynControlType;
+  control: DynControlId;
   // options
   default?: DynConfigArgs | { // used in FormControls only
     value: DynConfigArgs;

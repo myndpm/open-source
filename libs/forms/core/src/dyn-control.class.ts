@@ -18,7 +18,7 @@ import { DynConfigMap, DynConfigProvider } from './control-config.types';
 import { DynControlVisibility, DynHookUpdateValidity } from './control-events.types';
 import { DynControlMode } from './control-mode.types';
 import { DynControlFunctionFn, DynControlParams } from './control-params.types';
-import { DynControlType, DynInstanceType } from './control.types';
+import { DynControlId, DynInstanceType } from './control.types';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -36,7 +36,7 @@ extends DynControlNode<TParams, TControl>
 implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   // central place to define the provided Type
-  static dynControl: DynControlType = '';
+  static dynControl: DynControlId = '';
   // central place to define the provided Instance
   static dynInstance: DynInstanceType = DynInstanceType.Group;
 

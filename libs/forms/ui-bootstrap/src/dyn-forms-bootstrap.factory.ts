@@ -1,7 +1,7 @@
 import {
   DynBaseConfig,
   DynControlMode,
-  DynControlType,
+  DynControlId,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import {
@@ -15,30 +15,30 @@ import {
   DynBsSelectParams,
 } from './components';
 
-// type overloads
+// control overloads
 export function createBsConfig<M extends DynControlMode>(
-  type: typeof DynBsCheckboxComponent.dynControl,
+  control: typeof DynBsCheckboxComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynBsCheckboxParams>>
 ): DynBaseConfig<M>;
 export function createBsConfig<M extends DynControlMode>(
-  type: typeof DynBsInputComponent.dynControl,
+  control: typeof DynBsInputComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynBsInputParams>>
 ): DynBaseConfig<M>;
 export function createBsConfig<M extends DynControlMode>(
-  type: typeof DynBsRadioComponent.dynControl,
+  control: typeof DynBsRadioComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynBsRadioParams>>
 ): DynBaseConfig<M>;
 export function createBsConfig<M extends DynControlMode>(
-  type: typeof DynBsSelectComponent.dynControl,
+  control: typeof DynBsSelectComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynBsSelectParams>>
 ): DynBaseConfig<M>;
 
 // factory
 export function createBsConfig<M extends DynControlMode>(
-  type: DynControlType,
+  control: DynControlId,
   partial: any,
 ): DynBaseConfig<M> {
-  switch (type) {
+  switch (control) {
     // controls
     case DynBsCheckboxComponent.dynControl:
       return DynBsCheckboxComponent.createConfig(partial);

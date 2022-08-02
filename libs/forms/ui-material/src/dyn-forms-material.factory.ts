@@ -1,8 +1,8 @@
 import {
   DynBaseConfig,
   DynConfig,
+  DynControlId,
   DynControlMode,
-  DynControlType,
   DynPartialControlConfig,
   DynPartialGroupConfig,
 } from '@myndpm/dyn-forms/core';
@@ -31,58 +31,58 @@ import {
   DynMatTableParams,
 } from './components';
 
-// type overloads
+// control overloads
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatArrayComponent.dynControl,
+  control: typeof DynMatArrayComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatArrayParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatCardComponent.dynControl,
+  control: typeof DynMatCardComponent.dynControl,
   partial: DynPartialGroupConfig<M, Partial<DynMatCardParams>>
 ): DynBaseConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatCheckboxComponent.dynControl,
+  control: typeof DynMatCheckboxComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatCheckboxParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatContainerComponent.dynControl,
+  control: typeof DynMatContainerComponent.dynControl,
   partial: DynPartialGroupConfig<M, Partial<DynMatContainerParams>>
 ): DynBaseConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatDatepickerComponent.dynControl,
+  control: typeof DynMatDatepickerComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatDatepickerParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatDividerComponent.dynControl,
+  control: typeof DynMatDividerComponent.dynControl,
   partial: DynPartialGroupConfig<M, Partial<DynMatDividerParams>>
 ): DynBaseConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatInputComponent.dynControl,
+  control: typeof DynMatInputComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatInputParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatMulticheckboxComponent.dynControl,
+  control: typeof DynMatMulticheckboxComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatMulticheckboxParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatRadioComponent.dynControl,
+  control: typeof DynMatRadioComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatRadioParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatSelectComponent.dynControl,
+  control: typeof DynMatSelectComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatSelectParams>>
 ): DynConfig<M>;
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynMatTableComponent.dynControl,
+  control: typeof DynMatTableComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatTableParams>>
 ): DynConfig<M>;
 
 // factory
 export function createMatConfig<M extends DynControlMode>(
-  type: DynControlType,
+  control: DynControlId,
   partial: any,
 ): DynBaseConfig<M> {
-  switch (type) {
+  switch (control) {
     // containers
     case DynMatArrayComponent.dynControl:
       return DynMatArrayComponent.createConfig(partial);

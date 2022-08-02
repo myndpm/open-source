@@ -1,7 +1,7 @@
 import {
   DynConfig,
+  DynControlId,
   DynControlMode,
-  DynControlType,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import {
@@ -9,18 +9,18 @@ import {
   DynNatInputParams,
 } from './components';
 
-// type overloads
+// control overloads
 export function createMatConfig<M extends DynControlMode>(
-  type: typeof DynNatInputComponent.dynControl,
+  control: typeof DynNatInputComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynNatInputParams>>
 ): DynConfig<M>;
 
 // factory
 export function createMatConfig<M extends DynControlMode>(
-  type: DynControlType,
+  control: DynControlId,
   partial: any,
 ): DynConfig<M> {
-  switch (type) {
+  switch (control) {
     // controls
     case DynNatInputComponent.dynControl:
     default:

@@ -1,24 +1,24 @@
 import {
   DynBaseConfig,
   DynControlMode,
-  DynControlType,
+  DynControlId,
   DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config,
 } from '@myndpm/dyn-forms/core';
 import { <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>';
 import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params } from './<%= dasherize(controlPath)%>/<%= dasherize(controlName)%>/<%= dasherize(controlName)%>.<%= dasherize(type)%>.params';
 
-// type overloads
+// control overloads
 export function create<%= prefixClass ? classify(prefix) : '' %>Config<M extends DynControlMode>(
-  type: typeof <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl,
+  control: typeof <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl,
   partial: DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config<M, Partial<<%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Params>>
 ): DynBaseConfig<M>;
 
 // factory
 export function create<%= prefixClass ? classify(prefix) : '' %>Config<M extends DynControlMode>(
-  type: DynControlType,
+  control: DynControlId,
   partial: any,
 ): DynBaseConfig<M> {
-  switch (type) {
+  switch (control) {
     // controls
     case <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl:
     default:

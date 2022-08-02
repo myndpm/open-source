@@ -6,7 +6,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
-import { DynControlType, DynInstanceType } from './control.types';
+import { DynControlId, DynInstanceType } from './control.types';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
@@ -207,7 +207,7 @@ export class DynFormFactory {
   /**
    * getInstanceFor facade for DynControl
    */
-  getInstanceFor(control: DynControlType): DynInstanceType {
+  getInstanceFor(control: DynControlId): DynInstanceType {
     return this.registry.getInstanceFor(control);
   }
 

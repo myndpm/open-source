@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynControlProvider } from './control-provider.types';
-import { DynControlType, DynInstanceType } from './control.types';
+import { DynControlId, DynInstanceType } from './control.types';
 import { DYN_CONTROLS_TOKEN } from './form.tokens';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class DynFormRegistry {
     @Inject(DYN_CONTROLS_TOKEN) private readonly controls: DynControlProvider[],
   ) {}
 
-  get(dynControl: DynControlType): DynControlProvider {
+  get(dynControl: DynControlId): DynControlProvider {
     const provided = this.controls.find(({ control }) => dynControl === control);
 
     if (!provided) {
@@ -23,7 +23,7 @@ export class DynFormRegistry {
     return provided;
   }
 
-  getInstanceFor(dynControl: DynControlType): DynInstanceType {
+  getInstanceFor(dynControl: DynControlId): DynInstanceType {
     return this.get(dynControl).instance;
   }
 }
