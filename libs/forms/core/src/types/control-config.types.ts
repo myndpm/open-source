@@ -26,6 +26,11 @@ export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigA
 export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T;
 
 /**
+ * Visibility handled by dyn-factory
+ */
+ export type DynControlVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
+
+/**
   single dynamic control config
  */
 export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {

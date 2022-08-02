@@ -3,9 +3,9 @@ import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DynControlHook } from './control-events.types';
-import { DynControlParams } from './control-params.types';
-import { DynErrorMessage } from './control-validation.types';
+import { DynControlHook } from './types/control-events.types';
+import { DynControlParams } from './types/control-params.types';
+import { DynErrorMessage } from './types/control-validation.types';
 import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()

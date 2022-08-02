@@ -1,4 +1,4 @@
-import { DynBaseHandler } from './dyn-providers';
+import { DynBaseHandler } from './control-provider.types';
 
 /**
  * control params

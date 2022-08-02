@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control-config.types';
-import { DynBaseHandler } from './dyn-providers';
+import { DynBaseHandler } from './control-provider.types';
 import { DynTreeNode } from './tree.types';
 
 /**

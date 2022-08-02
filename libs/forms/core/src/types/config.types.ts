@@ -1,5 +1,4 @@
-import { DynControlConfig } from './control-config.types';
-import { DynControlVisibility } from './control-events.types';
+import { DynControlConfig, DynControlVisibility } from './control-config.types';
 import { DynControlMode, DynControlModes } from './control-mode.types';
 import { DynControlParams } from './control-params.types';
 

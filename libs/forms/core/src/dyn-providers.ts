@@ -1,15 +1,15 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
-import { DynConfigId } from './control-config.types';
 import {
   DynControlCondition,
   DynControlConditionFn,
   DynControlMatcher,
   DynControlMatcherFn,
   DynControlRelated,
-} from './control-matchers.types';
-import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
+} from './types/control-matchers.types';
+import { DynControlFunction, DynControlFunctionFn } from './types/control-params.types';
+import { DynBaseProvider } from './types/control-provider.types';
 import {
   DynControlAsyncValidator,
   DynControlErrors,
@@ -18,23 +18,9 @@ import {
   DynErrorHandlerFn,
   DynErrorMessage,
   DynErrorMessages,
-} from './control-validation.types';
-import { DynTreeNode } from './tree.types';
+} from './types/control-validation.types';
+import { DynTreeNode } from './types/tree.types';
 import { isPlainObject } from './utils';
-
-/**
- * Base types
- */
-export interface DynBaseProvider {
-  priority?: number;
-}
-
-export type DynHandlerFactory<F> = (...args: any[]) => F;
-
-export interface DynBaseHandler<F> extends DynBaseProvider {
-  id: DynConfigId;
-  fn: DynHandlerFactory<F>;
-}
 
 /**
  * Mapper to add the incoming priority

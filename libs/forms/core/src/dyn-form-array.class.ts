@@ -1,10 +1,10 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { DynConfig } from './config.types';
-import { DynControlHook } from './control-events.types';
-import { DynControlMode } from './control-mode.types';
-import { DynControlParams } from './control-params.types';
-import { DynInstanceType } from './control.types';
+import { DynConfig } from './types/config.types';
+import { DynControlHook } from './types/control-events.types';
+import { DynControlMode } from './types/control-mode.types';
+import { DynControlParams } from './types/control-params.types';
+import { DynInstanceType } from './types/control.types';
 import { DynControl } from './dyn-control.class';
 
 @Directive()

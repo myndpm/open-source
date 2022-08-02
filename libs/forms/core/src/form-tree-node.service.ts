@@ -3,18 +3,18 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { DynBaseConfig } from './config.types';
-import { DynConfigErrors, DynConfigPrimitive } from './control-config.types';
-import { DynControlHook, DynControlVisibility } from './control-events.types';
-import { DynControlMatch } from './control-matchers.types';
-import { DynControlMode } from './control-mode.types';
-import { DynControlParams } from './control-params.types';
-import { DynErrorHandlerFn, DynErrorMessage, DynErrorMessages } from './control-validation.types';
-import { DynInstanceType } from './control.types';
+import { DynBaseConfig } from './types/config.types';
+import { DynConfigErrors, DynConfigPrimitive, DynControlVisibility } from './types/control-config.types';
+import { DynControlHook } from './types/control-events.types';
+import { DynControlMatch } from './types/control-matchers.types';
+import { DynControlMode } from './types/control-mode.types';
+import { DynControlParams } from './types/control-params.types';
+import { DynErrorHandlerFn, DynErrorMessage, DynErrorMessages } from './types/control-validation.types';
+import { DynInstanceType } from './types/control.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
-import { DynTreeNode } from './tree.types';
+import { DynTreeNode } from './types/tree.types';
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group

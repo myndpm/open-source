@@ -9,7 +9,7 @@ import {
   DynConfigMap,
   DynConfigProvider,
   DynControlConfig,
-} from './control-config.types';
+} from './types/control-config.types';
 import {
   DynControlCondition,
   DynControlConditionFn,
@@ -17,8 +17,8 @@ import {
   DynControlMatcher,
   DynControlMatcherFn,
   isMatchCondition,
-} from './control-matchers.types';
-import { DynControlFunction, DynControlFunctionFn } from './control-params.types';
+} from './types/control-matchers.types';
+import { DynControlFunction, DynControlFunctionFn } from './types/control-params.types';
 import {
   DynControlAsyncValidator,
   DynControlErrors,
@@ -26,7 +26,7 @@ import {
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessages,
-} from './control-validation.types';
+} from './types/control-validation.types';
 import {
   defaultAsyncValidators,
   defaultConditions,
@@ -34,8 +34,6 @@ import {
   defaultFunctions,
   defaultMatchers,
   defaultValidators,
-  DynBaseHandler,
-  DynHandlerFactory,
 } from './dyn-providers';
 import {
   DYN_ASYNCVALIDATORS_TOKEN,
@@ -45,7 +43,8 @@ import {
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
 } from './form.tokens';
-import { DynTreeNode } from './tree.types';
+import { DynTreeNode } from './types/tree.types';
+import { DynBaseHandler, DynHandlerFactory } from './types/control-provider.types';
 
 @Injectable()
 export class DynFormHandlers {
