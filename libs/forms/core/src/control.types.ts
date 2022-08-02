@@ -1,3 +1,5 @@
+export type DynWrapperId = string; // Wrapper ID
+
 export type DynControlId = string; // Control ID
 
 // Form Control Type
