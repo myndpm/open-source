@@ -26,8 +26,19 @@ export interface DynTreeNode<
   invisible(): void;
   hidden(): void;
 
+  whenReady(): Observable<boolean>;
   updateParams(params: Partial<TParams>): void;
   callHook(event: DynControlHook): void;
+
+  search(path: string): AbstractControl|null;
+  searchUp(path: string, searchDown?: boolean): AbstractControl|null;
+  searchDown(path: string): AbstractControl|null;
+  /**
+   * @deprecated use node.searchUp
+   */
   query(path: string, searchNodes?: boolean): AbstractControl|null;
+  /**
+   * @deprecated use node.searchDown
+   */
   select(path: string): AbstractControl|null;
 }

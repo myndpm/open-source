@@ -178,14 +178,14 @@ function getMatchersFor(accessType: MyndAccessType, isParking: DynControlConditi
 function changedAccessType(node: DynTreeNode, previousValue: MyndAccessType): void {
   switch (previousValue) {
     case MyndAccessType.CodeBox: {
-      node.query('codeBox').patchValue({
+      node.searchUp('codeBox').patchValue({
         description: null,
         serial: null,
       });
       break;
     }
     case MyndAccessType.SmartLock: {
-      node.query('smartLock').patchValue({
+      node.searchUp('smartLock').patchValue({
         installDate: null,
         serial: null,
       });

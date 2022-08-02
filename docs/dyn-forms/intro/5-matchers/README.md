@@ -22,7 +22,7 @@ it streams a truthy value whenever the condition is fulfilled or not, for exampl
 
 ```typescript
 (node: DynTreeNode) => {
-  return node.query('some.control').valueChanges.pipe(
+  return node.search('some.control').valueChanges.pipe(
     map(controlValue => controlValue === 'xValue'),
   );
 }
@@ -102,8 +102,8 @@ Sometimes controls depends on other control values, if we use a custom function 
 ```typescript
   params: {
     getValue: (node: DynTreeNode) => {
-      const value1 = node.query('anotherControl1').value;
-      const value2 = node.query('anotherControl2').value;
+      const value1 = node.search('anotherControl1').value;
+      const value2 = node.search('anotherControl2').value;
       return value1 || value2;
     },
   }

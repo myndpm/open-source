@@ -239,8 +239,30 @@ implements DynTreeNode<TParams, TControl> {
     this._hook$.next(event);
   }
 
-  // query for a control upper in the tree
+  /**
+   * @deprecated use node.searchUp
+   */
   query(path: string, searchNodes = false): AbstractControl|null {
+    return this.searchUp(path, searchNodes);
+  }
+
+  /**
+   * @deprecated use node.searchDown
+   */
+  select(path: string): AbstractControl|null {
+    return this.searchDown(path);
+  }
+
+  /**
+   * search a control by path
+   * less performant than searchUp and searchDown
+   */
+  search(path: string): AbstractControl|null {
+    return this.searchUp(path, true);
+  }
+
+  // query for an upper control in the tree
+  searchUp(path: string, searchDown = false): AbstractControl|null {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<TParams, any> = this;
     let result: AbstractControl|null;
@@ -248,7 +270,7 @@ implements DynTreeNode<TParams, TControl> {
     do {
       // query by form.control and by node.path
       result = node.control.get(path)
-        ?? (searchNodes ? node.select(path) : null)
+        ?? (searchDown ? node.searchDown(path) : null)
         ?? null;
       // move upper in the tree
       node = node.parent;
@@ -257,8 +279,8 @@ implements DynTreeNode<TParams, TControl> {
     return result;
   }
 
-  // select a child control by node.path
-  select(path: string): AbstractControl|null {
+  // search a child control
+  searchDown(path: string): AbstractControl|null {
     const selector = path.split('.');
     let name = '';
 
@@ -275,7 +297,7 @@ implements DynTreeNode<TParams, TControl> {
     // propagate the query to the children
     let result: AbstractControl|null = null;
     this.children.some(node => {
-      result = node.select(selector.join('.'));
+      result = node.searchDown(selector.join('.'));
       return result ? true : false; // return the first match
     });
 
@@ -284,7 +306,7 @@ implements DynTreeNode<TParams, TControl> {
 
   // listen another control value changes
   valueChanges(path: string): Observable<any>|undefined {
-    const control = this.query(path);
+    const control = this.search(path);
     return control?.valueChanges.pipe(
       startWith(control.value),
     );

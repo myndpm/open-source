@@ -287,7 +287,7 @@ export const defaultFunctions: DynControlFunction[] = [
  */
 function relatedConditionFn({ path, value, field, negate }: DynControlRelated): DynControlConditionFn {
   return (node: DynTreeNode) => {
-    const control = node.query(path);
+    const control = node.search(path);
     if (!control) {
       console.error(`Control '${path}' not found inside a Condition`)
       return of(true); // do not break AND matchers
