@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { DynControlCondition, DynControlMatcher } from './types/matcher.types';
 import { DynControlMode, DynControlModes } from './types/mode.types';
 import { DynControlFunction } from './types/params.types';
-import { DynControlProvider } from './types/provider.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
+import { DynControlProvider } from './dyn-control.class';
 
 /**
  * core token gathering the controls in the system

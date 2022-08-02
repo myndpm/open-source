@@ -8,6 +8,7 @@ import {
   OnInit,
   SimpleChange,
   SimpleChanges,
+  Type,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -19,12 +20,20 @@ import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynControlMode } from './types/mode.types';
 import { DynControlFunctionFn, DynControlParams } from './types/params.types';
-import { DynConfigMap, DynConfigProvider } from './types/provider.types';
+import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { merge } from './utils/merge.util';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
+
+export type AbstractDynControl = DynControl<DynControlMode, any, DynBaseConfig, AbstractControl>;
+
+export interface DynControlProvider extends DynBaseProvider {
+  control: DynControlId;
+  instance: DynInstanceType;
+  component: Type<AbstractDynControl>;
+}
 
 @Directive()
 export abstract class DynControl<
