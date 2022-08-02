@@ -1,10 +1,10 @@
 import { Type } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { DynBaseConfig } from './config.types';
-import { DynControlMode } from './control-mode.types';
-import { DynControlId, DynInstanceType } from './control.types';
+import { DynControlMode } from './mode.types';
+import { DynInstanceType } from './forms.types';
 import { DynControl } from '../dyn-control.class';
-import { DynConfigId } from './control-config.types';
+import { DynConfigId, DynControlId } from './control.types';
 
 /**
  * Base types

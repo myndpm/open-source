@@ -6,11 +6,12 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { DynBaseConfig } from './types/config.types';
-import { DynControlId, DynInstanceType } from './types/control.types';
+import { DynControlId } from './types/control.types';
+import { DynInstanceType } from './types/forms.types';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
-import { DynTreeNode } from './types/tree.types';
+import { DynTreeNode } from './types/node.types';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls

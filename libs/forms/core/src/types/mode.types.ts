@@ -1,6 +1,6 @@
-import { DynControlConfig } from './control-config.types';
+import { DynControlConfig } from './control.types';
 
-// edit|display|table|filter
+// display, edit, filter, etc
 export type DynControlMode = string; // Mode ID
 
 // config overrides per mode, handled by DynFormConfigResolver

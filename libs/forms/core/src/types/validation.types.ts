@@ -1,6 +1,6 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
-import { DynBaseHandler } from './control-provider.types';
-import { DynTreeNode } from './tree.types';
+import { DynBaseHandler } from './provider.types';
+import { DynTreeNode } from './node.types';
 
 /**
  * validators provided in the module individually

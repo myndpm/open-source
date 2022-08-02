@@ -1,10 +1,10 @@
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DynControlCondition, DynControlMatcher } from './types/control-matchers.types';
-import { DynControlMode, DynControlModes } from './types/control-mode.types';
-import { DynControlFunction } from './types/control-params.types';
-import { DynControlProvider } from './types/control-provider.types';
-import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/control-validation.types';
+import { DynControlCondition, DynControlMatcher } from './types/matcher.types';
+import { DynControlMode, DynControlModes } from './types/mode.types';
+import { DynControlFunction } from './types/params.types';
+import { DynControlProvider } from './types/provider.types';
+import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
 
 /**
  * core token gathering the controls in the system

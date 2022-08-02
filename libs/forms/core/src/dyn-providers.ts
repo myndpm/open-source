@@ -7,9 +7,9 @@ import {
   DynControlMatcher,
   DynControlMatcherFn,
   DynControlRelated,
-} from './types/control-matchers.types';
-import { DynControlFunction, DynControlFunctionFn } from './types/control-params.types';
-import { DynBaseProvider } from './types/control-provider.types';
+} from './types/matcher.types';
+import { DynControlFunction, DynControlFunctionFn } from './types/params.types';
+import { DynBaseProvider } from './types/provider.types';
 import {
   DynControlAsyncValidator,
   DynControlErrors,
@@ -18,8 +18,8 @@ import {
   DynErrorHandlerFn,
   DynErrorMessage,
   DynErrorMessages,
-} from './types/control-validation.types';
-import { DynTreeNode } from './types/tree.types';
+} from './types/validation.types';
+import { DynTreeNode } from './types/node.types';
 import { isPlainObject } from './utils';
 
 /**

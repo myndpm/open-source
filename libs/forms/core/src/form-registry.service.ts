@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { DynControlProvider } from './types/control-provider.types';
-import { DynControlId, DynInstanceType } from './types/control.types';
+import { DynControlProvider } from './types/provider.types';
+import { DynInstanceType } from './types/forms.types';
 import { DYN_CONTROLS_TOKEN } from './form.tokens';
+import { DynControlId } from './types/control.types';
 
 @Injectable()
 export class DynFormRegistry {
