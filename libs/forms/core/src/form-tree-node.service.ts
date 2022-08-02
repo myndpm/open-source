@@ -4,17 +4,17 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
-import { DynConfigErrors, DynConfigPrimitive, DynControlVisibility } from './types/control.types';
+import { DynControlVisibility } from './types/control.types';
 import { DynControlHook } from './types/events.types';
+import { DynConfigPrimitive, DynInstanceType } from './types/forms.types';
 import { DynControlMatch } from './types/matcher.types';
 import { DynControlMode } from './types/mode.types';
+import { DynTreeNode } from './types/node.types';
 import { DynControlParams } from './types/params.types';
-import { DynErrorHandlerFn, DynErrorMessage, DynErrorMessages } from './types/validation.types';
-import { DynInstanceType } from './types/forms.types';
+import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
-import { DynTreeNode } from './types/node.types';
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
@@ -332,7 +332,7 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   load(
-    config: Partial<DynBaseConfig> & { errorMsgs?: DynConfigErrors<DynErrorMessages> },
+    config: Partial<DynBaseConfig> & DynFormConfigErrors,
   ): void {
     if (!this._control) {
       throw this.logger.nodeWithoutControl();

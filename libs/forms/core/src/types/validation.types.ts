@@ -1,12 +1,6 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
-import { DynBaseHandler } from './provider.types';
 import { DynTreeNode } from './node.types';
-
-/**
- * validators provided in the module individually
- */
-export type DynControlValidator = DynBaseHandler<ValidatorFn>;
-export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;
+import { DynBaseHandler, DynConfigProvider } from './provider.types';
 
 /**
  * error handlers
@@ -22,3 +16,16 @@ export type DynControlErrors = DynErrorMessage | Record<DynErrorId, DynErrorMess
 
 export type DynErrorHandlerFn = (node: DynTreeNode) => DynErrorMessage;
 export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;
+
+/**
+ * error handlers config
+ */
+export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T;
+
+export interface DynFormConfigErrors { errorMsgs?: DynConfigErrors<DynErrorMessages> };
+
+/**
+ * validators provided in the module individually
+ */
+export type DynControlValidator = DynBaseHandler<ValidatorFn>;
+export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;

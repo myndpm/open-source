@@ -8,6 +8,7 @@ import {
   DynControlMatcherFn,
   DynControlRelated,
 } from './types/matcher.types';
+import { DynTreeNode } from './types/node.types';
 import { DynControlFunction, DynControlFunctionFn } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import {
@@ -19,8 +20,7 @@ import {
   DynErrorMessage,
   DynErrorMessages,
 } from './types/validation.types';
-import { DynTreeNode } from './types/node.types';
-import { isPlainObject } from './utils';
+import { isPlainObject } from './utils/merge.util';
 
 /**
  * Mapper to add the incoming priority

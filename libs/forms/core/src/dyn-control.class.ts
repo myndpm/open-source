@@ -14,16 +14,17 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
 import { filter, scan, startWith } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
-import { DynConfigMap, DynConfigProvider, DynControlId, DynControlVisibility } from './types/control.types';
+import { DynControlId, DynControlVisibility } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
+import { DynInstanceType } from './types/forms.types';
 import { DynControlMode } from './types/mode.types';
 import { DynControlFunctionFn, DynControlParams } from './types/params.types';
-import { DynInstanceType } from './types/forms.types';
+import { DynConfigMap, DynConfigProvider } from './types/provider.types';
+import { merge } from './utils/merge.util';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
-import { merge } from './utils';
 
 @Directive()
 export abstract class DynControl<

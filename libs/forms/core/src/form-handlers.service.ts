@@ -1,15 +1,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { AbstractControlOptions, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import {
-  DynConfigArgs,
-  DynConfigCollection,
-  DynConfigErrors,
-  DynConfigId,
-  DynConfigMap,
-  DynConfigProvider,
-  DynControlConfig,
-} from './types/control.types';
+import { DynControlConfig } from './types/control.types';
+import { DynConfigArgs } from './types/forms.types';
 import {
   DynControlCondition,
   DynControlConditionFn,
@@ -18,8 +11,18 @@ import {
   DynControlMatcherFn,
   isMatchCondition,
 } from './types/matcher.types';
+import { DynTreeNode } from './types/node.types';
 import { DynControlFunction, DynControlFunctionFn } from './types/params.types';
 import {
+  DynBaseHandler,
+  DynConfigCollection,
+  DynConfigId,
+  DynConfigMap,
+  DynConfigProvider,
+  DynHandlerFactory,
+} from './types/provider.types';
+import {
+  DynConfigErrors,
   DynControlAsyncValidator,
   DynControlErrors,
   DynControlValidator,
@@ -43,8 +46,6 @@ import {
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
 } from './form.tokens';
-import { DynTreeNode } from './types/node.types';
-import { DynBaseHandler, DynHandlerFactory } from './types/provider.types';
 
 @Injectable()
 export class DynFormHandlers {

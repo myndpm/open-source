@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { DynConfigArgs, DynConfigId, DynConfigProvider } from './control.types';
-import { DynBaseHandler } from './provider.types';
+import { DynConfigArgs } from './forms.types';
 import { DynTreeNode } from './node.types';
+import { DynBaseHandler, DynConfigId, DynConfigProvider } from './provider.types';
 
 /**
  * when (conditions) then run (matcher)
@@ -30,7 +30,7 @@ export interface DynControlMatchCondition extends DynControlRelated {
 
 /**
  * matcher handlers
- * ie. DISABLE | ENABLE | SHOW | HIDE | INVISIBLE | etc
+ * ie. DISABLE, ENABLE, SHOW, HIDE, INVISIBLE, etc
  */
 export interface DynControlMatcherArgs {
   node: DynTreeNode;

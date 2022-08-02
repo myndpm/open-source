@@ -5,10 +5,8 @@ export * from './src/types/forms.types';
 export * from './src/types/matcher.types';
 export * from './src/types/mode.types';
 export * from './src/types/node.types';
-export * from './src/types/option.types';
 export * from './src/types/params.types';
 export * from './src/types/provider.types';
-export * from './src/types/tree.types';
 export * from './src/types/validation.types';
 export * from './src/types/wrapper.types';
 
@@ -28,4 +26,6 @@ export * from './src/form-factory.service';
 export * from './src/form-handlers.service';
 export * from './src/form-tree-node.service';
 
-export * from './src/utils';
+export * from './src/utils/merge.util';
+export * from './src/utils/option.types';
+export * from './src/utils/tree.types';

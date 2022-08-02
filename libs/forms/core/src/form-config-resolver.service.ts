@@ -6,9 +6,9 @@ import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlConfig } from './types/control.types';
 import { DynControlMode, DynControlModes } from './types/mode.types';
+import { merge } from './utils/merge.util';
 import { DynFormTreeNode } from './form-tree-node.service';
 import { DYN_MODE_DEFAULTS } from './form.tokens';
-import { merge } from './utils';
 
 @Injectable()
 // provided by the dyn-form and dyn-group components next to the internal tokens
