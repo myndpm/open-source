@@ -27,7 +27,7 @@ import {
   DynMatSelectComponent,
   DynMatTableComponent,
   DynMatTableRowComponent,
-} from './components';
+} from './controls';
 
 export const PROVIDERS = getModuleProviders({
   providers: [

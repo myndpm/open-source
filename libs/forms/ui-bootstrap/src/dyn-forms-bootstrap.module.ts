@@ -8,7 +8,7 @@ import {
   DynBsInputComponent,
   DynBsRadioComponent,
   DynBsSelectComponent,
-} from './components';
+} from './controls';
 
 @NgModule({
   imports: [

@@ -13,7 +13,7 @@ import {
   DynBsRadioParams,
   DynBsSelectComponent,
   DynBsSelectParams,
-} from './components';
+} from './controls';
 
 // control overloads
 export function createBsConfig<M extends DynControlMode>(

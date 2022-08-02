@@ -5,7 +5,7 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 import { getModuleProviders } from '@myndpm/dyn-forms/core';
 import {
   DynNatInputComponent,
-} from './components';
+} from './controls';
 
 @NgModule({
   imports: [

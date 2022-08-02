@@ -7,7 +7,7 @@ import {
 import {
   DynNatInputComponent,
   DynNatInputParams,
-} from './components';
+} from './controls';
 
 // control overloads
 export function createMatConfig<M extends DynControlMode>(

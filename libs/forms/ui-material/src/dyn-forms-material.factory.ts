@@ -29,7 +29,7 @@ import {
   DynMatSelectParams,
   DynMatTableComponent,
   DynMatTableParams,
-} from './components';
+} from './controls';
 
 // control overloads
 export function createMatConfig<M extends DynControlMode>(
