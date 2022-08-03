@@ -10,13 +10,27 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": [
+              "@myndpm/dyn-forms",
+              "@myndpm/dyn-forms/core",
+              "@myndpm/dyn-forms/logger"
+            ],
             "depConstraints": [
               {
                 "sourceTag": "*",
                 "onlyDependOnLibsWithTags": ["*"]
               }
             ]
+          }
+        ],
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "types": {
+              // un-ban a type that's banned by default
+              "Function": false
+            },
+            "extendDefaults": true
           }
         ]
       }

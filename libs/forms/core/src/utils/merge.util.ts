@@ -28,7 +28,7 @@ export function clone<T>(input: T): T {
     }
 
 		const output: any = {};
-		for (let index in input) {
+		for (const index in input) {
 			output[index] = clone(input[index]);
     }
 		return output as any;
@@ -38,13 +38,14 @@ export function clone<T>(input: T): T {
 	}
 }
 
-export function isPlainObject(input: any): input is Object {
-	return input && typeof input === 'object' && !Array.isArray(input)
+export function isPlainObject(input: any): input is Record<string, unknown> {
+	return input && typeof input === 'object' && !Array.isArray(input);
 }
 
 function _recursiveMerge(base: any, extend: any) {
-	if (!isPlainObject(base))
+	if (!isPlainObject(base)) {
 		return extend
+  }
 
 	for (const key in extend) {
 		if (['__proto__', 'constructor', 'prototype', 'toString', 'hasOwnProperty'].includes(key)) {
@@ -60,9 +61,9 @@ function _recursiveMerge(base: any, extend: any) {
 }
 
 function _merge(isClone: boolean, isRecursive: boolean, items: any[]) {
-	let result
+	let result;
 	if (isClone || !isPlainObject(result = items.shift())) {
-		result = {}
+		result = {};
   }
 
 	for (let index = 0; index < items.length; ++index) {
@@ -81,5 +82,5 @@ function _merge(isClone: boolean, isRecursive: boolean, items: any[]) {
 		}
 	}
 
-	return result
+	return result;
 }
