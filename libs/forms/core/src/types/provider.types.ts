@@ -12,18 +12,16 @@ export type DynConfigId = string;
 
 export type DynHandlerFactory<F> = (...args: any[]) => F;
 
-export interface DynBaseHandler<F> extends DynBaseProvider {
+export interface DynBaseHandler<F, H = DynHandlerFactory<F>> extends DynBaseProvider {
   id: DynConfigId;
-  fn: DynHandlerFactory<F>;
+  fn: H;
 }
 
 // handlers provided can be referenced by id or [id with args]
 export type DynConfigProvider<F extends Function> = F | DynConfigId | [DynConfigId, DynConfigArgs];
 
 // object map of handlers
-export interface DynConfigMap<T> {
-  [field: string]: T;
-}
+export type DynConfigMap<T> = Record<string, T>;
 
 // collection of handlers to be used
-export type DynConfigCollection<F extends Function> = { [id: string]: DynConfigArgs } | Array<DynConfigProvider<F>>;
+export type DynConfigCollection<F extends Function> = Record<DynConfigId, DynConfigArgs> | Array<DynConfigProvider<F>>;

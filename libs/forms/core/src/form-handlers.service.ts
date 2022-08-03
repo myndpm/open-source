@@ -46,6 +46,7 @@ import {
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
 } from './form.tokens';
+import { isPlainObject } from './utils/merge.util';
 
 @Injectable()
 export class DynFormHandlers {
@@ -218,7 +219,7 @@ export class DynFormHandlers {
       validators = config.filter(Boolean).map(id => {
         return this.getValidatorFn(node, id, dictionary);
       });
-    } else if (config) {
+    } else if (isPlainObject(config)) {
       // object of { id: args }
       Object.keys(config).forEach(id => {
         validators.push(this.getValidatorFn(node, [id, config[id]], dictionary))

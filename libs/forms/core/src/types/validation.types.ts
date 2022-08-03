@@ -25,7 +25,10 @@ export type DynConfigErrors<T> = Array<DynConfigProvider<DynErrorHandlerFn>> | T
 export interface DynFormConfigErrors { errorMsgs?: DynConfigErrors<DynErrorMessages> };
 
 /**
- * validators provided in the module individually
+ * provided validators
  */
-export type DynControlValidator = DynBaseHandler<ValidatorFn>;
-export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn>;
+ export type DynControlValidatorFn = (node: DynTreeNode, ...args: any[]) => ValidatorFn;
+ export type DynControlValidator = DynBaseHandler<ValidatorFn, DynControlValidatorFn>;
+
+export type DynControlAsyncValidatorFn = (node: DynTreeNode, ...args: any[]) => AsyncValidatorFn;
+export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn, DynControlAsyncValidatorFn>;

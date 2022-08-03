@@ -2,7 +2,6 @@ import { AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynControlHook } from './events.types';
 import { DynInstanceType } from './forms.types';
-import { DynControlMode } from './mode.types';
 import { DynControlParams } from './params.types';
 
 // generic interface of DynFormTreeNode
@@ -20,7 +19,7 @@ export interface DynTreeNode<
   params: TParams;
 
   loaded$: Observable<boolean>;
-  mode$: Observable<DynControlMode>;
+  mode$: Observable<string>;
 
   visible(): void;
   invisible(): void;

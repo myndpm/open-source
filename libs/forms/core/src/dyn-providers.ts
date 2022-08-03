@@ -242,7 +242,7 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
 export const defaultFunctions: DynControlFunction[] = [
   {
     id: 'formatText',
-    fn: (defaultText = '-'): DynControlFunctionFn => {
+    fn: (defaultText = '-'): DynControlFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.control.value || defaultText;
       }
@@ -250,7 +250,7 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'formatYesNo',
-    fn: (isBinary = true, defaultText = '-'): DynControlFunctionFn => {
+    fn: (isBinary = true, defaultText = '-'): DynControlFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.control.value === true
           ? 'Yes'
@@ -262,7 +262,7 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'getOptionText',
-    fn: (): DynControlFunctionFn => {
+    fn: (): DynControlFunctionFn<string> => {
       return (node: DynTreeNode) => {
         const value = node.control.value;
         const option = node.params.options.find((o: any) => o.value === value);
@@ -272,14 +272,14 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'getParamsField',
-    fn: (field = 'label', defaultText = '-'): DynControlFunctionFn => {
+    fn: (field = 'label', defaultText = '-'): DynControlFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.params[field] || defaultText;
       }
     },
   },
 ].map(
-  mapPriority<DynControlCondition>()
+  mapPriority<DynControlFunction>()
 );
 
 /**
