@@ -92,7 +92,8 @@ implements DynTreeNode<TParams, TControl> {
   private _children$ = new Subject<void>();
   private _numChild$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
-  private _paramsLoaded$ = new BehaviorSubject<boolean>(false);
+  private _loadedParams$ = new BehaviorSubject<boolean>(false);
+  private _loadedMatchers$ = new BehaviorSubject<boolean>(false);
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe$ = new Subject<void>();
   private _untrack$ = new Subject<void>();
@@ -111,20 +112,21 @@ implements DynTreeNode<TParams, TControl> {
     switchMap(() => combineLatest([
       this._numChild$,
       this._loaded$,
-      this._paramsLoaded$,
+      this._loadedParams$,
+      this._loadedMatchers$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
+    map(([children, loadedComponent, loadedParams, loadedMatchers, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = children === childrenLoaded.length;
       const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loadedComponent && loadedParams) && allChildrenLoaded;
+      const result = Boolean(loadedComponent && loadedParams && loadedMatchers && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
-        ? { loaded$: result, loadedComponent, loadedParams, children, childrenLoaded }
-        : { loaded$: result, loadedComponent, loadedParams }
+        ? { loaded$: result, loadedComponent, loadedParams, loadedMatchers, children, childrenLoaded }
+        : { loaded$: result, loadedComponent, loadedParams, loadedMatchers }
       );
 
       return result;
@@ -399,8 +401,14 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   markParamsAsLoaded(): void {
-    if (!this._paramsLoaded$.value) {
-      this._paramsLoaded$.next(true);
+    if (!this._loadedParams$.value) {
+      this._loadedParams$.next(true);
+    }
+  }
+
+  markMatchersAsLoaded(): void {
+    if (!this._loadedMatchers$.value) {
+      this._loadedMatchers$.next(true);
     }
   }
 
@@ -448,7 +456,7 @@ implements DynTreeNode<TParams, TControl> {
 
       if (this._matchers?.length) {
         // process the stored matchers
-        this.root.whenReady().pipe(
+        this.whenReady().pipe(
           takeUntil(this._unsubscribe$),
           take(1),
           switchMap(() => combineLatest(
@@ -488,6 +496,7 @@ implements DynTreeNode<TParams, TControl> {
           takeUntil(this._unsubscribe$),
         ).subscribe();
       }
+      this.markMatchersAsLoaded();
     }
 
     // call the children
