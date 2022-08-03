@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlVisibility } from './types/control.types';
 import { DynControlHook } from './types/events.types';
@@ -446,39 +446,48 @@ implements DynTreeNode<TParams, TControl> {
         }
       });
 
-      // process the stored matchers
-      this._matchers?.map((config) => {
-        const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
-        let count = 0;
-
-        combineLatest(
-          // build an array of observables to listen changes into
-          config.when
-            .map(condition => this.formHandlers.getCondition(condition)) // handler fn
-            .map(fn => fn(this)) // condition observables
-        ).pipe(
-          map<any[], { hasMatch: boolean, results: any[] }>(results => ({
-            hasMatch: config.operator === 'OR' // AND by default
-              ? results.some(Boolean)
-              : results.every(Boolean),
-            results,
-          })),
+      if (this._matchers?.length) {
+        // process the stored matchers
+        this.root.whenReady().pipe(
           takeUntil(this._unsubscribe$),
-          // TODO option for distinctUntilChanged?
-        )
-        .subscribe(({ hasMatch, results }) => {
-          const firstTime = (count === 0);
-          // run the matchers with the conditions result
-          // TODO config to run the matcher only if hasMatch? (unidirectional)
-          matchers.map(matcher => matcher({
-            node: this,
-            hasMatch: config.negate ? !hasMatch : hasMatch,
-            firstTime,
-            results,
-          }));
-          count++;
-        });
-      });
+          take(1),
+          switchMap(() => combineLatest(
+            this._matchers!.map((config) => {
+              const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
+              let count = 0;
+
+              return combineLatest(
+                // build an array of observables to listen changes into
+                config.when
+                  .map(condition => this.formHandlers.getCondition(condition)) // handler fn
+                  .map(fn => fn(this)) // condition observables
+              ).pipe(
+                takeUntil(this._unsubscribe$),
+                map<any[], { hasMatch: boolean, results: any[] }>(results => ({
+                  hasMatch: config.operator === 'OR' // AND by default
+                    ? results.some(Boolean)
+                    : results.every(Boolean),
+                  results,
+                })),
+                // TODO option for distinctUntilChanged?
+                map(({ hasMatch, results }) => {
+                  const firstTime = (count === 0);
+                  // run the matchers with the conditions result
+                  // TODO config to run the matcher only if hasMatch? (unidirectional)
+                  matchers.map(matcher => matcher({
+                    node: this,
+                    hasMatch: config.negate ? !hasMatch : hasMatch,
+                    firstTime,
+                    results,
+                  }));
+                  count++;
+                }),
+              );
+            }),
+          )),
+          takeUntil(this._unsubscribe$),
+        ).subscribe();
+      }
     }
 
     // call the children
