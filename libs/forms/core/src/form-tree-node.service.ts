@@ -122,7 +122,7 @@ implements DynTreeNode<TParams, TControl> {
       const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loadedComponent && loadedParams && loadedMatchers && allChildrenLoaded);
+      const result = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
         ? { loaded$: result, loadedComponent, loadedParams, loadedMatchers, children, childrenLoaded }
@@ -223,8 +223,12 @@ implements DynTreeNode<TParams, TControl> {
    * Feature methods
    */
 
-  whenReady(): Observable<boolean> {
-    return this.loaded$.pipe(
+  whenReady(withMatchers = false): Observable<boolean> {
+    return combineLatest([this.loaded$, this._loadedMatchers$]).pipe(
+      takeUntil(this._unsubscribe$),
+      map(([loaded, matchers]) => {
+        return withMatchers ? loaded && matchers : loaded;
+      }),
       filter<boolean>(Boolean),
       first(),
     );
@@ -457,7 +461,6 @@ implements DynTreeNode<TParams, TControl> {
       if (this._matchers?.length) {
         // process the stored matchers
         this.whenReady().pipe(
-          takeUntil(this._unsubscribe$),
           take(1),
           switchMap(() => combineLatest(
             this._matchers!.map((config) => {
