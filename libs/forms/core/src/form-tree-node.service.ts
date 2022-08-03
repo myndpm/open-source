@@ -172,11 +172,11 @@ implements DynTreeNode<TParams, TControl> {
     ).subscribe(([currentMode, event]) => {
       if (defaultMode && !event && !this._snapshots.size) {
         // snapshot of the initial mode
-        this._snapshots.set(defaultMode, this.control.value);
+        this._snapshots.set(defaultMode, this._control.value);
       } else if (!event || event.hook === 'PostPatch') {
         // updates the default snapshot or the current mode
         const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
-        this._snapshots.set(mode, this.control.value);
+        this._snapshots.set(mode, this._control.value);
       }
     });
   }
@@ -210,8 +210,8 @@ implements DynTreeNode<TParams, TControl> {
         return this.whenReady();
       }),
       tap(() => {
-        this.control.patchValue(payload, options);
-        this.logger.formCycle('PostPatch', this.control.value);
+        this._control.patchValue(payload, options);
+        this.logger.formCycle('PostPatch', this._control.value);
         this.callHook({ hook: 'PostPatch', payload, plain: false });
       }),
     ).subscribe();
@@ -289,7 +289,7 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     if (!selector.length) { // search over
-      return this._name === name ? this.control : null;
+      return this._name === name ? this._control : null;
     } else if (this._name !== name) {
       return null; // not in the search path
     }
