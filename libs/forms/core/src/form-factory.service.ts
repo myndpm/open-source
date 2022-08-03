@@ -185,8 +185,8 @@ export class DynFormFactory {
   ): void {
     config.controls?.forEach((item) => {
       if (item.name) {
-        const { name, control } = this.build(this.getInstanceFor(item.control) as any, node, item, true)
-        parent.addControl(name!, control);
+        const { name, parentControl, control } = this.build(this.getInstanceFor(item.control) as any, node, item, true);
+        parent.addControl(name!, parentControl !== parent ? parentControl : control);
       } else {
         this.buildControls(parent, node, item);
       }
