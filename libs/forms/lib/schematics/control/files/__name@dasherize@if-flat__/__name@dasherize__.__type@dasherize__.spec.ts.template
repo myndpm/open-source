@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DYN_CONTROLS_TOKEN, DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlProvider, DynFormTreeNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { of } from 'rxjs';
 
@@ -15,18 +15,15 @@ describe('<%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= cla
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        DynFormsModule.forFeature(),
+        DynFormsModule.forFeature({
+          controls: [{} as DynControlProvider],
+        }),
       ],
       declarations: [
         <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>,
       ],
       providers: [
         DynLogger,
-        {
-          provide: DYN_CONTROLS_TOKEN,
-          useValue: {},
-          multi: true,
-        },
         {
           provide: DynFormTreeNode,
           useValue: {
