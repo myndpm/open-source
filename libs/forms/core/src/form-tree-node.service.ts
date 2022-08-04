@@ -180,32 +180,26 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   /**
-   * Snapshots
+   * Feature methods
    */
-  track(defaultMode?: DynControlMode): void {
-    this._untrack$.next();
-    this.loaded$.pipe(
-      filter(Boolean),
-      switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
-      takeUntil(this._untrack$)
-    ).subscribe(([currentMode, event]) => {
-      if (defaultMode && !event && !this._snapshots.size) {
-        // snapshot of the initial mode
-        this._snapshots.set(defaultMode, this._control.value);
-      } else if (!event || event.hook === 'PostPatch') {
-        // updates the default snapshot or the current mode
-        const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
-        this._snapshots.set(mode, this._control.value);
-      }
-    });
+
+  whenReady(): Observable<boolean> {
+    return this.ready$.pipe(
+      takeUntil(this._unsubscribe$),
+      filter<boolean>(Boolean),
+      first(),
+    );
   }
 
-  untrack(mode?: DynControlMode): void {
-    this._untrack$.next();
-    if (mode && this._snapshots.has(mode)) {
-      this.patchValue(this._snapshots.get(mode));
-    }
-    this._snapshots.clear();
+  updateParams(params: Partial<TParams>): void {
+    this._paramsUpdates$.next(params);
+  }
+
+  // let the ControlNode know of an incoming hook
+  callHook(event: DynControlHook): void {
+    this.logger.hookCalled(this, event.hook, event.payload);
+
+    this._hook$.next(event);
   }
 
   /**
@@ -236,27 +230,41 @@ implements DynTreeNode<TParams, TControl> {
     ).subscribe();
   }
 
-  /**
-   * Feature methods
-   */
-
-  whenReady(): Observable<boolean> {
-    return this.ready$.pipe(
-      takeUntil(this._unsubscribe$),
-      filter<boolean>(Boolean),
-      first(),
+  // listen another control value changes
+  valueChanges(path: string): Observable<any>|undefined {
+    const control = this.search(path);
+    return control?.valueChanges.pipe(
+      startWith(control.value),
     );
   }
 
-  updateParams(params: Partial<TParams>): void {
-    this._paramsUpdates$.next(params);
+  /**
+   * Snapshots
+   */
+  track(defaultMode?: DynControlMode): void {
+    this._untrack$.next();
+    this.ready$.pipe(
+      filter(Boolean),
+      switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
+      takeUntil(this._untrack$)
+    ).subscribe(([currentMode, event]) => {
+      if (defaultMode && !event && !this._snapshots.size) {
+        // snapshot of the initial mode
+        this._snapshots.set(defaultMode, this._control.value);
+      } else if (!event || event.hook === 'PostPatch') {
+        // updates the default snapshot or the current mode
+        const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
+        this._snapshots.set(mode, this._control.value);
+      }
+    });
   }
 
-  // let the ControlNode know of an incoming hook
-  callHook(event: DynControlHook): void {
-    this.logger.hookCalled(this, event.hook, event.payload);
-
-    this._hook$.next(event);
+  untrack(mode?: DynControlMode): void {
+    this._untrack$.next();
+    if (mode && this._snapshots.has(mode)) {
+      this.patchValue(this._snapshots.get(mode));
+    }
+    this._snapshots.clear();
   }
 
   /**
@@ -322,14 +330,6 @@ implements DynTreeNode<TParams, TControl> {
     });
 
     return result;
-  }
-
-  // listen another control value changes
-  valueChanges(path: string): Observable<any>|undefined {
-    const control = this.search(path);
-    return control?.valueChanges.pipe(
-      startWith(control.value),
-    );
   }
 
   /**

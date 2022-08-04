@@ -26,8 +26,16 @@ export interface DynTreeNode<
   invisible(): void;
   hidden(): void;
 
+  whenReady(): Observable<boolean>;
   updateParams(params: Partial<TParams>): void;
   callHook(event: DynControlHook): void;
+
+  reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
+  patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
+  valueChanges(path: string): Observable<any>|undefined;
+
+  track(defaultMode?: string): void;
+  untrack(mode?: string): void;
 
   search(path: string): AbstractControl|null;
   searchUp(path: string, searchDown?: boolean): AbstractControl|null;
@@ -40,10 +48,4 @@ export interface DynTreeNode<
    * @deprecated use node.searchDown
    */
   select(path: string): AbstractControl|null;
-
-  whenReady(): Observable<boolean>;
-  valueChanges(path: string): Observable<any>|undefined;
-
-  patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
-  reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
 }
