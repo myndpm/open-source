@@ -117,7 +117,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
 
   private createFrom(config: DynBaseConfig): void {
     try {
-      const control = this.registry.get(config.control);
+      const control = this.registry.getControl(config.control);
       const factory = this.resolver.resolveComponentFactory(control.component);
 
       const newInjectionLayer = Injector.create({

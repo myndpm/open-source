@@ -5,12 +5,17 @@ import { DynControlMode, DynControlModes } from './types/mode.types';
 import { DynControlFunction } from './types/params.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
 import { DynControlProvider } from './dyn-control.class';
+import { DynWrapperProvider } from './dyn-control-wrapper.class';
 
 /**
- * core token gathering the controls in the system
+ * core tokens gathering the controls and wrappers in the system
  */
 export const DYN_CONTROLS_TOKEN = new InjectionToken<DynControlProvider[]>(
   '@myndpm/dyn-forms/dyn-controls'
+);
+
+export const DYN_WRAPPERS_TOKEN = new InjectionToken<DynWrapperProvider[]>(
+  '@myndpm/dyn-forms/dyn-wrappers'
 );
 
 /**
