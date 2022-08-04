@@ -40,7 +40,7 @@ export interface DynTreeNode<
    */
   select(path: string): AbstractControl|null;
 
-  whenReady(withMatchers?: boolean): Observable<boolean>;
+  whenReady(): Observable<boolean>;
   valueChanges(path: string): Observable<any>|undefined;
 
   patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;

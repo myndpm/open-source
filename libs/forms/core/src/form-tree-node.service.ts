@@ -97,9 +97,6 @@ implements DynTreeNode<TParams, TControl> {
   private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _unsubscribe$ = new Subject<void>();
   private _untrack$ = new Subject<void>();
-  private _modeLocal$?: Observable<DynControlMode>;
-
-  private _snapshots = new Map<DynControlMode, any>();
 
   // listened by dyn-factory
   private _visibility$ = new Subject<DynControlVisibility>();
@@ -107,29 +104,31 @@ implements DynTreeNode<TParams, TControl> {
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynControlHook>();
 
+  private _modeLocal$?: Observable<DynControlMode>;
+  private _snapshots = new Map<DynControlMode, any>();
+
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
       this._numChild$,
       this._loaded$,
       this._loadedParams$,
-      this._loadedMatchers$,
       ...this.children.map(child => child.loaded$),
     ])),
-    map(([children, loadedComponent, loadedParams, loadedMatchers, ...childrenLoaded]) => {
+    map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = children === childrenLoaded.length;
       const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
 
-      const result = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
+      const ready: boolean = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
-        ? { loaded$: result, loadedComponent, loadedParams, loadedMatchers, children, childrenLoaded }
-        : { loaded$: result, loadedComponent, loadedParams, loadedMatchers }
+        ? { loaded$: ready, loadedComponent, loadedParams, children, childrenLoaded }
+        : { loaded$: ready, loadedComponent, loadedParams }
       );
 
-      return result;
+      return ready;
     }),
     distinctUntilChanged(),
     shareReplay(1),
@@ -223,12 +222,9 @@ implements DynTreeNode<TParams, TControl> {
    * Feature methods
    */
 
-  whenReady(withMatchers = false): Observable<boolean> {
-    return combineLatest([this.loaded$, this._loadedMatchers$]).pipe(
+  whenReady(): Observable<boolean> {
+    return this.loaded$.pipe(
       takeUntil(this._unsubscribe$),
-      map(([loaded, matchers]) => {
-        return withMatchers ? loaded && matchers : loaded;
-      }),
       filter<boolean>(Boolean),
       first(),
     );
@@ -460,7 +456,7 @@ implements DynTreeNode<TParams, TControl> {
 
       if (this._matchers?.length) {
         // process the stored matchers
-        this.whenReady().pipe(
+        this.loaded$.pipe(
           take(1),
           switchMap(() => combineLatest(
             this._matchers!.map((config) => {
@@ -513,10 +509,16 @@ implements DynTreeNode<TParams, TControl> {
       this.parent?.removeChild(this);
     }
 
-    this._hook$.complete();
-    this._paramsUpdates$.complete();
-    this._visibility$.complete();
+    this._children$.complete();
+    this._numChild$.complete();
+    this._loaded$.complete();
+    this._loadedParams$.complete();
     this._errorMsg$.complete();
+
+    this._visibility$.complete();
+    this._paramsUpdates$.complete();
+    this._hook$.complete();
+
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
     this._untrack$.next();

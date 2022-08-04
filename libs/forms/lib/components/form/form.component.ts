@@ -171,8 +171,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
    * API
    */
 
-  whenReady(withMatchers?: boolean): Observable<boolean> {
-    return this.node.whenReady(withMatchers);
+  whenReady(): Observable<boolean> {
+    return this.node.whenReady();
   }
 
   track(mode?: DynControlMode): void {
