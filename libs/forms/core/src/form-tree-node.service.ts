@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Observable, Subject, combineLatest, merge, timer } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge, timer } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlVisibility } from './types/control.types';
@@ -210,8 +210,8 @@ implements DynTreeNode<TParams, TControl> {
     this._control.reset(value, options);
   }
 
-  patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
-    this.whenReady().pipe(
+  patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): Subscription {
+    return this.whenReady().pipe(
       tap(() => {
         this.markAsPending();
         this.logger.formCycle('PrePatch');
@@ -241,9 +241,9 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Snapshots
    */
-  track(defaultMode?: DynControlMode): void {
+  track(defaultMode?: DynControlMode): Subscription {
     this._untrack$.next();
-    this.ready$.pipe(
+    return this.ready$.pipe(
       filter(Boolean),
       switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
       takeUntil(this._untrack$)

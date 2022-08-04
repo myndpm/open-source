@@ -27,7 +27,7 @@ import {
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
 
@@ -175,17 +175,17 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.node.whenReady();
   }
 
-  track(mode?: DynControlMode): void {
-    this.callHook('Track', mode, false, true);
+  track(mode?: DynControlMode): Subscription {
+    return this.callHook('Track', mode, false, true);
   }
 
-  untrack(mode?: DynControlMode): void {
-    this.callHook('Untrack', mode, true);
+  untrack(mode?: DynControlMode): Subscription {
+    return this.callHook('Untrack', mode, true);
   }
 
   // notify the dynControls about the incoming data
-  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): void {
-    this.whenReady().pipe(
+  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): Subscription {
+    return this.whenReady().pipe(
       tap(() => {
         this.node.markAsPending();
         this.logger.formCycle('PrePatch');
@@ -209,18 +209,18 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // update the validators programatically
-  validate(opts?: DynHookUpdateValidity): void {
-    this.callHook('UpdateValidity', opts);
+  validate(opts?: DynHookUpdateValidity): Subscription {
+    return this.callHook('UpdateValidity', opts);
   }
 
   // trigger change detection programatically
-  detectChanges(): void {
-    this.callHook('DetectChanges');
+  detectChanges(): Subscription {
+    return this.callHook('DetectChanges');
   }
 
   // call a hook in the dynControls using plain/hierarchical data
-  callHook(hook: string, payload?: any, plain = true, force = false): void {
-    this.whenReady().subscribe(() => {
+  callHook(hook: string, payload?: any, plain = true, force = false): Subscription {
+    return this.whenReady().subscribe(() => {
       this.node.children.forEach(node => {
         const fieldName = node.name;
         // validate the expected payload
