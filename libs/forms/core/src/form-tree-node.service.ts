@@ -144,7 +144,7 @@ implements DynTreeNode<TParams, TControl> {
       const allChildrenReady = childrenReady.every(Boolean);
       const ready: boolean = loaded && loadedMatchers && allChildrenReady;
 
-      this.logger.nodeReady(this, { ready$: ready, loadedMatchers, childrenReady });
+      this.logger.nodeReady(this, { ready$: ready, loaded, loadedMatchers, childrenReady });
 
       return ready;
     }),
