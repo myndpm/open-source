@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Subject, combineLatest, merge, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, merge, timer } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlVisibility } from './types/control.types';
@@ -119,14 +119,32 @@ implements DynTreeNode<TParams, TControl> {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = children === childrenLoaded.length;
       const allChildrenValid = childrenLoaded.every(Boolean);
-      const allChildrenLoaded = this.instance === DynInstanceType.Control ? true : hasAllChildren && allChildrenValid;
-
+      const allChildrenLoaded = isControl ? true : hasAllChildren && allChildrenValid;
       const ready: boolean = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
         ? { loaded$: ready, loadedComponent, loadedParams, children, childrenLoaded }
         : { loaded$: ready, loadedComponent, loadedParams }
       );
+
+      return ready;
+    }),
+    distinctUntilChanged(),
+    shareReplay(1),
+  );
+
+  ready$: Observable<boolean> = this._children$.pipe(
+    startWith(null),
+    switchMap(() => combineLatest([
+      this.loaded$,
+      this._loadedMatchers$,
+      ...this.children.map(child => child.ready$),
+    ])),
+    map(([loaded, loadedMatchers, ...childrenReady]) => {
+      const allChildrenReady = childrenReady.every(Boolean);
+      const ready: boolean = loaded && loadedMatchers && allChildrenReady;
+
+      this.logger.nodeReady(this, { ready$: ready, loadedMatchers, childrenReady });
 
       return ready;
     }),
@@ -223,7 +241,7 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   whenReady(): Observable<boolean> {
-    return this.loaded$.pipe(
+    return this.ready$.pipe(
       takeUntil(this._unsubscribe$),
       filter<boolean>(Boolean),
       first(),
@@ -408,7 +426,7 @@ implements DynTreeNode<TParams, TControl> {
 
   markMatchersAsLoaded(): void {
     if (!this._loadedMatchers$.value) {
-      this._loadedMatchers$.next(true);
+      timer(100).subscribe(() => this._loadedMatchers$.next(true));
     }
   }
 

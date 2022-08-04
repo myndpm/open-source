@@ -80,6 +80,8 @@ export class DynLogDriver {
       case DynLogLevel.Lifecycle:
         return [text, `color: #6f42c1`];
       case DynLogLevel.Load:
+        return [text, `color: #9f72f1`];
+      case DynLogLevel.Ready:
         return [text, `color: #20c997`];
       case DynLogLevel.Runtime:
         return [text, `color: #adb5bd`];

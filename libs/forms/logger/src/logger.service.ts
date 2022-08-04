@@ -88,6 +88,15 @@ export class DynLogger {
     });
   }
 
+  nodeReady({ deep, path, route }: DynNode, payload?: any): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Ready,
+      message: `'${path.join('.')}' (${route.join('/')})`,
+      payload,
+    });
+  }
+
   nodeParamsUpdated({ deep, path }: DynNode, origin: string, payload: any): void {
     this.driver.log({
       deep,

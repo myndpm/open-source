@@ -19,6 +19,7 @@ export interface DynTreeNode<
   params: TParams;
 
   loaded$: Observable<boolean>;
+  ready$: Observable<boolean>;
   mode$: Observable<string>;
 
   visible(): void;
