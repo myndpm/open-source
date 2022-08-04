@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge, timer } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlVisibility } from './types/control.types';
@@ -426,7 +426,7 @@ implements DynTreeNode<TParams, TControl> {
 
   markMatchersAsLoaded(): void {
     if (!this._loadedMatchers$.value) {
-      timer(100).subscribe(() => this._loadedMatchers$.next(true));
+      this._loadedMatchers$.next(true);
     }
   }
 
