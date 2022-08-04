@@ -241,6 +241,7 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * Snapshots
    */
+
   track(defaultMode?: DynControlMode): Subscription {
     this._untrack$.next();
     return this.ready$.pipe(
@@ -266,6 +267,10 @@ implements DynTreeNode<TParams, TControl> {
     }
     this._snapshots.clear();
   }
+
+  /**
+   * Controls querying
+   */
 
   /**
    * @deprecated use node.searchUp
@@ -399,7 +404,7 @@ implements DynTreeNode<TParams, TControl> {
         : 0
     );
 
-    // store the matchers to be processed in setupListeners
+    // store the matchers to be processed in node.setup()
     this._matchers = this.getMatchers(config);
 
     // store the params to be accessible to the handlers
@@ -418,33 +423,9 @@ implements DynTreeNode<TParams, TControl> {
     }
   }
 
-  markParamsAsLoaded(): void {
-    if (!this._loadedParams$.value) {
-      this._loadedParams$.next(true);
-    }
-  }
-
-  markMatchersAsLoaded(): void {
-    if (!this._loadedMatchers$.value) {
-      this._loadedMatchers$.next(true);
-    }
-  }
-
-  markAsPending(): void {
-    if (this._loaded$.value) {
-      this._loaded$.next(false);
-    }
-  }
-
-  markAsLoaded(): void {
-    if (!this._loaded$.value) {
-      this._loaded$.next(true);
-    }
-  }
-
-  setupListeners(): void {
+  setup(): void {
     if (!this.isFormLoaded) {
-      this.logger.setupListeners(this);
+      this.logger.nodeSetup(this);
       this._formLoaded = true;
 
       // listen control changes to update the error
@@ -517,7 +498,7 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     // call the children
-    this.children.map(child => child.setupListeners());
+    this.children.map(child => child.setup());
   }
 
   onDestroy(): void {
@@ -541,6 +522,30 @@ implements DynTreeNode<TParams, TControl> {
     this._unsubscribe$.complete();
     this._untrack$.next();
     this._untrack$.complete();
+  }
+
+  markAsPending(): void {
+    if (this._loaded$.value) {
+      this._loaded$.next(false);
+    }
+  }
+
+  markAsLoaded(): void {
+    if (!this._loaded$.value) {
+      this._loaded$.next(true);
+    }
+  }
+
+  markParamsAsLoaded(): void {
+    if (!this._loadedParams$.value) {
+      this._loadedParams$.next(true);
+    }
+  }
+
+  markMatchersAsLoaded(): void {
+    if (!this._loadedMatchers$.value) {
+      this._loadedMatchers$.next(true);
+    }
   }
 
   childsIncrement(): void {

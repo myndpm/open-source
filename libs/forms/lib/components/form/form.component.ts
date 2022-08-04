@@ -152,7 +152,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       .subscribe(() => {
         this.logger.formCycle('loaded');
         // trigger processes once the form hierarchy is built
-        this.node.setupListeners();
+        this.node.setup();
       });
   }
 

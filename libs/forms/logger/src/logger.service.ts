@@ -88,6 +88,14 @@ export class DynLogger {
     });
   }
 
+  nodeSetup({ deep, path, route }: DynNode): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Debug,
+      message: `'${path.join('.')}' node setup (${route.join('/')})`,
+    });
+  }
+
   nodeReady({ deep, path, route }: DynNode, payload?: any): void {
     this.driver.log({
       deep,
@@ -138,14 +146,6 @@ export class DynLogger {
       level: DynLogLevel.Lifecycle,
       message: `[DynForm] ${name}`,
       payload,
-    });
-  }
-
-  setupListeners({ deep, path, route }: DynNode): void {
-    this.driver.log({
-      deep,
-      level: DynLogLevel.Debug,
-      message: `'${path.join('.')}' setup listeners (${route.join('/')})`,
     });
   }
 
