@@ -44,8 +44,8 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   @Input() index?: number;
   @Input() injector?: Injector;
 
-  @ViewChild('container', { static: true, read: ViewContainerRef })
-  container!: ViewContainerRef;
+  @ViewChild('control', { static: true, read: ViewContainerRef })
+  controlContainer!: ViewContainerRef;
 
   visibility: DynControlVisibility = 'VISIBLE';
 
@@ -61,7 +61,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   }
 
   // DynControl
-  private component!: ComponentRef<AbstractDynControl>;
+  private controlRef!: ComponentRef<AbstractDynControl>;
 
   // retrieved from the proper injector
   private _injector!: Injector;
@@ -97,13 +97,13 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           // check if the params are the only changed ones
           if (this._configs.areEquivalent(config, newConfig)) {
             if (newConfig.params || newConfig.paramFns) {
-              this.component.instance.updateParams(newConfig.params, newConfig.paramFns);
+              this.controlRef.instance.updateParams(newConfig.params, newConfig.paramFns);
             }
           } else {
             this.logger.controlInitializing(this.node, { control: newConfig.control, name: newConfig.name });
 
-            this.container.clear();
-            this.createFrom(newConfig);
+            this.controlContainer.clear();
+            this.createControl(newConfig);
           }
           config = newConfig;
         }
@@ -115,7 +115,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     this._unsubscribe.complete();
   }
 
-  private createFrom(config: DynBaseConfig): void {
+  private createControl(config: DynBaseConfig): void {
     try {
       const control = this.registry.getControl(config.control);
       const factory = this.resolver.resolveComponentFactory(control.component);
@@ -147,29 +147,29 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
         parent: this._injector,
       });
 
-      this.component = this.container.createComponent<AbstractDynControl>(
+      this.controlRef = this.controlContainer.createComponent<AbstractDynControl>(
         factory,
         undefined,
         newInjectionLayer,
       );
-      this.component.instance.config = config;
-      this.component.instance.node.setIndex(this.index);
+      this.controlRef.instance.config = config;
+      this.controlRef.instance.node.setIndex(this.index);
       // we let the corresponding DynFormTreeNode to initialize the control
       // and register itself in the Form Tree in the lifecycle methods
 
-      this.component.hostView.detectChanges();
+      this.controlRef.hostView.detectChanges();
 
-      this.logger.controlInstantiated(this.component.instance.node, {
+      this.logger.controlInstantiated(this.controlRef.instance.node, {
         control: config.control,
         name: config.name,
         controls: config.controls?.length || 0,
       });
 
       // listen control.visibility$
-      this.component.instance.visibility$
+      this.controlRef.instance.visibility$
         .pipe(
           startWith(config.visibility || 'VISIBLE'),
-          takeUntil(this.component.instance.onDestroy$),
+          takeUntil(this.controlRef.instance.onDestroy$),
         )
         .subscribe((visibility) => {
           if (this.visibility !== visibility) {
