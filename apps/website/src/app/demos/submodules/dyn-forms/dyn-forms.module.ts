@@ -11,6 +11,7 @@ import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 import { LayoutModule } from '../../../layout';
 import { BuilderComponent } from './components/builder/builder.component';
 import { SimpleComponent } from './components/simple/simple.component';
+import { SingleComponent } from './components/single/single.component';
 import { StepperStep1Component } from './components/stepper/step1/step1.component';
 import { StepperStep2Component } from './components/stepper/step2/step2.component';
 import { StepperComponent } from './components/stepper/stepper.component';
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'simple-form',
     component: SimpleComponent,
+  },
+  {
+    path: 'single-form',
+    component: SingleComponent,
   },
   {
     path: 'stepper-form',
@@ -69,6 +74,7 @@ const routes: Routes = [
   declarations: [
     BuilderComponent,
     SimpleComponent,
+    SingleComponent,
     StepperComponent,
     StepperStep1Component,
     StepperStep2Component,

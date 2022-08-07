@@ -9,6 +9,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 export class IndexComponent {
   items = [
     {
+      title: 'Simple Subscription Form',
+      link: './dyn-forms/single-form',
+      description: 'Simple dyn-forms demo with custom modes.',
+    },
+    {
       title: 'Simple Dynamic Form',
       link: './dyn-forms/simple-form',
       description: 'Simple dyn-forms demo with display mode.',

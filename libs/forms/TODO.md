@@ -1,5 +1,9 @@
 # TODO
 
+## Forms
+
+- Try to detect conflicts with incoming patch values to dirty edit inside the controls
+
 ## Form Controls
 
 - HIDDEN DynControl not rendering completely is really necessary or enough to setup manually in the FormGroup? it needs special count treatment
