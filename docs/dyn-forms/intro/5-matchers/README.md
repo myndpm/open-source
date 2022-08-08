@@ -53,7 +53,7 @@ the `DISABLE` matcher is included in the library with `ENABLE`, `SHOW`, `HIDE` (
 One matcher consists of a function which performs a task in the form hierarchy; to do so, it receives the `DynTreeNode` instance:
 
 ```typescript
-interface DynControlMatcherFn {
+interface DynMatcherFn {
   (args: {
     node: DynTreeNode;
     hasMatch: boolean;
@@ -68,7 +68,7 @@ For example the `DISABLE` matcher operates into the form control when the specif
 ```typescript
 {
   id: 'DISABLE',
-  fn: (): DynControlMatcherFn => {
+  fn: (): DynMatcherFn => {
     return ({ node, hasMatch }) => {
       hasMatch ? node.control.disable() : node.control.enable();
     }

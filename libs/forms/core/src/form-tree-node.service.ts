@@ -7,7 +7,7 @@ import { DynBaseConfig } from './types/config.types';
 import { DynControlVisibility } from './types/control.types';
 import { DynControlHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType } from './types/forms.types';
-import { DynControlMatch } from './types/matcher.types';
+import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
 import { DynParams } from './types/params.types';
@@ -84,7 +84,7 @@ implements DynTreeNode<TParams, TControl> {
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
-  private _matchers?: DynControlMatch[];
+  private _matchers?: DynMatch[];
   private _params!: TParams;
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
@@ -608,7 +608,7 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   // process the config to extract the matchers
-  private getMatchers(config: Partial<DynBaseConfig>): DynControlMatch[] {
+  private getMatchers(config: Partial<DynBaseConfig>): DynMatch[] {
     const matchers = config.match?.slice() || [];
 
     // listen changes in the RELATED field

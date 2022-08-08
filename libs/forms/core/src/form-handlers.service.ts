@@ -6,9 +6,9 @@ import { DynConfigArgs } from './types/forms.types';
 import {
   DynCondition,
   DynConditionFn,
-  DynControlMatchCondition,
-  DynControlMatcher,
-  DynControlMatcherFn,
+  DynMatchCondition,
+  DynMatcher,
+  DynMatcherFn,
   isMatchCondition,
 } from './types/matcher.types';
 import { DynTreeNode } from './types/node.types';
@@ -55,7 +55,7 @@ export class DynFormHandlers {
   functions = new Map<DynConfigId, DynHandlerFactory<DynFunctionFn>>();
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
-  matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
+  matchers = new Map<DynConfigId, DynHandlerFactory<DynMatcherFn>>();
   conditions = new Map<DynConfigId, DynHandlerFactory<DynConditionFn>>();
 
   constructor(
@@ -69,7 +69,7 @@ export class DynFormHandlers {
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
     readonly providedAsyncValidators?: DynControlAsyncValidator[],
     @Inject(DYN_MATCHERS_TOKEN) @Optional()
-    readonly providedMatchers?: DynControlMatcher[],
+    readonly providedMatchers?: DynMatcher[],
     @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()
     readonly providedConditions?: DynCondition[],
   ) {
@@ -108,7 +108,7 @@ export class DynFormHandlers {
     }
   }
 
-  getMatcher(config: DynConfigProvider<DynControlMatcherFn>): DynControlMatcherFn {
+  getMatcher(config: DynConfigProvider<DynMatcherFn>): DynMatcherFn {
     if (typeof config === 'function') {
       return config;
     } else if (Array.isArray(config)) {
@@ -123,7 +123,7 @@ export class DynFormHandlers {
   }
 
   getCondition(
-    config: DynConfigProvider<DynConditionFn> | DynControlMatchCondition,
+    config: DynConfigProvider<DynConditionFn> | DynMatchCondition,
   ): DynConditionFn {
     if (typeof config === 'function') {
       return config;

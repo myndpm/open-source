@@ -1,7 +1,7 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynConfigArgs } from './forms.types';
-import { DynControlMatch } from './matcher.types';
+import { DynMatch } from './matcher.types';
 import { DynFunctionFn, DynParams } from './params.types';
 import { DynConfigCollection, DynConfigMap, DynConfigProvider } from './provider.types';
 import { DynConfigErrors, DynControlErrors } from './validation.types';
@@ -29,7 +29,7 @@ export interface DynControlConfig<TParams extends DynParams = DynParams> {
   validators?: DynConfigCollection<ValidatorFn>;
   asyncValidators?: DynConfigCollection<AsyncValidatorFn>;
   updateOn?: 'change' | 'blur' | 'submit'; // Angular FormHooks
-  match?: DynControlMatch[]; // conditional tasks
+  match?: DynMatch[]; // conditional tasks
   // customizations
   cssClass?: string;
   params?: TParams | Observable<TParams>;

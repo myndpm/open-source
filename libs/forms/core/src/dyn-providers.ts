@@ -4,8 +4,8 @@ import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import {
   DynCondition,
   DynConditionFn,
-  DynControlMatcher,
-  DynControlMatcherFn,
+  DynMatcher,
+  DynMatcherFn,
   DynControlRelated,
 } from './types/matcher.types';
 import { DynTreeNode } from './types/node.types';
@@ -70,10 +70,10 @@ export const defaultAsyncValidators: DynControlAsyncValidator[] = [
 /**
  * Default matchers
  */
-export const defaultMatchers: DynControlMatcher[] = [
+export const defaultMatchers: DynMatcher[] = [
   {
     id: 'PARAMS',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, results }) => {
         node.updateParams(results.reduce((res, obj) => ({ ...res, ...obj }), {}))
       }
@@ -81,7 +81,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'UPDATEDBY',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, firstTime }) => {
         if (!firstTime) {
           node.callHook({ hook: 'DetectChanges' });
@@ -91,7 +91,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'RELATED',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, firstTime }) => {
         if (!firstTime) {
           node.control.updateValueAndValidity();
@@ -101,7 +101,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'VALIDATE',
-    fn: (error: ValidationErrors, validator: ValidatorFn = Validators.required): DynControlMatcherFn => {
+    fn: (error: ValidationErrors, validator: ValidatorFn = Validators.required): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         if (hasMatch) {
           if (validator(node.control)) {
@@ -117,7 +117,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'DISABLE',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         hasMatch ? node.control.disable() : node.control.enable();
       }
@@ -125,7 +125,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'ENABLE',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         hasMatch ? node.control.enable() : node.control.disable();
       }
@@ -133,7 +133,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'SHOW',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         hasMatch ? node.visible() : node.hidden();
       }
@@ -141,7 +141,7 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'INVISIBLE',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         hasMatch ? node.invisible() : node.visible();
       }
@@ -149,14 +149,14 @@ export const defaultMatchers: DynControlMatcher[] = [
   },
   {
     id: 'HIDE',
-    fn: (): DynControlMatcherFn => {
+    fn: (): DynMatcherFn => {
       return ({ node, hasMatch }) => {
         hasMatch ? node.hidden() : node.visible();
       }
     }
   },
 ].map(
-  mapPriority<DynControlMatcher>()
+  mapPriority<DynMatcher>()
 );
 
 
