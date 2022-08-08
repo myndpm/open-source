@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core';
-import { DynConfig, DynControlMode, DynFormContainer, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
+import { DynConfig, DynFormContainer, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { DynMatDividerParams } from './divider.component.params';
 
 @Component({
@@ -9,11 +9,11 @@ import { DynMatDividerParams } from './divider.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynMatDividerComponent
-extends DynFormContainer<DynControlMode, DynMatDividerParams> {
+extends DynFormContainer<DynMode, DynMatDividerParams> {
 
   static dynControl: 'DIVIDER' = 'DIVIDER';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatDividerParams>
   ): DynConfig<M> {
     return {

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   DynBaseConfig,
-  DynControlMode,
   DynFormContainer,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynMatCardParams } from './card.component.params';
@@ -14,11 +14,11 @@ import { DynMatCardParams } from './card.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatCardComponent
-extends DynFormContainer<DynControlMode, DynMatCardParams> {
+extends DynFormContainer<DynMode, DynMatCardParams> {
 
   static dynControl: 'CARD' = 'CARD';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatCardParams>
   ): DynBaseConfig<M, DynMatCardParams> {
     return {

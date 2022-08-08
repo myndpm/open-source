@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DynBaseConfig,
-  DynControlMode,
+  DynMode,
   DynFormControl,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -14,11 +14,11 @@ import { DynBsCheckboxParams } from './checkbox.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynBsCheckboxComponent
-extends DynFormControl<DynControlMode, DynBsCheckboxParams> {
+extends DynFormControl<DynMode, DynBsCheckboxParams> {
 
   static dynControl: 'CHECKBOX' = 'CHECKBOX';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynBsCheckboxParams>,
   ): DynBaseConfig<M> {
     return {

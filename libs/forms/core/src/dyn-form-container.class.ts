@@ -2,13 +2,13 @@ import { Directive, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynBaseConfig } from './types/config.types';
 import { DynInstanceType } from './types/forms.types';
-import { DynControlMode } from './types/mode.types';
+import { DynMode } from './types/mode.types';
 import { DynParams } from './types/params.types';
 import { DynControl } from './dyn-control.class';
 
 @Directive()
 export abstract class DynFormContainer<
-  TMode extends DynControlMode = DynControlMode,
+  TMode extends DynMode = DynMode,
   TParams extends DynParams = DynParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>
 >

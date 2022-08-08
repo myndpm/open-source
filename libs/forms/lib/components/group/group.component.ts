@@ -15,12 +15,12 @@ import {
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
   DynBaseConfig,
-  DynControlMode,
-  DynControlModes,
   DynControlNode,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynInstanceType,
+  DynMode,
+  DynModes,
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -41,35 +41,35 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
-  @Input() modes?: DynControlModes;
+  @Input() modes?: DynModes;
 
   @Input()
-  set mode(mode: DynControlMode) {
+  set mode(mode: DynMode) {
     this.mode$.next(mode);
   }
 
-  get mode(): DynControlMode {
+  get mode(): DynMode {
     return this.modeLocal;
   }
 
   @Input()
-  modeConfigs = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+  modeConfigs = (parent?: DynModes, local?: DynModes): DynModes => {
     return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
 
   @Input()
-  modeFactory = (mode: DynControlMode, name?: string): DynControlMode => {
+  modeFactory = (mode: DynMode, name?: string): DynMode => {
     return mode;
   }
 
   // stream mode changes via DYN_MODE
-  protected mode$ = new Subject<DynControlMode | undefined>();
+  protected mode$ = new Subject<DynMode | undefined>();
 
   // internal injector with mode override
   configLayer?: Injector;
 
   // local control variable
-  modeLocal: DynControlMode = '';
+  modeLocal: DynMode = '';
 
   constructor(
     private readonly injector: Injector,
@@ -140,9 +140,9 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   }
 
   modeCalculator = (
-    parent$: Observable<DynControlMode>,
-    child$: Observable<DynControlMode>,
-  ): Observable<DynControlMode> => {
+    parent$: Observable<DynMode>,
+    child$: Observable<DynMode>,
+  ): Observable<DynMode> => {
     return merge(parent$, child$).pipe(
       map(mode => this.modeFactory(mode, this.name)),
       distinctUntilChanged(),

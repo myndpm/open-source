@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DynConfig,
-  DynControlMode,
   DynFormContainer,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynMatContainerParams } from './container.component.params';
@@ -14,11 +14,11 @@ import { DynMatContainerParams } from './container.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynMatContainerComponent
-extends DynFormContainer<DynControlMode, DynMatContainerParams> {
+extends DynFormContainer<DynMode, DynMatContainerParams> {
 
   static dynControl: 'CONTAINER' = 'CONTAINER';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatContainerParams>
   ): DynConfig<M> {
     return {

@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DynBaseConfig,
-  DynControlMode,
   DynFormControl,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynBsSelectParams } from './select.component.params';
@@ -14,11 +14,11 @@ import { DynBsSelectParams } from './select.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynBsSelectComponent
-extends DynFormControl<DynControlMode, DynBsSelectParams> {
+extends DynFormControl<DynMode, DynBsSelectParams> {
 
   static dynControl: 'SELECT' = 'SELECT';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynBsSelectParams>,
   ): DynBaseConfig<M> {
     return {

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   DynConfig,
-  DynControlMode,
   DynFormControl,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynNatInputParams } from './input.component.params';
@@ -14,11 +14,11 @@ import { DynNatInputParams } from './input.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynNatInputComponent
-extends DynFormControl<DynControlMode, DynNatInputParams> {
+extends DynFormControl<DynMode, DynNatInputParams> {
 
   static dynControl: 'INPUT' = 'INPUT';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynNatInputParams>
   ): DynConfig<M> {
     return {

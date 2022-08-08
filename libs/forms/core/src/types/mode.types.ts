@@ -1,9 +1,19 @@
 import { DynControlConfig } from './control.types';
 
 // display, edit, filter, etc
-export type DynControlMode = string; // Mode ID
+export type DynMode = string; // Mode ID
 
 // config overrides per mode, handled by DynFormConfigResolver
-export type DynControlModes<TMode extends string = DynControlMode> = {
+export type DynModes<TMode extends string = DynMode> = {
   [K in TMode]?: Partial<DynControlConfig>;
 }
+
+/**
+ * @deprecated use DynMode
+ */
+export type DynControlMode = DynMode;
+
+/**
+ * @deprecated use DynModes
+ */
+export type DynControlModes = DynModes;

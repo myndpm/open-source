@@ -1,16 +1,16 @@
 import {
   DynBaseConfig,
   DynConfig,
-  DynControlMode,
-  DynControlModes,
   DynFormConfigErrors,
+  DynMode,
+  DynModes,
 } from '@myndpm/dyn-forms/core';
 
 // typed config with any set of supported modes
 export interface DynFormConfig<
-  M extends DynControlMode = DynControlMode,
+  M extends DynMode = DynMode,
 > extends DynFormConfigErrors {
   controls: Array<DynBaseConfig<M> | DynConfig<M>>;
-  modes?: DynControlModes<M>; // default partial configs per mode
+  modes?: DynModes<M>; // default partial configs per mode
   debug?: number;
 }

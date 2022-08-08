@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DynControlCondition, DynControlMatcher } from './types/matcher.types';
-import { DynControlMode, DynControlModes } from './types/mode.types';
+import { DynMode, DynModes } from './types/mode.types';
 import { DynFunction } from './types/params.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
 import { DynControlProvider } from './dyn-control.class';
@@ -48,18 +48,18 @@ export const DYN_ERROR_HANDLERS_TOKEN = new InjectionToken<DynErrorHandler[]>(
 /**
  * internal tokens managed by the dyn-form and dyn-group components
  */
-export const DYN_MODE = new InjectionToken<BehaviorSubject<DynControlMode>>(
+export const DYN_MODE = new InjectionToken<BehaviorSubject<DynMode>>(
   '@myndpm/dyn-forms/internal/mode'
 );
 
-export const DYN_MODE_CHILD = new InjectionToken<BehaviorSubject<DynControlMode>>(
+export const DYN_MODE_CHILD = new InjectionToken<BehaviorSubject<DynMode>>(
   '@myndpm/dyn-forms/internal/mode-child'
 );
 
-export const DYN_MODE_DEFAULTS = new InjectionToken<DynControlModes>(
+export const DYN_MODE_DEFAULTS = new InjectionToken<DynModes>(
   '@myndpm/dyn-forms/internal/mode-defaults'
 );
 
-export const DYN_MODE_LOCAL = new InjectionToken<DynControlModes>(
+export const DYN_MODE_LOCAL = new InjectionToken<DynModes>(
   '@myndpm/dyn-forms/internal/mode-local'
 );

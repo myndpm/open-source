@@ -2,8 +2,8 @@ import { Component, OnInit<% if(changeDetection !== 'Default') { %>, ChangeDetec
 import { FormGroup } from '@angular/forms';<% } %>
 import {
   DynBaseConfig,
-  DynControlMode,
   DynForm<%= classify(instance) %>,
+  DynMode,
   DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config,
 } from '@myndpm/dyn-forms/core';
 import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params } from './<%= dasherize(name)%>.<%= dasherize(type)%>.params';
@@ -16,12 +16,12 @@ import { <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= cla
   changeDetection: ChangeDetectionStrategy.<%= changeDetection %>,<% } %>
 })
 export class <%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= classify(type) %>
-extends DynForm<%= classify(instance) %><DynControlMode, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>
+extends DynForm<%= classify(instance) %><DynMode, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>
 implements OnInit {
 
   static dynControl: '<%= id %>' = '<%= id %>';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartial<% if (instance === 'Container') { %>Group<% } else { %>Control<% } %>Config<M, <%= prefixInterface %><%= prefixClass ? classify(prefix) : '' %><%= classify(name) %>Params>,
   ): DynBaseConfig<M> {
     return {

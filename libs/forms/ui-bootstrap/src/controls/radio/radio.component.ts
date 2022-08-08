@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DynBaseConfig,
-  DynControlMode,
   DynFormControl,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynBsRadioParams } from './radio.component.params';
@@ -14,11 +14,11 @@ import { DynBsRadioParams } from './radio.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynBsRadioComponent
-extends DynFormControl<DynControlMode, DynBsRadioParams> {
+extends DynFormControl<DynMode, DynBsRadioParams> {
 
   static dynControl: 'RADIO' = 'RADIO';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynBsRadioParams>,
   ): DynBaseConfig<M> {
     return {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynConfig, DynControlMode, DynFormArray, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
+import { DynConfig, DynFormArray, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { DynMatTableParams } from './table.component.params';
@@ -12,12 +12,12 @@ import { DynMatTableParams } from './table.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatTableComponent
-extends DynFormArray<DynControlMode, DynMatTableParams>
+extends DynFormArray<DynMode, DynMatTableParams>
 implements OnInit {
 
   static dynControl: 'TABLE' = 'TABLE';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatTableParams>
   ): DynConfig<M, DynMatTableParams> {
     return {
@@ -81,7 +81,7 @@ implements OnInit {
     };
   }
 
-  modeFactory = (mode: DynControlMode, index?: string): DynControlMode => {
+  modeFactory = (mode: DynMode, index?: string): DynMode => {
     return mode !== 'display'
       ? this.itemIndexForEditing === Number(index) ? 'edit' : 'row'
       : mode;

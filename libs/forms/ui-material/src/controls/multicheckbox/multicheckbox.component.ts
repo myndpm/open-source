@@ -6,8 +6,8 @@ import {
 import { FormControl } from '@angular/forms';
 import {
   DynConfig,
-  DynControlMode,
   DynFormControl,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { combineLatest } from 'rxjs';
@@ -21,7 +21,7 @@ import { DynMatMulticheckboxParams } from './multicheckbox.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatMulticheckboxComponent
-extends DynFormControl<DynControlMode, DynMatMulticheckboxParams>
+extends DynFormControl<DynMode, DynMatMulticheckboxParams>
 implements OnInit {
 
   static dynControl: 'MULTICHECK' = 'MULTICHECK';
@@ -31,7 +31,7 @@ implements OnInit {
   // avoids infinite loop emiting valueChange
   private _internalValueChange = false;
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatMulticheckboxParams>
   ): DynConfig<M, DynMatMulticheckboxParams> {
     return {

@@ -18,7 +18,7 @@ import { DynBaseConfig } from './types/config.types';
 import { DynControlId, DynControlVisibility } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
-import { DynControlMode } from './types/mode.types';
+import { DynMode } from './types/mode.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { merge } from './utils/merge.util';
@@ -27,7 +27,7 @@ import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
 
-export type AbstractDynControl = DynControl<DynControlMode, any, DynBaseConfig, AbstractControl>;
+export type AbstractDynControl = DynControl<DynMode, any, DynBaseConfig, AbstractControl>;
 
 export interface DynControlProvider extends DynBaseProvider {
   control: DynControlId;
@@ -37,7 +37,7 @@ export interface DynControlProvider extends DynBaseProvider {
 
 @Directive()
 export abstract class DynControl<
-  TMode extends DynControlMode = DynControlMode,
+  TMode extends DynMode = DynMode,
   TParams extends DynParams = DynParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
@@ -63,7 +63,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   }
 
   // utility properties
-  get mode$(): Observable<DynControlMode> {
+  get mode$(): Observable<DynMode> {
     return this.node.mode$;
   }
   get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
@@ -87,7 +87,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 
-  protected readonly _mode: BehaviorSubject<DynControlMode>;
+  protected readonly _mode: BehaviorSubject<DynMode>;
   protected readonly _ref: ChangeDetectorRef;
   protected readonly _logger: DynLogger;
   protected readonly _factory: DynFormFactory;
@@ -167,12 +167,12 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
    */
 
   // start tracking
-  hookTrack(mode?: DynControlMode): void {
+  hookTrack(mode?: DynMode): void {
     this.node.track(mode);
   }
 
   // untrack signal
-  hookUntrack(mode?: DynControlMode): void {
+  hookUntrack(mode?: DynMode): void {
     this.node.untrack(mode);
   }
 

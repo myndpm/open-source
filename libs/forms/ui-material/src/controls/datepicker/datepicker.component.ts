@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   DynConfig,
-  DynControlMode,
   DynFormControl,
+  DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
 import { DynMatDatepickerParams } from './datepicker.component.params';
@@ -14,11 +14,11 @@ import { DynMatDatepickerParams } from './datepicker.component.params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynMatDatepickerComponent
-extends DynFormControl<DynControlMode, DynMatDatepickerParams> {
+extends DynFormControl<DynMode, DynMatDatepickerParams> {
 
   static dynControl: 'DATEPICKER' = 'DATEPICKER';
 
-  static createConfig<M extends DynControlMode>(
+  static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatDatepickerParams>
   ): DynConfig<M> {
     return {

@@ -17,12 +17,12 @@ import {
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
   DynBaseConfig,
-  DynControlMode,
-  DynControlModes,
   DynControlNode,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynInstanceType,
+  DynMode,
+  DynModes,
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
@@ -42,24 +42,24 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
-  @Input() modes?: DynControlModes;
+  @Input() modes?: DynModes;
 
   @Input()
-  set mode(mode: DynControlMode) {
+  set mode(mode: DynMode) {
     this.modeLocal$.next(mode);
   }
 
-  get mode(): DynControlMode {
+  get mode(): DynMode {
     return this.mode$.getValue();
   }
 
   @Input()
-  modeConfigs = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+  modeConfigs = (parent?: DynModes, local?: DynModes): DynModes => {
     return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
 
   @Input()
-  modeFactory = (mode: DynControlMode, name?: string): DynControlMode => {
+  modeFactory = (mode: DynMode, name?: string): DynMode => {
     return mode;
   }
 
@@ -69,10 +69,10 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   @Output() save = new EventEmitter<void>();
 
   // keeps track of the local input
-  protected modeLocal$ = new BehaviorSubject<DynControlMode>('');
+  protected modeLocal$ = new BehaviorSubject<DynMode>('');
 
   // stream mode changes via DYN_MODE
-  protected mode$ = new BehaviorSubject<DynControlMode>('');
+  protected mode$ = new BehaviorSubject<DynMode>('');
 
   // internal injector with mode override
   configLayer?: Injector;
@@ -162,9 +162,9 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   }
 
   modeCalculator = (
-    parent$: Observable<DynControlMode>,
-    child$: Observable<DynControlMode>,
-  ): Observable<DynControlMode> => {
+    parent$: Observable<DynMode>,
+    child$: Observable<DynMode>,
+  ): Observable<DynMode> => {
     return merge(parent$, child$).pipe(
       map(mode => this.modeFactory(mode, this.name)),
       distinctUntilChanged(),

@@ -8,7 +8,7 @@ import { DynControlVisibility } from './types/control.types';
 import { DynControlHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType } from './types/forms.types';
 import { DynControlMatch } from './types/matcher.types';
-import { DynControlMode } from './types/mode.types';
+import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
 import { DynParams } from './types/params.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
@@ -60,7 +60,7 @@ implements DynTreeNode<TParams, TControl> {
   get hook$(): Observable<DynControlHook> {
     return this._hook$.asObservable();
   }
-  get mode$(): Observable<DynControlMode> {
+  get mode$(): Observable<DynMode> {
     return this._modeLocal$ ?? this._mode$;
   }
   get paramsUpdates$(): Observable<Partial<TParams>> {
@@ -76,7 +76,7 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   // mode$ override
-  set mode(mode$: Observable<DynControlMode>) {
+  set mode(mode$: Observable<DynMode>) {
     this._modeLocal$ = mode$;
   }
 
@@ -104,8 +104,8 @@ implements DynTreeNode<TParams, TControl> {
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynControlHook>();
 
-  private _modeLocal$?: Observable<DynControlMode>;
-  private _snapshots = new Map<DynControlMode, any>();
+  private _modeLocal$?: Observable<DynMode>;
+  private _snapshots = new Map<DynMode, any>();
 
   loaded$: Observable<boolean> = this._children$.pipe(
     startWith(null),
@@ -157,7 +157,7 @@ implements DynTreeNode<TParams, TControl> {
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
     @Optional() @Inject(DYN_MODE)
-    private readonly _mode$: Observable<DynControlMode>,
+    private readonly _mode$: Observable<DynMode>,
     // parent node should be set for all except the root
     @Optional() @SkipSelf()
     public readonly parent: DynFormTreeNode<any>,
@@ -242,7 +242,7 @@ implements DynTreeNode<TParams, TControl> {
    * Snapshots
    */
 
-  track(defaultMode?: DynControlMode): Subscription {
+  track(defaultMode?: DynMode): Subscription {
     this._untrack$.next();
     return this.ready$.pipe(
       filter(Boolean),
@@ -260,7 +260,7 @@ implements DynTreeNode<TParams, TControl> {
     });
   }
 
-  untrack(mode?: DynControlMode): void {
+  untrack(mode?: DynMode): void {
     this._untrack$.next();
     if (mode && this._snapshots.has(mode)) {
       this.patchValue(this._snapshots.get(mode));

@@ -19,13 +19,13 @@ import {
 import {
   AbstractDynControl,
   DynBaseConfig,
-  DynControlMode,
   DynControlVisibility,
   DynFormConfigResolver,
   DynFormFactory,
   DynFormHandlers,
   DynFormTreeNode,
   DynFormRegistry,
+  DynMode,
   DYN_MODE,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
@@ -65,7 +65,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
 
   // retrieved from the proper injector
   private _injector!: Injector;
-  private _mode$!: BehaviorSubject<DynControlMode>;
+  private _mode$!: BehaviorSubject<DynMode>;
   private _configs!: DynFormConfigResolver;
 
   private _unsubscribe = new Subject<void>();

@@ -5,7 +5,7 @@ import { combineLatest, isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlConfig } from './types/control.types';
-import { DynControlMode, DynControlModes } from './types/mode.types';
+import { DynMode, DynModes } from './types/mode.types';
 import { merge } from './utils/merge.util';
 import { DynFormTreeNode } from './form-tree-node.service';
 import { DYN_MODE_DEFAULTS } from './form.tokens';
@@ -15,7 +15,7 @@ import { DYN_MODE_DEFAULTS } from './form.tokens';
 export class DynFormConfigResolver {
   constructor(
     private readonly logger: DynLogger,
-    @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynControlModes,
+    @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynModes,
   ) {}
 
   areEqual(a: any, b: any): boolean {
@@ -34,7 +34,7 @@ export class DynFormConfigResolver {
 
   // resolves the config to be used by dyn-factory
   // this algorithm decides how to override the main config with mode customizations
-  getModeConfig(mode: DynControlMode, config: DynBaseConfig, node: DynFormTreeNode): DynBaseConfig {
+  getModeConfig(mode: DynMode, config: DynBaseConfig, node: DynFormTreeNode): DynBaseConfig {
     let result: DynBaseConfig = {
       ...config,
       controls: config.controls?.filter(Boolean),

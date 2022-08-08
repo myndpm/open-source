@@ -19,11 +19,11 @@ import {
   DYN_MODE,
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
-  DynControlMode,
-  DynControlModes,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynHookUpdateValidity,
+  DynMode,
+  DynModes,
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
@@ -45,10 +45,10 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() isolated = false;
   @Input() form!: FormGroup;
   @Input() config?: DynFormConfig;
-  @Input() mode?: DynControlMode;
+  @Input() mode?: DynMode;
 
   @Input()
-  modeConfigs = (parent?: DynControlModes, local?: DynControlModes): DynControlModes => {
+  modeConfigs = (parent?: DynModes, local?: DynModes): DynModes => {
     return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
 
@@ -56,7 +56,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   configLayer?: Injector;
 
   // stream mode changes via DYN_MODE
-  protected mode$ = new BehaviorSubject<DynControlMode | undefined>(undefined);
+  protected mode$ = new BehaviorSubject<DynMode | undefined>(undefined);
 
   // registered hook listeners
   protected listeners = new Map<string, Function[]>();
@@ -175,11 +175,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.node.whenReady();
   }
 
-  track(mode?: DynControlMode): Subscription {
+  track(mode?: DynMode): Subscription {
     return this.callHook('Track', mode, false, true);
   }
 
-  untrack(mode?: DynControlMode): Subscription {
+  untrack(mode?: DynMode): Subscription {
     return this.callHook('Untrack', mode, true);
   }
 
