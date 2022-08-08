@@ -2,8 +2,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@ang
 import { Observable, of } from 'rxjs';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import {
-  DynControlCondition,
-  DynControlConditionFn,
+  DynCondition,
+  DynConditionFn,
   DynControlMatcher,
   DynControlMatcherFn,
   DynControlRelated,
@@ -163,21 +163,21 @@ export const defaultMatchers: DynControlMatcher[] = [
 /**
  * Default condition handler
  */
-export const defaultConditions: DynControlCondition[] = [
+export const defaultConditions: DynCondition[] = [
   {
     id: 'DEFAULT',
     fn: relatedConditionFn,
   },
   {
     id: 'MODE',
-    fn: (mode: string): DynControlConditionFn => {
+    fn: (mode: string): DynConditionFn => {
       return (node: DynTreeNode) => {
         return node.mode$.pipe(map(value => value === mode));
       }
     },
   },
 ].map(
-  mapPriority<DynControlCondition>()
+  mapPriority<DynCondition>()
 );
 
 /**
@@ -285,7 +285,7 @@ export const defaultFunctions: DynFunction[] = [
 /**
  * Related Condition
  */
-function relatedConditionFn({ path, value, field, negate }: DynControlRelated): DynControlConditionFn {
+function relatedConditionFn({ path, value, field, negate }: DynControlRelated): DynConditionFn {
   return (node: DynTreeNode) => {
     const control = node.search(path);
     if (!control) {

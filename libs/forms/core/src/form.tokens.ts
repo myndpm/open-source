@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DynControlCondition, DynControlMatcher } from './types/matcher.types';
+import { DynCondition, DynControlMatcher } from './types/matcher.types';
 import { DynMode, DynModes } from './types/mode.types';
 import { DynFunction } from './types/params.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
@@ -33,7 +33,7 @@ export const DYN_MATCHERS_TOKEN = new InjectionToken<DynControlMatcher[]>(
   '@myndpm/dyn-forms/matchers'
 );
 
-export const DYN_MATCHER_CONDITIONS_TOKEN = new InjectionToken<DynControlCondition[]>(
+export const DYN_MATCHER_CONDITIONS_TOKEN = new InjectionToken<DynCondition[]>(
   '@myndpm/dyn-forms/matcher-conditions'
 );
 

@@ -4,8 +4,8 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynControlConfig } from './types/control.types';
 import { DynConfigArgs } from './types/forms.types';
 import {
-  DynControlCondition,
-  DynControlConditionFn,
+  DynCondition,
+  DynConditionFn,
   DynControlMatchCondition,
   DynControlMatcher,
   DynControlMatcherFn,
@@ -56,7 +56,7 @@ export class DynFormHandlers {
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
   matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
-  conditions = new Map<DynConfigId, DynHandlerFactory<DynControlConditionFn>>();
+  conditions = new Map<DynConfigId, DynHandlerFactory<DynConditionFn>>();
 
   constructor(
     private readonly logger: DynLogger,
@@ -71,7 +71,7 @@ export class DynFormHandlers {
     @Inject(DYN_MATCHERS_TOKEN) @Optional()
     readonly providedMatchers?: DynControlMatcher[],
     @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()
-    readonly providedConditions?: DynControlCondition[],
+    readonly providedConditions?: DynCondition[],
   ) {
     // reduce the provided handlers according to priority
     this.reduceProvider(
@@ -123,8 +123,8 @@ export class DynFormHandlers {
   }
 
   getCondition(
-    config: DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition,
-  ): DynControlConditionFn {
+    config: DynConfigProvider<DynConditionFn> | DynControlMatchCondition,
+  ): DynConditionFn {
     if (typeof config === 'function') {
       return config;
     } else if (Array.isArray(config)) {

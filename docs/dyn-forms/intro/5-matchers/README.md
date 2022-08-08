@@ -13,7 +13,7 @@ A `Matcher` is a task that is executed when a given set of `Conditions` are fulf
 To match a special requirement, we need to define one or more conditions, so when all (AND) or one (OR) of them are fulfilled we run a particular task. The Condition Function type consists of:
 
 ```typescript
-interface DynControlConditionFn {
+interface DynConditionFn {
   (node: DynTreeNode): Observable<any>;
 }
 ```

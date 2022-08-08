@@ -9,7 +9,7 @@ import { DynBaseHandler, DynConfigId, DynConfigProvider } from './provider.types
 export interface DynControlMatch {
   matchers: DynConfigProvider<DynControlMatcherFn>[]; // [matcher id | [id, args] | DynControlMatcherFn]
   operator?: 'AND' | 'OR'; // triggers the matcher with all/one truthy condition
-  when: Array<DynConfigProvider<DynControlConditionFn> | DynControlMatchCondition>;
+  when: Array<DynConfigProvider<DynConditionFn> | DynControlMatchCondition>;
   negate?: boolean; // negate the result of the conditions
 }
 
@@ -24,7 +24,7 @@ export interface DynControlRelated {
 }
 
 export interface DynControlMatchCondition extends DynControlRelated {
-  condition?: DynConfigId | DynControlConditionFn; // defaults to the 'DEFAULT' condition handler
+  condition?: DynConfigId | DynConditionFn; // defaults to the 'DEFAULT' condition handler
   [key: string]: any; // any parameter to the Condition Factory
 }
 
@@ -44,8 +44,8 @@ export type DynControlMatcher = DynBaseHandler<DynControlMatcherFn>;
 /**
  * condition handlers
  */
-export type DynControlConditionFn = (node: DynTreeNode) => Observable<any>;
-export type DynControlCondition = DynBaseHandler<DynControlConditionFn>;
+export type DynConditionFn = (node: DynTreeNode) => Observable<any>;
+export type DynCondition = DynBaseHandler<DynConditionFn>;
 
 /**
  * type guard
@@ -53,3 +53,13 @@ export type DynControlCondition = DynBaseHandler<DynControlConditionFn>;
 export function isMatchCondition(value: any): value is DynControlMatchCondition {
   return !Array.isArray(value) && typeof value === 'object' && value.path;
 }
+
+/**
+ * @deprecated use DynConditionFn
+ */
+export type DynControlConditionFn = DynConditionFn;
+
+/**
+ * @deprecated use DynCondition
+ */
+export type DynControlCondition = DynCondition;

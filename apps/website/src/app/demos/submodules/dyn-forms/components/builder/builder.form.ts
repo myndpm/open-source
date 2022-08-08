@@ -1,6 +1,6 @@
 import { MatDialog } from '@angular/material/dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
-import { DynControlConditionFn, DynControlMatch, DynControlMatcherFn, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynConditionFn, DynControlMatch, DynControlMatcherFn, DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -123,7 +123,7 @@ export function buildConfig(
 }
 
 // custom condition factory for UnitType
-function isUnitParking(unit$: Observable<IMyndUnit>): DynControlConditionFn {
+function isUnitParking(unit$: Observable<IMyndUnit>): DynConditionFn {
   return () => unit$.pipe(map(({ unitType }) => unitType === MyndUnitType.Parking));
 }
 
@@ -160,7 +160,7 @@ function confirmTypeChange(dialog: MatDialog): DynControlMatcherFn {
 }
 
 // config matchers for Access Types containers
-function getMatchersFor(accessType: MyndAccessType, isParking: DynControlConditionFn): DynControlMatch[] {
+function getMatchersFor(accessType: MyndAccessType, isParking: DynConditionFn): DynControlMatch[] {
   return [
     {
       matchers: ['HIDE'],
