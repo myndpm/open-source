@@ -13,6 +13,7 @@ export * from './src/types/utils/option.types';
 export * from './src/types/utils/tree.types';
 
 export * from './src/dyn-control-node.class';
+export * from './src/dyn-control-wrapper.class';
 export * from './src/dyn-control.class';
 export * from './src/dyn-form-container.class';
 export * from './src/dyn-form-array.class';

@@ -4,6 +4,7 @@ import { DynControlCondition, DynControlMatcher } from './types/matcher.types';
 import { DynControlFunction } from './types/params.types';
 import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
 import { DynControlProvider } from './dyn-control.class';
+import { DynWrapperProvider } from './dyn-control-wrapper.class';
 import { mapPriority } from './dyn-providers';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -16,11 +17,13 @@ import {
   DYN_MATCHERS_TOKEN,
   DYN_MATCHER_CONDITIONS_TOKEN,
   DYN_VALIDATORS_TOKEN,
+  DYN_WRAPPERS_TOKEN,
 } from './form.tokens';
 
 export interface DynModuleProviders {
   providers?: Provider[];
   controls?: DynControlProvider[];
+  wrappers?: DynWrapperProvider[];
   errorHandlers?: DynErrorHandler[];
   functions?: DynControlFunction[];
   validators?: DynControlValidator[];
@@ -47,6 +50,11 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
     ...args?.controls?.map(mapPriority(args?.priority)).map((control) => ({
       provide: DYN_CONTROLS_TOKEN,
       useValue: control,
+      multi: true,
+    })) ?? [],
+    ...args?.wrappers?.map(mapPriority(args?.priority)).map((wrapper) => ({
+      provide: DYN_WRAPPERS_TOKEN,
+      useValue: wrapper,
       multi: true,
     })) ?? [],
     ...args?.errorHandlers?.map(mapPriority(args?.priority)).map((errorHandler) => ({

@@ -24,6 +24,7 @@ export class DynFormConfigResolver {
 
   areEquivalent(config: DynBaseConfig, newConfig: DynBaseConfig): boolean {
     return config?.control === newConfig.control &&
+      deepEqual(config?.wrappers, newConfig.wrappers) &&
       deepEqual(config?.default, newConfig.default) &&
       deepEqual(config?.validators, newConfig.validators) &&
       deepEqual(config?.asyncValidators, newConfig.asyncValidators) &&
@@ -61,6 +62,9 @@ export class DynFormConfigResolver {
     // custom merge strategy for DynControlConfig
     if (mode.control) {
       config.control = mode.control;
+    }
+    if (Object.prototype.hasOwnProperty.call(mode, 'wrappers')) {
+      config.wrappers = mode.wrappers;
     }
     if (Object.prototype.hasOwnProperty.call(mode, 'default')) {
       config.default = mode.default;

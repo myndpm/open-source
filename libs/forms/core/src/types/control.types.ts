@@ -5,7 +5,7 @@ import { DynControlMatch } from './matcher.types';
 import { DynControlFunctionFn, DynControlParams } from './params.types';
 import { DynConfigCollection, DynConfigMap, DynConfigProvider } from './provider.types';
 import { DynConfigErrors, DynControlErrors } from './validation.types';
-import { DynWrapperId } from './wrapper.types';
+import { DynConfigWrapper } from './wrapper.types';
 
 export type DynControlId = string; // Control ID
 
@@ -19,8 +19,8 @@ export type DynControlId = string; // Control ID
  */
 export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
   // config
-  wrapper?: DynWrapperId;
   control: DynControlId;
+  wrappers?: DynConfigWrapper<TParams>[];
   // options
   default?: DynConfigArgs | { // used in FormControls only
     value: DynConfigArgs;
