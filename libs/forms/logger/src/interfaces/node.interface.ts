@@ -4,6 +4,7 @@ export interface DynNode {
   deep: number;
   path: string[];
   route: string[];
-  dynControl?: string;
+
+  dynId?: string;
   instance: string;
 }

@@ -32,8 +32,8 @@ implements DynTreeNode<TParams, TControl> {
   children: DynFormTreeNode[] = [];
 
   // node API
-  get dynControl(): string|undefined {
-    return this._dynControl;
+  get dynId(): string|undefined {
+    return this._dynId;
   }
   get name(): string|undefined {
     return this._name;
@@ -79,7 +79,7 @@ implements DynTreeNode<TParams, TControl> {
     this._modeLocal$ = mode$;
   }
 
-  private _dynControl?: string;
+  private _dynId?: string;
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
@@ -385,7 +385,7 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     // keep the id of the control for the logs
-    this._dynControl = config.control;
+    this._dynId = config.control;
 
     // register the name to build the form path
     this._name = config.name ?? '';
@@ -580,7 +580,7 @@ implements DynTreeNode<TParams, TControl> {
   getRoute(): string[] {
     return [
       ...(!this.isRoot ? this.parent.route : []),
-      this.dynControl || this.instance +
+      this.dynId || this.instance +
       `${this.index !== undefined ? `[${this.index}]` : ''}`,
     ];
   }

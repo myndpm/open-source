@@ -183,7 +183,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.callHook('Untrack', mode, true);
   }
 
-  // notify the dynControls about the incoming data
+  // notify the dyn hierarchy about the incoming data
   patchValue(value: any, callback?: (node: DynFormTreeNode) => void): Subscription {
     return this.whenReady().pipe(
       tap(() => {
@@ -218,7 +218,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.callHook('DetectChanges');
   }
 
-  // call a hook in the dynControls using plain/hierarchical data
+  // call a hook in the dyn hierarchy using plain/hierarchical data
   callHook(hook: string, payload?: any, plain = true, force = false): Subscription {
     return this.whenReady().subscribe(() => {
       this.node.children.forEach(node => {

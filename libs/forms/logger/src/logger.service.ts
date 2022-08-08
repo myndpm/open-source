@@ -132,11 +132,11 @@ export class DynLogger {
     });
   }
 
-  controlInstantiated({ deep, dynControl, path }: DynNode, payload: any): void {
+  controlInstantiated({ deep, dynId, path }: DynNode, payload: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hierarchy,
-      message: `[dyn-factory] '${path.join('.')}' instantiated${dynControl ? ` (${dynControl})` : ''}`,
+      message: `[dyn-factory] '${path.join('.')}' instantiated${dynId ? ` (${dynId})` : ''}`,
       payload,
     });
   }
