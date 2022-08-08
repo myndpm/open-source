@@ -1,4 +1,5 @@
 import {
+  INJECTOR,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -6,7 +7,6 @@ import {
   ComponentRef,
   HostBinding,
   Inject,
-  INJECTOR,
   Injector,
   Input,
   OnDestroy,
@@ -17,16 +17,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {
+  DYN_MODE,
   AbstractDynControl,
   DynBaseConfig,
-  DynControlVisibility,
   DynFormConfigResolver,
   DynFormFactory,
   DynFormHandlers,
   DynFormTreeNode,
   DynFormRegistry,
   DynMode,
-  DYN_MODE,
+  DynVisibility,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -47,7 +47,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   @ViewChild('control', { static: true, read: ViewContainerRef })
   controlContainer!: ViewContainerRef;
 
-  visibility: DynControlVisibility = 'VISIBLE';
+  visibility: DynVisibility = 'VISIBLE';
 
   @HostBinding('class')
   get cssClass(): string {

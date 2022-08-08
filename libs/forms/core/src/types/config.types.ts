@@ -1,4 +1,5 @@
-import { DynControlConfig, DynControlVisibility } from './control.types';
+import { DynControlConfig } from './control.types';
+import { DynVisibility } from './forms.types';
 import { DynMode, DynModes } from './mode.types';
 import { DynParams } from './params.types';
 
@@ -11,7 +12,7 @@ TParams extends DynParams = DynParams,
   name?: string; // optional fieldName
   controls?: DynBaseConfig<TMode>[];
   modes?: DynModes<TMode>;
-  visibility?: DynControlVisibility;
+  visibility?: DynVisibility;
   isolated?: boolean; // not part of the form hierarchy
   debug?: number;
 }

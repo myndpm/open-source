@@ -4,9 +4,8 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
-import { DynControlVisibility } from './types/control.types';
 import { DynControlHook } from './types/events.types';
-import { DynConfigPrimitive, DynInstanceType } from './types/forms.types';
+import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
@@ -66,7 +65,7 @@ implements DynTreeNode<TParams, TControl> {
   get paramsUpdates$(): Observable<Partial<TParams>> {
     return this._paramsUpdates$.asObservable();
   }
-  get visibility$(): Observable<DynControlVisibility> {
+  get visibility$(): Observable<DynVisibility> {
     return this._visibility$.asObservable();
   }
 
@@ -99,7 +98,7 @@ implements DynTreeNode<TParams, TControl> {
   private _untrack$ = new Subject<void>();
 
   // listened by dyn-factory
-  private _visibility$ = new Subject<DynControlVisibility>();
+  private _visibility$ = new Subject<DynVisibility>();
   // listened by DynControl
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynControlHook>();

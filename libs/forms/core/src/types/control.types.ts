@@ -10,11 +10,6 @@ import { DynConfigWrapper } from './wrapper.types';
 export type DynControlId = string; // Control ID
 
 /**
- * Visibility handled by dyn-factory
- */
- export type DynControlVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
-
-/**
   single dynamic control config
  */
 export interface DynControlConfig<TParams extends DynParams = DynParams> {

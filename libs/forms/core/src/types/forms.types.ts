@@ -9,3 +9,13 @@ export enum DynInstanceType {
 // plain/serializable arguments (non-functions)
 export type DynConfigPrimitive = undefined | string | boolean | number | Set<any> | RegExp | DynConfigPrimitive[] | { [k: string]: DynConfigPrimitive };
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
+
+/**
+ * Visibility handled by dyn-factory
+ */
+export type DynVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
+
+/**
+ * @deprecated use DynVisibility
+ */
+export type DynControlVisibility = DynVisibility;

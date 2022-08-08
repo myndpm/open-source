@@ -15,9 +15,9 @@ import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
 import { filter, scan, startWith } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
-import { DynControlId, DynControlVisibility } from './types/control.types';
+import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
-import { DynInstanceType } from './types/forms.types';
+import { DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMode } from './types/mode.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
@@ -69,7 +69,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
     return this.node.parent.control;
   }
-  get visibility$(): Observable<DynControlVisibility> {
+  get visibility$(): Observable<DynVisibility> {
     return this.node.visibility$;
   }
   get id(): string {
