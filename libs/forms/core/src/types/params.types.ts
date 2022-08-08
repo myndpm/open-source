@@ -12,10 +12,20 @@ export interface DynParams {
  * control functions
  * ie. { paramFns: { getValue: 'getOptionText' }}
  */
- export type DynControlFunctionFn<T = any> = (...args: any[]) => T;
- export type DynControlFunction<T = any> = DynBaseHandler<DynControlFunctionFn<T>>;
+export type DynFunctionFn<T = any> = (...args: any[]) => T;
+export type DynFunction<T = any> = DynBaseHandler<DynFunctionFn<T>>;
 
- /**
-  * @deprecated use DynParams
-  */
+/**
+ * @deprecated use DynParams
+ */
 export type DynControlParams = DynParams;
+
+/**
+ * @deprecated use DynFunctionFn
+ */
+export type DynControlFunctionFn = DynFunctionFn;
+
+/**
+ * @deprecated use DynFunction
+ */
+export type DynControlFunction = DynFunction;

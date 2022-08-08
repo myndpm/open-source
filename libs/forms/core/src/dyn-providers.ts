@@ -9,7 +9,7 @@ import {
   DynControlRelated,
 } from './types/matcher.types';
 import { DynTreeNode } from './types/node.types';
-import { DynControlFunction, DynControlFunctionFn } from './types/params.types';
+import { DynFunction, DynFunctionFn } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import {
   DynControlAsyncValidator,
@@ -239,10 +239,10 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
 /**
  * Default params functions
  */
-export const defaultFunctions: DynControlFunction[] = [
+export const defaultFunctions: DynFunction[] = [
   {
     id: 'formatText',
-    fn: (defaultText = '-'): DynControlFunctionFn<string> => {
+    fn: (defaultText = '-'): DynFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.control.value || defaultText;
       }
@@ -250,7 +250,7 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'formatYesNo',
-    fn: (isBinary = true, defaultText = '-'): DynControlFunctionFn<string> => {
+    fn: (isBinary = true, defaultText = '-'): DynFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.control.value === true
           ? 'Yes'
@@ -262,7 +262,7 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'getOptionText',
-    fn: (): DynControlFunctionFn<string> => {
+    fn: (): DynFunctionFn<string> => {
       return (node: DynTreeNode) => {
         const value = node.control.value;
         const option = node.params.options.find((o: any) => o.value === value);
@@ -272,14 +272,14 @@ export const defaultFunctions: DynControlFunction[] = [
   },
   {
     id: 'getParamsField',
-    fn: (field = 'label', defaultText = '-'): DynControlFunctionFn<string> => {
+    fn: (field = 'label', defaultText = '-'): DynFunctionFn<string> => {
       return (node: DynTreeNode) => {
         return node.params[field] || defaultText;
       }
     },
   },
 ].map(
-  mapPriority<DynControlFunction>()
+  mapPriority<DynFunction>()
 );
 
 /**

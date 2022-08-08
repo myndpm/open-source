@@ -12,7 +12,7 @@ import {
   isMatchCondition,
 } from './types/matcher.types';
 import { DynTreeNode } from './types/node.types';
-import { DynControlFunction, DynControlFunctionFn } from './types/params.types';
+import { DynFunction, DynFunctionFn } from './types/params.types';
 import {
   DynBaseHandler,
   DynConfigCollection,
@@ -52,7 +52,7 @@ import { isPlainObject } from './utils/merge.util';
 export class DynFormHandlers {
   // registered handlers
   errorHandlers = new Map<DynConfigId, DynHandlerFactory<DynErrorHandlerFn>>();
-  functions = new Map<DynConfigId, DynHandlerFactory<DynControlFunctionFn>>();
+  functions = new Map<DynConfigId, DynHandlerFactory<DynFunctionFn>>();
   validators = new Map<DynConfigId, DynHandlerFactory<ValidatorFn>>();
   asyncValidators = new Map<DynConfigId, DynHandlerFactory<AsyncValidatorFn>>();
   matchers = new Map<DynConfigId, DynHandlerFactory<DynControlMatcherFn>>();
@@ -63,7 +63,7 @@ export class DynFormHandlers {
     @Inject(DYN_ERROR_HANDLERS_TOKEN) @Optional()
     readonly providedErrorHandlers?: DynErrorHandler[],
     @Inject(DYN_FUNCTIONS_TOKEN) @Optional()
-    readonly providedFunctions?: DynControlFunction[],
+    readonly providedFunctions?: DynFunction[],
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
     readonly providedValidators?: DynControlValidator[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
@@ -180,12 +180,12 @@ export class DynFormHandlers {
   }
 
   getFunctions(
-    config?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>,
-  ): DynConfigMap<DynControlFunctionFn> {
+    config?: DynConfigMap<DynConfigProvider<DynFunctionFn>>,
+  ): DynConfigMap<DynFunctionFn> {
     if (!config) {
       return {};
     }
-    return Object.keys(config).reduce<DynConfigMap<DynControlFunctionFn>>(
+    return Object.keys(config).reduce<DynConfigMap<DynFunctionFn>>(
       (result, field) => {
         result[field] = this.getFunction(config[field]);
         return result;
@@ -194,7 +194,7 @@ export class DynFormHandlers {
     );
   }
 
-  getFunction(config: DynConfigProvider<DynControlFunctionFn>): DynControlFunctionFn {
+  getFunction(config: DynConfigProvider<DynFunctionFn>): DynFunctionFn {
     if (typeof config === 'function') {
       return config;
     } else if (Array.isArray(config)) {

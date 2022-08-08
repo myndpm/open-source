@@ -19,7 +19,7 @@ import { DynControlId, DynControlVisibility } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynControlMode } from './types/mode.types';
-import { DynControlFunctionFn, DynParams } from './types/params.types';
+import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { merge } from './utils/merge.util';
 import { DynControlNode } from './dyn-control-node.class';
@@ -155,7 +155,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   updateParams(
     newParams?: Partial<TParams>,
-    newParamFns?: DynConfigMap<DynConfigProvider<DynControlFunctionFn>>
+    newParamFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>
   ): void {
     this.node.updateParams(
       merge(true, newParams, this._handlers.getFunctions(newParamFns))
