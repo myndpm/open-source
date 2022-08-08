@@ -40,7 +40,7 @@ export interface ExamplesIndex {
  * Example data with information about component name, selector, files used in
  * example, and path to examples.
  */
- export class ExampleData {
+export class ExampleData {
   /** Description of the example. */
   description!: string;
 

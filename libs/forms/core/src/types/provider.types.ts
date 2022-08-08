@@ -6,7 +6,7 @@ export type DynConfigId = string;
 /**
  * Base types
  */
- export interface DynBaseProvider {
+export interface DynBaseProvider {
   priority?: number;
 }
 
