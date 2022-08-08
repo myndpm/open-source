@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynControlId } from './types/control.types';
 import { DynInstanceType } from './types/forms.types';
@@ -11,12 +11,12 @@ import { DYN_CONTROLS_TOKEN, DYN_WRAPPERS_TOKEN } from './form.tokens';
 export class DynFormRegistry {
   constructor(
     private readonly logger: DynLogger,
-    @Inject(DYN_CONTROLS_TOKEN) private readonly controls: DynControlProvider[],
-    @Inject(DYN_WRAPPERS_TOKEN) private readonly wrappers: DynWrapperProvider[],
+    @Inject(DYN_CONTROLS_TOKEN) @Optional() private readonly controls?: DynControlProvider[],
+    @Inject(DYN_WRAPPERS_TOKEN) @Optional() private readonly wrappers?: DynWrapperProvider[],
   ) {}
 
   getControl(dynControl: DynControlId): DynControlProvider {
-    const provided = this.controls.find(({ control }) => dynControl === control);
+    const provided = this.controls?.find(({ control }) => dynControl === control);
 
     if (!provided) {
       const error = this.logger.providerNotFound('Control', dynControl);
@@ -32,7 +32,7 @@ export class DynFormRegistry {
   }
 
   getWrapper(dynWrapper: DynWrapperId): DynWrapperProvider {
-    const provided = this.wrappers.find(({ wrapper }) => dynWrapper === wrapper);
+    const provided = this.wrappers?.find(({ wrapper }) => dynWrapper === wrapper);
 
     if (!provided) {
       const error = this.logger.providerNotFound('Wrapper', dynWrapper);
