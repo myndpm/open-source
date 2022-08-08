@@ -22,8 +22,8 @@ import {
   DynHandlerFactory,
 } from './types/provider.types';
 import {
+  DynAsyncValidator,
   DynConfigErrors,
-  DynControlAsyncValidator,
   DynControlErrors,
   DynErrorHandler,
   DynErrorHandlerFn,
@@ -67,7 +67,7 @@ export class DynFormHandlers {
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
     readonly providedValidators?: DynValidator[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
-    readonly providedAsyncValidators?: DynControlAsyncValidator[],
+    readonly providedAsyncValidators?: DynAsyncValidator[],
     @Inject(DYN_MATCHERS_TOKEN) @Optional()
     readonly providedMatchers?: DynMatcher[],
     @Inject(DYN_MATCHER_CONDITIONS_TOKEN) @Optional()

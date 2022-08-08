@@ -30,8 +30,8 @@ export interface DynFormConfigErrors { errorMsgs?: DynConfigErrors<DynErrorMessa
  export type DynValidatorFn = (node: DynTreeNode, ...args: any[]) => ValidatorFn;
  export type DynValidator = DynBaseHandler<ValidatorFn, DynValidatorFn>;
 
-export type DynControlAsyncValidatorFn = (node: DynTreeNode, ...args: any[]) => AsyncValidatorFn;
-export type DynControlAsyncValidator = DynBaseHandler<AsyncValidatorFn, DynControlAsyncValidatorFn>;
+export type DynAsyncValidatorFn = (node: DynTreeNode, ...args: any[]) => AsyncValidatorFn;
+export type DynAsyncValidator = DynBaseHandler<AsyncValidatorFn, DynAsyncValidatorFn>;
 
 /**
  * @deprecated use DynValidatorFn
@@ -42,3 +42,13 @@ export type DynControlValidatorFn = DynValidatorFn;
  * @deprecated use DynValidator
  */
 export type DynControlValidator = DynValidator;
+
+/**
+ * @deprecated use DynAsyncValidatorFn
+ */
+export type DynControlAsyncValidatorFn = DynAsyncValidatorFn;
+
+/**
+ * @deprecated use DynAsyncValidator
+ */
+export type DynControlAsyncValidator = DynAsyncValidator;

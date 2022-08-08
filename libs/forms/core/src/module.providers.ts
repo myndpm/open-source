@@ -2,7 +2,7 @@ import { Provider } from '@angular/core';
 import { DynLogDriver, DynLogger, DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn-forms/logger';
 import { DynCondition, DynMatcher } from './types/matcher.types';
 import { DynFunction } from './types/params.types';
-import { DynControlAsyncValidator, DynErrorHandler, DynValidator } from './types/validation.types';
+import { DynAsyncValidator, DynErrorHandler, DynValidator } from './types/validation.types';
 import { DynControlProvider } from './dyn-control.class';
 import { DynWrapperProvider } from './dyn-control-wrapper.class';
 import { mapPriority } from './dyn-providers';
@@ -27,7 +27,7 @@ export interface DynModuleProviders {
   errorHandlers?: DynErrorHandler[];
   functions?: DynFunction[];
   validators?: DynValidator[];
-  asyncValidators?: DynControlAsyncValidator[];
+  asyncValidators?: DynAsyncValidator[];
   matchers?: DynMatcher[];
   conditions?: DynCondition[];
   priority?: number;

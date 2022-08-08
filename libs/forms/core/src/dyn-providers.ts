@@ -12,7 +12,7 @@ import { DynTreeNode } from './types/node.types';
 import { DynFunction, DynFunctionFn } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import {
-  DynControlAsyncValidator,
+  DynAsyncValidator,
   DynControlErrors,
   DynErrorHandler,
   DynErrorHandlerFn,
@@ -49,7 +49,7 @@ export const defaultValidators: DynValidator[] = [
 /**
  * Default matchers
  */
-export const defaultAsyncValidators: DynControlAsyncValidator[] = [
+export const defaultAsyncValidators: DynAsyncValidator[] = [
   {
     id: 'RELATED',
     fn: (node: DynTreeNode, config: DynMatchRelation, validator: ValidatorFn = Validators.required) => {
@@ -64,7 +64,7 @@ export const defaultAsyncValidators: DynControlAsyncValidator[] = [
     }
   },
 ].map(
-  mapPriority<DynControlAsyncValidator>()
+  mapPriority<DynAsyncValidator>()
 );
 
 /**
