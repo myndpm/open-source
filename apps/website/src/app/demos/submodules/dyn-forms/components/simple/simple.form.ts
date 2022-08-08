@@ -1,5 +1,5 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
-import { DynControlParams } from '@myndpm/dyn-forms/core';
+import { DynParams } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 import { Observable } from 'rxjs';
 
@@ -26,7 +26,7 @@ export const simpleData = {
 };
 
 export function simpleForm(
-  obsParams: Observable<DynControlParams>
+  obsParams: Observable<DynParams>
 ): DynFormConfig<'edit'|'display'|'row'> { // typed mode
   return {
     modes: {

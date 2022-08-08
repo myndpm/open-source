@@ -2,7 +2,7 @@ import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DynConfigArgs } from './forms.types';
 import { DynControlMatch } from './matcher.types';
-import { DynControlFunctionFn, DynControlParams } from './params.types';
+import { DynControlFunctionFn, DynParams } from './params.types';
 import { DynConfigCollection, DynConfigMap, DynConfigProvider } from './provider.types';
 import { DynConfigErrors, DynControlErrors } from './validation.types';
 import { DynConfigWrapper } from './wrapper.types';
@@ -17,7 +17,7 @@ export type DynControlId = string; // Control ID
 /**
   single dynamic control config
  */
-export interface DynControlConfig<TParams extends DynControlParams = DynControlParams> {
+export interface DynControlConfig<TParams extends DynParams = DynParams> {
   // config
   control: DynControlId;
   wrappers?: DynConfigWrapper<TParams>[];

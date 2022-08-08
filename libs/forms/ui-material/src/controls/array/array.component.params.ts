@@ -1,7 +1,7 @@
 import { ThemePalette } from '@angular/material/core';
-import { DynControlParams } from '@myndpm/dyn-forms/core';
+import { DynParams } from '@myndpm/dyn-forms/core';
 
-export interface DynMatArrayParams extends DynControlParams {
+export interface DynMatArrayParams extends DynParams {
   title?: string;
   subtitle?: string;
   avatar?: string;

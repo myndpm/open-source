@@ -2,11 +2,11 @@ import { AbstractControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { DynControlHook } from './events.types';
 import { DynInstanceType } from './forms.types';
-import { DynControlParams } from './params.types';
+import { DynParams } from './params.types';
 
 // generic interface of DynFormTreeNode
 export interface DynTreeNode<
-  TParams extends DynControlParams = DynControlParams,
+  TParams extends DynParams = DynParams,
   TControl extends AbstractControl = AbstractControl
 > {
   root: DynTreeNode;

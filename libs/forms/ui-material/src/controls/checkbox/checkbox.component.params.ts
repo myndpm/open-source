@@ -1,7 +1,7 @@
 import { ThemePalette } from '@angular/material/core';
-import { DynControlParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
 
-export interface DynMatCheckboxParams extends DynControlParams {
+export interface DynMatCheckboxParams extends DynParams {
   label: string;
   labelPosition: 'before' | 'after';
   color?: ThemePalette;

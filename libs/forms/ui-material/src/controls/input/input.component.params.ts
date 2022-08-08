@@ -1,8 +1,8 @@
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DynControlParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
 
-export interface DynMatInputParams extends DynControlParams {
+export interface DynMatInputParams extends DynParams {
   floatLabel: FloatLabelType; // readonly mode uses 'always' floating label
   type: 'color' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | 'textarea';
   placeholder: string;

@@ -4,13 +4,13 @@ import isCallable from 'is-callable';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './types/events.types';
-import { DynControlParams } from './types/params.types';
+import { DynParams } from './types/params.types';
 import { DynErrorMessage } from './types/validation.types';
 import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()
 export abstract class DynControlNode<
-  TParams extends DynControlParams,
+  TParams extends DynParams,
   TControl extends AbstractControl,
 >
 implements OnInit, OnDestroy {

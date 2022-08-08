@@ -1,6 +1,6 @@
-import { DynControlParams } from '@myndpm/dyn-forms/core';
+import { DynParams } from '@myndpm/dyn-forms/core';
 
-export interface DynMatTableParams extends DynControlParams {
+export interface DynMatTableParams extends DynParams {
   title: string;
   addNewButtonText: string;
   emptyText?: string;

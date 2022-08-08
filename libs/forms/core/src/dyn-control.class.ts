@@ -19,7 +19,7 @@ import { DynControlId, DynControlVisibility } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynControlMode } from './types/mode.types';
-import { DynControlFunctionFn, DynControlParams } from './types/params.types';
+import { DynControlFunctionFn, DynParams } from './types/params.types';
 import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { merge } from './utils/merge.util';
 import { DynControlNode } from './dyn-control-node.class';
@@ -38,7 +38,7 @@ export interface DynControlProvider extends DynBaseProvider {
 @Directive()
 export abstract class DynControl<
   TMode extends DynControlMode = DynControlMode,
-  TParams extends DynControlParams = DynControlParams,
+  TParams extends DynParams = DynParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >

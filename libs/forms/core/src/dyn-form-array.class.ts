@@ -4,13 +4,13 @@ import { DynConfig } from './types/config.types';
 import { DynControlHook } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynControlMode } from './types/mode.types';
-import { DynControlParams } from './types/params.types';
+import { DynParams } from './types/params.types';
 import { DynControl } from './dyn-control.class';
 
 @Directive()
 export abstract class DynFormArray<
   TMode extends DynControlMode = DynControlMode,
-  TParams extends DynControlParams = DynControlParams,
+  TParams extends DynParams = DynParams,
   TConfig extends DynConfig<TMode, TParams> = DynConfig<TMode, TParams>
 >
 extends DynControl<TMode, TParams, TConfig, FormArray>

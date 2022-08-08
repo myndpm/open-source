@@ -1,7 +1,7 @@
 import { FloatLabelType } from '@angular/material/form-field';
-import { DynControlParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
 
-export interface DynMatDatepickerParams extends DynControlParams {
+export interface DynMatDatepickerParams extends DynParams {
   floatLabel: FloatLabelType; // readonly mode uses 'always' floating label
   placeholder: string;
   label?: string;

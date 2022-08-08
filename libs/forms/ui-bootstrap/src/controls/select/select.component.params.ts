@@ -1,6 +1,6 @@
-import { DynControlParams, DynOption } from '@myndpm/dyn-forms/core';
+import { DynParams, DynOption } from '@myndpm/dyn-forms/core';
 
-export interface DynBsSelectParams extends DynControlParams {
+export interface DynBsSelectParams extends DynParams {
   label?: string;
   options: DynOption[];
   hint?: string;

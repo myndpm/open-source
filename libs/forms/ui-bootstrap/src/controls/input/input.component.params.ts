@@ -1,6 +1,6 @@
-import { DynControlParams } from '@myndpm/dyn-forms/core';
+import { DynParams } from '@myndpm/dyn-forms/core';
 
-export interface DynBsInputParams extends DynControlParams {
+export interface DynBsInputParams extends DynParams {
   type: 'color' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | 'textarea';
   label?: string;
   placeholder?: string;

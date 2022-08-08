@@ -10,7 +10,7 @@ import { DynConfigPrimitive, DynInstanceType } from './types/forms.types';
 import { DynControlMatch } from './types/matcher.types';
 import { DynControlMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
-import { DynControlParams } from './types/params.types';
+import { DynParams } from './types/params.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -20,7 +20,7 @@ import { DYN_MODE } from './form.tokens';
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
 export class DynFormTreeNode<
-  TParams extends DynControlParams = DynControlParams,
+  TParams extends DynParams = DynParams,
   TControl extends AbstractControl = FormGroup
 >
 implements DynTreeNode<TParams, TControl> {
