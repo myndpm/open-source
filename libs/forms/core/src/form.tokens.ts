@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DynCondition, DynMatcher } from './types/matcher.types';
 import { DynMode, DynModes } from './types/mode.types';
 import { DynFunction } from './types/params.types';
-import { DynControlAsyncValidator, DynControlValidator, DynErrorHandler } from './types/validation.types';
+import { DynControlAsyncValidator, DynErrorHandler, DynValidator } from './types/validation.types';
 import { DynControlProvider } from './dyn-control.class';
 import { DynWrapperProvider } from './dyn-control-wrapper.class';
 
@@ -21,7 +21,7 @@ export const DYN_WRAPPERS_TOKEN = new InjectionToken<DynWrapperProvider[]>(
 /**
  * core tokens for named functions
  */
-export const DYN_VALIDATORS_TOKEN = new InjectionToken<DynControlValidator[]>(
+export const DYN_VALIDATORS_TOKEN = new InjectionToken<DynValidator[]>(
   '@myndpm/dyn-forms/validators'
 );
 

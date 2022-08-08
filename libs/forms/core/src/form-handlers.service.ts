@@ -25,10 +25,10 @@ import {
   DynConfigErrors,
   DynControlAsyncValidator,
   DynControlErrors,
-  DynControlValidator,
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessages,
+  DynValidator,
 } from './types/validation.types';
 import {
   defaultAsyncValidators,
@@ -65,7 +65,7 @@ export class DynFormHandlers {
     @Inject(DYN_FUNCTIONS_TOKEN) @Optional()
     readonly providedFunctions?: DynFunction[],
     @Inject(DYN_VALIDATORS_TOKEN) @Optional()
-    readonly providedValidators?: DynControlValidator[],
+    readonly providedValidators?: DynValidator[],
     @Inject(DYN_ASYNCVALIDATORS_TOKEN) @Optional()
     readonly providedAsyncValidators?: DynControlAsyncValidator[],
     @Inject(DYN_MATCHERS_TOKEN) @Optional()

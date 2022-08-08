@@ -14,11 +14,11 @@ import { DynBaseProvider } from './types/provider.types';
 import {
   DynControlAsyncValidator,
   DynControlErrors,
-  DynControlValidator,
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessage,
   DynErrorMessages,
+  DynValidator,
 } from './types/validation.types';
 import { isPlainObject } from './utils/merge.util';
 
@@ -33,7 +33,7 @@ export function mapPriority<T extends DynBaseProvider>(priority?: number) {
 /**
  * Default Angular validators
  */
-export const defaultValidators: DynControlValidator[] = [
+export const defaultValidators: DynValidator[] = [
   { id: 'required', fn: () => Validators.required },
   { id: 'requiredTrue', fn: () => Validators.requiredTrue },
   { id: 'pattern', fn: (node: DynTreeNode, pattern: string | RegExp) => Validators.pattern(pattern) },
@@ -43,7 +43,7 @@ export const defaultValidators: DynControlValidator[] = [
   { id: 'min', fn: (node: DynTreeNode, min: number) => Validators.min(min) },
   { id: 'max', fn: (node: DynTreeNode, max: number) => Validators.max(max) },
 ].map(
-  mapPriority<DynControlValidator>()
+  mapPriority<DynValidator>()
 );
 
 /**

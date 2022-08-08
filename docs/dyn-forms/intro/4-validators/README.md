@@ -30,7 +30,7 @@ validators: [myValidatorFn, myValidatorFactory(args)],
 Validators are also referenced with an `id` connected with a (Async)Validator Factory `fn`:
 
 ```typescript
-export interface DynControlValidator {
+export interface DynValidator {
   id: string;
   fn: (node: DynTreeNode, ...args: any[]) => ValidatorFn; // validator factory
 }
