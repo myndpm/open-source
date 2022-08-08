@@ -19,6 +19,7 @@ import {
 import {
   DYN_MODE,
   AbstractDynControl,
+  AbstractDynWrapper,
   DynBaseConfig,
   DynFormConfigResolver,
   DynFormFactory,
@@ -27,6 +28,7 @@ import {
   DynFormRegistry,
   DynMode,
   DynVisibility,
+  DynConfigWrapper,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -44,8 +46,8 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   @Input() index?: number;
   @Input() injector?: Injector;
 
-  @ViewChild('control', { static: true, read: ViewContainerRef })
-  controlContainer!: ViewContainerRef;
+  @ViewChild('dynContainer', { static: true, read: ViewContainerRef })
+  container!: ViewContainerRef;
 
   visibility: DynVisibility = 'VISIBLE';
 
@@ -100,9 +102,12 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
               this.controlRef.instance.updateParams(newConfig.params, newConfig.paramFns);
             }
           } else {
-            this.logger.controlInitializing(this.node, { control: newConfig.control, name: newConfig.name });
+            this.logger.controlInitializing(this.node, { control: newConfig.control, wrappers: newConfig.wrappers, name: newConfig.name });
 
-            this.controlContainer.clear();
+            if (this.controlRef) {
+              this.controlRef.hostView.detach();
+            }
+            this.container.clear();
             this.createControl(newConfig);
           }
           config = newConfig;
@@ -118,7 +123,6 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   private createControl(config: DynBaseConfig): void {
     try {
       const control = this.registry.getControl(config.control);
-      const factory = this.resolver.resolveComponentFactory(control.component);
 
       const newInjectionLayer = Injector.create({
         providers: [
@@ -147,40 +151,72 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
         parent: this._injector,
       });
 
-      this.controlRef = this.controlContainer.createComponent<AbstractDynControl>(
-        factory,
-        undefined,
-        newInjectionLayer,
-      );
-      this.controlRef.instance.config = config;
-      this.controlRef.instance.node.setIndex(this.index);
-      // we let the corresponding DynFormTreeNode to initialize the control
-      // and register itself in the Form Tree in the lifecycle methods
+      const render = (view: ViewContainerRef, wrappers: DynConfigWrapper[] = []) => {
+        if (wrappers?.length) {
+          // render wrappers
+          const [config, ...subwrappers] = wrappers;
+          const wrapperId = typeof config === 'string' ? config : config.wrapper;
+          const wrapper = this.registry.getWrapper(wrapperId);
+          const factory = this.resolver.resolveComponentFactory(wrapper.component);
+          const ref = view.createComponent<AbstractDynWrapper>(
+            factory,
+            undefined,
+            newInjectionLayer, // TODO deepen the injection layer
+          );
+          this.addWrapperConfig(ref, config);
+          render(ref.instance.container, subwrappers);
+        } else {
+          // render the control
+          if (!this.controlRef) {
+            const factory = this.resolver.resolveComponentFactory(control.component);
+            this.controlRef = view.createComponent<AbstractDynControl>(
+              factory,
+              undefined,
+              newInjectionLayer,
+            );
 
-      this.controlRef.hostView.detectChanges();
+            this.controlRef.instance.config = config;
+            this.controlRef.instance.node.setIndex(this.index);
+            // we let the corresponding DynFormTreeNode to initialize the control
+            // and register itself in the Form Tree in the lifecycle methods
 
-      this.logger.controlInstantiated(this.controlRef.instance.node, {
-        control: config.control,
-        name: config.name,
-        controls: config.controls?.length || 0,
-      });
+            this.controlRef.hostView.detectChanges();
 
-      // listen control.visibility$
-      this.controlRef.instance.visibility$
-        .pipe(
-          startWith(config.visibility || 'VISIBLE'),
-          takeUntil(this.controlRef.instance.onDestroy$),
-        )
-        .subscribe((visibility) => {
-          if (this.visibility !== visibility) {
-            this.visibility = visibility;
-            this.ref.markForCheck();
+            this.logger.controlInstantiated(this.controlRef.instance.node, {
+              control: config.control,
+              name: config.name,
+              controls: config.controls?.length || 0,
+            });
+
+            // listen control.visibility$
+            this.controlRef.instance.visibility$
+              .pipe(
+                startWith(config.visibility || 'VISIBLE'),
+                takeUntil(this.controlRef.instance.onDestroy$),
+              )
+              .subscribe((visibility) => {
+                if (this.visibility !== visibility) {
+                  this.visibility = visibility;
+                  this.ref.markForCheck();
+                }
+              });
+          } else {
+            view.insert(this.controlRef.hostView);
           }
-        });
+        }
+      }
+
+      render(this.container, config.wrappers);
 
     } catch(e) {
       // log any error happening in the control instantiation
       console.error(e);
     }
+  }
+
+  private addWrapperConfig(ref: ComponentRef<AbstractDynWrapper>, wrapper: DynConfigWrapper): void {
+    ref.instance.config = typeof wrapper === 'string'
+      ? { wrapper, params: {} }
+      : wrapper;
   }
 }
