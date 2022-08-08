@@ -16,14 +16,14 @@ export interface DynMatch {
 /**
  * condition
  */
-export interface DynControlRelated {
+export interface DynMatchRelation {
   path: string; // query relative to the control with the matcher
   field?: string; // field to process if the control value is an object
   value?: DynConfigArgs;
   negate?: boolean; // negate the result of the condition
 }
 
-export interface DynMatchCondition extends DynControlRelated {
+export interface DynMatchCondition extends DynMatchRelation {
   condition?: DynConfigId | DynConditionFn; // defaults to the 'DEFAULT' condition handler
   [key: string]: any; // any parameter to the Condition Factory
 }
@@ -58,6 +58,11 @@ export function isMatchCondition(value: any): value is DynMatchCondition {
  * @deprecated use DynMatch
  */
 export type DynControlMatch = DynMatch;
+
+/**
+ * @deprecated use DynMatchRelation
+ */
+export type DynControlRelated = DynMatchRelation;
 
 /**
  * @deprecated use DynMatchCondition

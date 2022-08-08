@@ -6,7 +6,7 @@ import {
   DynConditionFn,
   DynMatcher,
   DynMatcherFn,
-  DynControlRelated,
+  DynMatchRelation,
 } from './types/matcher.types';
 import { DynTreeNode } from './types/node.types';
 import { DynFunction, DynFunctionFn } from './types/params.types';
@@ -52,7 +52,7 @@ export const defaultValidators: DynControlValidator[] = [
 export const defaultAsyncValidators: DynControlAsyncValidator[] = [
   {
     id: 'RELATED',
-    fn: (node: DynTreeNode, config: DynControlRelated, validator: ValidatorFn = Validators.required) => {
+    fn: (node: DynTreeNode, config: DynMatchRelation, validator: ValidatorFn = Validators.required) => {
       return (control: AbstractControl): Observable<ValidationErrors | null> => {
         return node.root.loaded$.pipe(
           first(Boolean),
@@ -285,7 +285,7 @@ export const defaultFunctions: DynFunction[] = [
 /**
  * Related Condition
  */
-function relatedConditionFn({ path, value, field, negate }: DynControlRelated): DynConditionFn {
+function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): DynConditionFn {
   return (node: DynTreeNode) => {
     const control = node.search(path);
     if (!control) {
