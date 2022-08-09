@@ -12,7 +12,6 @@ export function singleForm(): DynFormConfig<'form'|'success'> {
         },
         controls: [
           createMatConfig('INPUT', {
-            wrappers: ['FORM-FIELD'],
             name: 'email',
             validators: ['required'],
             cssClass: 'col-sm-6 col-md-4',

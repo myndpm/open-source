@@ -24,6 +24,7 @@ extends DynFormControl<DynMode, DynMatInputParams> {
     partial: DynPartialControlConfig<M, DynMatInputParams>
   ): DynConfig<M> {
     return {
+      wrappers: ['FORM-FIELD'],
       ...partial,
       control: DynMatInputComponent.dynControl,
     };
