@@ -106,6 +106,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       isolated: Boolean(this.isolated),
       controls: this.controls,
       errorMsgs: this.config?.errorMsgs,
+      component: this,
     });
     this.node.markParamsAsLoaded();
     this.logger.nodeLoaded('dyn-form', this.node);

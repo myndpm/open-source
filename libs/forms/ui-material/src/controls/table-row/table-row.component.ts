@@ -136,6 +136,7 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
       name: this.name,
       controls: this.controls,
       isolated: false,
+      component: this,
     });
     this.node.markParamsAsLoaded();
 

@@ -15,12 +15,19 @@ import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
 
+type DynFormTreeNodeLoad<TComponent> =
+  Partial<DynBaseConfig> &
+  DynFormConfigErrors & {
+    component: TComponent,
+  };
+
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
 export class DynFormTreeNode<
   TParams extends DynParams = DynParams,
-  TControl extends AbstractControl = FormGroup
+  TControl extends AbstractControl = FormGroup,
+  TComponent = any,
 >
 implements DynTreeNode<TParams, TControl> {
   // form hierarchy
@@ -35,11 +42,14 @@ implements DynTreeNode<TParams, TControl> {
   get dynId(): string|undefined {
     return this._dynId;
   }
-  get name(): string|undefined {
-    return this._name;
+  get dynCmp(): TComponent|undefined {
+    return this._dynCmp;
   }
   get instance(): DynInstanceType {
     return this._instance;
+  }
+  get name(): string|undefined {
+    return this._name;
   }
   get control(): TControl {
     return this._control;
@@ -80,6 +90,7 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   private _dynId?: string;
+  private _dynCmp?: TComponent;
   private _name?: string;
   private _instance!: DynInstanceType;
   private _control!: TControl;
@@ -340,7 +351,11 @@ implements DynTreeNode<TParams, TControl> {
    * Lifecycle methods
    */
 
-  onInit(instance: DynInstanceType, config: DynBaseConfig): void {
+  onInit(
+    instance: DynInstanceType,
+    config: DynBaseConfig,
+    component: TComponent,
+  ): void {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       throw this.logger.nodeFailed(config.control);
@@ -368,7 +383,7 @@ implements DynTreeNode<TParams, TControl> {
       this._control = this.parent.control as unknown as TControl;
     }
 
-    this.load(config);
+    this.load({ ...config, component });
   }
 
   setControl(control: TControl, instance = DynInstanceType.Group): void {
@@ -377,15 +392,16 @@ implements DynTreeNode<TParams, TControl> {
     this._control = control;
   }
 
-  load(
-    config: Partial<DynBaseConfig> & DynFormConfigErrors,
-  ): void {
+  load(config: DynFormTreeNodeLoad<TComponent>): void {
     if (!this._control) {
       throw this.logger.nodeWithoutControl();
     }
 
     // keep the id of the control for the logs
     this._dynId = config.control;
+
+    // keeps a reference to the dynamic component
+    this._dynCmp = config.component;
 
     // register the name to build the form path
     this._name = config.name ?? '';
