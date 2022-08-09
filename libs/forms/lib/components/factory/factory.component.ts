@@ -191,6 +191,8 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
             // we let the corresponding DynFormTreeNode to initialize the control
             // and register itself in the Form Tree in the lifecycle methods
 
+            this.controlRef.changeDetectorRef.markForCheck();
+
             this.logger.controlInstantiated(this.controlRef.instance.node, {
               control: config.control,
               name: config.name,
