@@ -13,7 +13,7 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
-import { filter, scan, startWith } from 'rxjs/operators';
+import { filter, scan, startWith, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
@@ -116,6 +116,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
       isObservable(this.config.params) ? this.config.params : of(this.config.params || {}),
       this.node.paramsUpdates$.pipe(startWith({})),
     ]).pipe(
+      takeUntil(this.onDestroy$),
       scan<any>((params, [config, updates]) => merge(true, params, config, updates)),
       filter(params => !Array.isArray(params)), // filters the first scan
     ).subscribe((params) => {
