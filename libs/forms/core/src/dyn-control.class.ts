@@ -56,7 +56,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   // core properties
   config!: TConfig; // passed down in the hierarchy
   get params(): TParams { // values available for the concrete Component instance
-    return this.params$.getValue();
+    return this.params$.value;
   }
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;

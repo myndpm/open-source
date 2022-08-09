@@ -50,7 +50,7 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
   }
 
   get mode(): DynMode {
-    return this.mode$.getValue();
+    return this.mode$.value;
   }
 
   @Input()

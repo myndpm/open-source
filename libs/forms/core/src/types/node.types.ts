@@ -14,6 +14,9 @@ export interface DynTreeNode<
   name: string|undefined;
   path: string[];
 
+  dynId?: string;
+  dynCmp: any;
+
   instance: DynInstanceType;
   control: TControl;
   params: TParams;

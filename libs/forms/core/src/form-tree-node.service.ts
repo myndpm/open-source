@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
+import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
@@ -358,6 +358,24 @@ implements DynTreeNode<TParams, TControl> {
     return result;
   }
 
+  searchCmp<T>(
+    component: Type<T>,
+    predicate: (node: DynTreeNode) => boolean = () => true,
+  ): T|undefined {
+    /* eslint-disable @typescript-eslint/no-this-alias */
+    let node: DynFormTreeNode<TParams, any> = this;
+    let result: any;
+
+    do {
+      // query by form.control and by node.path
+      result = node.dynCmp instanceof component && predicate(node) ? node.dynCmp : undefined;
+      // move upper in the tree
+      node = node.parent;
+    } while (!result && node);
+
+    return result;
+  }
+
   /**
    * Lifecycle methods
    */
@@ -450,7 +468,9 @@ implements DynTreeNode<TParams, TControl> {
     // store the number of configured childs
     this._numChild$.next(
       ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
-        ? config.controls?.length ?? 0
+        ? this._instance === DynInstanceType.Wrapper
+          ? 1
+          : config.controls?.length ?? 0
         : 0
     );
 
@@ -599,13 +619,13 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   childsIncrement(): void {
-    this._numChild$.next(this._numChild$.getValue() + 1);
-    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.getValue() });
+    this._numChild$.next(this._numChild$.value + 1);
+    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.value });
   }
 
   childsDecrement(): void {
-    this._numChild$.next(this._numChild$.getValue() - 1);
-    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.getValue() });
+    this._numChild$.next(this._numChild$.value - 1);
+    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.value });
   }
 
   /**
@@ -637,11 +657,9 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   private addChild(node: DynFormTreeNode<any, any>): void {
-    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChild$.getValue(), children: this.children.length });
-
     this.children.push(node);
+    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChild$.value, children: this.children.length });
     this._children$.next();
-
     // TODO updateValue and validity? or it's automatically done?
   }
 

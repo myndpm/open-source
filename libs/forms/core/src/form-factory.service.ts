@@ -158,6 +158,9 @@ export class DynFormFactory {
         );
         break;
       }
+      default: {
+        throw new Error('DynFormFactory.build received an invalid instance.')
+      }
     }
 
     // builds a hierarchy if the name is deep

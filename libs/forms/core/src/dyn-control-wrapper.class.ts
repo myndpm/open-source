@@ -28,7 +28,8 @@ implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // initialize the node
-    this.node.load({
+    this.node.configure({
+      formControl: this.node.parent.control,
       instance: DynInstanceType.Wrapper,
       control: this.config.wrapper,
       component: this,
@@ -46,5 +47,8 @@ implements OnInit, OnDestroy {
 
     // provide the parameters
     super.ngOnInit();
+
+    // log the successful initialization
+    this._logger.nodeLoaded('dyn-wrapper', this.node);
   }
 }
