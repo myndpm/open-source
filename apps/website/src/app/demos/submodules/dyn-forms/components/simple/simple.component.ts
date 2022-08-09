@@ -9,7 +9,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { BehaviorSubject } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { distinctUntilChanged, startWith } from 'rxjs/operators';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { simpleData, simpleForm } from './simple.form';
 
@@ -52,15 +52,16 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
 
     // simple example of how we can trigger changes into the params
     const group = this.form.get('billing') as FormGroup;
-    group.statusChanges.pipe(startWith(group.status)).subscribe((status) => {
-      this.profileCard.next({
-        title: 'Billing Address',
-        subtitle:
-          status === 'INVALID'
+    group.statusChanges
+      .pipe(startWith(group.status), distinctUntilChanged())
+      .subscribe((status) => {
+        this.profileCard.next({
+          title: 'Billing Address',
+          subtitle: status === 'INVALID'
             ? 'Please fill your Personal Information'
             : 'Billing information complete',
+        });
       });
-    });
 
     // initial state of the form is `edit` mode
     this.dynForm.track('display');
