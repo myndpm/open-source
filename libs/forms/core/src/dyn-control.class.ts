@@ -61,13 +61,13 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
   }
+  get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
+    return this.node.parent.control;
+  }
 
   // utility properties
   get mode$(): Observable<DynMode> {
     return this.node.mode$;
-  }
-  get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
-    return this.node.parent.control;
   }
   get visibility$(): Observable<DynVisibility> {
     return this.node.visibility$;
@@ -91,7 +91,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   protected readonly _ref: ChangeDetectorRef;
   protected readonly _logger: DynLogger;
   protected readonly _factory: DynFormFactory;
-  private readonly _handlers: DynFormHandlers;
+  protected readonly _handlers: DynFormHandlers;
 
   constructor(injector: Injector) {
     super(injector);
