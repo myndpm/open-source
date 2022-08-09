@@ -179,16 +179,17 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           );
         } else {
           // render the control
-          if (!this.controlRef) {
+          if (!this.controlRef || this.controlRef.hostView.destroyed) {
             const factory = this.resolver.resolveComponentFactory(control.component);
             this.controlRef = view.createComponent<AbstractDynControl>(factory, undefined, injector);
 
             this.controlRef.instance.config = config;
             this.controlRef.instance.node.setIndex(this.index);
+            if (config.wrappers?.length) {
+              this.controlRef.instance.node.parent.childsIncrement();
+            }
             // we let the corresponding DynFormTreeNode to initialize the control
             // and register itself in the Form Tree in the lifecycle methods
-
-            this.controlRef.hostView.detectChanges();
 
             this.logger.controlInstantiated(this.controlRef.instance.node, {
               control: config.control,
