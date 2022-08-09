@@ -7,7 +7,7 @@ import { DynControl } from './dyn-control.class';
 import { DynInstanceType } from './types/forms.types';
 import { takeUntil } from 'rxjs/operators';
 
-export type AbstractDynWrapper = DynWrapper;
+export type AbstractDynWrapper = DynWrapper<any>;
 
 export interface DynWrapperProvider extends DynBaseProvider {
   wrapper: DynWrapperId;
