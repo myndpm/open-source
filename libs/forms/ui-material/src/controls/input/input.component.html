@@ -19,3 +19,7 @@
     [rows]="params.rows"
   ></textarea>
 </ng-template>
+
+<span *ngIf="params.readonly">
+  {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
+</span>

@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
+import { MatFormFieldControl } from '@angular/material/form-field';
 import {
   DynConfig,
   DynFormControl,
   DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
+import { DynMatFormFieldWrapper } from '../../wrappers';
 import { DynMatSelectParams } from './select.component.params';
 
 @Component({
@@ -23,9 +25,23 @@ extends DynFormControl<DynMode, DynMatSelectParams> {
     partial: DynPartialControlConfig<M, DynMatSelectParams>
   ): DynConfig<M> {
     return {
+      wrappers: ['FORM-FIELD'],
       ...partial,
       control: DynMatSelectComponent.dynControl,
     };
+  }
+
+  @ViewChild(MatFormFieldControl, { static: true })
+  fieldControl!: MatFormFieldControl<any>;
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    // register into the closes mat-form-field wrapper
+    this.node.searchCmp(
+      DynMatFormFieldWrapper,
+      ({ instance }) => instance === 'WRAPPER',
+    )?.attachControl(this.fieldControl);
   }
 
   completeParams(params: Partial<DynMatSelectParams>): DynMatSelectParams {

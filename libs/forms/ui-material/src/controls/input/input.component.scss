@@ -1,42 +1,14 @@
 :host {
   display: block;
 
-  .mat-form-field {
-    width: 100%;
-
-    ::ng-deep .mat-input-element {
-      line-height: 1.2em;
-    }
+  .mat-input-element {
+    line-height: 1.2em;
   }
 
-  &.readonly ::ng-deep {
-    .mat-form-field-outline,
-    .mat-error,
-    .mat-hint,
-    input {
+  &.readonly {
+    input,
+    textarea {
       display: none;
-    }
-
-    .mat-form-field-underline {
-      visibility: hidden;
-    }
-
-    .mat-form-field-appearance-fill .mat-form-field-flex {
-      background: transparent;
-    }
-
-    // reset invalid colors in readonly
-    .mat-form-field-invalid {
-      &.mat-form-field {
-        .mat-form-field-label {
-          color: rgba(0, 0, 0, 0.6); // TODO mat-color
-        }
-      }
-      &.mat-form-field-appearance-outline {
-        .mat-form-field-outline-thick {
-          color: rgba(0, 0, 0, 0.87); // TODO mat-color
-        }
-      }
     }
   }
 }

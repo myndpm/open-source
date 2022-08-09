@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostBinding, ViewChild } from '@angular/core';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { DynWrapper } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldParams } from './form-field.component.params';
@@ -6,6 +6,7 @@ import { DynMatFormFieldParams } from './form-field.component.params';
 @Component({
   selector: 'dyn-mat-form-field',
   templateUrl: './form-field.component.html',
+  styleUrls: ['./form-field.component.scss'],
 })
 export class DynMatFormFieldWrapper extends DynWrapper<DynMatFormFieldParams> {
 
@@ -13,6 +14,11 @@ export class DynMatFormFieldWrapper extends DynWrapper<DynMatFormFieldParams> {
 
   @ViewChild(MatFormField, { static: true })
   formField!: MatFormField;
+
+  @HostBinding('class.readonly')
+  get isReadonly(): boolean {
+    return Boolean(this.params.readonly);
+  }
 
   attachControl(matFormField: MatFormFieldControl<any>) {
     if (this.formField && matFormField !== this.formField._control) {

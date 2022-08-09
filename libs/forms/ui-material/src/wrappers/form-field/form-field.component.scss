@@ -1,4 +1,36 @@
-// FIXME https://github.com/angular/components/pull/7083
-.mat-form-field {
-  width: 100%;
+:host {
+  display: block;
+
+  // FIXME https://github.com/angular/components/pull/7083
+  .mat-form-field {
+    width: 100%;
+  }
+
+  &.readonly ::ng-deep {
+
+    .mat-form-field-outline,
+    .mat-form-field-underline,
+    .mat-error,
+    .mat-hint {
+      visibility: hidden;
+    }
+
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+      background: transparent;
+    }
+
+    // reset invalid colors in readonly
+    .mat-form-field-invalid {
+      &.mat-form-field {
+        .mat-form-field-label {
+          color: rgba(0, 0, 0, 0.6); // TODO mat-color
+        }
+      }
+      &.mat-form-field-appearance-outline {
+        .mat-form-field-outline-thick {
+          color: rgba(0, 0, 0, 0.87); // TODO mat-color
+        }
+      }
+    }
+  }
 }
