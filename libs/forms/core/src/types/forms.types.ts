@@ -1,5 +1,6 @@
 // form control type
 export enum DynInstanceType {
+  Wrapper = 'WRAPPER',
   Group = 'GROUP',
   Array = 'ARRAY',
   Control = 'CONTROL',

@@ -3,6 +3,7 @@ import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import { DynWrapperConfig, DynWrapperId } from './types/wrapper.types';
 import { DynControl } from './dyn-control.class';
+import { DynInstanceType } from './types/forms.types';
 
 export type AbstractDynWrapper = DynWrapper;
 
@@ -24,5 +25,14 @@ implements OnInit, OnDestroy {
   config!: TConfig;
 
   ngOnInit(): void {
+    // initialize the node
+    this.node.load({
+      instance: DynInstanceType.Wrapper,
+      control: this.config.wrapper,
+      component: this,
+    });
+
+    // provide the parameters
+    super.ngOnInit();
   }
 }

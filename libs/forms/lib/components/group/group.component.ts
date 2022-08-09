@@ -126,6 +126,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     this.node.setControl(this.group);
     this.node.load({
       name: this.name,
+      control: 'DYN-GROUP',
       controls: this.controls,
       isolated: Boolean(this.isolated),
       component: this,

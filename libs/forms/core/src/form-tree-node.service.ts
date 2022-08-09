@@ -18,6 +18,7 @@ import { DYN_MODE } from './form.tokens';
 type DynFormTreeNodeLoad<TComponent> =
   Partial<DynBaseConfig> &
   DynFormConfigErrors & {
+    instance?: DynInstanceType,
     component: TComponent,
   };
 
@@ -393,7 +394,11 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   load(config: DynFormTreeNodeLoad<TComponent>): void {
-    if (!this._control) {
+    if (!this._instance && config.instance) {
+      this._instance = config.instance;
+    }
+
+    if (this.instance !== DynInstanceType.Wrapper && !this._control) {
       throw this.logger.nodeWithoutControl();
     }
 

@@ -134,6 +134,7 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
     this.node.setControl(this.group);
     this.node.load({
       name: this.name,
+      control: 'DYN-MAT-TABLE-ROW',
       controls: this.controls,
       isolated: false,
       component: this,

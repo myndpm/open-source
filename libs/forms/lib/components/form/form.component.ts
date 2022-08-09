@@ -104,6 +104,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.node.setControl(this.form)
     this.node.load({
       isolated: Boolean(this.isolated),
+      control: 'DYN-FORM',
       controls: this.controls,
       errorMsgs: this.config?.errorMsgs,
       component: this,

@@ -124,21 +124,24 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     try {
       const control = this.registry.getControl(config.control);
 
+      const providers = [
+        // new form-hierarchy sublevel
+        // Dynamic Components has its own DynFormTreeNode
+        {
+          provide: DynFormTreeNode,
+          useClass: DynFormTreeNode,
+          deps: [ // FIXME added for Stackblitz
+            DynFormFactory,
+            DynFormHandlers,
+            DynLogger,
+            DYN_MODE,
+            [new SkipSelf(), DynFormTreeNode],
+          ],
+        },
+      ];
       const newInjectionLayer = Injector.create({
         providers: [
-          // new form-hierarchy sublevel
-          // DynControls has its own DynFormTreeNode
-          {
-            provide: DynFormTreeNode,
-            useClass: DynFormTreeNode,
-            deps: [ // FIXME added for Stackblitz
-              DynFormFactory,
-              DynFormHandlers,
-              DynLogger,
-              DYN_MODE,
-              [new SkipSelf(), DynFormTreeNode],
-            ],
-          },
+          ...providers,
           config?.debug ? [
             {
               provide: DYN_LOG_LEVEL,
@@ -151,29 +154,34 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
         parent: this._injector,
       });
 
-      const render = (view: ViewContainerRef, wrappers: DynConfigWrapper[] = []) => {
+      const render = (
+        view: ViewContainerRef,
+        injector: Injector,
+        wrappers: DynConfigWrapper[] = [],
+      ) => {
         if (wrappers?.length) {
           // render wrappers
           const [config, ...subwrappers] = wrappers;
           const wrapperId = typeof config === 'string' ? config : config.wrapper;
           const wrapper = this.registry.getWrapper(wrapperId);
+
           const factory = this.resolver.resolveComponentFactory(wrapper.component);
-          const ref = view.createComponent<AbstractDynWrapper>(
-            factory,
-            undefined,
-            newInjectionLayer, // TODO deepen the injection layer
+          const ref = view.createComponent<AbstractDynWrapper>(factory, undefined, injector);
+
+          ref.instance.config = typeof config === 'string'
+            ? { wrapper: config, params: {} }
+            : config;
+
+          render(
+            ref.instance.container,
+            Injector.create({ providers, parent: injector }),
+            subwrappers,
           );
-          this.addWrapperConfig(ref, config);
-          render(ref.instance.container, subwrappers);
         } else {
           // render the control
           if (!this.controlRef) {
             const factory = this.resolver.resolveComponentFactory(control.component);
-            this.controlRef = view.createComponent<AbstractDynControl>(
-              factory,
-              undefined,
-              newInjectionLayer,
-            );
+            this.controlRef = view.createComponent<AbstractDynControl>(factory, undefined, injector);
 
             this.controlRef.instance.config = config;
             this.controlRef.instance.node.setIndex(this.index);
@@ -206,17 +214,11 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
         }
       }
 
-      render(this.container, config.wrappers);
+      render(this.container, newInjectionLayer, config.wrappers);
 
     } catch(e) {
       // log any error happening in the control instantiation
       console.error(e);
     }
-  }
-
-  private addWrapperConfig(ref: ComponentRef<AbstractDynWrapper>, wrapper: DynConfigWrapper): void {
-    ref.instance.config = typeof wrapper === 'string'
-      ? { wrapper, params: {} }
-      : wrapper;
   }
 }
