@@ -22,7 +22,7 @@ implements OnInit {
     // FIXME do not rely on empty control
     if (!this.control) {
       // containers can initialize the node differently
-      this.node.onInit(DynInstanceType.Container, this.config, this);
+      this.node.init(DynInstanceType.Container, this.config, this);
     }
 
     // provide the parameters

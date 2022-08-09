@@ -52,10 +52,18 @@ export class DynLogger {
     });
   }
 
+  nodeMethodCalledTwice(name: string, { deep, path, route }: DynNode): void {
+    return this.driver.log({
+      deep,
+      level: DynLogLevel.Warning,
+      message:`[node] '${path.join('.')}' method called twice (${name})`,
+    });
+  }
+
   nodeWithoutControl(): Error {
     return this.driver.log({
       level: DynLogLevel.Fatal,
-      message: `Could not resolve a control for the Node .`,
+      message: `Could not resolve a control for the Node.`,
     });
   }
 

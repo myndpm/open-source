@@ -25,7 +25,7 @@ implements OnInit {
     }
 
     // initialize the node
-    this.node.onInit(DynInstanceType.Array, this.config, this);
+    this.node.init(DynInstanceType.Array, this.config, this);
 
     // provide the parameters
     super.ngOnInit();

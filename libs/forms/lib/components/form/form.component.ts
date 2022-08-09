@@ -101,8 +101,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     }
 
     // manually register the node
-    this.node.setControl(this.form)
-    this.node.load({
+    this.node.configure({
+      formControl: this.form,
       isolated: Boolean(this.isolated),
       control: 'DYN-FORM',
       controls: this.controls,

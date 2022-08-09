@@ -22,6 +22,11 @@ type DynFormTreeNodeLoad<TComponent> =
     component: TComponent,
   };
 
+type DynFormTreeNodeConfigure<TControl, TComponent> =
+  DynFormTreeNodeLoad<TComponent> & {
+    formControl: TControl;
+  };
+
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
@@ -97,6 +102,8 @@ implements DynTreeNode<TParams, TControl> {
   private _control!: TControl;
   private _matchers?: DynMatch[];
   private _params!: TParams;
+  private _initLoaded = false; // onInit called
+  private _loadLoaded = false; // load called
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
@@ -352,11 +359,17 @@ implements DynTreeNode<TParams, TControl> {
    * Lifecycle methods
    */
 
-  onInit(
+  init(
     instance: DynInstanceType,
     config: DynBaseConfig,
     component: TComponent,
   ): void {
+    if (this._initLoaded) {
+      return this.logger.nodeMethodCalledTwice('init', this);
+    }
+
+    this._initLoaded = true;
+
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       throw this.logger.nodeFailed(config.control);
@@ -387,13 +400,27 @@ implements DynTreeNode<TParams, TControl> {
     this.load({ ...config, component });
   }
 
-  setControl(control: TControl, instance = DynInstanceType.Group): void {
+  configure(config: DynFormTreeNodeConfigure<TControl, TComponent>): void {
+    if (this._initLoaded) {
+      return this.logger.nodeMethodCalledTwice('override', this);
+    }
+
+    this._initLoaded = true;
+
     // manual setup with no wiring nor config validation
-    this._instance = instance;
-    this._control = control;
+    this._instance = config.instance ?? DynInstanceType.Group;
+    this._control = config.formControl;
+
+    this.load(config);
   }
 
   load(config: DynFormTreeNodeLoad<TComponent>): void {
+    if (this._loadLoaded) {
+      return this.logger.nodeMethodCalledTwice('load', this);
+    }
+
+    this._loadLoaded = true;
+
     if (!this._instance && config.instance) {
       this._instance = config.instance;
     }
@@ -521,7 +548,7 @@ implements DynTreeNode<TParams, TControl> {
     this.children.map(child => child.setup());
   }
 
-  onDestroy(): void {
+  destroy(): void {
     // TODO test unload with routed forms
 
     if (!this.isolated) {
