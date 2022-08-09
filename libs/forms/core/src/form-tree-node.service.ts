@@ -11,6 +11,7 @@ import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
 import { DynParams } from './types/params.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
+import { merge as mergeUtil } from './utils/merge.util';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
@@ -210,7 +211,9 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   updateParams(params: Partial<TParams>): void {
-    this._paramsUpdates$.next(params);
+    this._paramsUpdates$.next(
+      mergeUtil(true, this._paramsUpdates$.value, params)
+    );
   }
 
   // let the ControlNode know of an incoming hook

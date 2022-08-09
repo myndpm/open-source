@@ -161,16 +161,16 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
       ) => {
         if (wrappers?.length) {
           // render wrappers
-          const [config, ...subwrappers] = wrappers;
-          const wrapperId = typeof config === 'string' ? config : config.wrapper;
+          const [wconfig, ...subwrappers] = wrappers;
+          const wrapperId = typeof wconfig === 'string' ? wconfig : wconfig.wrapper;
           const wrapper = this.registry.getWrapper(wrapperId);
 
           const factory = this.resolver.resolveComponentFactory(wrapper.component);
           const ref = view.createComponent<AbstractDynWrapper>(factory, undefined, injector);
 
-          ref.instance.config = typeof config === 'string'
-            ? { wrapper: config, params: {} }
-            : config;
+          ref.instance.config = typeof wconfig === 'string'
+            ? { wrapper: wconfig, controlParams: config.params }
+            : { ...wconfig, controlParams: config.params };
 
           render(
             ref.instance.container,

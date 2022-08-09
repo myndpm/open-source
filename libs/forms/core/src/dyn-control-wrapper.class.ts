@@ -1,9 +1,11 @@
 import { Directive, OnDestroy, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { isObservable, of } from 'rxjs';
 import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import { DynWrapperConfig, DynWrapperId } from './types/wrapper.types';
 import { DynControl } from './dyn-control.class';
 import { DynInstanceType } from './types/forms.types';
+import { takeUntil } from 'rxjs/operators';
 
 export type AbstractDynWrapper = DynWrapper;
 
@@ -31,6 +33,16 @@ implements OnInit, OnDestroy {
       control: this.config.wrapper,
       component: this,
     });
+
+    if (this.config.controlParams) {
+      (
+        isObservable(this.config.controlParams)
+          ? this.config.controlParams
+          : of(this.config.controlParams || {})
+      )
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((params) => this.node.updateParams(params));
+    }
 
     // provide the parameters
     super.ngOnInit();
