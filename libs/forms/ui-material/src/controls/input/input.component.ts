@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core';
+import { MatFormFieldControl } from '@angular/material/form-field';
 import {
   DynConfig,
   DynFormControl,
   DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
+import { DynMatFormFieldWrapper } from '../../wrappers';
 import { DynMatInputParams } from './input.component.params';
 
 @Component({
@@ -27,15 +29,27 @@ extends DynFormControl<DynMode, DynMatInputParams> {
     };
   }
 
+  @ViewChild(MatFormFieldControl)
+  fieldControl!: MatFormFieldControl<any>;
+
   @HostBinding('class.readonly')
   get isReadonly(): boolean {
     return Boolean(this.params.readonly);
   }
 
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
+    // register into the closes mat-form-field wrapper
+    this.node.searchCmp(
+      DynMatFormFieldWrapper,
+      ({ instance }) => instance === 'WRAPPER',
+    )?.attachControl(this.fieldControl);
+  }
+
   completeParams(params: Partial<DynMatInputParams>): DynMatInputParams {
     return {
       ...params,
-      floatLabel: params.floatLabel || 'auto',
       type: params.type || 'text',
       placeholder: params.placeholder || '',
       rows: params.rows || 3,

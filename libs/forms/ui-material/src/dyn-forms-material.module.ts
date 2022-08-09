@@ -28,10 +28,19 @@ import {
   DynMatTableComponent,
   DynMatTableRowComponent,
 } from './controls';
+import {
+  DynMatFormFieldWrapper,
+} from './wrappers';
 
 export const PROVIDERS = getModuleProviders({
   providers: [
     MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+  ],
+  wrappers: [
+    {
+      wrapper: DynMatFormFieldWrapper.dynWrapper,
+      component: DynMatFormFieldWrapper,
+    }
   ],
   controls: [
     {
@@ -110,6 +119,7 @@ export const PROVIDERS = getModuleProviders({
     DynFormsModule,
   ],
   declarations: [
+    DynMatFormFieldWrapper,
     DynMatArrayComponent,
     DynMatCardComponent,
     DynMatCheckboxComponent,
@@ -125,6 +135,7 @@ export const PROVIDERS = getModuleProviders({
   ],
   // FIXME added for Stackblitz
   entryComponents: [
+    DynMatFormFieldWrapper,
     DynMatArrayComponent,
     DynMatCardComponent,
     DynMatCheckboxComponent,

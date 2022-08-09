@@ -1,0 +1,13 @@
+<!-- design decision to force the always-floating-label on display-mode -->
+<mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
+  <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
+
+  <ng-container #dynContainer></ng-container>
+
+  <mat-icon *ngIf="params.iconPrefix" matPrefix>{{ params.iconPrefix }}</mat-icon>
+  <mat-icon *ngIf="params.iconSuffix" matSuffix>{{ params.iconSuffix }}</mat-icon>
+  <span *ngIf="params.textSuffix" matSuffix>{{ params.textSuffix }}</span>
+
+  <mat-hint *ngIf="params.hint">{{ params.hint }}</mat-hint>
+  <!--mat-error *ngIf="errorMsg$ | async as errorMsg">{{ errorMsg }}</mat-error-->
+</mat-form-field>
