@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   DynConfig,
   DynFormControl,
@@ -25,6 +25,11 @@ extends DynFormControl<DynMode, DynMatRadioParams> {
       ...partial,
       control: DynMatRadioComponent.dynControl,
     };
+  }
+
+  @HostBinding('class.readonly')
+  get isReadonly(): boolean {
+    return Boolean(this.params.readonly);
   }
 
   completeParams(params: Partial<DynMatRadioParams>): DynMatRadioParams {

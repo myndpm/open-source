@@ -9,3 +9,7 @@
     {{ option.value }}
   </mat-radio-button>
 </mat-radio-group>
+
+<span *ngIf="params.readonly">
+  {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
+</span>

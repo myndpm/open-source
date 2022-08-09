@@ -1,5 +1,6 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { DynParams } from '@myndpm/dyn-forms/core';
+import { DynLogLevel } from '@myndpm/dyn-forms/logger';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 import { Observable } from 'rxjs';
 
@@ -87,12 +88,7 @@ export function simpleForm(
                 { value: 'Other', key: 'XX' },
               ],
             },
-            modes: {
-              display: {
-                control: 'INPUT',
-                paramFns: { getValue: 'getOptionText' }
-              },
-            },
+            paramFns: { getValue: 'getOptionText' },
           }),
           createMatConfig('INPUT', {
             name: 'zipCode',
@@ -126,12 +122,8 @@ export function simpleForm(
             { value: 'Checkout as a Guest', key: 'GUEST' },
           ],
         },
-        modes: {
-          display: {
-            control: 'INPUT',
-            paramFns: { getValue: 'getOptionText' }
-          },
-        },
+        paramFns: { getValue: 'getOptionText' },
+        debug: DynLogLevel.All,
       }),
       createMatConfig('TABLE', {
         name: 'products',

@@ -10,3 +10,7 @@
     {{ option.value }}
   </mat-option>
 </mat-select>
+
+<span *ngIf="params.readonly">
+  {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
+</span>

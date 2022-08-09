@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import {
@@ -33,6 +33,11 @@ extends DynFormControl<DynMode, DynMatSelectParams> {
 
   @ViewChild(MatFormFieldControl, { static: true })
   fieldControl!: MatFormFieldControl<any>;
+
+  @HostBinding('class.readonly')
+  get isReadonly(): boolean {
+    return Boolean(this.params.readonly);
+  }
 
   ngOnInit(): void {
     super.ngOnInit();

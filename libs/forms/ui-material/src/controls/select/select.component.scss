@@ -1,7 +1,9 @@
 :host {
   display: block;
 
-  .mat-form-field {
-    width: 100%;
+  &.readonly {
+    .mat-select {
+      display: none;
+    }
   }
 }

@@ -11,4 +11,15 @@
   .mat-radio-button {
     margin-right: 1em;
   }
+
+  &.readonly {
+    .mat-radio-group {
+      display: none;
+    }
+
+    span {
+      display: block;
+      padding: 1.4em 0 0.74625em;
+    }
+  }
 }
