@@ -19,6 +19,7 @@ import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMode } from './types/mode.types';
+import { DynTreeNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { merge } from './utils/merge.util';
@@ -158,9 +159,17 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     newParams?: Partial<TParams>,
     newParamFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>
   ): void {
-    this.node.updateParams(
-      merge(true, newParams, this._handlers.getFunctions(newParamFns))
-    );
+    const params = merge(true, newParams, this._handlers.getFunctions(newParamFns));
+    this.node.exec(
+      (node: DynTreeNode) => {
+        // update the local node and parent wrappers
+        if (node !== this.node && node.instance !== DynInstanceType.Wrapper) {
+          return true;
+        }
+        node.updateParams(params);
+        return false;
+      }
+    )
   }
 
   /**

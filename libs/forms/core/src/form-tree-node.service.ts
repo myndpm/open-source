@@ -368,8 +368,23 @@ implements DynTreeNode<TParams, TControl> {
 
     do {
       // query by form.control and by node.path
-      result = node.dynCmp instanceof component && predicate(node) ? node.dynCmp : undefined;
-      // move upper in the tree
+      result = node.dynCmp instanceof component && predicate(node)
+        ? node.dynCmp
+        : undefined;
+      node = node.parent;
+    } while (!result && node);
+
+    return result;
+  }
+
+  exec<T>(predicate: (node: DynTreeNode) => T): T|undefined {
+    /* eslint-disable @typescript-eslint/no-this-alias */
+    let node: DynFormTreeNode<TParams, any> = this;
+    let result: any;
+
+    do {
+      // query by form.control and by node.path
+      result = predicate(node);
       node = node.parent;
     } while (!result && node);
 
