@@ -1,30 +1,32 @@
 import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import deepEqual from 'fast-deep-equal';
+import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge, isObservable, of } from 'rxjs';
+import { debounceTime, delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
-import { DynParams } from './types/params.types';
+import { DynFunctionFn, DynParams } from './types/params.types';
+import { DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
 
-type DynFormTreeNodeLoad<TComponent> =
-  Partial<DynBaseConfig> &
+type DynFormTreeNodeLoad<TParams, TComponent> =
+  Partial<DynBaseConfig<string, TParams>> &
   DynFormConfigErrors & {
     instance?: DynInstanceType,
     component: TComponent,
   };
 
-type DynFormTreeNodeConfigure<TControl, TComponent> =
-  DynFormTreeNodeLoad<TComponent> & {
+type DynFormTreeNodeConfigure<TParams, TControl, TComponent> =
+  DynFormTreeNodeLoad<TParams, TComponent> & {
     formControl: TControl;
   };
 
@@ -79,6 +81,9 @@ implements DynTreeNode<TParams, TControl> {
   get mode$(): Observable<DynMode> {
     return this._modeLocal$ ?? this._mode$;
   }
+  get params$(): Observable<TParams> {
+    return this._params$;
+  }
   get paramsUpdates$(): Observable<Partial<TParams>> {
     return this._paramsUpdates$.asObservable();
   }
@@ -108,6 +113,7 @@ implements DynTreeNode<TParams, TControl> {
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
+  private _params$!: Observable<TParams>;
   private _children$ = new Subject<void>();
   private _numChild$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
@@ -207,6 +213,24 @@ implements DynTreeNode<TParams, TControl> {
       takeUntil(this._unsubscribe$),
       filter<boolean>(Boolean),
       first(),
+    );
+  }
+
+  // internal API for dyn-factory
+  setupParams(
+    params?: Partial<TParams>,
+    paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>,
+  ): void {
+    const value = mergeUtil(true, params, this.formHandlers.getFunctions(paramFns));
+    this.exec(
+      (node: DynTreeNode) => {
+        // update the local node and parent wrappers
+        if (node !== this && node.instance !== DynInstanceType.Wrapper) {
+          return true;
+        }
+        node.updateParams(value);
+        return false;
+      }
     );
   }
 
@@ -397,7 +421,7 @@ implements DynTreeNode<TParams, TControl> {
 
   init(
     instance: DynInstanceType,
-    config: DynBaseConfig,
+    config: DynBaseConfig<string, TParams>,
     component: TComponent,
   ): void {
     if (this._initLoaded) {
@@ -436,7 +460,7 @@ implements DynTreeNode<TParams, TControl> {
     this.load({ ...config, component });
   }
 
-  configure(config: DynFormTreeNodeConfigure<TControl, TComponent>): void {
+  configure(config: DynFormTreeNodeConfigure<TParams, TControl, TComponent>): void {
     if (this._initLoaded) {
       return this.logger.nodeMethodCalledTwice('override', this);
     }
@@ -450,7 +474,7 @@ implements DynTreeNode<TParams, TControl> {
     this.load(config);
   }
 
-  load(config: DynFormTreeNodeLoad<TComponent>): void {
+  load(config: DynFormTreeNodeLoad<TParams, TComponent>): void {
     if (this._loadLoaded) {
       return this.logger.nodeMethodCalledTwice('load', this);
     }
@@ -492,15 +516,33 @@ implements DynTreeNode<TParams, TControl> {
     // store the matchers to be processed in node.setup()
     this._matchers = this.getMatchers(config);
 
-    // store the params to be accessible to the handlers
-    this._params = config.params as TParams;
-
     // resolve and store the error handlers
     this._errorHandlers = config.errorMsgs
       ? this.formHandlers.getFormErrorHandlers(config.errorMsgs)
       : config.errorMsg
         ? this.formHandlers.getErrorHandlers(config.errorMsg)
         : [];
+
+    // merge any configured paramFns first
+    if (config.paramFns) {
+      this.setupParams({}, config.paramFns);
+    }
+
+    // store the params to be accessible to the handlers
+    this._params$ = combineLatest([
+      isObservable(config.params) ? config.params : of<Partial<TParams>>(config.params || {}),
+      this.paramsUpdates$.pipe(startWith({})),
+    ]).pipe(
+      takeUntil(this._unsubscribe$),
+      scan<[Partial<TParams>, Partial<TParams>], TParams>(
+        (params, [config, updates]) => mergeUtil(true, params, config, updates),
+        {} as TParams,
+      ),
+      map(params => (this.dynCmp as any)?.completeParams(params) ?? params),
+      distinctUntilChanged(deepEqual),
+      tap(params => this._params = params),
+      shareReplay(1),
+    );
 
     if (!this.isolated) {
       // register the node with its parent

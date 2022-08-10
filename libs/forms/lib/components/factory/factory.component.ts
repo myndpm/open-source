@@ -99,7 +99,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           // check if the params are the only changed ones
           if (this._configs.areEquivalent(config, newConfig)) {
             if (newConfig.params || newConfig.paramFns) {
-              this.controlRef.instance.updateParams(newConfig.params, newConfig.paramFns);
+              this.controlRef.instance.node.setupParams(newConfig.params, newConfig.paramFns);
             }
           } else {
             this.logger.controlInitializing(this.node, { control: newConfig.control, wrappers: newConfig.wrappers, name: newConfig.name });

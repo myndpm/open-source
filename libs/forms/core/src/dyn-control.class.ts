@@ -4,7 +4,6 @@ import {
   Directive,
   Injector,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChange,
   SimpleChanges,
@@ -12,17 +11,15 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of } from 'rxjs';
-import { filter, scan, startWith, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, scan } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
 import { DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMode } from './types/mode.types';
-import { DynTreeNode } from './types/node.types';
-import { DynFunctionFn, DynParams } from './types/params.types';
-import { DynBaseProvider, DynConfigMap, DynConfigProvider } from './types/provider.types';
-import { merge } from './utils/merge.util';
+import { DynParams } from './types/params.types';
+import { DynBaseProvider } from './types/provider.types';
 import { DynControlNode } from './dyn-control-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -44,7 +41,7 @@ export abstract class DynControl<
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
 extends DynControlNode<TParams, TControl>
-implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+implements OnInit, AfterViewInit, OnChanges {
 
   // central place to define the provided Type
   static dynControl: DynControlId = '';
@@ -57,7 +54,7 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   // core properties
   config!: TConfig; // passed down in the hierarchy
   get params(): TParams { // values available for the concrete Component instance
-    return this.params$.value;
+    return this.node.params;
   }
   get control(): TControl { // built from the config in the DynFormTreeNode
     return this.node.control;
@@ -69,6 +66,9 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   // utility properties
   get mode$(): Observable<DynMode> {
     return this.node.mode$;
+  }
+  get params$(): Observable<TParams> {
+    return this.node.params$;
   }
   get visibility$(): Observable<DynVisibility> {
     return this.node.visibility$;
@@ -85,8 +85,6 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     return this._id;
   }
   private _id = '';
-
-  readonly params$ = new BehaviorSubject<TParams>({} as TParams);
 
   protected readonly _mode: BehaviorSubject<DynMode>;
   protected readonly _ref: ChangeDetectorRef;
@@ -107,32 +105,25 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     super.ngOnInit();
 
-    // merge any configured paramFns
-    if (this.config.paramFns) {
-      this.updateParams(undefined, this.config.paramFns);
-    }
+    this.node.params$.pipe(
+      scan(
+        (previous, params) => {
+          // emulates ngOnChanges
+          const change = new SimpleChange(previous ?? {}, this.completeParams(params), !previous);
+          this._logger.nodeParamsUpdated(this.node, this.constructor.name, change.currentValue);
 
-    // listen parameters changes after the control is ready
-    combineLatest([
-      isObservable(this.config.params) ? this.config.params : of(this.config.params || {}),
-      this.node.paramsUpdates$.pipe(startWith({})),
-    ]).pipe(
-      takeUntil(this.onDestroy$),
-      scan<any>((params, [config, updates]) => merge(true, params, config, updates)),
-      filter(params => !Array.isArray(params)), // filters the first scan
-    ).subscribe((params) => {
-      // emulates ngOnChanges
-      const change = new SimpleChange(this.params, this.completeParams(params), !this.params);
-      this.params$.next(change.currentValue);
-      this._logger.nodeParamsUpdated(this.node, this.constructor.name, this.params);
+          setTimeout(() => {
+            // emulates ngOnChanges and async pipe
+            this.ngOnChanges({ params: change });
+            this.node.markParamsAsLoaded();
+            this._ref.markForCheck();
+          }, 1);
 
-      setTimeout(() => {
-        // emulates ngOnChanges and async pipe
-        this.ngOnChanges({ params: change });
-        this.node.markParamsAsLoaded();
-        this._ref.markForCheck();
-      }, 1);
-    });
+          return change.currentValue;
+        },
+        undefined,
+      ),
+    ).subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -144,32 +135,10 @@ implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     // emulated while assigning the params as DynControls has no Inputs
   }
 
-  ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.params$.complete();
-  }
-
   // complete a partial specification of the required parameters
   // ensuring that all will be present in the template to avoid exceptions
   completeParams(params: Partial<TParams>): TParams {
     return params as TParams;
-  }
-
-  updateParams(
-    newParams?: Partial<TParams>,
-    newParamFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>
-  ): void {
-    const params = merge(true, newParams, this._handlers.getFunctions(newParamFns));
-    this.node.exec(
-      (node: DynTreeNode) => {
-        // update the local node and parent wrappers
-        if (node !== this.node && node.instance !== DynInstanceType.Wrapper) {
-          return true;
-        }
-        node.updateParams(params);
-        return false;
-      }
-    )
   }
 
   /**
