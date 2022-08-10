@@ -2,19 +2,19 @@
   <app-section-badges [badges]="badges"></app-section-badges>
   <app-section-actions [actions]="actions"></app-section-actions>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubscribe()">
     <h3>Single Control</h3>
 
-    <dyn-form
+    <dyn-form class="row"
       [config]="config"
       [form]="form"
       [mode]="mode"
     ></dyn-form>
 
-    <div class="form-actions" fxLayout="row" fxLayoutAlign="space-between">
+    <div class="form-actions" fxLayout="row" fxLayoutAlign="space-between" *ngIf="mode === 'form'">
       <div fxLayout="row" fxLayoutGap="10px">
-        <button type="submit" mat-raised-button color="primary" *ngIf="mode === 'edit'">
-          Submit
+        <button type="submit" mat-raised-button color="primary">
+          Subscribe
         </button>
       </div>
     </div>

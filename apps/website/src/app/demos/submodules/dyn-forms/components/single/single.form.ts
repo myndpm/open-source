@@ -4,20 +4,14 @@ import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
 export function singleForm(): DynFormConfig<'form'|'success'> {
   return {
     controls: [
-      createMatConfig('CARD', {
-        cssClass: 'row',
+      createMatConfig('INPUT', {
+        name: 'Subscribe',
+        validators: ['required', 'email'],
+        cssClass: 'col-sm-6 col-md-4',
         params: {
-          title: 'Subscribe',
+          label: 'Email *',
           type: 'email',
         },
-        controls: [
-          createMatConfig('INPUT', {
-            name: 'email',
-            validators: ['required'],
-            cssClass: 'col-sm-6 col-md-4',
-            params: { label: 'Email *' },
-          }),
-        ],
       }),
     ],
     errorMsgs: {

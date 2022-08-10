@@ -41,13 +41,13 @@ export class SingleComponent implements OnDestroy {
     console.clear();
   }
 
-  onSubmit(): void {
+  onSubscribe(): void {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    console.warn('Submit', this.form.value);
+    console.warn('Subscribe', this.form.value);
     this.mode = 'success';
   }
 }
