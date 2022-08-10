@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { DynControlHook } from './events.types';
@@ -51,4 +52,13 @@ export interface DynTreeNode<
    * @deprecated use node.searchDown
    */
   select(path: string): AbstractControl|null;
+
+  searchCmp<T>(
+    component: Type<T>,
+    predicate?: (node: DynTreeNode) => boolean,
+  ): T|undefined;
+
+  exec<T>(
+    predicate: (node: DynTreeNode) => T,
+  ): T|undefined;
 }
