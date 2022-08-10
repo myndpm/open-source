@@ -55,13 +55,13 @@ implements OnInit, OnDestroy {
       method.bind(this)(event.payload);
     }
 
-    // propagate to the childs
-    this.callChildHooks(event);
+    // propagate to the children
+    this.callChildrenHooks(event);
   }
 
-  // hook propagated to child DynControls
+  // hook propagated to children DynControls
   // customized by special cases like FormArray
-  callChildHooks({ hook, payload, plain }: DynControlHook): void {
+  callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
     this.node.children.map(node => {
       const fieldName = node.name;
       // validate the expected payload

@@ -34,8 +34,8 @@ implements OnInit {
     this._logger.nodeLoaded('dyn-form-array', this.node);
   }
 
-  // hook propagated to child DynControls
-  callChildHooks({ hook, payload, plain }: DynControlHook): void {
+  // hook propagated to children DynControls
+  callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
     if (!plain && !Array.isArray(payload)) {
       return;
     }
@@ -54,12 +54,12 @@ implements OnInit {
   addItem(): void {
     const { control } = this._factory.build(DynInstanceType.Group, this.node, this.config, true);
     this.control.push(control);
-    this.node.childsIncrement();
+    this.node.childrenIncrement();
   }
 
   removeItem(index: number): void {
     this.control.removeAt(index);
-    this.node.childsDecrement();
+    this.node.childrenDecrement();
   }
 
   // matches the incoming quantity of items with the existing controls

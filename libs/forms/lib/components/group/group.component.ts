@@ -120,7 +120,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     });
 
     if (this.node.parent?.instance === DynInstanceType.Container) {
-      this.node.parent.childsIncrement();
+      this.node.parent.childrenIncrement();
     }
 
     this.node.configure({

@@ -114,8 +114,8 @@ implements DynTreeNode<TParams, TControl> {
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _params$!: Observable<TParams>;
-  private _children$ = new Subject<void>();
-  private _numChild$ = new BehaviorSubject<number>(0);
+  private _changed$ = new Subject<void>();
+  private _children$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _loadedParams$ = new BehaviorSubject<boolean>(false);
   private _loadedMatchers$ = new BehaviorSubject<boolean>(false);
@@ -132,10 +132,10 @@ implements DynTreeNode<TParams, TControl> {
   private _modeLocal$?: Observable<DynMode>;
   private _snapshots = new Map<DynMode, any>();
 
-  loaded$: Observable<boolean> = this._children$.pipe(
+  loaded$: Observable<boolean> = this._changed$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
-      this._numChild$,
+      this._children$,
       this._loaded$,
       this._loadedParams$,
       ...this.children.map(child => child.loaded$),
@@ -145,20 +145,20 @@ implements DynTreeNode<TParams, TControl> {
       const hasAllChildren = children === childrenLoaded.length;
       const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = isControl ? true : hasAllChildren && allChildrenValid;
-      const ready: boolean = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
+      const loaded: boolean = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
-        ? { loaded$: ready, loadedComponent, loadedParams, children, childrenLoaded }
-        : { loaded$: ready, loadedComponent, loadedParams }
+        ? { loaded$: loaded, loadedComponent, loadedParams, children, childrenLoaded }
+        : { loaded$: loaded, loadedComponent, loadedParams }
       );
 
-      return ready;
+      return loaded;
     }),
     distinctUntilChanged(),
     shareReplay(1),
   );
 
-  ready$: Observable<boolean> = this._children$.pipe(
+  ready$: Observable<boolean> = this._changed$.pipe(
     startWith(null),
     switchMap(() => combineLatest([
       this.loaded$,
@@ -441,7 +441,7 @@ implements DynTreeNode<TParams, TControl> {
       throw this.logger.nodeInstanceMismatch(config.control, instance, configInstance);
     }
 
-    // register the instance type for the childs to know
+    // register the instance type for the children to know
     this._instance = instance;
 
     if (config.name) {
@@ -504,8 +504,8 @@ implements DynTreeNode<TParams, TControl> {
     this.path = this.getPath();
     this.route = this.getRoute();
 
-    // store the number of configured childs
-    this._numChild$.next(
+    // store the number of configured children
+    this._children$.next(
       ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
         ? this._instance === DynInstanceType.Wrapper
           ? 1
@@ -635,8 +635,8 @@ implements DynTreeNode<TParams, TControl> {
       this.parent?.removeChild(this);
     }
 
+    this._changed$.complete();
     this._children$.complete();
-    this._numChild$.complete();
     this._loaded$.complete();
     this._loadedParams$.complete();
     this._errorMsg$.complete();
@@ -675,14 +675,14 @@ implements DynTreeNode<TParams, TControl> {
     }
   }
 
-  childsIncrement(): void {
-    this._numChild$.next(this._numChild$.value + 1);
-    this.logger.nodeMethod(this, 'childsIncrement', { numChilds: this._numChild$.value });
+  childrenIncrement(): void {
+    this._children$.next(this._children$.value + 1);
+    this.logger.nodeMethod(this, 'childrenIncrement', { count: this._children$.value });
   }
 
-  childsDecrement(): void {
-    this._numChild$.next(this._numChild$.value - 1);
-    this.logger.nodeMethod(this, 'childsDecrement', { numChilds: this._numChild$.value });
+  childrenDecrement(): void {
+    this._children$.next(this._children$.value - 1);
+    this.logger.nodeMethod(this, 'childrenDecrement', { count: this._children$.value });
   }
 
   /**
@@ -715,18 +715,17 @@ implements DynTreeNode<TParams, TControl> {
 
   private addChild(node: DynFormTreeNode<any, any>): void {
     this.children.push(node);
-    this.logger.nodeMethod(this, 'addChild', { numChilds: this._numChild$.value, children: this.children.length });
-    this._children$.next();
+    this.logger.nodeMethod(this, 'addChild', { count: this._children$.value, children: this.children.length });
+    this._changed$.next();
     // TODO updateValue and validity? or it's automatically done?
   }
 
   private removeChild(node: DynFormTreeNode<any, any>): void {
-    this.logger.nodeMethod(this, 'removeChild');
-
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });
-    this._children$.next();
+    this.logger.nodeMethod(this, 'removeChild', { count: this._children$.value, children: this.children.length });
+    this._changed$.next();
 
     // TODO what happen to the data if we remove the control
     // TODO update validity if not isolated

@@ -179,7 +179,7 @@ export class DynFormFactory {
   }
 
   /**
-   * Recursively build the child controls and attach them to a given parent.
+   * Recursively build the children controls and attach them to a given parent.
    */
   buildControls(
     parent: FormGroup,
