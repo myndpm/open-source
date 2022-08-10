@@ -210,6 +210,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     });
   }
 
+  markAllAsTouched(): void {
+    this.form.markAllAsTouched();
+    this.detectChanges(); // FIXME required after wrappers not completely wired
+  }
+
   // update the validators programatically
   validate(opts?: DynHookUpdateValidity): Subscription {
     return this.callHook('UpdateValidity', opts);

@@ -43,7 +43,7 @@ export class SingleComponent implements OnDestroy {
 
   onSubscribe(): void {
     if (!this.form.valid) {
-      this.form.markAllAsTouched();
+      this.dynForm.markAllAsTouched();
       return;
     }
 
