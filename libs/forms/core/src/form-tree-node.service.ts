@@ -538,7 +538,7 @@ implements DynTreeNode<TParams, TControl> {
         (params, [config, updates]) => mergeUtil(true, params, config, updates),
         {} as TParams,
       ),
-      map(params => (this.dynCmp as any)?.completeParams(params) ?? params),
+      map(params => (this.dynCmp as any)?.completeParams?.(params) ?? params),
       distinctUntilChanged(deepEqual),
       tap(params => this._params = params),
       shareReplay(1),
