@@ -222,15 +222,8 @@ implements DynTreeNode<TParams, TControl> {
     paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>,
   ): void {
     const value = mergeUtil(true, params, this.formHandlers.getFunctions(paramFns));
-    this.exec(
-      (node: DynTreeNode) => {
-        // update the local node and parent wrappers
-        if (node !== this && node.instance !== DynInstanceType.Wrapper) {
-          return true;
-        }
-        node.updateParams(value);
-        return false;
-      }
+    this.execInWrappers(
+      (node: DynTreeNode) => node.updateParams(value),
     );
   }
 
@@ -332,14 +325,16 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   /**
-   * search a control by path
+   * search a control by path in the whole hierarchy tree
    * less performant than searchUp and searchDown
    */
   search(path: string): AbstractControl|null {
     return this.searchUp(path, true);
   }
 
-  // query for an upper control in the tree
+  /**
+   * search a node by path up in the hierarchy tree (parents)
+   */
   searchUp(path: string, searchDown = false): AbstractControl|null {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<TParams, any> = this;
@@ -357,7 +352,9 @@ implements DynTreeNode<TParams, TControl> {
     return result;
   }
 
-  // search a child control
+  /**
+   * search a node by path down in the hierarchy tree (children)
+   */
   searchDown(path: string): AbstractControl|null {
     const selector = path.split('.');
     let name = '';
@@ -382,37 +379,60 @@ implements DynTreeNode<TParams, TControl> {
     return result;
   }
 
+  /**
+   * search a parent component type in the hierarchy tree of nodes.
+   * while the predicate function returns a truthy value
+   */
   searchCmp<T>(
     component: Type<T>,
     predicate: (node: DynTreeNode) => boolean = () => true,
   ): T|undefined {
+    /* eslint-disable @typescript-eslint/no-this-alias */
+    let node: DynFormTreeNode<TParams, any> = this.parent;
+    let result: any;
+
+    do {
+      // query by form.control and by node.path
+      result = node.dynCmp instanceof component
+        ? node.dynCmp
+        : undefined;
+      node = node.parent;
+    } while (!result && node && predicate(node));
+
+    return result;
+  }
+
+  /**
+   * run a function in the current and parent nodes until it returns a truthy value.
+   */
+  exec<T>(fn: (node: DynTreeNode) => T): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<TParams, any> = this;
     let result: any;
 
     do {
       // query by form.control and by node.path
-      result = node.dynCmp instanceof component && predicate(node)
-        ? node.dynCmp
-        : undefined;
+      result = fn(node);
       node = node.parent;
     } while (!result && node);
 
     return result;
   }
 
-  exec<T>(predicate: (node: DynTreeNode) => T): T|undefined {
-    /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<TParams, any> = this;
-    let result: any;
-
-    do {
-      // query by form.control and by node.path
-      result = predicate(node);
-      node = node.parent;
-    } while (!result && node);
-
-    return result;
+  /**
+   * run a function in the parent nodes that are WRAPPERs.
+   */
+  execInWrappers<T>(fn: (node: DynTreeNode) => any): void {
+    this.exec(
+      (node: DynTreeNode) => {
+        // update the local node and parent wrappers
+        if (node !== this && node.instance !== DynInstanceType.Wrapper) {
+          return true;
+        }
+        fn(node);
+        return false;
+      }
+    );
   }
 
   /**

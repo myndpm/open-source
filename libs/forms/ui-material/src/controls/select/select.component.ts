@@ -4,6 +4,7 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import {
   DynConfig,
   DynFormControl,
+  DynInstanceType,
   DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -42,10 +43,10 @@ extends DynFormControl<DynMode, DynMatSelectParams> {
   ngOnInit(): void {
     super.ngOnInit();
 
-    // register into the closes mat-form-field wrapper
+    // register into the closest mat-form-field wrapper
     this.node.searchCmp(
       DynMatFormFieldWrapper,
-      ({ instance }) => instance === 'WRAPPER',
+      ({ instance }) => instance === DynInstanceType.Wrapper,
     )?.attachControl(this.fieldControl);
   }
 

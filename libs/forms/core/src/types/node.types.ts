@@ -60,6 +60,10 @@ export interface DynTreeNode<
   ): T|undefined;
 
   exec<T>(
-    predicate: (node: DynTreeNode) => T,
+    fn: (node: DynTreeNode) => T,
   ): T|undefined;
+
+  execInWrappers<T>(
+    fn: (node: DynTreeNode) => any,
+  ): void
 }
