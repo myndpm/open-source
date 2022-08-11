@@ -1,28 +1,29 @@
 # Dynamic Controls (Draft)
 
-Here we will study about the core features of Dynamic Forms: the Controls.
+Here we will learn about the core members of the Dynamic Forms: the Controls.
 
 ## Definition
 
 What do we understand about Controls?
-Everything is a control: a Group, an Array, a Container, a Control. They can be nested to describe our form hierarchy, or can be a flat list with nested names (ie. `parentName.controlName`).
+Everything is a control: a Group, an Array, a Container, a Control. They can be nested to describe our form hierarchy, or they can be a flat list with nested names (ie. `parentName.controlName`).
 
 ## Initialization
 
-While creating a new form, the library recursively instantiates the declared Dynamic Controls components, and populates their code fields:
+While creating a new form, the library recursively instantiates the declared controls of the configuration, and populates their code fields:
 
 1. Its corresponding `config` object (`DynControlConfig`)
-2. any `params` specified in the config in modes or matchers,
+2. any `params` specified in the config with its modes,
 3. the corresponding `control` instance (`FormControl`, `FormGroup` or `FormArray`)
 
-Each node is connected with a `DynTreeNode` instance which has the API to be programmatically manipulated, like querying and selecting other fields, accessing the `control` instance, the current `params`, manipulating its visibility, etc.
+Each node is connected with a `DynTreeNode` instance which has the API to be programmatically managed, like searching other fields, accessing the `control` instance, the current `params`, manipulating its visibility, etc.
 
 ## Instance Types
 
-1. `Control`: corresponds to the basic `FormControl`
+1. `Container`: component that loads one or more groups via `dyn-group`
 2. `Group`: component that loads one or more controls via `dyn-factory`
-3. `Container`: component that loads one or more groups via `dyn-group`
-4. `Array`: collection of groups usually loaded via `dyn-group` too.
+3. `Array`: collection of groups usually loaded via `dyn-group` too.
+4. `Control`: corresponds to the basic `FormControl`
+5. `Wrapper`: component to layout controls
 
 ## Custom Controls
 

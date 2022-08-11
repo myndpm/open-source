@@ -121,5 +121,5 @@ Sometimes controls depends on other control values, if we use a custom function 
 
 ## Next
 
-- Check the article about [Conditional Tasks](https://dev.to/myndpm/conditional-tasks-in-dynamic-forms-h8) at DEV.to
+- Check the article about [Conditional Tasks](https://dev.to/myndpm/conditional-tasks-in-dynamic-forms-h8) at dev.to/myndpm
 - What else can we implement to support business-logic? join [this discussion](https://github.com/myndpm/open-source/discussions/4).

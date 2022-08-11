@@ -6,31 +6,32 @@ Here we will understand all about the input Control Parameters.
 
 What do we understand about Parameters?
 The parameters behave as the only `@Input` of the DynControls.
-It receives any required data and also updates via matchers.
+We pass any required data to the Control through the params, which can be async.
+They could be also updated via Matchers.
 
 ## Initialization
 
-The params are initialized with the default configuration and merged with the current mode.
+The default configuration params are merged with the current mode config (if any).
 Also, there can be updates from custom functions like Matchers, or programatical node updates.
 
 ## Functions in Parameters
 
-The config has `paramFns` which can be provided to be referenced by `id`.
+The config has a `paramFns` field which can be used to provide functions by `id`.
 
-The library provides some default functions like `getOptionText`, `getParamsField` and `formatYesNo`.
+The library provides some default functions like `getOptionText`, `getParamsField` and `formatYesNo`. Check how they are used in the [simple dynamic form](https://mynd.dev/demos/dyn-forms/simple-form) demo config.
 
 ## Examples
 
-We have used the parameters in the `ui-material` to define the labels, placeholders,
-and any kind of data required by the field should be in the `params`.
+We have used the parameters in the `ui-material` to define the labels, placeholders, etc.
+Any kind of data required by the field should be in the `params`.
 
-That's why the Dynamic Control can implement the `completeParams` method so we can validate
-the incoming params and we complete the missing fields with default values,
-so the Control functionality and template works without exceptions.
+For safety, the Dynamic Control can implement the `completeParams` method so it can validate
+the incoming params and complete the missing fields with default values,
+to avoid exceptions in the template and guarantee the expected functionality of the control.
 
 ### Material INPUT
 
-We have implemented many of the supported Inputs of `mat-input` in the [DynMatInputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/components/input/input.component.ts).
+We have implemented many of the supported Inputs of `mat-input` in the [DynMatInputComponent](https://github.com/myndpm/open-source/blob/master/libs/forms/ui-material/src/components/input/input.component.ts) parameters.
 
 ## Next
 
