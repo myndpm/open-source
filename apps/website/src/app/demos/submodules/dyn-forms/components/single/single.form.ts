@@ -5,7 +5,7 @@ export function singleForm(): DynFormConfig<'form'|'success'> {
   return {
     controls: [
       createMatConfig('INPUT', {
-        name: 'Subscribe',
+        name: 'email',
         validators: ['required', 'email'],
         cssClass: 'col-sm-6 col-md-4',
         params: {
