@@ -35,7 +35,7 @@ implements OnInit {
   }
 
   // hook propagated to children DynControls
-  callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
+  override callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
     if (!plain && !Array.isArray(payload)) {
       return;
     }
