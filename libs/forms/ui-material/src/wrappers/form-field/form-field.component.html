@@ -17,5 +17,6 @@
   <span *ngIf="params.textSuffix" matSuffix>{{ params.textSuffix }}</span>
 
   <mat-hint *ngIf="params.hint">{{ params.hint }}</mat-hint>
+  <mat-hint *ngIf="params.hintEnd" [align]="'end'">{{ params.hintEnd }}</mat-hint>
   <!--mat-error *ngIf="errorMsg$ | async as errorMsg">{{ errorMsg }}</mat-error-->
 </mat-form-field>

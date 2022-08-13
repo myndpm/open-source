@@ -5,6 +5,7 @@ export interface DynMatFormFieldParams {
   readonly?: boolean;
   label?: string;
   hint?: string;
+  hintEnd?: string;
   iconPrefix?: string;
   iconSuffix?: string;
   textSuffix?: string;
