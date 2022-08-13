@@ -1,19 +1,14 @@
-<!-- design decision to force the always-floating-label on display-mode -->
-<mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
-  <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
+<input
+  matInput
+  [formControl]="control"
+  [placeholder]="params.placeholder"
+  [matDatepicker]="picker"
+/>
+<mat-datepicker #picker (opened)="onOpened()"></mat-datepicker>
+<ng-template #ngContent>
+  <mat-datepicker-toggle class="not-readonly" [for]="picker"></mat-datepicker-toggle>
+</ng-template>
 
-  <input
-    matInput
-    [formControl]="control"
-    [placeholder]="params.placeholder"
-    [matDatepicker]="picker"
-  />
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-
-  <span *ngIf="params.readonly">
-    {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
-  </span>
-
-  <mat-hint *ngIf="params.hint">{{ params.hint }}</mat-hint>
-</mat-form-field>
+<span *ngIf="params.readonly">
+  {{ (params.getValue ? params.getValue(node) : control.value) || '-' }}
+</span>

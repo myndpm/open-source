@@ -7,9 +7,13 @@
 ## Forms
 
 - Try to detect conflicts with incoming patch values to dirty edit inside the controls
+- Declarative validation config with something like <https://vestjs.dev/>
+  - Support warning messages for probable mistakes filling data (like age, etc)
 
 ## Form Controls
 
+- Fix requiredMarker inside FORM-FIELD
+- Datepicker proper functionality toggling edit/display
 - HIDDEN DynControl not rendering completely is really necessary or enough to setup manually in the FormGroup? it needs special count treatment
 - Nested DynForms do not mark the root as loaded
 - Check FormDirectives responsibilities to apply in DynFormTreeNode if the validators doesn't work

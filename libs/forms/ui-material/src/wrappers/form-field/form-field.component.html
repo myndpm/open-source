@@ -4,6 +4,14 @@
 
   <ng-container #dynContainer></ng-container>
 
+  <ng-container matPrefix *ngFor="let item of templates.get('prefix')">
+    <ng-container [ngTemplateOutlet]="item.template" [ngTemplateOutletContext]="item.params"></ng-container>
+  </ng-container>
+
+  <ng-container matSuffix *ngFor="let item of templates.get('suffix')">
+    <ng-container [ngTemplateOutlet]="item.template" [ngTemplateOutletContext]="item.params"></ng-container>
+  </ng-container>
+
   <mat-icon *ngIf="params.iconPrefix" matPrefix>{{ params.iconPrefix }}</mat-icon>
   <mat-icon *ngIf="params.iconSuffix" matSuffix>{{ params.iconSuffix }}</mat-icon>
   <span *ngIf="params.textSuffix" matSuffix>{{ params.textSuffix }}</span>
