@@ -1,7 +1,8 @@
 import { ErrorStateMatcher } from '@angular/material/core';
-import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynMatFormFieldParams } from '../../wrappers';
 
-export interface DynMatInputParams extends DynParams {
+export interface DynMatInputParams extends Partial<DynMatFormFieldParams> {
   type: 'color' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | 'textarea';
   placeholder: string;
   readonly?: boolean;

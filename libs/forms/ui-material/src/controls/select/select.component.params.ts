@@ -1,7 +1,8 @@
 import { MatOption } from '@angular/material/core';
-import { DynParams, DynOption, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynOption, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynMatFormFieldParams } from '../../wrappers';
 
-export interface DynMatSelectParams extends DynParams {
+export interface DynMatSelectParams extends Partial<DynMatFormFieldParams> {
   label?: string;
   placeholder: string;
   multiple?: boolean;

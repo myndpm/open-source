@@ -1,5 +1,5 @@
 <!-- design decision to force the always-floating-label on display-mode -->
-<mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel">
+<mat-form-field [floatLabel]="params.readonly ? 'always' : params.floatLabel ?? 'auto'">
   <mat-label *ngIf="params.label">{{ params.label }}</mat-label>
 
   <ng-container #dynContainer></ng-container>

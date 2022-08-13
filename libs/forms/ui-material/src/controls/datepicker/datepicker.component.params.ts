@@ -1,6 +1,7 @@
-import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynMatFormFieldParams } from '../../wrappers';
 
-export interface DynMatDatepickerParams extends DynParams {
+export interface DynMatDatepickerParams extends Partial<DynMatFormFieldParams> {
   placeholder: string;
   readonly?: boolean;
   // paramFns
