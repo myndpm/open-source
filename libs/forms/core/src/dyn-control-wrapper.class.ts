@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Directive, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { isObservable, of } from 'rxjs';
 import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
@@ -20,7 +20,7 @@ export abstract class DynWrapper<
   TConfig extends DynWrapperConfig<TParams> = DynWrapperConfig<TParams>,
 >
 extends DynControl<string, TParams, any, any>
-implements OnInit, OnDestroy {
+implements OnInit {
   @ViewChild('dynContainer', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 

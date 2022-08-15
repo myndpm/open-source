@@ -1,13 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, TemplateRef, ViewChild } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import {
-  DynConfig,
-  DynFormControl,
-  DynInstanceType,
-  DynMode,
-  DynPartialControlConfig,
-} from '@myndpm/dyn-forms/core';
+import { DynConfig, DynFormControl, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldWrapper } from '../../wrappers';
 import { DynMatDatepickerParams } from './datepicker.component.params';
 
@@ -50,10 +44,7 @@ extends DynFormControl<DynMode, DynMatDatepickerParams> {
     super.ngOnInit();
 
     // register into the closest mat-form-field wrapper
-    const formField = this.node.searchCmp(
-      DynMatFormFieldWrapper,
-      ({ instance }) => instance === DynInstanceType.Wrapper,
-    );
+    const formField = this.node.searchWrapper(DynMatFormFieldWrapper);
     formField?.attachControl(this.fieldControl);
     formField?.addTemplate('suffix', this.ngContent, { picker: this.picker });
   }

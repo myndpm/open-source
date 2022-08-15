@@ -108,13 +108,14 @@ implements DynTreeNode<TParams, TControl> {
   private _control!: TControl;
   private _matchers?: DynMatch[];
   private _params!: TParams;
-  private _initLoaded = false; // onInit called
+  private _initLoaded = false; // init called
   private _loadLoaded = false; // load called
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _params$!: Observable<TParams>;
   private _changed$ = new Subject<void>();
+  private _changedCtrl$ = new Subject<void>();
   private _children$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _loadedParams$ = new BehaviorSubject<boolean>(false);
@@ -402,12 +403,16 @@ implements DynTreeNode<TParams, TControl> {
     return result;
   }
 
+  searchWrapper<T>(component: Type<T>): T|undefined {
+    return this.searchCmp(component, ({ instance }) => instance === DynInstanceType.Wrapper);
+  }
+
   /**
-   * run a function in the current and parent nodes until it returns a truthy value.
+   * run a function in the current and/or parent nodes until it returns a truthy value.
    */
-  exec<T>(fn: (node: DynTreeNode) => T): T|undefined {
+  exec<T>(fn: (node: DynTreeNode) => T, includeSelf = false): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<TParams, any> = this;
+    let node: DynFormTreeNode<TParams, any> = includeSelf ? this : this.parent;
     let result: any;
 
     do {
@@ -422,16 +427,16 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * run a function in the parent nodes that are WRAPPERs.
    */
-  execInWrappers<T>(fn: (node: DynTreeNode) => any): void {
+  execInWrappers(fn: (node: DynTreeNode) => any): void {
     this.exec(
       (node: DynTreeNode) => {
-        // update the local node and parent wrappers
-        if (node !== this && node.instance !== DynInstanceType.Wrapper) {
+        if (node.instance !== DynInstanceType.Wrapper) {
           return true;
         }
         fn(node);
         return false;
-      }
+      },
+      false,
     );
   }
 
@@ -447,7 +452,6 @@ implements DynTreeNode<TParams, TControl> {
     if (this._initLoaded) {
       return this.logger.nodeMethodCalledTwice('init', this);
     }
-
     this._initLoaded = true;
 
     // throw error if the name is already set and different to the incoming one
@@ -480,11 +484,16 @@ implements DynTreeNode<TParams, TControl> {
     this.load({ ...config, component });
   }
 
+  wrap(node: DynTreeNode): void {
+    this._control = node.control as TControl;
+    this.path = node.path;
+    this._changedCtrl$.next();
+  }
+
   configure(config: DynFormTreeNodeConfigure<TParams, TControl, TComponent>): void {
     if (this._initLoaded) {
       return this.logger.nodeMethodCalledTwice('override', this);
     }
-
     this._initLoaded = true;
 
     // manual setup with no wiring nor config validation
@@ -536,6 +545,11 @@ implements DynTreeNode<TParams, TControl> {
     // store the matchers to be processed in node.setup()
     this._matchers = this.getMatchers(config);
 
+    // TODO move error message handler to a class and pass it to the WRAPPERs
+    if (this._instance === DynInstanceType.Control) {
+      this.execInWrappers((node) => node.wrap(this));
+    }
+
     // resolve and store the error handlers
     this._errorHandlers = config.errorMsgs
       ? this.formHandlers.getFormErrorHandlers(config.errorMsgs)
@@ -576,10 +590,12 @@ implements DynTreeNode<TParams, TControl> {
       this._formLoaded = true;
 
       // listen control changes to update the error
-      merge(
-        this._control.valueChanges,
-        this._control.statusChanges,
-      ).pipe(
+      this._changedCtrl$.pipe(
+        startWith(null),
+        switchMap(() => merge(
+          this._control.valueChanges.pipe(startWith(this._control.value)),
+          this._control.statusChanges,
+        )),
         takeUntil(this._unsubscribe$),
         debounceTime(20), // wait for subcontrols to be updated
         map(() => this._control.errors),
@@ -655,7 +671,9 @@ implements DynTreeNode<TParams, TControl> {
       this.parent?.removeChild(this);
     }
 
+    this._dynCmp = undefined;
     this._changed$.complete();
+    this._changedCtrl$.complete();
     this._children$.complete();
     this._loaded$.complete();
     this._loadedParams$.complete();

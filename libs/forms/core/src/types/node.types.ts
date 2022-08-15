@@ -8,7 +8,7 @@ import { DynParams } from './params.types';
 // generic interface of DynFormTreeNode
 export interface DynTreeNode<
   TParams extends DynParams = DynParams,
-  TControl extends AbstractControl = AbstractControl
+  TControl extends AbstractControl = AbstractControl,
 > {
   root: DynTreeNode;
   isRoot: boolean;
@@ -59,11 +59,21 @@ export interface DynTreeNode<
     predicate?: (node: DynTreeNode) => boolean,
   ): T|undefined;
 
+  searchWrapper<T>(
+    component: Type<T>,
+  ): T|undefined;
+
   exec<T>(
     fn: (node: DynTreeNode) => T,
+    includeSelf?: boolean,
   ): T|undefined;
 
   execInWrappers<T>(
     fn: (node: DynTreeNode) => any,
-  ): void
+  ): void;
+
+  /**
+   * @internal used to setup the WRAPPERs
+   */
+  wrap(node: DynTreeNode): void;
 }

@@ -12,7 +12,7 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, scan } from 'rxjs/operators';
+import { scan } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
@@ -105,7 +105,7 @@ implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.node.params$.pipe(
+    this.params$.pipe(
       scan(
         (previous, params) => {
           // emulates ngOnChanges

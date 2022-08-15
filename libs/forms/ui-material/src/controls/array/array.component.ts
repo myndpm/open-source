@@ -8,7 +8,6 @@ import { FormGroup } from '@angular/forms';
 import {
   DynConfig,
   DynFormArray,
-  DynInstanceType,
   DynMode,
   DynPartialControlConfig,
 } from '@myndpm/dyn-forms/core';
@@ -25,8 +24,6 @@ extends DynFormArray<DynMode, DynMatArrayParams, DynConfig>
 implements AfterViewInit {
 
   static dynControl: 'ARRAY' = 'ARRAY';
-
-  dynInstanceType = DynInstanceType;
 
   static createConfig<M extends DynMode>(
     partial: DynPartialControlConfig<M, DynMatArrayParams>
