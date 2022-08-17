@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
-import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, merge, isObservable, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, merge, isObservable, of } from 'rxjs';
 import { debounceTime, delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlHook } from './types/events.types';
@@ -14,6 +14,7 @@ import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
+import { onComplete } from './utils/rxjs.utils';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
@@ -249,24 +250,26 @@ implements DynTreeNode<TParams, TControl> {
     this._control.reset(value, options);
   }
 
-  patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): Subscription {
-    return this.whenReady().pipe(
-      tap(() => {
-        this.markAsPending();
-        this.logger.formCycle('PrePatch');
-        this.callHook({ hook: 'PrePatch', payload, plain: false });
-      }),
-      delay(20), // waits any PrePatch loading change
-      switchMap(() => {
-        this.markAsLoaded();
-        return this.whenReady();
-      }),
-      tap(() => {
-        this._control.patchValue(payload, options);
-        this.logger.formCycle('PostPatch', this._control.value);
-        this.callHook({ hook: 'PostPatch', payload, plain: false });
-      }),
-    ).subscribe();
+  patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): Observable<void> {
+    return onComplete(
+      this.whenReady().pipe(
+        tap(() => {
+          this.markAsPending();
+          this.logger.formCycle('PrePatch');
+          this.callHook({ hook: 'PrePatch', payload, plain: false });
+        }),
+        delay(20), // waits any PrePatch loading change
+        switchMap(() => {
+          this.markAsLoaded();
+          return this.whenReady();
+        }),
+        tap(() => {
+          this._control.patchValue(payload, options);
+          this.logger.formCycle('PostPatch', this._control.value);
+          this.callHook({ hook: 'PostPatch', payload, plain: false });
+        }),
+      ),
+    );
   }
 
   // listen another control value changes
@@ -281,22 +284,26 @@ implements DynTreeNode<TParams, TControl> {
    * Snapshots
    */
 
-  track(defaultMode?: DynMode): Subscription {
+  track(defaultMode?: DynMode): Observable<void> {
     this._untrack$.next();
-    return this.ready$.pipe(
-      filter(Boolean),
-      switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
-      takeUntil(this._untrack$)
-    ).subscribe(([currentMode, event]) => {
-      if (defaultMode && !event && !this._snapshots.size) {
-        // snapshot of the initial mode
-        this._snapshots.set(defaultMode, this._control.value);
-      } else if (!event || event.hook === 'PostPatch') {
-        // updates the default snapshot or the current mode
-        const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
-        this._snapshots.set(mode, this._control.value);
-      }
-    });
+
+    return onComplete(
+      this.ready$.pipe(
+        filter(Boolean),
+        switchMap(() => combineLatest([this.mode$, this._hook$.pipe(startWith(null))])),
+        takeUntil(this._untrack$)
+      ),
+      ([currentMode, event]) => {
+        if (defaultMode && !event && !this._snapshots.size) {
+          // snapshot of the initial mode
+          this._snapshots.set(defaultMode, this._control.value);
+        } else if (!event || event.hook === 'PostPatch') {
+          // updates the default snapshot or the current mode
+          const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
+          this._snapshots.set(mode, this._control.value);
+        }
+      },
+    );
   }
 
   untrack(mode?: DynMode): void {

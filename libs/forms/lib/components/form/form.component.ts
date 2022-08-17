@@ -24,10 +24,11 @@ import {
   DynHookUpdateValidity,
   DynMode,
   DynModes,
+  onComplete,
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, delay, filter, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
 
@@ -177,69 +178,75 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return this.node.whenReady();
   }
 
-  track(mode?: DynMode): Subscription {
+  track(mode?: DynMode): Observable<void> {
     return this.callHook('Track', mode, false, true);
   }
 
-  untrack(mode?: DynMode): Subscription {
+  untrack(mode?: DynMode): Observable<void> {
     return this.callHook('Untrack', mode, true);
   }
 
   // notify the dyn hierarchy about the incoming data
-  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): Subscription {
-    return this.whenReady().pipe(
-      tap(() => {
-        this.node.markAsPending();
-        this.logger.formCycle('PrePatch');
-        this.callHook('PrePatch', value, false);
-      }),
-      delay(20), // waits any PrePatch loading change
-      switchMap(() => {
-        this.node.markAsLoaded();
-        return this.whenReady();
-      }),
-      tap(() => {
-        this.logger.formCycle('PostPatch', this.form.value);
-        this.form.patchValue(value);
-        this.callHook('PostPatch', value, false);
-      }),
-    ).subscribe(() => {
-      if (callback) {
-        callback(this.node);
-      }
-    });
+  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): Observable<void> {
+    return onComplete(
+      this.whenReady().pipe(
+        tap(() => {
+          this.node.markAsPending();
+          this.logger.formCycle('PrePatch');
+          this.callHook('PrePatch', value, false);
+        }),
+        delay(20), // waits any PrePatch loading change
+        switchMap(() => {
+          this.node.markAsLoaded();
+          return this.whenReady();
+        }),
+        tap(() => {
+          this.logger.formCycle('PostPatch', this.form.value);
+          this.form.patchValue(value);
+          this.callHook('PostPatch', value, false);
+        }),
+      ),
+      () => {
+        if (callback) {
+          callback(this.node);
+        }
+      },
+    );
   }
 
   // update the validators programatically
-  validate(opts?: DynHookUpdateValidity): Subscription {
+  validate(opts?: DynHookUpdateValidity): Observable<void> {
     return this.callHook('UpdateValidity', opts);
   }
 
   // trigger change detection programatically
-  detectChanges(): Subscription {
+  detectChanges(): Observable<void> {
     return this.callHook('DetectChanges');
   }
 
   // call a hook in the dyn hierarchy using plain/hierarchical data
-  callHook(hook: string, payload?: any, plain = true, force = false): Subscription {
-    return this.whenReady().subscribe(() => {
-      this.node.children.forEach(node => {
-        const fieldName = node.name;
-        // validate the expected payload
-        if (!force && !plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
-          return;
-        }
-        node.callHook({
-          hook,
-          payload: !force && !plain && fieldName ? payload[fieldName!] : payload,
-          plain,
+  callHook(hook: string, payload?: any, plain = true, force = false): Observable<void> {
+    return onComplete(
+      this.whenReady(),
+      () => {
+        this.node.children.forEach(node => {
+          const fieldName = node.name;
+          // validate the expected payload
+          if (!force && !plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+            return;
+          }
+          node.callHook({
+            hook,
+            payload: !force && !plain && fieldName ? payload[fieldName!] : payload,
+            plain,
+          });
         });
-      });
-      // invoke listeners after the field hooks
-      if (this.listeners.has(hook)) {
-        this.listeners.get(hook)?.map(listener => listener(payload));
-      }
-    });
+        // invoke listeners after the field hooks
+        if (this.listeners.has(hook)) {
+          this.listeners.get(hook)?.map(listener => listener(payload));
+        }
+      },
+    );
   }
 
   // register hook listener

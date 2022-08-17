@@ -31,3 +31,4 @@ export * from './src/form-tree-node.service';
 export * from './src/form-config-resolver.service';
 
 export * from './src/utils/merge.util';
+export * from './src/utils/rxjs.utils';

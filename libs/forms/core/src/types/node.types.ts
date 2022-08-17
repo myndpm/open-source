@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DynControlHook } from './events.types';
 import { DynInstanceType } from './forms.types';
 import { DynParams } from './params.types';
@@ -36,10 +36,10 @@ export interface DynTreeNode<
   callHook(event: DynControlHook): void;
 
   reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
-  patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): Subscription;
+  patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): Observable<void>;
   valueChanges(path: string): Observable<any>|undefined;
 
-  track(defaultMode?: string): Subscription;
+  track(defaultMode?: string): Observable<void>;
   untrack(mode?: string): void;
 
   search(path: string): AbstractControl|null;
