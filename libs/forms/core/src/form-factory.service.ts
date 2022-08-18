@@ -8,7 +8,7 @@ import {
 import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynInstanceType } from './types/forms.types';
-import { DynTreeNode } from './types/node.types';
+import { DynNode } from './types/node.types';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
 import { DynFormTreeNode } from './form-tree-node.service';
@@ -106,28 +106,28 @@ export class DynFormFactory {
    */
   build(
     instance: DynInstanceType.Container | DynInstanceType.Group,
-    node: DynTreeNode,
+    node: DynNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormGroup };
   build(
     instance: DynInstanceType.Array,
-    node: DynTreeNode,
+    node: DynNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormArray };
   build(
     instance: DynInstanceType.Control,
-    node: DynTreeNode,
+    node: DynNode,
     config: DynBaseConfig,
     recursively?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: FormControl };
   build<T extends AbstractControl>(
     instance: DynInstanceType,
-    node: DynTreeNode,
+    node: DynNode,
     config: DynBaseConfig,
     recursively = false,
     controlName = config.name,
@@ -183,7 +183,7 @@ export class DynFormFactory {
    */
   buildControls(
     parent: FormGroup,
-    node: DynTreeNode,
+    node: DynNode,
     config: DynBaseConfig,
   ): void {
     config.controls?.forEach((item) => {

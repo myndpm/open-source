@@ -8,7 +8,7 @@ import {
   DynMatcherFn,
   DynMatchRelation,
 } from './types/matcher.types';
-import { DynTreeNode } from './types/node.types';
+import { DynNode } from './types/node.types';
 import { DynFunction, DynFunctionFn } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import {
@@ -36,12 +36,12 @@ export function mapPriority<T extends DynBaseProvider>(priority?: number) {
 export const defaultValidators: DynValidator[] = [
   { id: 'required', fn: () => Validators.required },
   { id: 'requiredTrue', fn: () => Validators.requiredTrue },
-  { id: 'pattern', fn: (node: DynTreeNode, pattern: string | RegExp) => Validators.pattern(pattern) },
-  { id: 'minLength', fn: (node: DynTreeNode, minLength: number) => Validators.minLength(minLength) },
-  { id: 'maxLength', fn: (node: DynTreeNode, minLength: number) => Validators.maxLength(minLength) },
+  { id: 'pattern', fn: (node: DynNode, pattern: string | RegExp) => Validators.pattern(pattern) },
+  { id: 'minLength', fn: (node: DynNode, minLength: number) => Validators.minLength(minLength) },
+  { id: 'maxLength', fn: (node: DynNode, minLength: number) => Validators.maxLength(minLength) },
   { id: 'email', fn: () => Validators.email },
-  { id: 'min', fn: (node: DynTreeNode, min: number) => Validators.min(min) },
-  { id: 'max', fn: (node: DynTreeNode, max: number) => Validators.max(max) },
+  { id: 'min', fn: (node: DynNode, min: number) => Validators.min(min) },
+  { id: 'max', fn: (node: DynNode, max: number) => Validators.max(max) },
 ].map(
   mapPriority<DynValidator>()
 );
@@ -52,7 +52,7 @@ export const defaultValidators: DynValidator[] = [
 export const defaultAsyncValidators: DynAsyncValidator[] = [
   {
     id: 'RELATED',
-    fn: (node: DynTreeNode, config: DynMatchRelation, validator: ValidatorFn = Validators.required) => {
+    fn: (node: DynNode, config: DynMatchRelation, validator: ValidatorFn = Validators.required) => {
       return (control: AbstractControl): Observable<ValidationErrors | null> => {
         return node.root.loaded$.pipe(
           first(Boolean),
@@ -171,7 +171,7 @@ export const defaultConditions: DynCondition[] = [
   {
     id: 'MODE',
     fn: (mode: string): DynConditionFn => {
-      return (node: DynTreeNode) => {
+      return (node: DynNode) => {
         return node.mode$.pipe(map(value => value === mode));
       }
     },
@@ -187,7 +187,7 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
   {
     id: 'FORM',
     fn: (messages: DynErrorMessages): DynErrorHandlerFn => {
-      return ({ control, path }: DynTreeNode) => {
+      return ({ control, path }: DynNode) => {
         if (!control.errors) {
           return null;
         }
@@ -217,7 +217,7 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
   {
     id: 'CONTROL',
     fn: (messages: DynControlErrors): DynErrorHandlerFn => {
-      return ({ control }: DynTreeNode) => {
+      return ({ control }: DynNode) => {
         // match the control errors with the configured messages
         return control.errors
           ? Object.keys(control.errors).reduce<DynErrorMessage>((result, error) => {
@@ -243,7 +243,7 @@ export const defaultFunctions: DynFunction[] = [
   {
     id: 'formatText',
     fn: (defaultText = '-'): DynFunctionFn<string> => {
-      return (node: DynTreeNode) => {
+      return (node: DynNode) => {
         return node.control.value || defaultText;
       }
     },
@@ -251,7 +251,7 @@ export const defaultFunctions: DynFunction[] = [
   {
     id: 'formatYesNo',
     fn: (isBinary = true, defaultText = '-'): DynFunctionFn<string> => {
-      return (node: DynTreeNode) => {
+      return (node: DynNode) => {
         return node.control.value === true
           ? 'Yes'
           : isBinary || node.control.value === false
@@ -263,7 +263,7 @@ export const defaultFunctions: DynFunction[] = [
   {
     id: 'getOptionText',
     fn: (): DynFunctionFn<string> => {
-      return (node: DynTreeNode) => {
+      return (node: DynNode) => {
         const value = node.control.value;
         const option = node.params.options.find((o: any) => o.value === value);
         return value && option ? option.value : value;
@@ -273,7 +273,7 @@ export const defaultFunctions: DynFunction[] = [
   {
     id: 'getParamsField',
     fn: (field = 'label', defaultText = '-'): DynFunctionFn<string> => {
-      return (node: DynTreeNode) => {
+      return (node: DynNode) => {
         return node.params[field] || defaultText;
       }
     },
@@ -286,7 +286,7 @@ export const defaultFunctions: DynFunction[] = [
  * Related Condition
  */
 function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): DynConditionFn {
-  return (node: DynTreeNode) => {
+  return (node: DynNode) => {
     const control = node.search(path);
     if (!control) {
       console.error(`Control '${path}' not found inside a Condition`)

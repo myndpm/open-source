@@ -1,5 +1,5 @@
 import { MatOption } from '@angular/material/core';
-import { DynOption, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynNode, DynOption } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldParams } from '../../wrappers';
 
 export interface DynMatSelectParams extends Partial<DynMatFormFieldParams> {
@@ -11,5 +11,5 @@ export interface DynMatSelectParams extends Partial<DynMatFormFieldParams> {
   sortComparator: (a: MatOption, b: MatOption, options: MatOption[]) => number;
   panelClass: string | string[] | Set<string> | { [key: string]: any };
   // paramFns
-  getValue?: (node: DynTreeNode) => string;
+  getValue?: (node: DynNode) => string;
 }

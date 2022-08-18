@@ -1,13 +1,13 @@
 import { Directive, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DynConfig } from './types/config.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynMode } from './types/mode.types';
+import { DynNode } from './types/node.types';
 import { DynParams } from './types/params.types';
 import { DynControl } from './dyn-control.class';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { DynTreeNode } from './types/node.types';
 
 type ArgumentsType<F> = F extends (...args: infer A) => any ? A : never;
 
@@ -70,7 +70,7 @@ implements OnInit {
       .subscribe(() => {
         this._ref.markForCheck();
         this.node.execInWrappers(
-          (node: DynTreeNode) => node.callHook({ hook: 'DetectChanges', plain: true })
+          (node: DynNode) => node.callHook({ hook: 'DetectChanges', plain: true })
         )
       });
   }

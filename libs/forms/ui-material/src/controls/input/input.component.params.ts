@@ -1,5 +1,5 @@
 import { ErrorStateMatcher } from '@angular/material/core';
-import { DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynNode } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldParams } from '../../wrappers';
 
 export interface DynMatInputParams extends Partial<DynMatFormFieldParams> {
@@ -9,5 +9,5 @@ export interface DynMatInputParams extends Partial<DynMatFormFieldParams> {
   rows?: number; // for textarea type
   errorStateMatcher: ErrorStateMatcher;
   // paramFns
-  getValue?: (node: DynTreeNode) => string;
+  getValue?: (node: DynNode) => string;
 }

@@ -1,5 +1,5 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
-import { DynTreeNode } from './node.types';
+import { DynNode } from './node.types';
 import { DynBaseHandler, DynConfigProvider } from './provider.types';
 
 /**
@@ -14,7 +14,7 @@ export type DynErrorMessages = Record<string, DynControlErrors>;
 // string to be displayed for a particular error
 export type DynControlErrors = DynErrorMessage | Record<DynErrorId, DynErrorMessage>;
 
-export type DynErrorHandlerFn = (node: DynTreeNode) => DynErrorMessage;
+export type DynErrorHandlerFn = (node: DynNode) => DynErrorMessage;
 export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;
 
 /**
@@ -27,10 +27,10 @@ export interface DynFormConfigErrors { errorMsgs?: DynConfigErrors<DynErrorMessa
 /**
  * provided validators
  */
-export type DynValidatorFn = (node: DynTreeNode, ...args: any[]) => ValidatorFn;
+export type DynValidatorFn = (node: DynNode, ...args: any[]) => ValidatorFn;
 export type DynValidator = DynBaseHandler<ValidatorFn, DynValidatorFn>;
 
-export type DynAsyncValidatorFn = (node: DynTreeNode, ...args: any[]) => AsyncValidatorFn;
+export type DynAsyncValidatorFn = (node: DynNode, ...args: any[]) => AsyncValidatorFn;
 export type DynAsyncValidator = DynBaseHandler<AsyncValidatorFn, DynAsyncValidatorFn>;
 
 /**

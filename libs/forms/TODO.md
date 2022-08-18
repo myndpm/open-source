@@ -2,7 +2,7 @@
 
 ## Documentation
 
-- Matchers: Search abilities of DynTreeNode depending on the form relative paths.
+- Matchers: Search abilities of DynNode depending on the form relative paths.
 
 ## Forms
 

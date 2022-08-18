@@ -11,7 +11,7 @@ import {
   DynMatcherFn,
   isMatchCondition,
 } from './types/matcher.types';
-import { DynTreeNode } from './types/node.types';
+import { DynNode } from './types/node.types';
 import { DynFunction, DynFunctionFn } from './types/params.types';
 import {
   DynBaseHandler,
@@ -100,7 +100,7 @@ export class DynFormHandlers {
     );
   }
 
-  getControlOptions(node: DynTreeNode, config?: DynControlConfig): AbstractControlOptions {
+  getControlOptions(node: DynNode, config?: DynControlConfig): AbstractControlOptions {
     return {
       validators: this.dynValidators(node, this.validators, config?.validators),
       asyncValidators: this.dynValidators(node, this.asyncValidators, config?.asyncValidators),
@@ -209,7 +209,7 @@ export class DynFormHandlers {
   }
 
   private dynValidators<F extends Function>(
-    node: DynTreeNode,
+    node: DynNode,
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
     config?: DynConfigCollection<F>,
   ): F[]|null {
@@ -229,7 +229,7 @@ export class DynFormHandlers {
   }
 
   private getValidatorFn<F extends Function>(
-    node: DynTreeNode,
+    node: DynNode,
     config: DynConfigProvider<F>,
     dictionary: Map<DynConfigId, DynHandlerFactory<F>>,
   ): F {

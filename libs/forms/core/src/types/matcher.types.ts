@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { DynConfigArgs } from './forms.types';
-import { DynTreeNode } from './node.types';
+import { DynNode } from './node.types';
 import { DynBaseHandler, DynConfigId, DynConfigProvider } from './provider.types';
 
 /**
@@ -33,7 +33,7 @@ export interface DynMatchCondition extends DynMatchRelation {
  * ie. DISABLE, ENABLE, SHOW, HIDE, INVISIBLE, etc
  */
 export interface DynMatcherArgs {
-  node: DynTreeNode;
+  node: DynNode;
   hasMatch: boolean;
   firstTime: boolean;
   results: any[];
@@ -44,7 +44,7 @@ export type DynMatcher = DynBaseHandler<DynMatcherFn>;
 /**
  * condition handlers
  */
-export type DynConditionFn = (node: DynTreeNode) => Observable<any>;
+export type DynConditionFn = (node: DynNode) => Observable<any>;
 export type DynCondition = DynBaseHandler<DynConditionFn>;
 
 /**

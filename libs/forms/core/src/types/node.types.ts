@@ -6,11 +6,11 @@ import { DynInstanceType } from './forms.types';
 import { DynParams } from './params.types';
 
 // generic interface of DynFormTreeNode
-export interface DynTreeNode<
+export interface DynNode<
   TParams extends DynParams = DynParams,
   TControl extends AbstractControl = AbstractControl,
 > {
-  root: DynTreeNode;
+  root: DynNode;
   isRoot: boolean;
   name: string|undefined;
   path: string[];
@@ -56,7 +56,7 @@ export interface DynTreeNode<
 
   searchCmp<T>(
     component: Type<T>,
-    predicate?: (node: DynTreeNode) => boolean,
+    predicate?: (node: DynNode) => boolean,
   ): T|undefined;
 
   searchWrapper<T>(
@@ -64,11 +64,16 @@ export interface DynTreeNode<
   ): T|undefined;
 
   exec<T>(
-    fn: (node: DynTreeNode) => T,
+    fn: (node: DynNode) => T,
     includeSelf?: boolean,
   ): T|undefined;
 
   execInWrappers<T>(
-    fn: (node: DynTreeNode) => any,
+    fn: (node: DynNode) => any,
   ): void;
 }
+
+/**
+ * @deprecated use DynNode
+ */
+export type DynTreeNode = DynNode;

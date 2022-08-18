@@ -1,5 +1,5 @@
 import { ThemePalette } from '@angular/material/core';
-import { DynParams, DynTreeNode } from '@myndpm/dyn-forms/core';
+import { DynNode, DynParams } from '@myndpm/dyn-forms/core';
 
 export interface DynMatCheckboxParams extends DynParams {
   label: string;
@@ -8,5 +8,5 @@ export interface DynMatCheckboxParams extends DynParams {
   indeterminate?: boolean;
   readonly?: boolean;
   // paramFns
-  getValue?: (node: DynTreeNode) => string;
+  getValue?: (node: DynNode) => string;
 }

@@ -9,7 +9,7 @@ import { DynControlHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
-import { DynTreeNode } from './types/node.types';
+import { DynNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
@@ -28,7 +28,7 @@ export class DynFormTreeNode<
   TControl extends AbstractControl = FormGroup,
   TComponent = any,
 >
-implements DynTreeNode<TParams, TControl> {
+implements DynNode<TParams, TControl> {
   // form hierarchy
   isolated = false;
   index?: number = 0;
@@ -385,7 +385,7 @@ implements DynTreeNode<TParams, TControl> {
    */
   searchCmp<T>(
     component: Type<T>,
-    predicate: (node: DynTreeNode) => boolean = () => true,
+    predicate: (node: DynNode) => boolean = () => true,
   ): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<TParams, any> = this.parent;
@@ -409,7 +409,7 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * run a function in the current and/or parent nodes until it returns a truthy value.
    */
-  exec<T>(fn: (node: DynTreeNode) => T, includeSelf = false): T|undefined {
+  exec<T>(fn: (node: DynNode) => T, includeSelf = false): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynFormTreeNode<TParams, any> = includeSelf ? this : this.parent;
     let result: any;
@@ -426,9 +426,9 @@ implements DynTreeNode<TParams, TControl> {
   /**
    * run a function in the parent nodes that are WRAPPERs.
    */
-  execInWrappers(fn: (node: DynTreeNode) => any): void {
+  execInWrappers(fn: (node: DynNode) => any): void {
     this.exec(
-      (node: DynTreeNode) => {
+      (node: DynNode) => {
         if (node.instance !== DynInstanceType.Wrapper) {
           return true;
         }
