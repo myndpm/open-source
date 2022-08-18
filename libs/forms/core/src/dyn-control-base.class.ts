@@ -9,7 +9,7 @@ import { DynErrorMessage } from './types/validation.types';
 import { DynFormTreeNode } from './form-tree-node.service';
 
 @Directive()
-export abstract class DynControlNode<
+export abstract class DynControlBase<
   TParams extends DynParams,
   TControl extends AbstractControl,
 >

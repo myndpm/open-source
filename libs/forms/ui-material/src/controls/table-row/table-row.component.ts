@@ -17,7 +17,7 @@ import {
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
   DynBaseConfig,
-  DynControlNode,
+  DynControlBase,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynInstanceType,
@@ -38,7 +38,7 @@ import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 /**
  * This component just wraps the rows and its mat-cells.
  */
-export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> implements OnInit, AfterViewInit {
+export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> implements OnInit, AfterViewInit {
   @Input() group!: FormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];

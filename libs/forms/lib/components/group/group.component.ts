@@ -15,7 +15,7 @@ import {
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
   DynBaseConfig,
-  DynControlNode,
+  DynControlBase,
   DynFormConfigResolver,
   DynFormTreeNode,
   DynInstanceType,
@@ -36,7 +36,7 @@ import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 /**
  * This component just wraps the incoming controls in a FormGroup.
  */
-export class DynGroupComponent extends DynControlNode<any, FormGroup> implements OnInit, AfterViewInit {
+export class DynGroupComponent extends DynControlBase<any, FormGroup> implements OnInit, AfterViewInit {
   @Input() isolated = false;
   @Input() group!: FormGroup;
   @Input() name?: string;

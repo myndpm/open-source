@@ -20,7 +20,7 @@ import { DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMode } from './types/mode.types';
 import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
-import { DynControlNode } from './dyn-control-node.class';
+import { DynControlBase } from './dyn-control-base.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
@@ -40,7 +40,7 @@ export abstract class DynControl<
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
-extends DynControlNode<TParams, TControl>
+extends DynControlBase<TParams, TControl>
 implements OnInit, AfterViewInit, OnChanges {
 
   // central place to define the provided Type
