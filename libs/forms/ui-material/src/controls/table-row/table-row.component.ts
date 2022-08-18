@@ -127,16 +127,12 @@ export class DynMatTableRowComponent extends DynControlNode<any, FormGroup> impl
       ],
     });
 
-    if (this.node.parent?.instance === DynInstanceType.Container) {
-      this.node.parent.childrenIncrement();
-    }
-
-    this.node.configure({
-      formControl: this.group,
-      name: this.name,
-      control: 'DYN-MAT-TABLE-ROW',
-      controls: this.controls,
+    this.node.init({
       isolated: false,
+      instance: DynInstanceType.Group,
+      name: this.name,
+      control: 'TABLE-ROW',
+      controls: this.controls,
       component: this,
     });
     this.node.markParamsAsLoaded();

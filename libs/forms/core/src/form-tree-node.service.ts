@@ -1,9 +1,9 @@
 import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
-import { BehaviorSubject, Observable, Subject, combineLatest, merge, isObservable, of } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, combineLatest, isObservable, of } from 'rxjs';
+import { delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
@@ -12,24 +12,13 @@ import { DynMode } from './types/mode.types';
 import { DynTreeNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynConfigMap, DynConfigProvider } from './types/provider.types';
-import { DynErrorHandlerFn, DynErrorMessage, DynFormConfigErrors } from './types/validation.types';
+import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
+import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
-
-type DynFormTreeNodeLoad<TParams, TComponent> =
-  Partial<DynBaseConfig<string, TParams>> &
-  DynFormConfigErrors & {
-    instance?: DynInstanceType,
-    component: TComponent,
-  };
-
-type DynFormTreeNodeConfigure<TParams, TControl, TComponent> =
-  DynFormTreeNodeLoad<TParams, TComponent> & {
-    formControl: TControl;
-  };
 
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
@@ -44,7 +33,6 @@ implements DynTreeNode<TParams, TControl> {
   isolated = false;
   index?: number = 0;
   deep = 0;
-  path: string[] = [];
   route: string[] = [];
   children: DynFormTreeNode[] = [];
 
@@ -62,13 +50,10 @@ implements DynTreeNode<TParams, TControl> {
     return this._name;
   }
   get control(): TControl {
-    return this._control;
+    return this._node.control;
   }
   get params(): TParams {
     return this._params;
-  }
-  get isRoot(): boolean {
-    return this.isolated || !this.parent;
   }
   get isFormLoaded(): boolean {
     return this._formLoaded;
@@ -92,9 +77,15 @@ implements DynTreeNode<TParams, TControl> {
     return this._visibility$.asObservable();
   }
 
-  // form root node
+  // hierarchy
+  get isRoot(): boolean {
+    return this.isolated || !this.parent;
+  }
   get root(): DynFormTreeNode<any, any> {
     return this.isRoot ? this : this.parent.root;
+  }
+  get path(): string[] {
+    return this._node?.path || this.getPath();
   }
 
   // mode$ override
@@ -106,17 +97,15 @@ implements DynTreeNode<TParams, TControl> {
   private _dynCmp?: TComponent;
   private _name?: string;
   private _instance!: DynInstanceType;
-  private _control!: TControl;
+  private _node!: DynFormNode<TControl>;
   private _matchers?: DynMatch[];
   private _params!: TParams;
   private _initLoaded = false; // init called
-  private _loadLoaded = false; // load called
   private _formLoaded = false; // view already initialized
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _params$!: Observable<TParams>;
   private _changed$ = new Subject<void>();
-  private _changedCtrl$ = new Subject<void>();
   private _children$ = new BehaviorSubject<number>(0);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _loadedParams$ = new BehaviorSubject<boolean>(false);
@@ -222,16 +211,19 @@ implements DynTreeNode<TParams, TControl> {
   setupParams(
     params?: Partial<TParams>,
     paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>,
+    resetPrevious = true,
   ): void {
-    const value = mergeUtil(true, params, this.formHandlers.getFunctions(paramFns));
-    this.execInWrappers(
-      (node: DynTreeNode) => node.updateParams(value),
+    this.updateParams(
+      mergeUtil(true, params, this.formHandlers.getFunctions(paramFns)),
+      resetPrevious,
     );
   }
 
-  updateParams(params: Partial<TParams>): void {
-    this._paramsUpdates$.next(
-      mergeUtil(true, this._paramsUpdates$.value, params)
+  updateParams(params: Partial<TParams>, resetPrevious = false): void {
+    // FIXME this is not reseted on mode change?
+    this._paramsUpdates$.next(!resetPrevious
+      ? mergeUtil(true, this._paramsUpdates$.value, params)
+      : params
     );
   }
 
@@ -247,7 +239,7 @@ implements DynTreeNode<TParams, TControl> {
    */
 
   reset(value?: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): void {
-    this._control.reset(value, options);
+    this._node.control.reset(value, options);
   }
 
   patchValue(payload: any, options: { onlySelf?: boolean; emitEvent?: boolean; } = {}): Observable<void> {
@@ -264,8 +256,8 @@ implements DynTreeNode<TParams, TControl> {
           return this.whenReady();
         }),
         tap(() => {
-          this._control.patchValue(payload, options);
-          this.logger.formCycle('PostPatch', this._control.value);
+          this._node.control.patchValue(payload, options);
+          this.logger.formCycle('PostPatch', this._node.control.value);
           this.callHook({ hook: 'PostPatch', payload, plain: false });
         }),
       ),
@@ -296,11 +288,11 @@ implements DynTreeNode<TParams, TControl> {
       ([currentMode, event]) => {
         if (defaultMode && !event && !this._snapshots.size) {
           // snapshot of the initial mode
-          this._snapshots.set(defaultMode, this._control.value);
+          this._snapshots.set(defaultMode, this._node.control.value);
         } else if (!event || event.hook === 'PostPatch') {
           // updates the default snapshot or the current mode
           const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
-          this._snapshots.set(mode, this._control.value);
+          this._snapshots.set(mode, this._node.control.value);
         }
       },
     );
@@ -372,7 +364,7 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     if (!selector.length) { // search over
-      return this._name === name ? this._control : null;
+      return this._name === name ? this._node.control : null;
     } else if (this._name !== name) {
       return null; // not in the search path
     }
@@ -451,11 +443,7 @@ implements DynTreeNode<TParams, TControl> {
    * Lifecycle methods
    */
 
-  init(
-    instance: DynInstanceType,
-    config: DynBaseConfig<string, TParams>,
-    component: TComponent,
-  ): void {
+  init(config: DynFormNodeLoad<TParams, TControl, TComponent>): void {
     if (this._initLoaded) {
       return this.logger.nodeMethodCalledTwice('init', this);
     }
@@ -466,79 +454,46 @@ implements DynTreeNode<TParams, TControl> {
       throw this.logger.nodeFailed(config.control);
     }
 
-    // throw error if the configured instance is different to the inherited one
-    const configInstance = this.formFactory.getInstanceFor(config.control);
-    if (instance !== configInstance) {
-      throw this.logger.nodeInstanceMismatch(config.control, instance, configInstance);
-    }
+    // disconnect this node from any parent DynControl
+    this.isolated = Boolean(config.isolated);
+
+    // register the name to build the form path
+    this._name = this.parent?.instance !== DynInstanceType.Wrapper ? config.name ?? '' : '';
 
     // register the instance type for the children to know
-    this._instance = instance;
-
-    if (config.name) {
-      // register the control into the parent
-      this._control = this.formFactory.register(
-        instance as any,
-        this as any,
-        config,
-      );
-    } else {
-      // or takes the parent control
-      // useful for nested UI groups in the same FormGroup
-      this._control = this.parent.control as unknown as TControl;
-    }
-
-    this.load({ ...config, component });
-  }
-
-  wrap(node: DynTreeNode): void {
-    this._control = node.control as TControl;
-    this.path = node.path;
-    this._changedCtrl$.next();
-  }
-
-  configure(config: DynFormTreeNodeConfigure<TParams, TControl, TComponent>): void {
-    if (this._initLoaded) {
-      return this.logger.nodeMethodCalledTwice('override', this);
-    }
-    this._initLoaded = true;
-
-    // manual setup with no wiring nor config validation
     this._instance = config.instance ?? DynInstanceType.Group;
-    this._control = config.formControl;
 
-    this.load(config);
-  }
-
-  load(config: DynFormTreeNodeLoad<TParams, TComponent>): void {
-    if (this._loadLoaded) {
-      return this.logger.nodeMethodCalledTwice('load', this);
-    }
-
-    this._loadLoaded = true;
-
-    if (!this._instance && config.instance) {
-      this._instance = config.instance;
-    }
-
-    if (this.instance !== DynInstanceType.Wrapper && !this._control) {
-      throw this.logger.nodeWithoutControl();
-    }
-
-    // keep the id of the control for the logs
-    this._dynId = config.control;
+    // register the controlId to build the path properly
+    this._dynId = config.wrapper || config.control;
 
     // keeps a reference to the dynamic component
     this._dynCmp = config.component;
 
-    // register the name to build the form path
-    this._name = config.name ?? '';
-
-    // disconnect this node from any parent DynControl
-    this.isolated = Boolean(config.isolated);
     this.deep = this.getDeep();
-    this.path = this.getPath();
     this.route = this.getRoute();
+    const path = this.getPath();
+
+    // FIXME search other nodes to fetch the DynFormNode?
+    // check if a new hierarchy level is needed
+    if (!this.parent?._node.equivalent(config, path)) {
+      // register the control into the parent
+      const control = config.formControl || this.formFactory.register(
+        this._instance === DynInstanceType.Wrapper
+          ? this.formFactory.getInstanceFor(config.control) as any
+          : this._instance,
+        this as any,
+        config,
+      )!;
+      this._node = new DynFormNode(this.parent?._node, control, path);
+    } else {
+      // or takes the parent control
+      // useful for nested UI groups in the same FormGroup
+      this._node = (this.parent as any)._node;
+    }
+
+    if (this.instance !== DynInstanceType.Wrapper && !this._node.control) {
+      throw this.logger.nodeWithoutControl();
+    }
 
     // store the number of configured children
     this._children$.next(
@@ -549,13 +504,12 @@ implements DynTreeNode<TParams, TControl> {
         : 0
     );
 
+    if (this.parent?.instance === DynInstanceType.Container) {
+      this.parent.childrenIncrement();
+    }
+
     // store the matchers to be processed in node.setup()
     this._matchers = this.getMatchers(config);
-
-    // TODO move error message handler to a class and pass it to the WRAPPERs
-    if (this._instance === DynInstanceType.Control) {
-      this.execInWrappers((node) => node.wrap(this));
-    }
 
     // resolve and store the error handlers
     this._errorHandlers = config.errorMsgs
@@ -566,7 +520,7 @@ implements DynTreeNode<TParams, TControl> {
 
     // merge any configured paramFns first
     if (config.paramFns) {
-      this.setupParams({}, config.paramFns);
+      this.setupParams({}, config.paramFns, false);
     }
 
     // store the params to be accessible to the handlers
@@ -596,34 +550,26 @@ implements DynTreeNode<TParams, TControl> {
       this.logger.nodeSetup(this);
       this._formLoaded = true;
 
-      // listen control changes to update the error
-      this._changedCtrl$.pipe(
-        startWith(null),
-        switchMap(() => merge(
-          this._control.valueChanges.pipe(startWith(this._control.value)),
-          this._control.statusChanges,
-        )),
-        takeUntil(this._unsubscribe$),
-        debounceTime(20), // wait for subcontrols to be updated
-        map(() => this._control.errors),
-        distinctUntilChanged(),
+      this._node.setup();
+
+      this._node.errorChange$.pipe(
         withLatestFrom(this._errorMsg$),
-      ).subscribe(([_, currentError]) => {
-        if (this._control.valid) {
+      ).subscribe(([controlErrors, currentError]) => {
+        if (this._node.control.valid) {
           // reset any existing error
           if (currentError) {
             this._errorMsg$.next(null);
           }
         } else {
           // update the error message if needed
-          const errorMsg = this.getErrorMessage();
+          const errorMsg = this.getErrorMessage(controlErrors);
           if (currentError !== errorMsg) {
             this._errorMsg$.next(errorMsg);
           }
         }
       });
 
-      if (this._matchers?.length) {
+      if (this._matchers?.length && !this._node.loaded) {
         // process the stored matchers
         this.loaded$.pipe(
           take(1),
@@ -679,21 +625,20 @@ implements DynTreeNode<TParams, TControl> {
     }
 
     this._dynCmp = undefined;
-    this._changed$.complete();
-    this._changedCtrl$.complete();
-    this._children$.complete();
-    this._loaded$.complete();
-    this._loadedParams$.complete();
-    this._errorMsg$.complete();
-
-    this._visibility$.complete();
-    this._paramsUpdates$.complete();
-    this._hook$.complete();
+    this._node.destroy();
 
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
     this._untrack$.next();
     this._untrack$.complete();
+
+    this._changed$.complete();
+    this._children$.complete();
+    this._loaded$.complete();
+    this._loadedParams$.complete();
+    this._visibility$.complete();
+    this._paramsUpdates$.complete();
+    this._hook$.complete();
   }
 
   markAsPending(): void {
@@ -802,16 +747,18 @@ implements DynTreeNode<TParams, TControl> {
   }
 
   // error message resolver
-  private getErrorMessage(): string|null {
+  private getErrorMessage(errors: ValidationErrors|null): string|null {
     let errorMsg: string|null = null;
 
-    if (this._control.errors) {
+    if (errors) {
+      // TODO merge with parent handlers progressively
       // loop the handlers and retrieve the message
       this._errorHandlers.concat(this.root._errorHandlers || []).some(handler => {
         errorMsg = handler(this);
         return Boolean(errorMsg);
       });
     }
+
     // TODO i18n transformation
     return errorMsg;
   }

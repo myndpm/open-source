@@ -22,6 +22,7 @@ import {
   DynFormConfigResolver,
   DynFormTreeNode,
   DynHookUpdateValidity,
+  DynInstanceType,
   DynMode,
   DynModes,
   onComplete,
@@ -102,10 +103,11 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     }
 
     // manually register the node
-    this.node.configure({
-      formControl: this.form,
+    this.node.init({
       isolated: Boolean(this.isolated),
+      instance: DynInstanceType.Group,
       control: 'DYN-FORM',
+      formControl: this.form,
       controls: this.controls,
       errorMsgs: this.config?.errorMsgs,
       component: this,

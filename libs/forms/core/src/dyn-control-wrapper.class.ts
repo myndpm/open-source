@@ -24,22 +24,26 @@ implements OnInit {
   @ViewChild('dynContainer', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 
-  config!: TConfig;
+  wrapper!: TConfig;
 
   ngOnInit(): void {
     // initialize the node
-    this.node.configure({
-      formControl: this.node.parent.control,
+    this.node.init({
+      ...this.config,
       instance: DynInstanceType.Wrapper,
-      control: this.config.wrapper,
+      wrapper: this.wrapper.wrapper,
       component: this,
     });
 
-    if (this.config.controlParams) {
+    if (this.wrapper.paramFns) {
+      this.node.setupParams({}, this.wrapper.paramFns);
+    }
+
+    if (this.wrapper.params) {
       (
-        isObservable(this.config.controlParams)
-          ? this.config.controlParams
-          : of(this.config.controlParams || {})
+        isObservable(this.wrapper.params)
+          ? this.wrapper.params
+          : of(this.wrapper.params || {})
       )
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((params) => this.node.updateParams(params));

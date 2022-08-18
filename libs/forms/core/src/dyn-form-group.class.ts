@@ -20,7 +20,11 @@ implements OnInit {
   // auto-register in the form hierarchy
   ngOnInit(): void {
     // initialize the node
-    this.node.init(DynInstanceType.Group, this.config, this);
+    this.node.init({
+      ...this.config,
+      instance: DynInstanceType.Group,
+      component: this,
+    });
 
     // provide the parameters
     super.ngOnInit();

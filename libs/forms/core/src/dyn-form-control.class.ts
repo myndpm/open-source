@@ -31,7 +31,11 @@ implements OnInit {
     }
 
     // initialize the node
-    this.node.init(DynInstanceType.Control, this.config, this);
+    this.node.init({
+      ...this.config,
+      instance: DynInstanceType.Control,
+      component: this,
+    });
 
     // provide the parameters
     super.ngOnInit();

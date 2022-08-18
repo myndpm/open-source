@@ -19,11 +19,12 @@ implements OnInit {
 
   // auto-register in the form hierarchy
   ngOnInit(): void {
-    // FIXME do not rely on empty control
-    if (!this.control) {
-      // containers can initialize the node differently
-      this.node.init(DynInstanceType.Container, this.config, this);
-    }
+    // containers can initialize the node differently
+    this.node.init({
+      ...this.config,
+      instance: DynInstanceType.Container,
+      component: this,
+    });
 
     // provide the parameters
     super.ngOnInit();

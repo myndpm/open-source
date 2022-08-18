@@ -123,12 +123,12 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
       this.node.parent.childrenIncrement();
     }
 
-    this.node.configure({
-      formControl: this.group,
+    this.node.init({
+      isolated: Boolean(this.isolated),
+      instance: DynInstanceType.Group,
       name: this.name,
       control: 'DYN-GROUP',
       controls: this.controls,
-      isolated: Boolean(this.isolated),
       component: this,
     });
     this.node.markParamsAsLoaded();

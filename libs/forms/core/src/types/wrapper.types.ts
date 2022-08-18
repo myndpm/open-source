@@ -4,9 +4,8 @@ import { DynConfigMap, DynConfigProvider } from './provider.types';
 
 export type DynWrapperId = string; // Wrapper ID
 
-export type DynWrapperConfig<TParams extends DynParams = DynParams> = {
+export interface DynWrapperConfig<TParams extends DynParams = DynParams> {
   wrapper: DynWrapperId;
-  controlParams?: TParams | Observable<TParams>;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>;
 }

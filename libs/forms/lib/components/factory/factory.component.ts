@@ -99,7 +99,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           // check if the params are the only changed ones
           if (this._configs.areEquivalent(config, newConfig)) {
             if (newConfig.params || newConfig.paramFns) {
-              this.controlRef.instance.node.setupParams(newConfig.params, newConfig.paramFns);
+              this.controlRef.instance.node.setupParams(newConfig.params, newConfig.paramFns, false);
             }
           } else {
             this.logger.controlInitializing(this.node, { control: newConfig.control, wrappers: newConfig.wrappers, name: newConfig.name });
@@ -168,9 +168,10 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           const factory = this.resolver.resolveComponentFactory(wrapper.component);
           const ref = view.createComponent<AbstractDynWrapper>(factory, undefined, injector);
 
-          ref.instance.config = typeof wconfig === 'string'
-            ? { wrapper: wconfig, controlParams: config.params }
-            : { ...wconfig, controlParams: config.params };
+          ref.instance.config = config;
+          ref.instance.wrapper = typeof wconfig === 'string' ? { wrapper: wconfig } : wconfig;
+
+          this.logger.componentCreated(ref.instance.node, { wrapper: wrapperId });
 
           render(
             ref.instance.container,
@@ -193,7 +194,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
 
             this.controlRef.changeDetectorRef.markForCheck();
 
-            this.logger.controlInstantiated(this.controlRef.instance.node, {
+            this.logger.componentCreated(this.controlRef.instance.node, {
               control: config.control,
               name: config.name,
               controls: config.controls?.length || 0,

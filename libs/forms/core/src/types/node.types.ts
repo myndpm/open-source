@@ -71,9 +71,4 @@ export interface DynTreeNode<
   execInWrappers<T>(
     fn: (node: DynTreeNode) => any,
   ): void;
-
-  /**
-   * @internal used to setup the WRAPPERs
-   */
-  wrap(node: DynTreeNode): void;
 }

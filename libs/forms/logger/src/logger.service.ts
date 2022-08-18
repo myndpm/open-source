@@ -44,14 +44,6 @@ export class DynLogger {
     });
   }
 
-  nodeInstanceMismatch(control: string, superclass: string, configured: string): Error {
-    return this.driver.log({
-      level: DynLogLevel.Fatal,
-      message:
-        `Control '${control}' extends  from '${superclass}' but is provided as '${configured}'.`,
-    });
-  }
-
   nodeMethodCalledTwice(name: string, { deep, path, route }: DynNode): void {
     return this.driver.log({
       deep,
@@ -140,11 +132,11 @@ export class DynLogger {
     });
   }
 
-  controlInstantiated({ deep, dynId, path }: DynNode, payload: any): void {
+  componentCreated({ deep, dynId, path }: DynNode, payload: any): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Hierarchy,
-      message: `[dyn-factory] '${path.join('.')}' instantiated${dynId ? ` (${dynId})` : ''}`,
+      message: `[dyn-factory] '${path.join('.')}' component created${dynId ? ` (${dynId})` : ''}`,
       payload,
     });
   }
@@ -170,7 +162,7 @@ export class DynLogger {
     this.driver.log({
       deep,
       level: DynLogLevel.Runtime,
-      message: `[DynForm] '${path.join('.')}' new mode: '${mode}'`
+      message: `[DynForm] '${path?.join('.')}' new mode: '${mode}'`
     });
   }
 
