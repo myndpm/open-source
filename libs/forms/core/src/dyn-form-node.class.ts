@@ -9,16 +9,13 @@ import { DynWrapperId } from './types/wrapper.types';
 export type DynFormNodeLoad<TParams, TControl, TComponent> =
   DynBaseConfig<string, TParams> &
   DynFormConfigErrors & {
+    formControl?: TControl;
     instance?: DynInstanceType;
     wrapper?: DynWrapperId;
-    formControl?: TControl;
     component: TComponent;
   };
 
-export class DynFormNode<
-//  TParams extends DynParams = DynParams,
-  TControl extends AbstractControl,
-> {
+export class DynFormNode<TControl extends AbstractControl> {
   get isRoot(): boolean {
     return !this.parent;
   }

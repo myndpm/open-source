@@ -41,13 +41,13 @@ implements OnInit {
     super.ngOnInit();
 
     // FIXME hack FormControl to add reactiveness
-    // https://stackoverflow.com/questions/41337024/how-to-observe-touched-event-on-angular-2-ngform
     this.wrapFormControl();
 
     // log the successful initialization
     this._logger.nodeLoaded('dyn-form-control', this.node);
   }
 
+  // https://stackoverflow.com/questions/41337024/how-to-observe-touched-event-on-angular-2-ngform
   private wrapFormControl(): void {
     // bind touched/untouched with a reactive touchedChange$
     const markAsTouched = this.control.markAsTouched.bind(this.control);

@@ -494,7 +494,7 @@ implements DynNode<TParams, TControl> {
       this._node = (this.parent as any)._node;
     }
 
-    if (this.instance !== DynInstanceType.Wrapper && !this._node.control) {
+    if (!this._node.control) {
       throw this.logger.nodeWithoutControl();
     }
 
@@ -572,7 +572,7 @@ implements DynNode<TParams, TControl> {
         }
       });
 
-      if (this._matchers?.length && !this._node.loaded) {
+      if (this._matchers?.length) {
         // process the stored matchers
         this.loaded$.pipe(
           take(1),
