@@ -24,10 +24,10 @@ import {
 import {
   DynAsyncValidator,
   DynConfigErrors,
-  DynControlErrors,
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessages,
+  DynErrors,
   DynValidator,
 } from './types/validation.types';
 import {
@@ -156,7 +156,7 @@ export class DynFormHandlers {
   }
 
   getErrorHandlers(
-    config?: DynConfigErrors<DynControlErrors>,
+    config?: DynConfigErrors<DynErrors>,
   ): DynErrorHandlerFn[] {
     return config
       ? Array.isArray(config)

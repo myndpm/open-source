@@ -8,11 +8,11 @@ import { DynBaseHandler, DynConfigProvider } from './provider.types';
 export type DynErrorId = string;
 export type DynErrorMessage = string|null;
 
-// partial ending or full path of the control
-export type DynErrorMessages = Record<string, DynControlErrors>;
-
 // string to be displayed for a particular error
-export type DynControlErrors = DynErrorMessage | Record<DynErrorId, DynErrorMessage>;
+export type DynErrors = DynErrorMessage | Record<DynErrorId, DynErrorMessage>;
+
+// partial ending or full path of the control
+export type DynErrorMessages = Record<string, DynErrors>;
 
 export type DynErrorHandlerFn = (node: DynNode) => DynErrorMessage;
 export type DynErrorHandler = DynBaseHandler<DynErrorHandlerFn>;
@@ -52,3 +52,8 @@ export type DynControlAsyncValidatorFn = DynAsyncValidatorFn;
  * @deprecated use DynAsyncValidator
  */
 export type DynControlAsyncValidator = DynAsyncValidator;
+
+/**
+ * @deprecated use DynErrors
+ */
+export type DynControlErrors = DynErrors;

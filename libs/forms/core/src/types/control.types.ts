@@ -4,7 +4,7 @@ import { DynConfigArgs } from './forms.types';
 import { DynMatch } from './matcher.types';
 import { DynFunctionFn, DynParams } from './params.types';
 import { DynConfigCollection, DynConfigMap, DynConfigProvider } from './provider.types';
-import { DynConfigErrors, DynControlErrors } from './validation.types';
+import { DynConfigErrors, DynErrors } from './validation.types';
 import { DynConfigWrapper } from './wrapper.types';
 
 export type DynControlId = string; // Control ID
@@ -29,5 +29,5 @@ export interface DynControlConfig<TParams extends DynParams = DynParams> {
   cssClass?: string;
   params?: TParams | Observable<TParams>;
   paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>;
-  errorMsg?: DynConfigErrors<DynControlErrors>;
+  errorMsg?: DynConfigErrors<DynErrors>;
 }

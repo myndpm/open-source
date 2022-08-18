@@ -13,11 +13,11 @@ import { DynFunction, DynFunctionFn } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
 import {
   DynAsyncValidator,
-  DynControlErrors,
   DynErrorHandler,
   DynErrorHandlerFn,
   DynErrorMessage,
   DynErrorMessages,
+  DynErrors,
   DynValidator,
 } from './types/validation.types';
 import { isPlainObject } from './utils/merge.util';
@@ -193,7 +193,7 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
         }
         // match the control errors with the configured messages
         let currentMatch = [];
-        const config = Object.keys(messages).reduce<DynControlErrors|null>((result, key) => {
+        const config = Object.keys(messages).reduce<DynErrors|null>((result, key) => {
           const errorPath = key.split('.');
           if (pathEndsWith(path, errorPath) && errorPath.length > currentMatch.length) {
             currentMatch = errorPath;
@@ -216,7 +216,7 @@ export const defaultErrorHandlers: DynErrorHandler[] = [
   },
   {
     id: 'CONTROL',
-    fn: (messages: DynControlErrors): DynErrorHandlerFn => {
+    fn: (messages: DynErrors): DynErrorHandlerFn => {
       return ({ control }: DynNode) => {
         // match the control errors with the configured messages
         return control.errors
