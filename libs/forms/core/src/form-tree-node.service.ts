@@ -473,18 +473,21 @@ implements DynTreeNode<TParams, TControl> {
     this.route = this.getRoute();
     const path = this.getPath();
 
-    // FIXME search other nodes to fetch the DynFormNode?
     // check if a new hierarchy level is needed
-    if (!this.parent?._node.equivalent(config, path)) {
-      // register the control into the parent
-      const control = config.formControl || this.formFactory.register(
-        this._instance === DynInstanceType.Wrapper
-          ? this.formFactory.getInstanceFor(config.control) as any
-          : this._instance,
-        this as any,
-        config,
-      )!;
-      this._node = new DynFormNode(this.parent?._node, control, path);
+    if (!this.parent?._node.equivalent(path) || config.formControl) {
+      // check if the control already exists in another point in the hierarchy
+      this._node = this.parent?._node.root.search(path)!;
+      if (!this._node) {
+        // register the control into the parent
+        const control = config.formControl || this.formFactory.register(
+          this._instance === DynInstanceType.Wrapper
+            ? this.formFactory.getInstanceFor(config.control) as any
+            : this._instance,
+          this as any,
+          config,
+        )!;
+        this._node = new DynFormNode(this.parent?._node, control, path);
+      }
     } else {
       // or takes the parent control
       // useful for nested UI groups in the same FormGroup

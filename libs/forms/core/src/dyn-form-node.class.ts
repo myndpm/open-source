@@ -26,8 +26,10 @@ export class DynFormNode<
     return this.isRoot ? this : this.parent.root;
   }
 
+  children: DynFormNode<any>[] = [];
   errorChange$ = new BehaviorSubject<ValidationErrors|null>(null);
   loaded = false;
+  name: string;
 
   private _unsubscribe$ = new Subject<void>();
 
@@ -35,16 +37,39 @@ export class DynFormNode<
     public readonly parent: DynFormNode<any>,
     public readonly control: TControl,
     public readonly path: string[],
-  ) {}
+  ) {
+    this.parent?.addChild(this);
+    this.name = path.slice(-1).pop() ?? '';
+  }
 
   destroy(): void {
+    this.parent?.removeChild(this);
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
   }
 
-  equivalent(config: DynFormNodeLoad<any, any, any>, path: string[]): boolean {
-    // TODO check if the control already exists in another point in the hierarchy
-    return Boolean(this.path.join('.') === path.join('.') && !config.formControl);
+  equivalent(path: string[]): boolean {
+    return Boolean(this.path.join('.') === path.join('.'));
+  }
+
+  search(path: string[]): DynFormNode<any>|null {
+    const selector = path.slice();
+    let name = selector.shift();
+
+    if (!selector.length) { // search over
+      return this.name === name ? this : null;
+    } else if (this.name !== name) {
+      return null; // not in the search path
+    }
+
+    // propagate the query to the children
+    let result: DynFormNode<any>|null = null;
+    this.children.some(node => {
+      result = node.search(selector);
+      return result ? true : false; // return the first match
+    });
+
+    return result;
   }
 
   setup(): void {
@@ -63,5 +88,15 @@ export class DynFormNode<
       map(() => this.control.errors),
       distinctUntilChanged(),
     ).subscribe((errors) => this.errorChange$.next(errors));
+  }
+
+  addChild(node: DynFormNode<any>): void {
+    this.children.push(node);
+  }
+
+  removeChild(node: DynFormNode<any>): void {
+    this.children.some((child, i) => {
+      return (child === node) ? this.children.splice(i, 1) : false;
+    });
   }
 }
