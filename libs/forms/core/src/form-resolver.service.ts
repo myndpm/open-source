@@ -12,7 +12,7 @@ import { DYN_MODE_DEFAULTS } from './form.tokens';
 
 @Injectable()
 // provided by the dyn-form and dyn-group components next to the internal tokens
-export class DynFormConfigResolver {
+export class DynFormResolver {
   constructor(
     private readonly logger: DynLogger,
     @Inject(DYN_MODE_DEFAULTS) private readonly modes?: DynModes,

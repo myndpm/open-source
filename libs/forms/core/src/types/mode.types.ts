@@ -3,7 +3,7 @@ import { DynControlConfig } from './control.types';
 // display, edit, filter, etc
 export type DynMode = string; // Mode ID
 
-// config overrides per mode, handled by DynFormConfigResolver
+// config overrides per mode, handled by DynFormResolver
 export type DynModes<TMode extends string = DynMode> = {
   [K in TMode]?: Partial<DynControlConfig>;
 }

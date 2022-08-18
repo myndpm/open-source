@@ -19,7 +19,7 @@ import {
   DynBaseConfig,
   DynControlBase,
   DynControlNode,
-  DynFormConfigResolver,
+  DynFormResolver,
   DynInstanceType,
   DynMode,
   DynModes,
@@ -117,8 +117,8 @@ export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> impl
           ],
         },
         {
-          provide: DynFormConfigResolver,
-          useClass: DynFormConfigResolver,
+          provide: DynFormResolver,
+          useClass: DynFormResolver,
           deps: [ // FIXME added for Stackblitz
             DynLogger,
             DYN_MODE_DEFAULTS,

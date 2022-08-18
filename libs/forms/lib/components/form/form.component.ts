@@ -20,7 +20,7 @@ import {
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
   DynControlNode,
-  DynFormConfigResolver,
+  DynFormResolver,
   DynHookUpdateValidity,
   DynInstanceType,
   DynMode,
@@ -135,8 +135,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           ],
         },
         {
-          provide: DynFormConfigResolver,
-          useClass: DynFormConfigResolver,
+          provide: DynFormResolver,
+          useClass: DynFormResolver,
           deps: [ // FIXME added for Stackblitz
             DynLogger,
             DYN_MODE_DEFAULTS,

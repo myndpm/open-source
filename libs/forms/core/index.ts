@@ -28,7 +28,7 @@ export * from './src/form-registry.service';
 export * from './src/form-handlers.service';
 export * from './src/form-factory.service';
 export * from './src/form-control-node.service';
-export * from './src/form-config-resolver.service';
+export * from './src/form-resolver.service';
 
 export * from './src/utils/merge.util';
 export * from './src/utils/rxjs.utils';

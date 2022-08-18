@@ -17,7 +17,7 @@ import {
   DynBaseConfig,
   DynControlBase,
   DynControlNode,
-  DynFormConfigResolver,
+  DynFormResolver,
   DynInstanceType,
   DynMode,
   DynModes,
@@ -111,8 +111,8 @@ export class DynGroupComponent extends DynControlBase<any, FormGroup> implements
           ],
         },
         {
-          provide: DynFormConfigResolver,
-          useClass: DynFormConfigResolver,
+          provide: DynFormResolver,
+          useClass: DynFormResolver,
           deps: [ // FIXME added for Stackblitz
             DynLogger,
             DYN_MODE_DEFAULTS,

@@ -22,10 +22,10 @@ import {
   AbstractDynWrapper,
   DynBaseConfig,
   DynControlNode,
-  DynFormConfigResolver,
   DynFormFactory,
   DynFormHandlers,
   DynFormRegistry,
+  DynFormResolver,
   DynMode,
   DynVisibility,
   DynConfigWrapper,
@@ -68,7 +68,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   // retrieved from the proper injector
   private _injector!: Injector;
   private _mode$!: BehaviorSubject<DynMode>;
-  private _configs!: DynFormConfigResolver;
+  private _configs!: DynFormResolver;
 
   private _unsubscribe = new Subject<void>();
 
@@ -85,7 +85,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     // resolve the injector to use and get providers
     this._injector = this.injector ?? this.parent;
     this._mode$ = this._injector.get(DYN_MODE);
-    this._configs = this._injector.get(DynFormConfigResolver);
+    this._configs = this._injector.get(DynFormResolver);
 
     // process the dynamic component with each mode change
     let config: DynBaseConfig;
