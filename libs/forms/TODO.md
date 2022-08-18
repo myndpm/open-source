@@ -16,7 +16,7 @@
 - Datepicker proper functionality toggling edit/display
 - HIDDEN DynControl not rendering completely is really necessary or enough to setup manually in the FormGroup? it needs special count treatment
 - Nested DynForms do not mark the root as loaded
-- Check FormDirectives responsibilities to apply in DynFormTreeNode if the validators doesn't work
+- Check FormDirectives responsibilities to apply in DynControlNode if the validators doesn't work
 - Provide config for appearance (theme, full-width, inline)
 - Extensible handlers for different modes (panel, filter, table-cell, mobile?)
 - How to add form options? (clear, label, defaultValue, fieldName, placeholder, tooltip, cssClass)

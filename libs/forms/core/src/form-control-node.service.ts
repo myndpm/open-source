@@ -23,7 +23,7 @@ import { DYN_MODE } from './form.tokens';
 @Injectable()
 // initialized by dyn-form, dyn-factory, dyn-group
 // and the abstract DynForm* classes
-export class DynFormTreeNode<
+export class DynControlNode<
   TParams extends DynParams = DynParams,
   TControl extends AbstractControl = FormGroup,
   TComponent = any,
@@ -34,7 +34,7 @@ implements DynNode<TParams, TControl> {
   index?: number = 0;
   deep = 0;
   route: string[] = [];
-  children: DynFormTreeNode[] = [];
+  children: DynControlNode[] = [];
 
   // node API
   get dynId(): string|undefined {
@@ -81,7 +81,7 @@ implements DynNode<TParams, TControl> {
   get isRoot(): boolean {
     return this.isolated || !this.parent;
   }
-  get root(): DynFormTreeNode<any, any> {
+  get root(): DynControlNode<any, any> {
     return this.isRoot ? this : this.parent.root;
   }
   get path(): string[] {
@@ -176,7 +176,7 @@ implements DynNode<TParams, TControl> {
     private readonly _mode$: Observable<DynMode>,
     // parent node should be set for all except the root
     @Optional() @SkipSelf()
-    public readonly parent: DynFormTreeNode<any>,
+    public readonly parent: DynControlNode<any>,
   ) {}
 
   /**
@@ -337,7 +337,7 @@ implements DynNode<TParams, TControl> {
    */
   searchUp(path: string, searchDown = false): AbstractControl|null {
     /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<TParams, any> = this;
+    let node: DynControlNode<TParams, any> = this;
     let result: AbstractControl|null;
 
     do {
@@ -388,7 +388,7 @@ implements DynNode<TParams, TControl> {
     predicate: (node: DynNode) => boolean = () => true,
   ): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<TParams, any> = this.parent;
+    let node: DynControlNode<TParams, any> = this.parent;
     let result: any;
 
     do {
@@ -411,7 +411,7 @@ implements DynNode<TParams, TControl> {
    */
   exec<T>(fn: (node: DynNode) => T, includeSelf = false): T|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
-    let node: DynFormTreeNode<TParams, any> = includeSelf ? this : this.parent;
+    let node: DynControlNode<TParams, any> = includeSelf ? this : this.parent;
     let result: any;
 
     do {
@@ -706,14 +706,14 @@ implements DynNode<TParams, TControl> {
     ];
   }
 
-  private addChild(node: DynFormTreeNode<any, any>): void {
+  private addChild(node: DynControlNode<any, any>): void {
     this.children.push(node);
     this.logger.nodeMethod(this, 'addChild', { count: this._children$.value, children: this.children.length });
     this._changed$.next();
     // TODO updateValue and validity? or it's automatically done?
   }
 
-  private removeChild(node: DynFormTreeNode<any, any>): void {
+  private removeChild(node: DynControlNode<any, any>): void {
     this.children.some((child, i) => {
       return (child === node) ? this.children.splice(i, 1) : false;
     });

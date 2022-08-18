@@ -9,9 +9,9 @@ import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynNode } from './types/node.types';
+import { DynControlNode } from './form-control-node.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
-import { DynFormTreeNode } from './form-tree-node.service';
 
 @Injectable()
 // injected in the DynControls to build their AbstractControls
@@ -26,25 +26,25 @@ export class DynFormFactory {
    */
   register<FormGroup>(
     instance: DynInstanceType.Container | DynInstanceType.Group,
-    node: DynFormTreeNode,
+    node: DynControlNode,
     config: DynBaseConfig,
     recursively?: boolean
   ): FormGroup;
   register<FormArray>(
     instance: DynInstanceType.Array,
-    node: DynFormTreeNode,
+    node: DynControlNode,
     config: DynBaseConfig,
     recursively?: boolean
   ): FormArray;
   register<FormControl>(
     instance: DynInstanceType.Control,
-    node: DynFormTreeNode,
+    node: DynControlNode,
     config: DynBaseConfig,
     recursively?: boolean
   ): FormControl;
   register<T extends AbstractControl>(
     instance: DynInstanceType,
-    node: DynFormTreeNode<any, AbstractControl>,
+    node: DynControlNode<any, AbstractControl>,
     config: DynBaseConfig,
     recursively = false
   ): T {

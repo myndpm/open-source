@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DynControlHook } from './types/events.types';
 import { DynParams } from './types/params.types';
 import { DynErrorMessage } from './types/validation.types';
-import { DynFormTreeNode } from './form-tree-node.service';
+import { DynControlNode } from './form-control-node.service';
 
 @Directive()
 export abstract class DynControlBase<
@@ -16,7 +16,7 @@ export abstract class DynControlBase<
 implements OnInit, OnDestroy {
 
   // corresponding node in the form hierarchy
-  node: DynFormTreeNode<TParams, TControl>;
+  node: DynControlNode<TParams, TControl>;
 
   get errorMsg$(): Observable<DynErrorMessage> {
     return this.node.errorMsg$;
@@ -29,7 +29,7 @@ implements OnInit, OnDestroy {
   private _unsubscribe = new Subject<void>();
 
   constructor(injector: Injector) {
-    this.node = injector.get(DynFormTreeNode);
+    this.node = injector.get(DynControlNode);
   }
 
   ngOnInit(): void {

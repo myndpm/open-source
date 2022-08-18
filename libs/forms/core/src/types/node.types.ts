@@ -5,7 +5,7 @@ import { DynControlHook } from './events.types';
 import { DynInstanceType } from './forms.types';
 import { DynParams } from './params.types';
 
-// generic interface of DynFormTreeNode
+// generic interface of DynControlNode service
 export interface DynNode<
   TParams extends DynParams = DynParams,
   TControl extends AbstractControl = AbstractControl,

@@ -56,7 +56,7 @@ implements OnInit, AfterViewInit, OnChanges {
   get params(): TParams { // values available for the concrete Component instance
     return this.node.params;
   }
-  get control(): TControl { // built from the config in the DynFormTreeNode
+  get control(): TControl { // built from the config in the DynControlNode
     return this.node.control;
   }
   get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"

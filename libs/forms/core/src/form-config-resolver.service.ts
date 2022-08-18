@@ -7,7 +7,7 @@ import { DynBaseConfig } from './types/config.types';
 import { DynControlConfig } from './types/control.types';
 import { DynMode, DynModes } from './types/mode.types';
 import { merge } from './utils/merge.util';
-import { DynFormTreeNode } from './form-tree-node.service';
+import { DynControlNode } from './form-control-node.service';
 import { DYN_MODE_DEFAULTS } from './form.tokens';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class DynFormConfigResolver {
 
   // resolves the config to be used by dyn-factory
   // this algorithm decides how to override the main config with mode customizations
-  getModeConfig(mode: DynMode, config: DynBaseConfig, node: DynFormTreeNode): DynBaseConfig {
+  getModeConfig(mode: DynMode, config: DynBaseConfig, node: DynControlNode): DynBaseConfig {
     let result: DynBaseConfig = {
       ...config,
       controls: config.controls?.filter(Boolean),

@@ -18,8 +18,8 @@ import {
   DYN_MODE_LOCAL,
   DynBaseConfig,
   DynControlBase,
+  DynControlNode,
   DynFormConfigResolver,
-  DynFormTreeNode,
   DynInstanceType,
   DynMode,
   DynModes,
@@ -33,7 +33,7 @@ import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
   selector: 'dyn-mat-table-row',
   templateUrl: './table-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DynFormTreeNode],
+  providers: [DynControlNode],
 })
 /**
  * This component just wraps the rows and its mat-cells.

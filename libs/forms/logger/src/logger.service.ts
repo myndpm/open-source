@@ -39,7 +39,7 @@ export class DynLogger {
     return this.driver.log({
       level: DynLogLevel.Fatal,
       message:
-        `Control '${control}' need to provide its own DynFormTreeNode. ` +
+        `Control '${control}' need to provide its own DynControlNode. ` +
         `It is consuming the parent Node and that will cause unexpected effects.`,
     });
   }

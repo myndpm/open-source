@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlProvider, DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { of } from 'rxjs';
 
@@ -25,7 +25,7 @@ describe('DynMatContainerComponent', () => {
       providers: [
         DynLogger,
         {
-          provide: DynFormTreeNode,
+          provide: DynControlNode,
           useValue: {
             _name: 'test',
             _control: 'CONTROL',

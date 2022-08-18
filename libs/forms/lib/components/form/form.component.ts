@@ -19,8 +19,8 @@ import {
   DYN_MODE,
   DYN_MODE_DEFAULTS,
   DYN_MODE_LOCAL,
+  DynControlNode,
   DynFormConfigResolver,
-  DynFormTreeNode,
   DynHookUpdateValidity,
   DynInstanceType,
   DynMode,
@@ -38,9 +38,9 @@ import { DynFormConfig } from './form.config';
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    DynControlNode,
     DynLogDriver,
     DynLogger,
-    DynFormTreeNode,
   ],
 })
 export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
@@ -82,7 +82,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   constructor(
     @Inject(INJECTOR) private readonly injector: Injector,
     private readonly ref: ChangeDetectorRef,
-    private readonly node: DynFormTreeNode,
+    private readonly node: DynControlNode,
     private readonly logger: DynLogger,
   ) {}
 
@@ -93,7 +93,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
     // figure out the control to use
     if (!this.isolated && !this.form && this.node.parent) {
-      // use the parent DynFormTreeNode control
+      // use the parent DynControlNode control
       this.form = this.node.parent.control;
     } else {
       // incoming form is mandatory
@@ -189,7 +189,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   // notify the dyn hierarchy about the incoming data
-  patchValue(value: any, callback?: (node: DynFormTreeNode) => void): Observable<void> {
+  patchValue(value: any, callback?: (node: DynControlNode) => void): Observable<void> {
     return onComplete(
       this.whenReady().pipe(
         tap(() => {

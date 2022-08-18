@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynFormComponent } from './form.component';
@@ -13,7 +13,7 @@ describe('DynFormComponent', () => {
       declarations: [DynFormComponent],
       providers: [
         MockProvider(DynLogger),
-        MockProvider(DynFormTreeNode),
+        MockProvider(DynControlNode),
       ],
     }).compileComponents();
   });

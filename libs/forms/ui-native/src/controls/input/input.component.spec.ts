@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlProvider, DynFormTreeNode } from '@myndpm/dyn-forms/core';
+import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynNatInputComponent } from './input.component';
@@ -21,7 +21,7 @@ describe('DynNatInputComponent', () => {
       declarations: [DynNatInputComponent],
       providers: [
         MockProvider(DynLogger),
-        MockProvider(DynFormTreeNode),
+        MockProvider(DynControlNode),
       ],
     }).compileComponents();
   });

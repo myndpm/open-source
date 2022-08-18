@@ -21,10 +21,10 @@ import {
   AbstractDynControl,
   AbstractDynWrapper,
   DynBaseConfig,
+  DynControlNode,
   DynFormConfigResolver,
   DynFormFactory,
   DynFormHandlers,
-  DynFormTreeNode,
   DynFormRegistry,
   DynMode,
   DynVisibility,
@@ -78,7 +78,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     private readonly resolver: ComponentFactoryResolver,
     private readonly registry: DynFormRegistry,
     private readonly logger: DynLogger,
-    private readonly node: DynFormTreeNode,
+    private readonly node: DynControlNode,
   ) {}
 
   ngOnInit(): void {
@@ -126,16 +126,16 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
 
       const providers = [
         // new form-hierarchy sublevel
-        // Dynamic Components has its own DynFormTreeNode
+        // each Dynamic Component has its own DynControlNode service
         {
-          provide: DynFormTreeNode,
-          useClass: DynFormTreeNode,
+          provide: DynControlNode,
+          useClass: DynControlNode,
           deps: [ // FIXME added for Stackblitz
             DynFormFactory,
             DynFormHandlers,
             DynLogger,
             DYN_MODE,
-            [new SkipSelf(), DynFormTreeNode],
+            [new SkipSelf(), DynControlNode],
           ],
         },
       ];
@@ -189,7 +189,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
             if (config.wrappers?.length) {
               this.controlRef.instance.node.parent.childrenIncrement();
             }
-            // we let the corresponding DynFormTreeNode to initialize the control
+            // we let the corresponding DynControlNode to initialize the control
             // and register itself in the Form Tree in the lifecycle methods
 
             this.controlRef.changeDetectorRef.markForCheck();
