@@ -5,7 +5,7 @@ import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject, Observable, Subject, combineLatest, isObservable, of } from 'rxjs';
 import { delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
-import { DynControlHook } from './types/events.types';
+import { DynHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
 import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
@@ -61,7 +61,7 @@ implements DynNode<TParams, TControl> {
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
-  get hook$(): Observable<DynControlHook> {
+  get hook$(): Observable<DynHook> {
     return this._hook$.asObservable();
   }
   get mode$(): Observable<DynMode> {
@@ -118,7 +118,7 @@ implements DynNode<TParams, TControl> {
   private _visibility$ = new Subject<DynVisibility>();
   // listened by DynControl
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
-  private _hook$ = new Subject<DynControlHook>();
+  private _hook$ = new Subject<DynHook>();
 
   private _modeLocal$?: Observable<DynMode>;
   private _snapshots = new Map<DynMode, any>();
@@ -228,7 +228,7 @@ implements DynNode<TParams, TControl> {
   }
 
   // let the ControlNode know of an incoming hook
-  callHook(event: DynControlHook): void {
+  callHook(event: DynHook): void {
     this.logger.hookCalled(this, event.hook, event.payload);
 
     this._hook$.next(event);

@@ -3,7 +3,7 @@ import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DynControlHook } from './types/events.types';
+import { DynHook } from './types/events.types';
 import { DynParams } from './types/params.types';
 import { DynErrorMessage } from './types/validation.types';
 import { DynControlNode } from './form-control-node.service';
@@ -49,7 +49,7 @@ implements OnInit, OnDestroy {
 
   // propagate hook calls from the top to the bottom of the DynControls tree
   // note: concrete hooks will receive the parent data if they define no config.name
-  callHook(event: DynControlHook): void {
+  callHook(event: DynHook): void {
     const method = (this as any)[`hook${event.hook}`];
     if (isCallable(method)) {
       method.bind(this)(event.payload);
@@ -61,7 +61,7 @@ implements OnInit, OnDestroy {
 
   // hook propagated to children DynControls
   // customized by special cases like FormArray
-  callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
+  callChildrenHooks({ hook, payload, plain }: DynHook): void {
     this.node.children.map(node => {
       const fieldName = node.name;
       // validate the expected payload

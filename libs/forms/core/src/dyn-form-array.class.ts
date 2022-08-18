@@ -1,7 +1,7 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DynConfig } from './types/config.types';
-import { DynControlHook } from './types/events.types';
+import { DynHook } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynMode } from './types/mode.types';
 import { DynParams } from './types/params.types';
@@ -39,7 +39,7 @@ implements OnInit {
   }
 
   // hook propagated to children DynControls
-  override callChildrenHooks({ hook, payload, plain }: DynControlHook): void {
+  override callChildrenHooks({ hook, payload, plain }: DynHook): void {
     if (!plain && !Array.isArray(payload)) {
       return;
     }
