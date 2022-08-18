@@ -229,7 +229,7 @@ implements DynNode<TParams, TControl> {
 
   // let the ControlNode know of an incoming hook
   callHook(event: DynHook): void {
-    this.logger.hookCalled(this, event.hook, event.payload);
+    this.logger.hookCalled(this, event);
 
     this._hook$.next(event);
   }

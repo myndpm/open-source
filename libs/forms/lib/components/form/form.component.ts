@@ -1,10 +1,10 @@
 import {
+  INJECTOR,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Inject,
-  INJECTOR,
   Injector,
   Input,
   OnChanges,
@@ -113,6 +113,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       component: this,
     });
     this.node.markParamsAsLoaded();
+
     this.logger.nodeLoaded('dyn-form', this.node);
 
     this.configLayer = Injector.create({
@@ -234,7 +235,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         this.node.children.forEach(node => {
           const fieldName = node.name;
           // validate the expected payload
-          if (!force && !plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+          if (!force && !plain && (!payload || !fieldName || !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
             return;
           }
           node.callHook({

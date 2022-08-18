@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DynHook } from '@myndpm/dyn-forms/core';
 import { DynNode } from './interfaces/node.interface';
 import { DynLogDriver } from './log-driver.service';
 import { DynLogLevel } from './log-levels.constant';
@@ -149,11 +150,11 @@ export class DynLogger {
     });
   }
 
-  hookCalled({ deep, path }: DynNode, hook: string, payload?: any): void {
+  hookCalled({ deep, path, route }: DynNode, { hook, payload }: DynHook): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Runtime,
-      message: `'${hook}' called on '${path.join('.')}'`,
+      message: `'${path}' hook "${hook}" invoked (${route.join('.')})`,
       payload: payload && typeof payload === 'object' ? payload : JSON.stringify(payload),
     });
   }
