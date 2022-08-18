@@ -24,7 +24,7 @@ import {
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
-import { merge, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, merge } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
@@ -45,11 +45,11 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
 
   @Input()
   set mode(mode: DynMode) {
-    this.mode$.next(mode);
+    this.modeLocal$.next(mode);
   }
 
   get mode(): DynMode {
-    return this.modeLocal;
+    return this.mode$.value;
   }
 
   @Input()
@@ -62,14 +62,14 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
     return mode;
   }
 
+  // keeps track of the local input
+  protected modeLocal$ = new BehaviorSubject<DynMode>('');
+
   // stream mode changes via DYN_MODE
-  protected mode$ = new Subject<DynMode | undefined>();
+  protected mode$ = new BehaviorSubject<DynMode>('');
 
   // internal injector with mode override
   configLayer?: Injector;
-
-  // local control variable
-  modeLocal: DynMode = '';
 
   constructor(
     private readonly injector: Injector,
@@ -81,12 +81,14 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
   ngOnInit(): void {
     super.ngOnInit();
 
+    this.node.mode = this.mode$;
+
     this.configLayer = Injector.create({
       parent: this.injector,
       providers: [
         {
           provide: DYN_MODE_CHILD,
-          useValue: this.mode$.asObservable(),
+          useValue: this.modeLocal$.asObservable(),
         },
         {
           provide: DYN_MODE,
@@ -119,10 +121,6 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
       ],
     });
 
-    if (this.node.parent?.instance === DynInstanceType.Container) {
-      this.node.parent.childrenIncrement();
-    }
-
     this.node.init({
       isolated: Boolean(this.isolated),
       instance: DynInstanceType.Group,
@@ -150,7 +148,7 @@ export class DynGroupComponent extends DynControlNode<any, FormGroup> implements
       distinctUntilChanged(),
       tap(mode => {
         this.logger.modeGroup(this.node, mode, this.name);
-        this.modeLocal = mode;
+        this.mode$.next(mode);
       }),
       shareReplay(1),
     );
