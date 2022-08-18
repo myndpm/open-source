@@ -27,7 +27,7 @@ export class DynFormNode<
   }
 
   children: DynFormNode<any>[] = [];
-  errorChange$ = new BehaviorSubject<ValidationErrors|null>(null);
+  error$ = new BehaviorSubject<ValidationErrors|null>(null);
   loaded = false;
   name: string;
 
@@ -87,7 +87,7 @@ export class DynFormNode<
       debounceTime(20), // wait for subcontrols to be updated
       map(() => this.control.errors),
       distinctUntilChanged(),
-    ).subscribe((errors) => this.errorChange$.next(errors));
+    ).subscribe((errors) => this.error$.next(errors));
   }
 
   addChild(node: DynFormNode<any>): void {

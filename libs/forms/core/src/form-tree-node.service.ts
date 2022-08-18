@@ -555,7 +555,7 @@ implements DynNode<TParams, TControl> {
 
       this._node.setup();
 
-      this._node.errorChange$.pipe(
+      this._node.error$.pipe(
         withLatestFrom(this._errorMsg$),
       ).subscribe(([controlErrors, currentError]) => {
         if (this._node.control.valid) {
