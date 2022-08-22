@@ -21,6 +21,7 @@ import {
   AbstractDynControl,
   AbstractDynWrapper,
   DynBaseConfig,
+  DynConfigWrapper,
   DynControlNode,
   DynFormFactory,
   DynFormHandlers,
@@ -28,7 +29,6 @@ import {
   DynFormResolver,
   DynMode,
   DynVisibility,
-  DynConfigWrapper,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -65,6 +65,9 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
   // DynControl
   private controlRef!: ComponentRef<AbstractDynControl>;
 
+  // DynNodes created by this factory
+  private nodes: DynControlNode[] = [];
+
   // retrieved from the proper injector
   private _injector!: Injector;
   private _mode$!: BehaviorSubject<DynMode>;
@@ -99,14 +102,13 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           // check if the params are the only changed ones
           if (this._configs.areEquivalent(config, newConfig)) {
             if (newConfig.params || newConfig.paramFns) {
-              this.controlRef.instance.node.setupParams(newConfig.params, newConfig.paramFns, false);
+              this.nodes.map(
+                (node) => node.setupParams(newConfig.params, newConfig.paramFns, false),
+              );
             }
           } else {
             this.logger.controlInitializing(this.node, { control: newConfig.control, wrappers: newConfig.wrappers, name: newConfig.name });
 
-            if (this.controlRef) {
-              this.controlRef.hostView.detach();
-            }
             this.container.clear();
             this.createControl(newConfig);
           }
@@ -159,6 +161,8 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
         injector: Injector,
         wrappers: DynConfigWrapper[] = [],
       ) => {
+        let ref: ComponentRef<any>;
+
         if (wrappers?.length) {
           // render wrappers
           const [wconfig, ...subwrappers] = wrappers;
@@ -166,7 +170,10 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           const wrapper = this.registry.getWrapper(wrapperId);
 
           const factory = this.resolver.resolveComponentFactory(wrapper.component);
-          const ref = view.createComponent<AbstractDynWrapper>(factory, undefined, injector);
+          ref = view.createComponent<AbstractDynWrapper>(factory, undefined, injector);
+
+          this.addNode(ref.instance.node)
+          ref.onDestroy(() => this.removeNode(ref.instance.node));
 
           ref.instance.config = config;
           ref.instance.wrapper = typeof wconfig === 'string' ? { wrapper: wconfig } : wconfig;
@@ -182,19 +189,22 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           // render the control
           if (!this.controlRef || this.controlRef.hostView.destroyed) {
             const factory = this.resolver.resolveComponentFactory(control.component);
-            this.controlRef = view.createComponent<AbstractDynControl>(factory, undefined, injector);
+            ref = this.controlRef = view.createComponent<AbstractDynControl>(factory, undefined, injector);
 
-            this.controlRef.instance.config = config;
-            this.controlRef.instance.node.setIndex(this.index);
+            this.addNode(ref.instance.node)
+            ref.onDestroy(() => this.removeNode(ref.instance.node));
+
+            ref.instance.config = config;
+            ref.instance.node.setIndex(this.index);
             if (config.wrappers?.length) {
-              this.controlRef.instance.node.parent.childrenIncrement();
+              ref.instance.node.parent.childrenIncrement();
             }
             // we let the corresponding DynControlNode to initialize the control
             // and register itself in the Form Tree in the lifecycle methods
 
-            this.controlRef.changeDetectorRef.markForCheck();
+            ref.changeDetectorRef.markForCheck();
 
-            this.logger.componentCreated(this.controlRef.instance.node, {
+            this.logger.componentCreated(ref.instance.node, {
               control: config.control,
               name: config.name,
               controls: config.controls?.length || 0,
@@ -224,5 +234,15 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
       // log any error happening in the control instantiation
       console.error(e);
     }
+  }
+
+  addNode(node: DynControlNode): void {
+    this.nodes.push(node);
+  }
+
+  removeNode(node: DynControlNode): void {
+    this.nodes.some((child, i) => {
+      return (child === node) ? this.nodes.splice(i, 1) : false;
+    });
   }
 }

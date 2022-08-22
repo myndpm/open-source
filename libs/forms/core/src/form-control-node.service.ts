@@ -15,6 +15,7 @@ import { DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
+import { AbstractDynControl } from './dyn-control.class';
 import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -26,7 +27,7 @@ import { DYN_MODE } from './form.tokens';
 export class DynControlNode<
   TParams extends DynParams = DynParams,
   TControl extends AbstractControl = FormGroup,
-  TComponent = any,
+  TComponent extends AbstractDynControl = any,
 >
 implements DynNode<TParams, TControl> {
   // form hierarchy
@@ -228,6 +229,7 @@ implements DynNode<TParams, TControl> {
   }
 
   // let the ControlNode know of an incoming hook
+  // TODO polymorphic function with sparsed params
   callHook(event: DynHook): void {
     this.logger.hookCalled(this, event);
 
@@ -426,7 +428,7 @@ implements DynNode<TParams, TControl> {
   /**
    * run a function in the parent nodes that are WRAPPERs.
    */
-  execInWrappers(fn: (node: DynNode) => any): void {
+  execInWrappers(fn: (node: DynNode) => any, includeSelf = false): void {
     this.exec(
       (node: DynNode) => {
         if (node.instance !== DynInstanceType.Wrapper) {
@@ -435,7 +437,7 @@ implements DynNode<TParams, TControl> {
         fn(node);
         return false;
       },
-      false,
+      includeSelf,
     );
   }
 

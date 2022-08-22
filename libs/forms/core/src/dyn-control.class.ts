@@ -109,7 +109,7 @@ implements OnInit, AfterViewInit, OnChanges {
       scan(
         (previous, params) => {
           // emulates ngOnChanges
-          const change = new SimpleChange(previous ?? {}, this.completeParams(params), !previous);
+          const change = new SimpleChange(previous ?? {}, params, !previous);
           this._logger.nodeParamsUpdated(this.node, this.constructor.name, change.currentValue);
 
           setTimeout(() => {

@@ -45,11 +45,11 @@ export class DynLogger {
     });
   }
 
-  nodeMethodCalledTwice(name: string, { deep, path, route }: DynNode): void {
+  nodeMethodCalledTwice(name: string, { deep, route }: DynNode): void {
     return this.driver.log({
       deep,
       level: DynLogLevel.Warning,
-      message:`[node] '${path.join('.')}' method called twice (${name})`,
+      message:`[node] '${name}' method called twice (${route.join('/')})`,
     });
   }
 

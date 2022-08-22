@@ -32,7 +32,7 @@ export interface DynNode<
   hidden(): void;
 
   whenReady(): Observable<boolean>;
-  updateParams(params: Partial<TParams>): void;
+  updateParams(params: Partial<TParams>, resetPrevious?: boolean): void;
   callHook(event: DynHook): void;
 
   reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
@@ -70,6 +70,7 @@ export interface DynNode<
 
   execInWrappers<T>(
     fn: (node: DynNode) => any,
+    includeSelf?: boolean,
   ): void;
 }
 
