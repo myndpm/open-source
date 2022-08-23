@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
+import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
@@ -172,7 +172,6 @@ implements DynNode<TParams, TControl> {
   );
 
   constructor(
-    private readonly cdr: ChangeDetectorRef,
     private readonly formFactory: DynFormFactory,
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
@@ -279,7 +278,7 @@ implements DynNode<TParams, TControl> {
 
   // trigger change detection
   detectChanges(): void {
-    this.cdr.markForCheck();
+    this.callHook({ hook: 'DetectChanges' });
   }
 
   hasValidator(name: string): boolean {
@@ -358,6 +357,7 @@ implements DynNode<TParams, TControl> {
 
     do {
       // query by form.control and by node.path
+      // TODO consider multiple nodes matching a path
       result = node.control.get(path)
         ?? (searchDown ? node.searchDown(path) : null)
         ?? null;
@@ -445,7 +445,7 @@ implements DynNode<TParams, TControl> {
   execInWrappers(fn: (node: DynNode) => any, includeSelf = false): void {
     this.exec(
       (node: DynNode) => {
-        if (node.instance !== DynInstanceType.Wrapper) {
+        if ((!includeSelf || node !== this) && node.instance !== DynInstanceType.Wrapper) {
           return true;
         }
         fn(node);
