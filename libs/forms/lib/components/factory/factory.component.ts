@@ -133,6 +133,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
           provide: DynControlNode,
           useClass: DynControlNode,
           deps: [ // FIXME added for Stackblitz
+            ChangeDetectorRef,
             DynFormFactory,
             DynFormHandlers,
             DynLogger,

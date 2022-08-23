@@ -38,6 +38,7 @@ export interface DynNode<
   reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
   patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): Observable<void>;
   valueChanges(path: string): Observable<any>|undefined;
+  detectChanges(): void;
 
   track(defaultMode?: string): Observable<void>;
   untrack(mode?: string): void;

@@ -67,11 +67,9 @@ implements OnInit {
 
     this.touchedChange$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this._ref.markForCheck();
-        this.node.execInWrappers(
-          (node: DynNode) => node.callHook({ hook: 'DetectChanges', plain: true })
-        )
-      });
+      .subscribe(() => this.node.execInWrappers(
+        (node: DynNode) => node.detectChanges(),
+        true,
+      ));
   }
 }

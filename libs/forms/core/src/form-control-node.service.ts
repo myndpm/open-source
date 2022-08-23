@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
+import { ChangeDetectorRef, Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
@@ -170,6 +170,7 @@ implements DynNode<TParams, TControl> {
   );
 
   constructor(
+    private readonly cdr: ChangeDetectorRef,
     private readonly formFactory: DynFormFactory,
     private readonly formHandlers: DynFormHandlers,
     private readonly logger: DynLogger,
@@ -272,6 +273,11 @@ implements DynNode<TParams, TControl> {
     return control?.valueChanges.pipe(
       startWith(control.value),
     );
+  }
+
+  // trigger change detection
+  detectChanges(): void {
+    this.cdr.markForCheck();
   }
 
   /**
