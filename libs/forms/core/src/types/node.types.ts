@@ -39,6 +39,7 @@ export interface DynNode<
   patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): Observable<void>;
   valueChanges(path: string): Observable<any>|undefined;
   detectChanges(): void;
+  hasValidator(name: string): boolean;
 
   track(defaultMode?: string): Observable<void>;
   untrack(mode?: string): void;

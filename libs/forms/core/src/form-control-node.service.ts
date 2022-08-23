@@ -11,7 +11,7 @@ import { DynMatch } from './types/matcher.types';
 import { DynMode } from './types/mode.types';
 import { DynNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
-import { DynConfigMap, DynConfigProvider } from './types/provider.types';
+import { DynConfigId, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
@@ -103,6 +103,8 @@ implements DynNode<TParams, TControl> {
   private _params!: TParams;
   private _initLoaded = false; // init called
   private _formLoaded = false; // view already initialized
+  private _validators?: DynConfigId[];
+  private _asyncValidators?: DynConfigId[];
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
   private _params$!: Observable<TParams>;
@@ -278,6 +280,12 @@ implements DynNode<TParams, TControl> {
   // trigger change detection
   detectChanges(): void {
     this.cdr.markForCheck();
+  }
+
+  hasValidator(name: string): boolean {
+    return this._validators?.includes(name)
+      ?? this._asyncValidators?.includes(name)
+      ?? false;
   }
 
   /**
@@ -518,6 +526,10 @@ implements DynNode<TParams, TControl> {
     if (this.parent?.instance === DynInstanceType.Container) {
       this.parent.childrenIncrement();
     }
+
+    // store the configured IDs
+    this._validators = this.formHandlers.getConfigIds(config.validators);
+    this._asyncValidators = this.formHandlers.getConfigIds(config.asyncValidators);
 
     // store the matchers to be processed in node.setup()
     this._matchers = this.getMatchers(config);

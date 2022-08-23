@@ -108,6 +108,20 @@ export class DynFormHandlers {
     }
   }
 
+  getConfigIds(config?: DynConfigCollection<any>): DynConfigId[] {
+    let ids: DynConfigId[] = [];
+    if (Array.isArray(config)) {
+      // array of ids or [id, args] | F
+      return config.filter(Boolean).map(id => {
+        return this.getId(id);
+      });
+    } else if (isPlainObject(config)) {
+      // object of { id: args }
+      return Object.keys(config);
+    }
+    return ids;
+  }
+
   getMatcher(config: DynConfigProvider<DynMatcherFn>): DynMatcherFn {
     if (typeof config === 'function') {
       return config;
@@ -244,6 +258,17 @@ export class DynFormHandlers {
       return dictionary.get(config)!(node);
     }
     throw this.logger.providerNotFound('Validator', config);
+  }
+
+  private getId<F extends Function>(
+    config: DynConfigProvider<F>,
+  ): DynConfigId {
+    if (typeof config === 'function') {
+      return config.constructor.name;
+    } else if (Array.isArray(config)) {
+      return config[0];
+    }
+    return config;
   }
 
   private getArgs(args: DynConfigArgs): DynConfigArgs[] {
