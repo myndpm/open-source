@@ -9,7 +9,7 @@ export function singleForm(): DynFormConfig<'form'|'success'> {
         validators: ['required', 'email'],
         cssClass: 'col-sm-6 col-md-4',
         params: {
-          label: 'Email *',
+          label: 'Email',
           type: 'email',
         },
       }),

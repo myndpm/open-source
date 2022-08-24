@@ -12,13 +12,13 @@ export function step1Form(): DynFormConfig {
             name: 'firstName',
             validators: ['required'],
             cssClass: 'col-sm-6',
-            params: { label: 'First Name *' },
+            params: { label: 'First Name' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
             validators: ['required'],
             cssClass: 'col-sm-6',
-            params: { label: 'Last Name *' },
+            params: { label: 'Last Name' },
           }),
           createMatConfig('INPUT', {
             name: 'phone',

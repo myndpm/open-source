@@ -43,13 +43,13 @@ export function simpleForm(
             name: 'firstName',
             validators: ['required'],
             cssClass: 'col-sm-6 col-md-4',
-            params: { label: 'First Name *' },
+            params: { label: 'First Name' },
           }),
           createMatConfig('INPUT', {
             name: 'lastName',
             validators: ['required'],
             cssClass: 'col-sm-6 col-md-4',
-            params: { label: 'Last Name *' },
+            params: { label: 'Last Name' },
           }),
           createMatConfig('DIVIDER', {
             params: { invisible: true },
@@ -58,7 +58,7 @@ export function simpleForm(
             name: 'address1',
             validators: { required: null, minLength: 4 },
             cssClass: 'col-12 col-md-8',
-            params: { label: 'Address Line 1 *' },
+            params: { label: 'Address Line 1' },
           }),
           createMatConfig('INPUT', {
             name: 'address2',
@@ -137,13 +137,13 @@ export function simpleForm(
             name: 'product',
             validators: ['required'],
             cssClass: 'col-6 col-md-8',
-            params: { label: 'Product Name *' },
+            params: { label: 'Product Name' },
           }),
           createMatConfig('INPUT', {
             name: 'quantity',
             validators: ['required', ['min', 1]],
             cssClass: 'col-5 col-md-3',
-            params: { label: 'Quantity *', type: 'number' },
+            params: { label: 'Quantity', type: 'number' },
           }),
         ],
         modes: {
