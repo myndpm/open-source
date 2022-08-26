@@ -652,7 +652,7 @@ implements DynNode<TParams, TControl> {
     }
 
     this._dynCmp = undefined;
-    this._node.destroy();
+    this._node?.destroy();
 
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
