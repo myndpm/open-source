@@ -6,32 +6,35 @@
 
 ## Forms
 
+- Output events like (formLoaded) (formReady) etc
 - Try to detect conflicts with incoming patch values to dirty edit inside the controls
 - Declarative validation config with something like <https://vestjs.dev/>
   - Support warning messages for probable mistakes filling data (like age, etc)
+  - Configure when to display an error (touched, dirty, touchedAndDirty, formSubmitted)
+  - Interpolation of variables inside the validation error messages
+- Add support to DynFormConfig.updateOn
 
 ## Form Controls
 
-- Fix requiredMarker inside FORM-FIELD
-- Datepicker proper functionality toggling edit/display
-- HIDDEN DynControl not rendering completely is really necessary or enough to setup manually in the FormGroup? it needs special count treatment
-- Nested DynForms do not mark the root as loaded
+- ui-material: mat-error for radio and checkbox with error state matcher or mat-form-field
+- HIDDEN control requirement? dyn-factory not pollting the DOM
+- Consider multiple nodes sharing path in different containers
+- Check more real-life config changes with modes and matchers
 - Check FormDirectives responsibilities to apply in DynControlNode if the validators doesn't work
 - Provide config for appearance (theme, full-width, inline)
-- Extensible handlers for different modes (panel, filter, table-cell, mobile?)
-- How to add form options? (clear, label, defaultValue, fieldName, placeholder, tooltip, cssClass)
-- How to add the filter options? (config, control, cleanseForUrl, apiFieldName)
+- How to support the filter-specific options? (config, control, cleanseForUrl, apiFieldName)
 - How to have reactive behavior? (readonly, immutable, visible, business-logic)
-  - Custom behaviors for groups, like isVisible$
 - Mode Strategy to Display/Filter/Table
 - How to style the controls consistently? (calling mod non-encapsulated styles?)
   - CSS config for dyn-factory as default grid?
+- Nested DynForms (routed wizard) do not mark the root as loaded
+- Pass custom `<ng-template path="group.control">` as projectable content to controls?
 
 ## Filters
 
 Special usage of Dynamic Forms.
 
-- Contracted components provided via `DYN_FILTERS_TOKEN` instead overload a unique token?
+- Components provided via `DYN_FILTERS_TOKEN` instead overload a unique token?
 - Receives and updates URL queryParams
 - Can have primary/additional filters
 - Have some special handling like query/value/display/request handlers
@@ -48,34 +51,25 @@ Tabulated data fetched with the filters output.
 Data/logic layer separated of the UI.  
 Fill a DataSource with a Dynamically generated Form.
 
-## Patterns
+## Form Builders
 
-- Factory of controls for a given config
-- Strategy of common methods to be supported by the controls
-  - (?) awareness of the available strategies
-  - Essential methods only, with optional parameters
+- <https://formio.github.io/angular-demo/#/forms/builder>
+- <https://formql.io/example/#/form/contactInfo/edit>
 
-### OOP
-
-- Inheritance of DynControls
-- Composition of FormControls
-
-## Troubleshoot
+## Troubles
 
 - Buttons without type can trigger `dyn-form` buttons
 
 ## Check the approach of similar projects
 
-Invite some authors to discuss:
+Invite some authors to discuss and check their issues/feature-requests:
 
 - <https://github.com/ngx-formly/ngx-formly> the oldest dynamic-forms project
-- <https://github.com/formio/angular> also a long standing library, has a data-table grid
-- <https://github.com/dynamic-forms/dynamic-forms> bloated config but fully featured
+- <https://github.com/formio/angular> long standing library, has i18n and data-table grid
+- <https://github.com/udos86/ng-dynamic-forms> interesting usage of template directives
+- <https://github.com/teradata/covalent> completely dynamic CSS Flexbox layout
+- <https://github.com/dynamic-forms/dynamic-forms> bloated typing but fully featured
+- <https://github.com/formql/formql> designed an integration with the backend
 - <https://github.com/gms1/angular-dynaform> consider its form actions
-- <https://github.com/udos86/ng-dynamic-forms>
-- <https://github.com/anand-kashyap/angular-auth> check its rx-form component
 - <https://github.com/trufla-technology/ngx-tru-forms> based on JSON Schemas
-- <https://github.com/ngspot/ngx-errors> interesting configuration for errors
-- <https://github.com/teradata/covalent> completely dynamic layout
-- <https://github.com/FalconSoft/ngx-dynamic-components> check its loading strategy
-- <https://github.com/IndigoSoft/ngxd> claims to execute lifecycle hooks better than ComponentFactoryResolver
+- <https://github.com/FalconSoft/ngx-dynamic-components> XML based configuration
