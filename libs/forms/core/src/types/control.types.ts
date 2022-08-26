@@ -4,7 +4,7 @@ import { DynConfigArgs } from './forms.types';
 import { DynMatch } from './matcher.types';
 import { DynFunctionFn, DynParams } from './params.types';
 import { DynConfigCollection, DynConfigMap, DynConfigProvider } from './provider.types';
-import { DynConfigErrors, DynErrors } from './validation.types';
+import { DynConfigErrors, DynErrors, DynFormConfigErrors } from './validation.types';
 import { DynConfigWrapper } from './wrapper.types';
 
 export type DynControlId = string; // Control ID
@@ -12,7 +12,9 @@ export type DynControlId = string; // Control ID
 /**
   single dynamic control config
  */
-export interface DynControlConfig<TParams extends DynParams = DynParams> {
+export interface DynControlConfig<
+  TParams extends DynParams = DynParams
+> extends DynFormConfigErrors {
   // config
   control: DynControlId;
   wrappers?: DynConfigWrapper<TParams>[];

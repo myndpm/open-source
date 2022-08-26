@@ -44,6 +44,52 @@ As mentioned, all we need is to provide our `ValidatorFn` Factory with an id and
 
 TODO: Reference an AsyncValidator example with a custom API call here.
 
+## Error Messages
+
+After the validators are set, we will get an error object of the form:
+
+```javascript
+{ required: true }
+```
+
+and we need to translate it to a proper error message.  
+As usual, we have many layers and options to define or calculate the error message to show.
+
+We can define a global/container error for the default `FORM` error handler,
+and specify the path of the control to configure a single error message for it:
+
+```javascript
+const config: DynFormConfig = {
+  ...
+  errorMsgs: {
+    firstName: 'First name is required',
+  }
+}
+```
+
+There's also a `CONTROL` level handling inside each Control Config:
+
+```javascript
+createMatConfig('INPUT', {
+  name: 'firstName',
+  errorMsg: 'Your custom error message here',
+```
+
+But let's suppose that this control has many validators and you want to show different error messages for each case, so you can also specify an object with the corresponding messages:
+
+```javascript
+createMatConfig('INPUT', {
+  name: 'firstName',
+  validators: ['required', ['minLength', 2]],
+  errorMsg: {
+    required: 'First name is mandatory',
+    minlength: 'This must be a valid name',
+  },
+```
+
+These configurations can be handled by parent containers if the control do not specify any,
+but the first handler returning a message will be taken, and you can provide your own algorithm. See the [default error handlers](https://github.com/myndpm/open-source/blob/master/libs/forms/core/src/dyn-providers.ts#L186).
+
 ## Next
 
 - Check the article about [Parametrized Validators](https://dev.to/myndpm/parametrized-validators-in-dynamic-forms-5emf) at dev.to/myndpm

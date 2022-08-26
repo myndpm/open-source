@@ -59,6 +59,9 @@ implements DynNode<TParams, TControl> {
   get isFormLoaded(): boolean {
     return this._formLoaded;
   }
+  get errorHandlers(): DynErrorHandlerFn[] {
+    return this._errorHandlers.concat(!this.isRoot ? this.parent?.errorHandlers : []);
+  }
   get errorMsg$(): Observable<DynErrorMessage> {
     return this._errorMsg$.asObservable();
   }
@@ -535,11 +538,12 @@ implements DynNode<TParams, TControl> {
     this._matchers = this.getMatchers(config);
 
     // resolve and store the error handlers
-    this._errorHandlers = config.errorMsgs
-      ? this.formHandlers.getFormErrorHandlers(config.errorMsgs)
-      : config.errorMsg
-        ? this.formHandlers.getErrorHandlers(config.errorMsg)
-        : [];
+    if (config.errorMsgs) {
+      this._errorHandlers = this.formHandlers.getFormErrorHandlers(config.errorMsgs);
+    }
+    if (config.errorMsg) {
+      this._errorHandlers = this._errorHandlers.concat(this.formHandlers.getErrorHandlers(config.errorMsg));
+    }
 
     // merge any configured paramFns first
     if (config.paramFns) {
@@ -774,9 +778,8 @@ implements DynNode<TParams, TControl> {
     let errorMsg: string|null = null;
 
     if (errors) {
-      // TODO merge with parent handlers progressively
       // loop the handlers and retrieve the message
-      this._errorHandlers.concat(this.root._errorHandlers || []).some(handler => {
+      this.errorHandlers.some(handler => {
         errorMsg = handler(this);
         return Boolean(errorMsg);
       });

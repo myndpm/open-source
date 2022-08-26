@@ -3,12 +3,10 @@ import { BehaviorSubject, merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynInstanceType } from './types/forms.types';
-import { DynFormConfigErrors } from './types/validation.types';
 import { DynWrapperId } from './types/wrapper.types';
 
 export type DynFormNodeLoad<TParams, TControl, TComponent> =
-  DynBaseConfig<string, TParams> &
-  DynFormConfigErrors & {
+  DynBaseConfig<string, TParams> & {
     formControl?: TControl;
     instance?: DynInstanceType;
     wrapper?: DynWrapperId;
