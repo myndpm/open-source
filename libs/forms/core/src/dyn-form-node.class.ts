@@ -70,7 +70,7 @@ export class DynFormNode<TControl extends AbstractControl> {
   }
 
   setup(): void {
-    if (!this.loaded) {
+    if (this.loaded) {
       return;
     }
     this.loaded = true;

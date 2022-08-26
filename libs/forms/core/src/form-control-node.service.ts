@@ -569,7 +569,7 @@ implements DynNode<TParams, TControl> {
   }
 
   setup(): void {
-    if (!this.isFormLoaded) {
+    if (!this._formLoaded) {
       this.logger.nodeSetup(this);
       this._formLoaded = true;
 
