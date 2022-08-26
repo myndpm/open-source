@@ -44,7 +44,7 @@ implements OnInit, OnDestroy {
     this._unsubscribe.complete();
 
     // remove it from the hierarchy
-    this.node.destroy();
+    this.node?.destroy();
   }
 
   // propagate hook calls from the top to the bottom of the DynControls tree
