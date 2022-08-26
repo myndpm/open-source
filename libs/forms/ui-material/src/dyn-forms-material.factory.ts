@@ -3,6 +3,8 @@ import {
   DynConfig,
   DynControlId,
   DynMode,
+  DynHiddenControlComponent,
+  DynHiddenGroupComponent,
   DynPartialControlConfig,
   DynPartialGroupConfig,
 } from '@myndpm/dyn-forms/core';
@@ -31,7 +33,28 @@ import {
   DynMatTableParams,
 } from './controls';
 
+// generic override first
+export function createMatConfig<M extends DynMode>(control: DynControlId, partial: any): DynBaseConfig<M>;
+
+// generic provisioning
+export function createMatConfig<M extends DynMode>(
+  control: typeof DynHiddenControlComponent.dynControl,
+  partial: DynPartialControlConfig<M, any>
+): DynConfig<M>;
+export function createMatConfig<M extends DynMode>(
+  control: typeof DynHiddenGroupComponent.dynControl,
+  partial: DynPartialGroupConfig<M, any>
+): DynBaseConfig<M>;
+
 // control overloads
+export function createMatConfig<M extends DynMode>(
+  control: typeof DynMatArrayComponent.dynControl,
+  partial: DynPartialControlConfig<M, Partial<DynMatArrayParams>>
+): DynConfig<M>;
+export function createMatConfig<M extends DynMode>(
+  control: typeof DynMatArrayComponent.dynControl,
+  partial: DynPartialControlConfig<M, Partial<DynMatArrayParams>>
+): DynConfig<M>;
 export function createMatConfig<M extends DynMode>(
   control: typeof DynMatArrayComponent.dynControl,
   partial: DynPartialControlConfig<M, Partial<DynMatArrayParams>>
@@ -83,6 +106,11 @@ export function createMatConfig<M extends DynMode>(
   partial: any,
 ): DynBaseConfig<M> {
   switch (control) {
+    // generics
+    case DynHiddenControlComponent.dynControl:
+    case DynHiddenGroupComponent.dynControl:
+      return { ...partial, control };
+
     // containers
     case DynMatArrayComponent.dynControl:
       return DynMatArrayComponent.createConfig(partial);

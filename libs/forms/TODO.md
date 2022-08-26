@@ -17,7 +17,6 @@
 ## Form Controls
 
 - ui-material: mat-error for radio and checkbox with error state matcher or mat-form-field
-- HIDDEN control requirement? dyn-factory not pollting the DOM
 - Consider multiple nodes sharing path in different containers
 - Check more real-life config changes with modes and matchers
 - Check FormDirectives responsibilities to apply in DynControlNode if the validators doesn't work

@@ -1,3 +1,6 @@
+export * from './src/hidden/control.component';
+export * from './src/hidden/group.component';
+
 export * from './src/types/config.types';
 export * from './src/types/control.types';
 export * from './src/types/events.types';
