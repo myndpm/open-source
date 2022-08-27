@@ -8,5 +8,5 @@
     "schematics.json"
   ],
   "deleteDestPath": false,
-  "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge"]
+  "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge", "ramda"]
 }

@@ -1,13 +1,13 @@
 import { Directive, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
-import { path as getPath, hasPath } from 'ramda';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynHook } from './types/events.types';
 import { DynParams } from './types/params.types';
 import { DynErrorMessage } from './types/validation.types';
 import { DynControlNode } from './form-control-node.service';
+import { callHooks } from './utils/tree.utils';
 
 @Directive()
 export abstract class DynControlBase<
@@ -62,18 +62,7 @@ implements OnInit, OnDestroy {
 
   // hook propagated to children DynControls
   // customized by special cases like FormArray
-  callChildrenHooks({ hook, payload, plain }: DynHook): void {
-    this.node.children.forEach(node => {
-      const fieldName = node.name;
-      // validate the expected payload
-      if (!plain && (!payload || fieldName && !hasPath(fieldName.split('.'), payload))) {
-        return;
-      }
-      node.callHook({
-        hook,
-        payload: !plain && fieldName ? getPath(fieldName.split('.'), payload) : payload,
-        plain,
-      });
-    });
+  callChildrenHooks(event: DynHook): void {
+    callHooks(this.node.children, event);
   }
 }
