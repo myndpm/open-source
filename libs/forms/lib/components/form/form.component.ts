@@ -29,6 +29,7 @@ import {
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
+import { path as getPath } from 'ramda';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, delay, filter, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
@@ -235,12 +236,12 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         this.node.children.forEach(node => {
           const fieldName = node.name;
           // validate the expected payload
-          if (!force && !plain && (!payload || !fieldName || !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+          if (!force && !plain && (!payload || fieldName && getPath(fieldName.split('.'), payload) === undefined)) {
             return;
           }
           node.callHook({
             hook,
-            payload: !force && !plain && fieldName ? payload[fieldName!] : payload,
+            payload: !force && !plain && fieldName ? getPath(fieldName.split('.'), payload) : payload,
             plain,
           });
         });

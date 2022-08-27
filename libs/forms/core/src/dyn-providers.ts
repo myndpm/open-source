@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { path as getPath } from 'ramda';
 import { Observable, of } from 'rxjs';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import {
@@ -303,7 +304,7 @@ function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): D
       startWith(control.value),
       // compare the configured value
       map(controlValue => field && isPlainObject(controlValue)
-        ? controlValue[field]
+        ? getPath(field.split('.'), controlValue)
         : controlValue
       ),
       map(controlValue => {

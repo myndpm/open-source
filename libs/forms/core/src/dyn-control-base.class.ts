@@ -1,6 +1,7 @@
 import { Directive, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
+import { path as getPath } from 'ramda';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynHook } from './types/events.types';
@@ -62,15 +63,15 @@ implements OnInit, OnDestroy {
   // hook propagated to children DynControls
   // customized by special cases like FormArray
   callChildrenHooks({ hook, payload, plain }: DynHook): void {
-    this.node.children.map(node => {
+    this.node.children.forEach(node => {
       const fieldName = node.name;
       // validate the expected payload
-      if (!plain && (!payload || fieldName && !Object.prototype.hasOwnProperty.call(payload, fieldName))) {
+      if (!plain && (!payload || fieldName && getPath(fieldName.split('.'), payload) === undefined)) {
         return;
       }
       node.callHook({
         hook,
-        payload: !plain && fieldName ? payload[fieldName!] : payload,
+        payload: !plain && fieldName ? getPath(fieldName.split('.'), payload) : payload,
         plain,
       });
     });
