@@ -6,7 +6,7 @@ import { DynNode } from '../types/node.types';
 export function callHooks(
   children: DynNode[],
   { hook, payload, plain }: DynHook,
-  force = false,
+  force = false, // force execution on direct childs only (with plain false)
 ): void {
   children.forEach(node => {
     const fieldName = node.name;
@@ -16,7 +16,7 @@ export function callHooks(
     }
     node.callHook({
       hook,
-      payload: !force && !plain && fieldName ? getPath(fieldName.split('.'), payload) : payload,
+      payload: force ? undefined : !plain && fieldName ? getPath(fieldName.split('.'), payload) : payload,
       plain,
     });
   });
