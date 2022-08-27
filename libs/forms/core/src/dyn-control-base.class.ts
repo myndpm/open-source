@@ -1,7 +1,7 @@
 import { Directive, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import isCallable from 'is-callable';
-import { path as getPath } from 'ramda';
+import { path as getPath, hasPath } from 'ramda';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynHook } from './types/events.types';
@@ -66,7 +66,7 @@ implements OnInit, OnDestroy {
     this.node.children.forEach(node => {
       const fieldName = node.name;
       // validate the expected payload
-      if (!plain && (!payload || fieldName && getPath(fieldName.split('.'), payload) === undefined)) {
+      if (!plain && (!payload || fieldName && !hasPath(fieldName.split('.'), payload))) {
         return;
       }
       node.callHook({

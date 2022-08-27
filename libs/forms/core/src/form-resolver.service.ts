@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
+import { hasPath } from 'ramda';
 import { combineLatest, isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
@@ -45,7 +46,7 @@ export class DynFormResolver {
     }
 
     // overrides any partial config set in the form.modes[mode]
-    if (this.modes && Object.prototype.hasOwnProperty.call(this.modes, mode)) {
+    if (this.modes && hasPath([mode], this.modes)) {
       this.logger.controlModes(node, mode, this.modes[mode])
       result = this.mergeConfigs(result, this.modes[mode]!);
     }
@@ -63,28 +64,28 @@ export class DynFormResolver {
     if (mode.control) {
       config.control = mode.control;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'wrappers')) {
+    if (hasPath(['wrappers'], mode)) {
       config.wrappers = mode.wrappers;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'default')) {
+    if (hasPath(['default'], mode)) {
       config.default = mode.default;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'validators')) {
+    if (hasPath(['validators'], mode)) {
       config.validators = mode.validators;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'asyncValidators')) {
+    if (hasPath(['asyncValidators'], mode)) {
       config.asyncValidators = mode.asyncValidators;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'updateOn')) {
+    if (hasPath(['updateOn'], mode)) {
       config.updateOn = mode.updateOn;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'match')) {
+    if (hasPath(['match'], mode)) {
       config.match = mode.match;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'cssClass')) {
+    if (hasPath(['cssClass'], mode)) {
       config.cssClass = mode.cssClass;
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'errorMsg')) {
+    if (hasPath(['errorMsg'], mode)) {
       config.errorMsg = mode.errorMsg;
     }
     if (mode.params) {
@@ -105,7 +106,7 @@ export class DynFormResolver {
         config.params = merge(true, config.params, mode.params);
       }
     }
-    if (Object.prototype.hasOwnProperty.call(mode, 'paramFns')) {
+    if (hasPath(['paramFns'], mode)) {
       config.paramFns = merge(true, config.paramFns, mode.paramFns);
     }
 

@@ -29,7 +29,7 @@ import {
   recursive,
 } from '@myndpm/dyn-forms/core';
 import { DynLogDriver, DynLogger } from '@myndpm/dyn-forms/logger';
-import { path as getPath } from 'ramda';
+import { path as getPath, hasPath } from 'ramda';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, delay, filter, switchMap, tap } from 'rxjs/operators';
 import { DynFormConfig } from './form.config';
@@ -210,11 +210,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           this.callHook('PostPatch', value, false);
         }),
       ),
-      () => {
-        if (callback) {
-          callback(this.node);
-        }
-      },
+      () => callback?.(this.node),
     );
   }
 
@@ -236,7 +232,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         this.node.children.forEach(node => {
           const fieldName = node.name;
           // validate the expected payload
-          if (!force && !plain && (!payload || fieldName && getPath(fieldName.split('.'), payload) === undefined)) {
+          if (!force && !plain && (!payload || fieldName && !hasPath(fieldName.split('.'), payload))) {
             return;
           }
           node.callHook({
