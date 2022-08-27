@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSelectModule } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynMatSelectComponent } from './select.component';
@@ -14,7 +14,7 @@ describe('DynMatSelectComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DynFormsModule.forFeature({
-          controls: [{} as DynControlProvider],
+          controls: [],
         }),
         MatSelectModule,
       ],

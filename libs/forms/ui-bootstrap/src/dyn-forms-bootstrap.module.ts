@@ -32,26 +32,10 @@ export class DynFormsBootstrapModule {
       ngModule: DynFormsBootstrapModule,
       providers: getModuleProviders({
         controls: [
-          {
-            control: DynBsCheckboxComponent.dynControl,
-            instance: DynBsCheckboxComponent.dynInstance,
-            component: DynBsCheckboxComponent,
-          },
-          {
-            control: DynBsInputComponent.dynControl,
-            instance: DynBsInputComponent.dynInstance,
-            component: DynBsInputComponent,
-          },
-          {
-            control: DynBsRadioComponent.dynControl,
-            instance: DynBsRadioComponent.dynInstance,
-            component: DynBsRadioComponent,
-          },
-          {
-            control: DynBsSelectComponent.dynControl,
-            instance: DynBsSelectComponent.dynInstance,
-            component: DynBsSelectComponent,
-          },
+          DynBsCheckboxComponent,
+          DynBsInputComponent,
+          DynBsRadioComponent,
+          DynBsSelectComponent,
         ],
       }),
     };

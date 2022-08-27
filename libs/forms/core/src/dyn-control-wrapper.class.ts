@@ -25,6 +25,9 @@ implements OnInit {
   @ViewChild('dynContainer', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 
+  // central place to define the provided Id
+  static dynWrapper: DynWrapperId = '';
+
   wrapper!: TConfig;
 
   ngOnInit(): void {

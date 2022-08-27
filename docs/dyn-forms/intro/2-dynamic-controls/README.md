@@ -45,11 +45,7 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 
 DynFormsModule.forFeature({
   controls: [
-    {
-      control: MyCustomComponent.dynControl,
-      instance: MyCustomComponent.dynInstance,
-      component: MyCustomComponent,
-    },
+    MyCustomComponent,
   ],
   priority: 100,
 })

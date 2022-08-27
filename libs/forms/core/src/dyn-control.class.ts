@@ -43,7 +43,7 @@ export abstract class DynControl<
 extends DynControlBase<TParams, TControl>
 implements OnInit, AfterViewInit, OnChanges {
 
-  // central place to define the provided Type
+  // central place to define the provided Id
   static dynControl: DynControlId = '';
   // central place to define the provided Instance
   static dynInstance: DynInstanceType = DynInstanceType.Group;

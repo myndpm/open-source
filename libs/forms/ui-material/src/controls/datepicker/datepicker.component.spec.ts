@@ -4,7 +4,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynMatDatepickerComponent } from './datepicker.component';
@@ -17,7 +17,7 @@ describe('DynMatDatepickerComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DynFormsModule.forFeature({
-          controls: [{} as DynControlProvider],
+          controls: [],
         }),
         MatFormFieldModule,
         MatDatepickerModule,

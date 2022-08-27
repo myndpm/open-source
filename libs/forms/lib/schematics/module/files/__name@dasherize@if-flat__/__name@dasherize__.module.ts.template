@@ -21,11 +21,7 @@ export class <%= classify(name) %>Module {
       ngModule: <%= classify(name) %>Module,
       providers: getModuleProviders({
         controls: [
-          {
-            control: <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynControl,
-            instance: <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component.dynInstance,
-            component: <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component,
-          },
+          <%= prefixClass ? classify(prefix) : '' %><%= classify(controlName) %>Component,
         ],
       }),
     };

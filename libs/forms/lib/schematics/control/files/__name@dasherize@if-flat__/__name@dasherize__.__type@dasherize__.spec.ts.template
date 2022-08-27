@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { of } from 'rxjs';
 
@@ -16,7 +16,7 @@ describe('<%= prefixClass ? classify(prefix) : '' %><%= classify(name) %><%= cla
       imports: [
         ReactiveFormsModule,
         DynFormsModule.forFeature({
-          controls: [{} as DynControlProvider],
+          controls: [],
         }),
       ],
       declarations: [

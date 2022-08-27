@@ -1,11 +1,11 @@
-import { Provider } from '@angular/core';
+import { Provider, Type } from '@angular/core';
 import { DynLogDriver, DynLogger, DynLogLevel, DYN_LOG_LEVEL } from '@myndpm/dyn-forms/logger';
 import { DynCondition, DynMatcher } from './types/matcher.types';
 import { DynFunction } from './types/params.types';
 import { DynAsyncValidator, DynErrorHandler, DynValidator } from './types/validation.types';
-import { DynControlProvider } from './dyn-control.class';
-import { DynWrapperProvider } from './dyn-control-wrapper.class';
-import { mapPriority } from './dyn-providers';
+import { AbstractDynControl } from './dyn-control.class';
+import { AbstractDynWrapper } from './dyn-control-wrapper.class';
+import { mapControls, mapPriority, mapWrappers } from './dyn-providers';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DynFormRegistry } from './form-registry.service';
@@ -22,8 +22,8 @@ import {
 
 export interface DynModuleProviders {
   providers?: Provider[];
-  controls?: DynControlProvider[];
-  wrappers?: DynWrapperProvider[];
+  controls?: Type<AbstractDynControl>[];
+  wrappers?: Type<AbstractDynWrapper>[];
   errorHandlers?: DynErrorHandler[];
   functions?: DynFunction[];
   validators?: DynValidator[];
@@ -47,12 +47,12 @@ export function getModuleProviders(args?: DynModuleProviders): Provider[] {
     DynFormHandlers,
     DynFormFactory,
     ...args?.providers ?? [],
-    ...args?.controls?.map(mapPriority(args?.priority)).map((control) => ({
+    ...args?.controls?.map(mapControls()).map(mapPriority(args?.priority)).map((control) => ({
       provide: DYN_CONTROLS_TOKEN,
       useValue: control,
       multi: true,
     })) ?? [],
-    ...args?.wrappers?.map(mapPriority(args?.priority)).map((wrapper) => ({
+    ...args?.wrappers?.map(mapWrappers()).map(mapPriority(args?.priority)).map((wrapper) => ({
       provide: DYN_WRAPPERS_TOKEN,
       useValue: wrapper,
       multi: true,

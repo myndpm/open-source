@@ -27,11 +27,7 @@ export class DynFormsNativeModule {
       ngModule: DynFormsNativeModule,
       providers: getModuleProviders({
         controls: [
-          {
-            control: DynNatInputComponent.dynControl,
-            instance: DynNatInputComponent.dynInstance,
-            component: DynNatInputComponent,
-          },
+          DynNatInputComponent,
         ],
       }),
     };

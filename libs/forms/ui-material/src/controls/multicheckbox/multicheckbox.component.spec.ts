@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { MockProvider } from 'ng-mocks';
 import { DynMatMulticheckboxComponent } from './multicheckbox.component';
 
@@ -14,7 +14,7 @@ describe('DynMatMulticheckboxComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DynFormsModule.forFeature({
-          controls: [{} as DynControlProvider],
+          controls: [],
         }),
         MatCheckboxModule,
       ],

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatRadioModule } from '@angular/material/radio';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { DynControlNode, DynControlProvider } from '@myndpm/dyn-forms/core';
+import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { MockProvider } from 'ng-mocks';
 import { DynMatRadioComponent } from './radio.component';
@@ -14,7 +14,7 @@ describe('DynMatRadioComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DynFormsModule.forFeature({
-          controls: [{} as DynControlProvider],
+          controls: [],
         }),
         MatRadioModule,
       ],

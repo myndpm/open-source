@@ -37,67 +37,20 @@ export const PROVIDERS = getModuleProviders({
     MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
   ],
   wrappers: [
-    {
-      wrapper: DynMatFormFieldWrapper.dynWrapper,
-      component: DynMatFormFieldWrapper,
-    }
+    DynMatFormFieldWrapper
   ],
   controls: [
-    {
-      control: DynMatArrayComponent.dynControl,
-      instance: DynMatArrayComponent.dynInstance,
-      component: DynMatArrayComponent,
-    },
-    {
-      control: DynMatCardComponent.dynControl,
-      instance: DynMatCardComponent.dynInstance,
-      component: DynMatCardComponent,
-    },
-    {
-      control: DynMatCheckboxComponent.dynControl,
-      instance: DynMatCheckboxComponent.dynInstance,
-      component: DynMatCheckboxComponent,
-    },
-    {
-      control: DynMatContainerComponent.dynControl,
-      instance: DynMatContainerComponent.dynInstance,
-      component: DynMatContainerComponent,
-    },
-    {
-      control: DynMatDatepickerComponent.dynControl,
-      instance: DynMatDatepickerComponent.dynInstance,
-      component: DynMatDatepickerComponent,
-    },
-    {
-      control: DynMatDividerComponent.dynControl,
-      instance: DynMatDividerComponent.dynInstance,
-      component: DynMatDividerComponent,
-    },
-    {
-      control: DynMatInputComponent.dynControl,
-      instance: DynMatInputComponent.dynInstance,
-      component: DynMatInputComponent,
-    },
-    {
-      control: DynMatMulticheckboxComponent.dynControl,
-      instance: DynMatMulticheckboxComponent.dynInstance,
-      component: DynMatMulticheckboxComponent,
-    },
-    {
-      control: DynMatRadioComponent.dynControl,
-      instance: DynMatRadioComponent.dynInstance,
-      component: DynMatRadioComponent,
-    },
-    {
-      control: DynMatSelectComponent.dynControl,
-      instance: DynMatSelectComponent.dynInstance,
-      component: DynMatSelectComponent,
-    },
-    {
-      control: DynMatTableComponent.dynControl,
-      instance: DynMatTableComponent.dynInstance,
-      component: DynMatTableComponent,
-    },
+    DynMatArrayComponent,
+    DynMatCardComponent,
+    DynMatCheckboxComponent,
+    DynMatContainerComponent,
+    DynMatDatepickerComponent,
+    DynMatDividerComponent,
+    DynMatInputComponent,
+    DynMatMulticheckboxComponent,
+    DynMatRadioComponent,
+    DynMatSelectComponent,
+    DynMatTableComponent,
   ],
 });
 

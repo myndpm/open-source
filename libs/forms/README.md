@@ -36,16 +36,8 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
   imports: [
     DynFormsModule.forFeature({
       controls: [
-        {
-          control: SelectComponent.dynControl, // 'MYSELECT'
-          instance: SelectComponent.dynInstance,
-          component: SelectComponent,
-        },
-        {
-          control: InputComponent.dynControl, // 'MYINPUT'
-          instance: InputComponent.dynInstance,
-          component: InputComponent,
-        },
+        SelectComponent, // 'MYSELECT'
+        InputComponent, // 'MYINPUT'
       ],
     }),
 ```

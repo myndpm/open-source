@@ -1,7 +1,10 @@
+import { Type } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { path as getPath } from 'ramda';
 import { Observable, of } from 'rxjs';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
+import { AbstractDynWrapper, DynWrapperProvider } from './dyn-control-wrapper.class';
+import { AbstractDynControl, DynControlProvider } from './dyn-control.class';
 import {
   DynCondition,
   DynConditionFn,
@@ -22,6 +25,27 @@ import {
   DynValidator,
 } from './types/validation.types';
 import { isPlainObject } from './utils/merge.util';
+
+/**
+ * Mapper from plain Type<T> to DynControlProvider
+ */
+ export function mapControls() {
+  return (component: Type<AbstractDynControl>): DynControlProvider => ({
+    component,
+    control: (component as any).dynControl,
+    instance: (component as any).dynInstance,
+  });
+}
+
+/**
+ * Mapper from plain Type<T> to DynWrapperProvider
+ */
+export function mapWrappers() {
+  return (component: Type<AbstractDynWrapper>): DynWrapperProvider => ({
+    component,
+    wrapper: (component as any).dynWrapper,
+  });
+}
 
 /**
  * Mapper to add the incoming priority
