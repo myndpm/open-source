@@ -27,7 +27,7 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { merge, BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'dyn-mat-table-row',
@@ -69,7 +69,7 @@ export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> impl
   @Output() save = new EventEmitter<void>();
 
   // keeps track of the local input
-  protected modeLocal$ = new BehaviorSubject<DynMode>('');
+  protected modeLocal$ = new BehaviorSubject<DynMode|null>(null);
 
   // stream mode changes via DYN_MODE
   protected mode$ = new BehaviorSubject<DynMode>('');
@@ -94,7 +94,7 @@ export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> impl
       providers: [
         {
           provide: DYN_MODE_CHILD,
-          useValue: this.modeLocal$.asObservable(),
+          useValue: this.modeLocal$.pipe(filter(mode => mode !== null)),
         },
         {
           provide: DYN_MODE,

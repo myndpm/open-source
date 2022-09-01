@@ -59,7 +59,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   configLayer?: Injector;
 
   // stream mode changes via DYN_MODE
-  protected mode$ = new BehaviorSubject<DynMode | undefined>(undefined);
+  protected mode$ = new BehaviorSubject<DynMode>('');
 
   // registered hook listeners
   protected listeners = new Map<string, Function[]>();
@@ -164,7 +164,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mode) {
+    if (changes.mode && typeof this.mode === 'string') {
       this.logger.modeForm(this.node, this.mode);
       this.mode$.next(this.mode);
     }

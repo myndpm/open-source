@@ -166,11 +166,11 @@ export class DynLogger {
     });
   }
 
-  modeGroup({ deep, path }: DynNode, mode: string, name?: string): void {
+  modeGroup({ deep, path, route }: DynNode, mode: string, name?: string): void {
     this.driver.log({
       deep,
       level: DynLogLevel.Runtime,
-      message: `[DynGroup] '${path.join('.')}${name ? `.${name}` : ''}' new mode: '${mode}'`
+      message: `[DynGroup] '${path.join('.')}${name ? `.${name}` : ''}' new mode: '${mode}' (${route.join('/')})`
     });
   }
 }

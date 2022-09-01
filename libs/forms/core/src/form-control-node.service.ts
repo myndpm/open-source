@@ -725,8 +725,8 @@ implements DynNode<TParams, TControl> {
   getRoute(): string[] {
     return [
       ...(!this.isRoot ? this.parent.route : []),
-      this.dynId || this.instance +
-      `${this.index !== undefined ? `[${this.index}]` : ''}`,
+      (this.dynId || this.instance) +
+      (this.dynId !== 'DYN-FORM' ? `${this.index !== undefined ? `[${this.index}]` : ''}` : ''),
     ];
   }
 
