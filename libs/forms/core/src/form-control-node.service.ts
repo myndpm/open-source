@@ -266,6 +266,7 @@ implements DynNode<TParams, TControl> {
           this._node.control.patchValue(payload, options);
           this.logger.formCycle('PostPatch', this._node.control.value);
           this.callHook({ hook: 'PostPatch', payload, plain: false });
+          this.callHook({ hook: 'DetectChanges', plain: true });
         }),
       ),
     );
@@ -390,6 +391,7 @@ implements DynNode<TParams, TControl> {
 
     // propagate the query to the children
     let result: AbstractControl|null = null;
+    // FIXME loop children with all the possible dotted paths
     this.children.some(node => {
       result = node.searchDown(selector.join('.'));
       return result ? true : false; // return the first match

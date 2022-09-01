@@ -208,6 +208,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
           this.form.patchValue(value);
           this.logger.formCycle('PostPatch', this.form.value);
           this.callHook('PostPatch', value, false);
+          this.callHook('DetectChanges', undefined, true);
         }),
       ),
       () => callback?.(this.node),
