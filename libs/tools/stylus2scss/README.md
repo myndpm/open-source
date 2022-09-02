@@ -79,7 +79,7 @@ Based on [stylus-converter](https://github.com/txs1992/stylus-converter)
 
 ## TODO
 
-Block variable converted to invalid mixin
-Why `background-image: url('data:image/png;base64,` gets modified?
-Warn to review the output of @each
-Remove second parameter of embedurl
+- Block variable converted to invalid mixin
+- Why `background-image: url('data:image/png;base64,` gets modified?
+- Warn to review the output of `@each`
+- Remove second parameter of `embedurl`
