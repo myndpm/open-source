@@ -197,7 +197,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
             ref.instance.config = config;
             ref.instance.node.setIndex(this.index);
             if (config.wrappers?.length) {
-              ref.instance.node.parent.childrenIncrement();
+              ref.instance.node.parent.childrenIncrement(false);
             }
             // we let the corresponding DynControlNode to initialize the control
             // and register itself in the Form Tree in the lifecycle methods

@@ -693,9 +693,11 @@ implements DynNode<TParams, TControl> {
     }
   }
 
-  childrenIncrement(): void {
+  childrenIncrement(logging = true): void {
     this._children$.next(this._children$.value + 1);
-    this.logger.nodeMethod(this, 'childrenIncrement', { count: this._children$.value });
+    if (logging) {
+      this.logger.nodeMethod(this, 'childrenIncrement', { count: this._children$.value });
+    }
   }
 
   childrenDecrement(): void {
