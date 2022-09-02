@@ -266,7 +266,6 @@ implements DynNode<TParams, TControl> {
           this._node.control.patchValue(payload, options);
           this.logger.formCycle('PostPatch', this._node.control.value);
           this.callHook({ hook: 'PostPatch', payload, plain: false });
-          this.callHook({ hook: 'DetectChanges', plain: true });
         }),
       ),
     );

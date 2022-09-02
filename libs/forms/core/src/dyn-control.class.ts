@@ -160,6 +160,11 @@ implements OnInit, AfterViewInit, OnChanges {
     this.node.untrack(mode);
   }
 
+  // post patch hook needs refreshing
+  hookPostPatch(): void {
+    this._ref.markForCheck();
+  }
+
   // hook to refresh the form status
   hookUpdateValidity(opts: DynHookUpdateValidity = { onlySelf: true }): void {
     this.control.updateValueAndValidity(opts);
