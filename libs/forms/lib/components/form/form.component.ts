@@ -13,6 +13,8 @@ import {
   Optional,
   SimpleChanges,
   SkipSelf,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -54,6 +56,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   modeConfigs = (parent?: DynModes, local?: DynModes): DynModes => {
     return parent && local ? recursive(true, parent, local) : local ?? parent;
   }
+
+  @Output() formPatched = new EventEmitter<void>();
 
   // internal injector with config values
   configLayer?: Injector;
@@ -195,19 +199,18 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     return onComplete(
       this.whenReady().pipe(
         tap(() => {
-          this.node.markAsPending();
           this.logger.formCycle('PrePatch');
           this.callHook('PrePatch', value, false);
         }),
-        delay(20), // waits any PrePatch loading change
-        switchMap(() => {
-          this.node.markAsLoaded();
-          return this.whenReady();
-        }),
+        delay(20), // waits any PrePatch processing
         tap(() => {
           this.form.patchValue(value);
           this.logger.formCycle('PostPatch', this.form.value);
           this.callHook('PostPatch', value, false);
+        }),
+        switchMap(() => this.whenReady()),
+        tap(() => {
+          this.formPatched.emit();
         }),
       ),
       () => callback?.(this.node),

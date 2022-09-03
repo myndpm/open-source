@@ -133,7 +133,7 @@ implements DynNode<TParams, TControl> {
     startWith(null),
     switchMap(() => combineLatest([
       this._children$,
-      this._loaded$,
+      this._loaded$.pipe(distinctUntilChanged()),
       this._loadedParams$,
       ...this.children.map(child => child.loaded$),
     ])),
@@ -253,20 +253,16 @@ implements DynNode<TParams, TControl> {
     return onComplete(
       this.whenReady().pipe(
         tap(() => {
-          this.markAsPending();
           this.logger.formCycle('PrePatch');
           this.callHook({ hook: 'PrePatch', payload, plain: false });
         }),
-        delay(20), // waits any PrePatch loading change
-        switchMap(() => {
-          this.markAsLoaded();
-          return this.whenReady();
-        }),
+        delay(20), // waits any PrePatch processing
         tap(() => {
           this._node.control.patchValue(payload, options);
           this.logger.formCycle('PostPatch', this._node.control.value);
           this.callHook({ hook: 'PostPatch', payload, plain: false });
         }),
+        switchMap(() => this.whenReady()),
       ),
     );
   }

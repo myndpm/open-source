@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Directive,
@@ -41,7 +42,7 @@ export abstract class DynControl<
   TControl extends AbstractControl = FormGroup // friendlier and most-common default
 >
 extends DynControlBase<TParams, TControl>
-implements OnInit, AfterViewInit, OnChanges {
+implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
 
   // central place to define the provided Id
   static dynControl: DynControlId = '';
@@ -135,6 +136,10 @@ implements OnInit, AfterViewInit, OnChanges {
     this.node.markAsLoaded();
   }
 
+  ngAfterViewChecked(): void {
+    this.node.markAsLoaded();
+  }
+
   /* eslint-disable @typescript-eslint/no-unused-vars, @angular-eslint/no-empty-lifecycle-method */
   ngOnChanges(changes?: SimpleChanges): void {
     // emulated while assigning the params as DynControls has no Inputs
@@ -162,6 +167,7 @@ implements OnInit, AfterViewInit, OnChanges {
 
   // post patch hook needs refreshing
   hookPostPatch(): void {
+    this.node.markAsPending();
     this._ref.markForCheck();
   }
 

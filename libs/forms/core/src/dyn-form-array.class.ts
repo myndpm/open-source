@@ -68,7 +68,7 @@ implements OnInit {
 
   // matches the incoming quantity of items with the existing controls
   // do not remove any existing data because this is "patch"
-  hookPrePatch(payload: any[]): void {
+  hookPrePatch(payload: any): void {
     if (Array.isArray(payload)) {
       const numItems = this.control.controls.length;
       for (let i = Math.max(numItems, payload.length); i >= 1; i--) {
