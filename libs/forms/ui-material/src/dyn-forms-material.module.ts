@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule, MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
-import { getModuleProviders } from '@myndpm/dyn-forms/core';
+import { DynModuleProviders, getModuleProviders } from '@myndpm/dyn-forms/core';
 import {
   DynMatArrayComponent,
   DynMatCardComponent,
@@ -31,28 +31,6 @@ import {
 import {
   DynMatFormFieldWrapper,
 } from './wrappers';
-
-export const PROVIDERS = getModuleProviders({
-  providers: [
-    MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
-  ],
-  wrappers: [
-    DynMatFormFieldWrapper
-  ],
-  controls: [
-    DynMatArrayComponent,
-    DynMatCardComponent,
-    DynMatCheckboxComponent,
-    DynMatContainerComponent,
-    DynMatDatepickerComponent,
-    DynMatDividerComponent,
-    DynMatInputComponent,
-    DynMatMulticheckboxComponent,
-    DynMatRadioComponent,
-    DynMatSelectComponent,
-    DynMatTableComponent,
-  ],
-});
 
 @NgModule({
   imports: [
@@ -109,10 +87,34 @@ export const PROVIDERS = getModuleProviders({
   ]
 })
 export class DynFormsMaterialModule {
-  static forFeature(): ModuleWithProviders<DynFormsMaterialModule> {
+  static forFeature(args?: DynModuleProviders): ModuleWithProviders<DynFormsMaterialModule> {
     return {
       ngModule: DynFormsMaterialModule,
-      providers: PROVIDERS,
+      providers: getModuleProviders({
+        ...args,
+        providers: [
+          MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+          ...(args?.providers ?? []),
+        ],
+        wrappers: [
+          DynMatFormFieldWrapper,
+          ...(args?.wrappers ?? []),
+        ],
+        controls: [
+          DynMatArrayComponent,
+          DynMatCardComponent,
+          DynMatCheckboxComponent,
+          DynMatContainerComponent,
+          DynMatDatepickerComponent,
+          DynMatDividerComponent,
+          DynMatInputComponent,
+          DynMatMulticheckboxComponent,
+          DynMatRadioComponent,
+          DynMatSelectComponent,
+          DynMatTableComponent,
+          ...(args?.controls ?? []),
+        ],
+      }),
     };
   }
 }
