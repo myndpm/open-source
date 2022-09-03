@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,6 +13,7 @@ import { LayoutModule } from '../../../layout';
 import { BuilderComponent } from './components/builder/builder.component';
 import { SimpleComponent } from './components/simple/simple.component';
 import { SingleComponent } from './components/single/single.component';
+import { SingleSuccessComponent } from './components/single/success.control/success.component';
 import { StepperStep1Component } from './components/stepper/step1/step1.component';
 import { StepperStep2Component } from './components/stepper/step2/step2.component';
 import { StepperComponent } from './components/stepper/stepper.component';
@@ -66,8 +68,13 @@ const routes: Routes = [
     FlexLayoutModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    DynFormsMaterialModule.forFeature(),
+    DynFormsMaterialModule.forFeature({
+      controls: [
+        SingleSuccessComponent,
+      ],
+    }),
     MatButtonModule,
+    MatCardModule,
     MatNativeDateModule,
     LayoutModule,
   ],
@@ -75,6 +82,7 @@ const routes: Routes = [
     BuilderComponent,
     SimpleComponent,
     SingleComponent,
+    SingleSuccessComponent,
     StepperComponent,
     StepperStep1Component,
     StepperStep2Component,

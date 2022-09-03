@@ -1,5 +1,6 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+import { SingleSuccessComponent } from './success.control/success.component';
 
 export function singleForm(): DynFormConfig<'form'|'success'> {
   return {
@@ -12,6 +13,9 @@ export function singleForm(): DynFormConfig<'form'|'success'> {
           label: 'Email',
           type: 'email',
         },
+        modes: {
+          success: SingleSuccessComponent.createConfig(),
+        }
       }),
     ],
     errorMsgs: {
