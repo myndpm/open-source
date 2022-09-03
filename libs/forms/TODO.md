@@ -6,7 +6,6 @@
 
 ## Forms
 
-- Output events like (formLoaded) (formReady) etc
 - Try to detect conflicts with incoming patch values to dirty edit inside the controls
 - Declarative validation config with something like <https://vestjs.dev/>
   - Support warning messages for probable mistakes filling data (like age, etc)
