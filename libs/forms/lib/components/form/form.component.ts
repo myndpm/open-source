@@ -58,6 +58,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   @Output() formPatched = new EventEmitter<void>();
+  @Output() formReady = new EventEmitter<void>();
 
   // internal injector with config values
   configLayer?: Injector;
@@ -118,6 +119,8 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       component: this,
     });
     this.node.markParamsAsLoaded();
+
+    this.node.whenReady().subscribe(() => this.formReady.emit());
 
     this.logger.nodeLoaded('dyn-form', this.node);
 
