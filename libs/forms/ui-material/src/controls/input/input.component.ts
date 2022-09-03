@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import {
   DynConfig,
@@ -8,6 +9,12 @@ import {
 } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldWrapper } from '../../wrappers';
 import { DynMatInputParams } from './input.component.params';
+
+const errorStateMatcher: ErrorStateMatcher = {
+  isErrorState: (control) => {
+    return Boolean(control?.invalid && control.touched);
+  },
+};
 
 @Component({
   selector: 'dyn-mat-input',
@@ -51,11 +58,7 @@ extends DynFormControl<DynMode, DynMatInputParams> {
       type: params.type || 'text',
       placeholder: params.placeholder || '',
       rows: params.rows || 3,
-      errorStateMatcher: {
-        isErrorState: (control) => {
-          return Boolean(control?.invalid && control.touched);
-        },
-      }
+      errorStateMatcher: params.errorStateMatcher || errorStateMatcher,
     };
   }
 }
