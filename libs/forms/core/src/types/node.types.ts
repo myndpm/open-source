@@ -44,17 +44,17 @@ export interface DynNode<
   track(defaultMode?: string): Observable<void>;
   untrack(mode?: string): void;
 
-  search(path: string): AbstractControl|null;
-  searchUp(path: string, searchDown?: boolean): AbstractControl|null;
-  searchDown(path: string): AbstractControl|null;
+  search(path: string): AbstractControl|undefined;
+  searchUp(path: string, searchDown?: boolean): AbstractControl|undefined;
+  searchDown(path: string): AbstractControl|undefined;
   /**
    * @deprecated use node.searchUp
    */
-  query(path: string, searchNodes?: boolean): AbstractControl|null;
+  query(path: string, searchNodes?: boolean): AbstractControl|undefined;
   /**
    * @deprecated use node.searchDown
    */
-  select(path: string): AbstractControl|null;
+  select(path: string): AbstractControl|undefined;
 
   searchCmp<T>(
     component: Type<T>,

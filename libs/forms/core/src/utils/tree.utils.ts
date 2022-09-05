@@ -1,6 +1,7 @@
 import { path as getPath, hasPath } from 'ramda';
 import { DynHook } from '../types/events.types';
 import { DynNode } from '../types/node.types';
+import { DynTree } from '../types/utils/tree.types';
 
 /** Call hooks algorithm reused in dyn-form and DynControlBase */
 export function callHooks(
@@ -22,4 +23,30 @@ export function callHooks(
   });
 }
 
-// TODO centralize dotted paths manipulation
+/** Algorith to search in a tree by name */
+export function searchNode<T>(
+  node: DynTree<T>,
+  path: string,
+): T|undefined {
+  let selector = path.slice(); // clone the path
+
+  // continue to the children if there's no name
+  if (node.name) {
+    if (node.name === selector) {
+      return node;
+    } else if (selector.startsWith(`${node.name}.`)) {
+      selector = selector.replace(`${node.name}.`, '')
+    } else {
+      return undefined; // not in this leaf
+    }
+  }
+
+  // propagate the query to the children
+  let result: T|undefined = undefined;
+  node.children?.some(child => {
+    result = searchNode(child, selector);
+    return result ? true : false; // keep the first match
+  });
+
+  return result;
+}

@@ -15,6 +15,7 @@ import { DynConfigId, DynConfigMap, DynConfigProvider } from './types/provider.t
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
+import { searchNode } from './utils/tree.utils';
 import { AbstractDynControl } from './dyn-control.class';
 import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
@@ -327,14 +328,14 @@ implements DynNode<TParams, TControl> {
   /**
    * @deprecated use node.searchUp
    */
-  query(path: string, searchNodes = false): AbstractControl|null {
+  query(path: string, searchNodes = false): AbstractControl|undefined {
     return this.searchUp(path, searchNodes);
   }
 
   /**
    * @deprecated use node.searchDown
    */
-  select(path: string): AbstractControl|null {
+  select(path: string): AbstractControl|undefined {
     return this.searchDown(path);
   }
 
@@ -342,24 +343,24 @@ implements DynNode<TParams, TControl> {
    * search a control by path in the whole hierarchy tree
    * less performant than searchUp and searchDown
    */
-  search(path: string): AbstractControl|null {
+  search(path: string): AbstractControl|undefined {
     return this.searchUp(path, true);
   }
 
   /**
    * search a node by path up in the hierarchy tree (parents)
    */
-  searchUp(path: string, searchDown = false): AbstractControl|null {
+  searchUp(path: string, searchDown = false): AbstractControl|undefined {
     /* eslint-disable @typescript-eslint/no-this-alias */
     let node: DynControlNode<TParams, any> = this;
-    let result: AbstractControl|null;
+    let result: AbstractControl|undefined;
 
     do {
       // query by form.control and by node.path
       // TODO consider multiple nodes matching a path
       result = node.control.get(path)
-        ?? (searchDown ? node.searchDown(path) : null)
-        ?? null;
+        ?? (searchDown ? node.searchDown(path) : undefined)
+        ?? undefined;
       // move upper in the tree
       node = node.parent;
     } while (!result && node);
@@ -370,29 +371,8 @@ implements DynNode<TParams, TControl> {
   /**
    * search a node by path down in the hierarchy tree (children)
    */
-  searchDown(path: string): AbstractControl|null {
-    const selector = path.split('.');
-    let name = '';
-
-    if (this._name) { // container with no name
-      name = selector.shift()!;
-    }
-
-    if (!selector.length) { // search over
-      return this._name === name ? this._node.control : null;
-    } else if (this._name !== name) {
-      return null; // not in the search path
-    }
-
-    // propagate the query to the children
-    let result: AbstractControl|null = null;
-    // FIXME loop children with all the possible dotted paths
-    this.children.some(node => {
-      result = node.searchDown(selector.join('.'));
-      return result ? true : false; // return the first match
-    });
-
-    return result;
+  searchDown(path: string): AbstractControl|undefined {
+    return searchNode(this as DynNode, path)?.control;
   }
 
   /**

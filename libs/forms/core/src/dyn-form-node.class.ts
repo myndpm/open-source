@@ -3,9 +3,11 @@ import { BehaviorSubject, merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynInstanceType } from './types/forms.types';
+import { DynParams } from './types/params.types';
 import { DynWrapperId } from './types/wrapper.types';
+import { searchNode } from './utils/tree.utils';
 
-export type DynFormNodeLoad<TParams, TControl, TComponent> =
+export type DynFormNodeLoad<TParams extends DynParams, TControl, TComponent> =
   DynBaseConfig<string, TParams> & {
     formControl?: TControl;
     instance?: DynInstanceType;
@@ -47,24 +49,8 @@ export class DynFormNode<TControl extends AbstractControl> {
     return Boolean(this.path.join('.') === path.join('.'));
   }
 
-  search(path: string[]): DynFormNode<any>|null {
-    const selector = path.slice();
-    let name = selector.shift();
-
-    if (!selector.length) { // search over
-      return this.name === name ? this : null;
-    } else if (this.name !== name) {
-      return null; // not in the search path
-    }
-
-    // propagate the query to the children
-    let result: DynFormNode<any>|null = null;
-    this.children.some(node => {
-      result = node.search(selector);
-      return result ? true : false; // return the first match
-    });
-
-    return result;
+  search(path: string[]): DynFormNode<any>|undefined {
+    return searchNode(this, path.join('.'));
   }
 
   setup(): void {
