@@ -8,6 +8,8 @@ import { DynLog } from './log.interface';
  */
 @Injectable()
 export class DynLogDriver {
+  startedAt = Date.now();
+
   logFatal = (event: DynLog) => {
     return new Error(event.message);
   }
@@ -66,27 +68,43 @@ export class DynLogDriver {
   private colorify(
     indent: number,
     level: DynLogLevel,
-    text = `${''.padStart(2 * (indent || 0), ' ')}%c[${dynLogLevels.get(level)}]`
   ): string[] {
+    const result = [''];
+    if (this.level & DynLogLevel.Testing) {
+      result[0] += `%c${(Date.now() - this.startedAt).toString().padStart(5, '0')} `;
+      result.push('color: #adb5bd');
+    }
+    result[0] += `${''.padStart(2 * (indent || 0), ' ')}%c[${dynLogLevels.get(level)}]`;
+
     switch (level) {
       case DynLogLevel.Fatal:
-        return [text, `color: #dc3545`];
+        result.push('color: #dc3545');
+        break;
       case DynLogLevel.Error:
-        return [text, `color: #dc3545`];
+        result.push('color: #dc3545');
+        break;
       case DynLogLevel.Warning:
-        return [text, `color: #fd7e14`];
+        result.push('color: #fd7e14');
+        break;
       case DynLogLevel.Hierarchy:
-        return [text, `color: #0d6efd`];
+        result.push('color: #0d6efd');
+        break;
       case DynLogLevel.Lifecycle:
-        return [text, `color: #6f42c1`];
+        result.push('color: #6f42c1');
+        break;
       case DynLogLevel.Load:
-        return [text, `color: #9f72f1`];
+        result.push('color: #9f72f1');
+        break;
       case DynLogLevel.Ready:
-        return [text, `color: #20c997`];
+        result.push('color: #20c997');
+        break;
       case DynLogLevel.Runtime:
-        return [text, `color: #adb5bd`];
+        result.push('color: #adb5bd');
+        break;
       default:
-        return [text, `color: #0d6efd`]; // info
+        result.push('color: #0d6efd'); // info
     }
+
+    return result;
   }
 }

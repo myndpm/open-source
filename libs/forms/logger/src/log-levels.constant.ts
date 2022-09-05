@@ -1,5 +1,7 @@
 
 export enum DynLogLevel {
+  /** meant to be used with bitwise OR */
+  Testing = 2**10,
   All = 2**9 - 1,
   Runtime = 2**8,
   Ready = 2**7,
