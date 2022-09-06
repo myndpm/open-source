@@ -14,7 +14,7 @@ export default function (): Rule {
 
       const content = buffer.toString('utf-8');
 
-      const newContent = content
+      let newContent = content
         // update the class renames
         .replace(/DynControlType/g, 'DynControlId')
         .replace(/DynControlParams/g, 'DynParams')
@@ -31,10 +31,13 @@ export default function (): Rule {
         .replace(/DynFormTreeNode/g, 'DynControlNode')
         .replace(/DynFormConfigResolver/g, 'DynFormResolver')
         .replace(/DynControlHook/g, 'DynHook')
-        .replace(/DynControlErrors/g, 'DynErrors')
+        .replace(/DynControlErrors/g, 'DynErrors');
 
+      if (!path.endsWith('factory.ts')) { // could not exclude switch/case
         // control provision change
-        .replace(/\{.*?(\w+)\.dynControl,?.*?\}(,)?/gs, '$1$2');
+        newContent = newContent
+          .replace(/\{[^\.{3}^{^}^[]*?(\w+)\.dynControl,?.*?\}(,)?/gs, '$1$2');
+      }
 
       // overwrite the tree only if there was a replacement
       if (content !== newContent) {
