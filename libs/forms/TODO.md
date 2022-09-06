@@ -1,5 +1,9 @@
 # TODO
 
+## Optimizations
+
+- Inline methods of dyn-group, dyn-mat-table and dyn-mat-table-row to normal methods for memory footprint
+
 ## Documentation
 
 - Matchers: Search abilities of DynNode depending on the form relative paths.
@@ -15,8 +19,9 @@
 
 ## Form Controls
 
+- Consider multiple nodes sharing path in different containers (share a processing unit)
+- Test Harnesses to facilitate the executions
 - ui-material: mat-error for radio and checkbox with error state matcher or mat-form-field
-- Consider multiple nodes sharing path in different containers
 - Check more real-life config changes with modes and matchers
 - Check FormDirectives responsibilities to apply in DynControlNode if the validators doesn't work
 - Provide config for appearance (theme, full-width, inline)

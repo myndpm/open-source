@@ -99,7 +99,7 @@ const routes: Routes = [
     },
     {
       provide: DYN_LOG_LEVEL,
-      useValue: DynLogLevel.All,
+      useValue: DynLogLevel.All | DynLogLevel.Testing,
     },
   ],
 })
