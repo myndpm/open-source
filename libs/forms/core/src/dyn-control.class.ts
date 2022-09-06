@@ -167,8 +167,10 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
 
   // post patch hook needs refreshing
   hookPostPatch(): void {
-    this.node.markAsPending();
-    this._ref.markForCheck();
+    if (this.node.instance !== DynInstanceType.Container) { // ngAfterViewChecked not called
+      this.node.markAsPending();
+      this._ref.markForCheck();
+    }
   }
 
   // hook to refresh the form status
