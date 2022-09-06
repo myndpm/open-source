@@ -16,6 +16,8 @@ npm install @myndpm/dyn-forms
 yarn add @myndpm/dyn-forms
 ```
 
+y actualizar una version previa con `ng update @myndpm/dyn-forms`.
+
 ## Configuración
 
 Se recomienda importar lo módulos de Formularios Dinámicos

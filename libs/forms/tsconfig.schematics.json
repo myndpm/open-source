@@ -8,6 +8,7 @@
     "lib/schematics/*/files/**/*"
   ],
   "include": [
+    "lib/migrations/**/*",
     "lib/schematics/**/*"
   ]
 }

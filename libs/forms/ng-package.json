@@ -5,6 +5,7 @@
     "entryFile": "index.ts"
   },
   "assets": [
+    "migrations.json",
     "schematics.json"
   ],
   "deleteDestPath": false,

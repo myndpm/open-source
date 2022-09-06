@@ -1,0 +1,10 @@
+{
+  "$schema": "../../@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "myndpm-forms-01": {
+      "description": "Refactoring before the first official release",
+      "version": "12.4.0",
+      "factory": "./lib/migrations/12_4_0/index"
+    }
+  }
+}
