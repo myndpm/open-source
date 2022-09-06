@@ -134,7 +134,7 @@ implements DynNode<TParams, TControl> {
     startWith(null),
     switchMap(() => combineLatest([
       this._children$,
-      this._loaded$.pipe(distinctUntilChanged()),
+      this._loaded$,
       this._loadedParams$,
       ...this.children.map(child => child.loaded$),
     ])),
@@ -702,11 +702,12 @@ implements DynNode<TParams, TControl> {
 
   // control.route relative to the root
   getRoute(): string[] {
-    return [
-      ...(!this.isRoot ? this.parent.route : []),
-      (this.dynId || this.instance) +
-      (this.dynId !== 'DYN-FORM' ? `${this.index !== undefined ? `[${this.index}]` : ''}` : ''),
-    ];
+    return !this.isRoot
+      ? [
+          ...this.parent.route,
+          `${this.dynId || this.instance}${this.index !== undefined ? `[${this.index}]` : ''}`,
+        ]
+      : [];
   }
 
   private addChild(node: DynControlNode<any, any>): void {
