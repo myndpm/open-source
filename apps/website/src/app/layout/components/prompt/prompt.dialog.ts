@@ -5,7 +5,7 @@ import { PromptDialogData } from './prompt-data.interface';
 @Component({
   selector: 'app-prompt',
   templateUrl: 'prompt.dialog.html',
-  styleUrls: ['./prompt.dialog.styl'],
+  styleUrls: ['./prompt.dialog.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // tslint:disable-next-line: component-class-suffix

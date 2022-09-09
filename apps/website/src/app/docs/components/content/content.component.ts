@@ -8,7 +8,7 @@ import { ContentService, I18nService } from '../../services';
 @Component({
   selector: 'app-docs-content',
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.styl'],
+  styleUrls: ['./content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentComponent implements DoCheck, OnChanges {

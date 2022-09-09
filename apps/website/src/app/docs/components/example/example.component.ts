@@ -23,7 +23,7 @@ export type LiveExampleTabs = { [tabName: string]: string };
 @Component({
   selector: 'app-docs-example',
   templateUrl: './example.component.html',
-  styleUrls: ['./example.component.styl'],
+  styleUrls: ['./example.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleComponent {

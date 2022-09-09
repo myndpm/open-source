@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
-  styleUrls: ['./docs.component.styl'],
+  styleUrls: ['./docs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocsIndexComponent {

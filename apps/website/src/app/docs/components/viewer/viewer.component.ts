@@ -12,7 +12,7 @@ import { ContentService, I18nService } from '../../services';
 @Component({
   selector: 'app-docs-viewer',
   templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.styl'],
+  styleUrls: ['./viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerComponent implements OnChanges {

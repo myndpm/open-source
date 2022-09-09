@@ -4,7 +4,7 @@ import { SectionBadge } from './section-badge.interface';
 @Component({
   selector: 'app-section-badges',
   templateUrl: './section-badges.component.html',
-  styleUrls: ['./section-badges.component.styl'],
+  styleUrls: ['./section-badges.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SectionBadgesComponent {

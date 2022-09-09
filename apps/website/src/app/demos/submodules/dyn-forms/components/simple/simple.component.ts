@@ -16,7 +16,7 @@ import { simpleData, simpleForm } from './simple.form';
 @Component({
   selector: 'app-form-simple',
   templateUrl: './simple.component.html',
-  styleUrls: ['./simple.component.styl'],
+  styleUrls: ['./simple.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })

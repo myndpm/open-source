@@ -13,7 +13,7 @@ import { I18nService } from '../../services';
 @Component({
   selector: 'app-docs-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.styl'],
+  styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutComponent implements OnInit {
