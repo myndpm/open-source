@@ -1,50 +1,59 @@
-:host
-  display: flex
-  flex: 0 0 96px
-  flex-direction: row
-  background-image: radial-gradient(circle farthest-corner at 275% 275%, #80bdeb, #0a253a)
+:host {
+  display: flex;
+  flex: 0 0 96px;
+  flex-direction: row;
+  background-image: radial-gradient(circle farthest-corner at 275% 275%, #80bdeb, #0a253a);
 
-  h1
-    display: none
+  h1 {
+    display: none;
+  }
 
-  .navbar
-    padding-bottom: 23px
-    padding-top: 23px
-    width: 100%
+  .navbar {
+    padding-bottom: 23px;
+    padding-top: 23px;
+    width: 100%;
+  }
 
-  .navbar-collapse
-    justify-content: flex-end
+  .navbar-collapse {
+    justify-content: flex-end;
+  }
 
-  ul
-    li
-      a
-        color: #fff
-        display: block
-        font-size: 16px
-        font-weight: 400
-        margin: 0 20px
-        padding: 10px 0 5px
-        position: relative
-        text-shadow: 1px 1px 1px rgb(0 0 0 / 0%)
-        text-rendering: optimizeLegibility !important
-        transition: color .2s cubic-bezier(.39, .575, .565, 1)
-        text-align: center
-        text-decoration: none
-        text-transform: uppercase
-        white-space: nowrap
+  ul {
+    li {
+      a {
+        color: #fff;
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0 20px;
+        padding: 10px 0 5px;
+        position: relative;
+        text-shadow: 1px 1px 1px rgb(0 0 0/0%);
+        text-rendering: optimizeLegibility !important;
+        transition: color 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
 
-        &:after
-          background: none repeat scroll 0 0 transparent
-          bottom: 0
-          content: ""
-          display: block
-          height: 2px
-          left: 50%
-          position: absolute
-          background: #38B87C
-          transition: width 0.3s ease 0s, left 0.3s ease 0s
-          width: 0
+        &:after {
+          background: none repeat scroll 0 0 transparent;
+          bottom: 0;
+          content: "";
+          display: block;
+          height: 2px;
+          left: 50%;
+          position: absolute;
+          background: #38B87C;
+          transition: width 0.3s ease 0s, left 0.3s ease 0s;
+          width: 0;
+        }
 
-        &:hover:after
-          width: 100%
-          left: 0
+        &:hover:after {
+          width: 100%;
+          left: 0;
+        }
+      }
+    }
+  }
+}

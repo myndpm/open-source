@@ -1,15 +1,20 @@
-:host
-  display: flex
-  flex-direction: column
-  height: 100%
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-  div
-    flex: 1
+  div {
+    flex: 1;
 
-    ::ng-deep
-      section
-        padding: 24px 0
-        position: relative
+    ::ng-deep {
+      section {
+        padding: 24px 0;
+        position: relative;
 
-        @media (min-width: 576px)
-          padding: 42px 0
+        @media (min-width: 576px) {
+          padding: 42px 0;
+        }
+      }
+    }
+  }
+}
