@@ -1,8 +1,8 @@
-:host  {
+:host {
   display: block;
   margin: 0 0 24px 0;
 
-  app-docs-viewer  {
+  app-docs-viewer {
     background: #1e1e1e;
     overflow: hidden;
   }
@@ -10,18 +10,18 @@
 
 
 
-.docs-example-viewer-wrapper  {
+.docs-example-viewer-wrapper {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   margin: 24px 0;
-  h3  {
+  h3 {
     margin-top: 10px;
   }
 }
 
 
 
-.docs-example-viewer-title  {
+.docs-example-viewer-title {
   align-content: center;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -31,17 +31,17 @@
 }
 
 
-.docs-example-viewer-title-spacer  {
+.docs-example-viewer-title-spacer {
   flex: 1 1 auto;
 }
 
 
-.docs-example-viewer-body  {
+.docs-example-viewer-body {
   padding: 30px;
 }
 
 
-.button-bar  {
+.button-bar {
   color: #fff;
   position: absolute;
   padding: 8px;
@@ -49,12 +49,12 @@
 }
 
 
-code-snippet  {
+code-snippet {
   padding: 20px;
 }
 
 
-.docs-example-source  {
+.docs-example-source {
   // TODO(annieyw): remove when standalone snippets are removed
   padding: 0;
   margin: 0;
