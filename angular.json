@@ -231,7 +231,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "apps/website/src/prism-mynd.css",
               "apps/website/src/material.scss",
-              "apps/website/src/styles.styl"
+              "apps/website/src/styles.scss"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
