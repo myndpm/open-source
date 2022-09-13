@@ -1,11 +1,11 @@
 <tr class="mat-row">
-  <td class="mat-cell" *ngFor="let control of controls; index as i">
-    <dyn-factory
-      [config]="control"
-      [injector]="configLayer"
-      [index]="i"
-    ></dyn-factory>
-  </td>
+  <td class="mat-cell"
+    *ngFor="let control of controls; index as i"
+    dynFactory
+    [config]="control"
+    [injector]="configLayer"
+    [index]="i"
+  ></td>
 
   <td class="dyn-table-controls mat-cell" *ngIf="mode !== 'display'">
     <button

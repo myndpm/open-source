@@ -8,13 +8,13 @@ import {
   DynModuleProviders,
   getModuleProviders,
 } from '@myndpm/dyn-forms/core';
-import { DynFactoryComponent, DynFormComponent, DynGroupComponent } from './components';
+import { DynFactoryDirective, DynFormComponent, DynGroupComponent } from './components';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
-  declarations: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
-  entryComponents: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
-  exports: [DynFactoryComponent, DynFormComponent, DynGroupComponent],
+  declarations: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
+  entryComponents: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
+  exports: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
   providers: [
     {
       provide: DYN_CONTROLS_TOKEN,

@@ -39,6 +39,7 @@ import { DynFormConfig } from './form.config';
 @Component({
   selector: 'dyn-form',
   templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DynControlNode,

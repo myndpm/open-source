@@ -1,11 +1,10 @@
 
 <ng-content></ng-content>
 
-<ng-container *ngIf="config">
-  <dyn-factory
-    *ngFor="let control of controls; index as i"
-    [config]="control"
-    [injector]="configLayer"
-    [index]="i"
-  ></dyn-factory>
-</ng-container>
+<ng-container
+  dynFactory
+  *ngFor="let control of controls; index as i"
+  [config]="control"
+  [injector]="configLayer"
+  [index]="i"
+></ng-container>

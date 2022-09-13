@@ -1,8 +1,6 @@
 import {
   INJECTOR,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
   ComponentFactoryResolver,
   ComponentRef,
   HostBinding,
@@ -12,9 +10,8 @@ import {
   OnDestroy,
   OnInit,
   SkipSelf,
-  ViewChild,
   ViewContainerRef,
-  ViewEncapsulation,
+  Directive,
 } from '@angular/core';
 import {
   DYN_MODE,
@@ -34,20 +31,11 @@ import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger
 import { BehaviorSubject, Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-@Component({
-  selector: 'dyn-factory',
-  templateUrl: './factory.component.html',
-  styleUrls: ['./factory.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DynFactoryComponent implements OnInit, OnDestroy {
+@Directive({ selector: '[dynFactory]' })
+export class DynFactoryDirective implements OnInit, OnDestroy {
   @Input() config!: DynBaseConfig;
   @Input() index?: number;
   @Input() injector?: Injector;
-
-  @ViewChild('dynContainer', { static: true, read: ViewContainerRef })
-  container!: ViewContainerRef;
 
   visibility: DynVisibility = 'VISIBLE';
 
@@ -82,6 +70,7 @@ export class DynFactoryComponent implements OnInit, OnDestroy {
     private readonly registry: DynFormRegistry,
     private readonly logger: DynLogger,
     private readonly node: DynControlNode,
+    private readonly container: ViewContainerRef,
   ) {}
 
   ngOnInit(): void {

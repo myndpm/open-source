@@ -1,6 +1,7 @@
-<dyn-factory
+<ng-container
   *ngFor="let control of controls; index as i"
+  dynFactory
   [config]="control"
   [injector]="configLayer"
   [index]="i"
-></dyn-factory>
+></ng-container>

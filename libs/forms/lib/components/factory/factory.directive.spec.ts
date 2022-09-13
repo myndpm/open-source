@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynFormRegistry } from '@myndpm/dyn-forms/core';
 import { MockProvider } from 'ng-mocks';
-import { DynFactoryComponent } from './factory.component';
+import { DynFactoryDirective } from './factory.directive';
 
-describe('DynFactoryComponent', () => {
-  let component: DynFactoryComponent;
-  let fixture: ComponentFixture<DynFactoryComponent>;
+describe('DynFactoryDirective', () => {
+  let component: DynFactoryDirective;
+  let fixture: ComponentFixture<DynFactoryDirective>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynFactoryComponent],
+      declarations: [DynFactoryDirective],
       providers: [
         MockProvider(DynFormRegistry),
       ],
@@ -17,7 +17,7 @@ describe('DynFactoryComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynFactoryComponent);
+    fixture = TestBed.createComponent(DynFactoryDirective);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
