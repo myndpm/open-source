@@ -45,9 +45,14 @@ export function step1Form(): DynFormConfig {
                 { value: 'United States', key: 'US' },
                 { value: 'China', key: 'CN' },
                 { value: 'Russia', key: 'RU' },
-                { value: 'Other', key: 'XX' },
               ],
             },
+            match: [
+              {
+                matchers: ['DISABLE'],
+                when: [{ path: 'notFound', value: true }],
+              },
+            ],
           }),
           createMatConfig('CHECKBOX', {
             name: 'notFound',
