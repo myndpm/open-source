@@ -33,6 +33,7 @@ export * from './src/form-factory.service';
 export * from './src/form-control-node.service';
 export * from './src/form-resolver.service';
 
+export * from './src/utils/config.utils';
 export * from './src/utils/hidden.util';
 export * from './src/utils/merge.util';
 export * from './src/utils/rxjs.utils';
