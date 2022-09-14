@@ -1,6 +1,6 @@
 # Layout Options (Work In Progress)
 
-There's an open discussion about this topic [here](https://github.com/myndpm/open-source/discussions/5) to make a bigger design choice. Right now we are injecting CSS classes to the `dyn-factory` via `config.factory.cssClass` and we are able to build grids with some CSS toolkits. The factories also introduces a default class with the field name, ie: `dyn-control-firstName`.
+There's an open discussion about this topic [here](https://github.com/myndpm/open-source/discussions/5) to make a bigger design choice. Right now we are injecting CSS classes to the `DynControl` via `config.cssClass` and we are able to build grids with some CSS toolkits. There are default classes with the field name and visibility like `dyn-control-firstName` and `dyn-hidden`.
 
 ## Example
 

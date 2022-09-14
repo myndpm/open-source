@@ -29,7 +29,7 @@
 - How to have reactive behavior? (readonly, immutable, visible, business-logic)
 - Mode Strategy to Display/Filter/Table
 - How to style the controls consistently? (calling mod non-encapsulated styles?)
-  - CSS config for dyn-factory as default grid?
+  - CSS config for dynFactory as default grid?
 - Nested DynForms (routed wizard) do not mark the root as loaded
 - Pass custom `<ng-template path="group.control">` as projectable content to controls?
 

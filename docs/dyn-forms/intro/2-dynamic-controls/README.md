@@ -20,7 +20,7 @@ Each node is connected with a `DynTreeNode` instance which has the API to be pro
 ## Instance Types
 
 1. `Container`: component that loads one or more groups via `dyn-group`
-2. `Group`: component that loads one or more controls via `dyn-factory`
+2. `Group`: component that loads one or more controls via `dynFactory`
 3. `Array`: collection of groups usually loaded via `dyn-group` too.
 4. `Control`: corresponds to the basic `FormControl`
 5. `Wrapper`: component to layout controls

@@ -12,7 +12,7 @@ export type DynConfigPrimitive = undefined | string | boolean | number | Set<any
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 /**
- * Visibility handled by dyn-factory
+ * Visibility handled by DynControl
  */
 export type DynVisibility = 'VISIBLE' | 'INVISIBLE' | 'HIDDEN';
 

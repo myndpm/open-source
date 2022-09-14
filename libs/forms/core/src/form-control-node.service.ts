@@ -23,7 +23,7 @@ import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
 
 @Injectable()
-// initialized by dyn-form, dyn-factory, dyn-group
+// initialized by dyn-form, dyn-group, dynFactory
 // and the abstract DynForm* classes
 export class DynControlNode<
   TParams extends DynParams = DynParams,
@@ -124,11 +124,10 @@ implements DynNode<TParams, TControl> {
   private _unsubscribe$ = new Subject<void>();
   private _untrack$ = new Subject<void>();
 
-  // listened by dyn-factory
-  private _visibility$ = new BehaviorSubject<DynVisibility>('VISIBLE');
   // listened by DynControl
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynHook>();
+  private _visibility$ = new BehaviorSubject<DynVisibility>('VISIBLE');
 
   private _modeLocal$?: Observable<DynMode>;
   private _snapshots = new Map<DynMode, any>();
@@ -217,7 +216,7 @@ implements DynNode<TParams, TControl> {
     );
   }
 
-  // internal API for dyn-factory
+  // internal API for dynFactory
   setupParams(
     params?: Partial<TParams>,
     paramFns?: DynConfigMap<DynConfigProvider<DynFunctionFn>>,

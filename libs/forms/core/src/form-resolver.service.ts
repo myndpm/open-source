@@ -33,7 +33,7 @@ export class DynFormResolver {
       deepEqual(config?.match, newConfig.match);
   }
 
-  // resolves the config to be used by dyn-factory
+  // resolves the config to be used by dynFactory
   // this algorithm decides how to override the main config with mode customizations
   getModeConfig(mode: DynMode, config: DynBaseConfig, node: DynControlNode): DynBaseConfig {
     let result: DynBaseConfig = {
