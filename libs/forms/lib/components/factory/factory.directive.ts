@@ -1,9 +1,7 @@
 import {
   INJECTOR,
-  ChangeDetectorRef,
   ComponentFactoryResolver,
   ComponentRef,
-  HostBinding,
   Inject,
   Injector,
   Input,
@@ -25,30 +23,16 @@ import {
   DynFormRegistry,
   DynFormResolver,
   DynMode,
-  DynVisibility,
 } from '@myndpm/dyn-forms/core';
 import { DYN_LOG_LEVEL, DynLogger, DynLogDriver } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Directive({ selector: '[dynFactory]' })
 export class DynFactoryDirective implements OnInit, OnDestroy {
   @Input() config!: DynBaseConfig;
   @Input() index?: number;
   @Input() injector?: Injector;
-
-  visibility: DynVisibility = 'VISIBLE';
-
-  @HostBinding('class')
-  get cssClass(): string {
-    return [
-      this.config.cssClass,
-      // add the visibility class
-      this.visibility ? `dyn-${this.visibility.toLowerCase()}` : null,
-      // add a default class based on the name
-      this.config.name ? `dyn-control-${this.config.name}` : null,
-    ].filter(Boolean).join(' ');
-  }
 
   // DynControl
   private controlRef!: ComponentRef<AbstractDynControl>;
@@ -65,7 +49,6 @@ export class DynFactoryDirective implements OnInit, OnDestroy {
 
   constructor(
     @Inject(INJECTOR) private readonly parent: Injector,
-    private readonly ref: ChangeDetectorRef,
     private readonly resolver: ComponentFactoryResolver,
     private readonly registry: DynFormRegistry,
     private readonly logger: DynLogger,
@@ -198,19 +181,6 @@ export class DynFactoryDirective implements OnInit, OnDestroy {
               name: config.name,
               controls: config.controls?.length || 0,
             });
-
-            // listen control.visibility$
-            this.controlRef.instance.visibility$
-              .pipe(
-                startWith(config.visibility || 'VISIBLE'),
-                takeUntil(this.controlRef.instance.onDestroy$),
-              )
-              .subscribe((visibility) => {
-                if (this.visibility !== visibility) {
-                  this.visibility = visibility;
-                  this.ref.markForCheck();
-                }
-              });
           } else {
             view.insert(this.controlRef.hostView);
           }

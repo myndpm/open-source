@@ -81,6 +81,9 @@ implements DynNode<TParams, TControl> {
   get visibility$(): Observable<DynVisibility> {
     return this._visibility$.asObservable();
   }
+  get visibility(): DynVisibility {
+    return this._visibility$.value;
+  }
 
   // hierarchy
   get isRoot(): boolean {
@@ -122,7 +125,7 @@ implements DynNode<TParams, TControl> {
   private _untrack$ = new Subject<void>();
 
   // listened by dyn-factory
-  private _visibility$ = new Subject<DynVisibility>();
+  private _visibility$ = new BehaviorSubject<DynVisibility>('VISIBLE');
   // listened by DynControl
   private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynHook>();
@@ -448,6 +451,10 @@ implements DynNode<TParams, TControl> {
     // throw error if the name is already set and different to the incoming one
     if (this.name !== undefined && this.name !== (config.name ?? '')) {
       throw this.logger.nodeFailed(config.control);
+    }
+
+    if (config.visibility && config.visibility !== this._visibility$.value) {
+      this._visibility$.next(config.visibility);
     }
 
     // disconnect this node from any parent DynControl

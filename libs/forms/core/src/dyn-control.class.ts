@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Directive,
+  HostBinding,
   Injector,
   OnChanges,
   OnInit,
@@ -13,11 +14,11 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { scan, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, scan, startWith, takeUntil } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlId } from './types/control.types';
 import { DynHookUpdateValidity } from './types/events.types';
-import { DynInstanceType, DynVisibility } from './types/forms.types';
+import { DynInstanceType } from './types/forms.types';
 import { DynMode } from './types/mode.types';
 import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
@@ -71,9 +72,6 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
   get params$(): Observable<TParams> {
     return this.node.params$;
   }
-  get visibility$(): Observable<DynVisibility> {
-    return this.node.visibility$;
-  }
   get id(): string {
     if (this._id) {
       return this._id;
@@ -86,6 +84,17 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
     return this._id;
   }
   private _id = '';
+
+  @HostBinding('class')
+  get cssClass(): string {
+    return [
+      this.config.cssClass,
+      // add the visibility class
+      this.node.visibility ? `dyn-${this.node.visibility.toLowerCase()}` : null,
+      // add a default class based on the name
+      this.config.name ? `dyn-control-${this.config.name}` : null,
+    ].filter(Boolean).join(' ');
+  }
 
   protected readonly _mode: BehaviorSubject<DynMode>;
   protected readonly _ref: ChangeDetectorRef;
@@ -110,6 +119,15 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
     this.node.control.valueChanges
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => setTimeout(() => this._ref.detectChanges(), 1));
+
+    // listen node.visibility$
+    this.node.visibility$
+      .pipe(
+        startWith(this.config.visibility || 'VISIBLE'),
+        takeUntil(this.onDestroy$),
+        distinctUntilChanged(),
+      )
+      .subscribe(() => this._ref.markForCheck());
 
     this.params$.pipe(
       scan(
