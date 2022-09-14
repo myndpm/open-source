@@ -19,7 +19,7 @@ import { MyndUnitType } from './business.types';
 @Component({
   selector: 'app-form-builder',
   templateUrl: './builder.component.html',
-  styleUrls: ['./builder.component.sass'],
+  styleUrls: ['./builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })

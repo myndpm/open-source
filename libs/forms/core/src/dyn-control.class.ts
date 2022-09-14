@@ -91,6 +91,8 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
       this.config.cssClass,
       // add the visibility class
       this.node.visibility ? `dyn-${this.node.visibility.toLowerCase()}` : null,
+      // add a generic class
+      'dyn-control',
       // add a default class based on the name
       this.config.name ? `dyn-control-${this.config.name}` : null,
     ].filter(Boolean).join(' ');
