@@ -123,34 +123,39 @@ export function simpleForm(
         },
         paramFns: { getValue: 'getOptionText' },
       }),
-      createMatConfig('TABLE', {
-        name: 'products',
+      createMatConfig('CARD', {
         cssClass: 'row',
         params: {
-          title: 'Product',
-          headers: ['Product Name', 'Quality'],
-          // subtitle: 'Items to checkout',
-          // initItem: true,
+          title: 'List of Products',
+          subtitle: 'Items to checkout',
         },
         controls: [
-          createMatConfig('INPUT', {
-            name: 'product',
-            validators: ['required'],
-            cssClass: 'col-6 col-md-8',
-            params: { label: 'Product Name' },
-          }),
-          createMatConfig('INPUT', {
-            name: 'quantity',
-            validators: ['required', ['min', 1]],
-            cssClass: 'col-5 col-md-3',
-            params: { label: 'Quantity', type: 'number' },
+          createMatConfig('TABLE', {
+            name: 'products',
+            cssClass: 'col-12 col-md-8',
+            params: {
+              title: 'Product',
+              headers: ['Product Name', 'Quality'],
+            },
+            controls: [
+              createMatConfig('INPUT', {
+                name: 'product',
+                validators: ['required'],
+                params: { label: 'Product Name' },
+              }),
+              createMatConfig('INPUT', {
+                name: 'quantity',
+                validators: ['required', ['min', 1]],
+                params: { label: 'Quantity', type: 'number' },
+              }),
+            ],
+            modes: {
+              row: {
+                params: { readonly: true },
+              },
+            }
           }),
         ],
-        modes: {
-          row: {
-            params: { readonly: true },
-          },
-        }
       }),
     ],
     errorMsgs: {

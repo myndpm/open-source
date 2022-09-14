@@ -23,10 +23,13 @@ $row-horizontal-padding: 24px;
     // Define a border style, but then widths default to 3px. Reset them to 0px except the bottom
     // which should be 1px;
     border-width: 0;
-    border-bottom-width: 1px;
     border-style: solid;
     align-items: center;
     box-sizing: border-box;
+
+    &:not(:last-child) {
+      border-bottom-width: 1px;
+    }
 
     // Workaround for https://goo.gl/pFmjJD in IE 11. Adds a pseudo
     // element that will stretch the row the correct height. See:
@@ -69,10 +72,15 @@ $row-horizontal-padding: 24px;
     min-height: inherit;
   }
 
+  .dyn-table-controls {
+    flex: 150px 0 0;
+  }
+
   // FIXME temporary style customizations to INPUT only
   .mat-cell {
     .mat-form-field-infix {
       border-top: 0;
+      width: 100%;
     }
     .mat-form-field-wrapper {
       padding-bottom: 0;

@@ -1,27 +1,30 @@
-<div *ngIf="!items?.length" class="alert alert-light" role="alert">
-  {{ params.emptyText }}
-
-  <button mat-button color="accent" (click)="addItem(true)">
-    {{ params.addNewButtonText }}
-  </button>
-</div>
-
 <ng-container *ngIf="node.mode$ | async as mode">
+
+  <div *ngIf="!items?.length" class="alert alert-light" role="alert">
+    {{ params.emptyText }}
+
+    <ng-container *ngIf="mode === 'edit'">
+      <button mat-button color="accent" (click)="addItem(true)">
+        {{ params.addNewButtonText }}
+      </button>
+    </ng-container>
+  </div>
 
   <table class="mat-table mat-elevation-z2" *ngIf="items?.length">
     <tr class="mat-header-row">
       <th *ngFor="let header of params.headers" class="mat-header-cell">
         {{ header }}
       </th>
-      <th *ngIf="mode === 'edit'" class="mat-header-cell">
+      <th *ngIf="mode === 'edit'" class="mat-header-cell dyn-table-controls">
         <button mat-button color="accent" (click)="addItem(true)">
           {{ params.addNewButtonText }}
         </button>
       </th>
     </tr>
 
-    <dyn-mat-table-row
+    <tr class="mat-row"
       *ngFor="let item of items; let i = index"
+      dyn-mat-table-row
       [controls]="config.controls"
       [modes]="config.modes"
       [group]="item"
@@ -32,7 +35,7 @@
       (remove)="removeItem(i)"
       (cancel)="cancelItem(i)"
       (save)="cancelItem()"
-    ></dyn-mat-table-row>
+    ></tr>
   </table>
 
 </ng-container>

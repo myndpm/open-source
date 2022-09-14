@@ -30,7 +30,7 @@ import { merge, BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'dyn-mat-table-row',
+  selector: '[dyn-mat-table-row]',
   templateUrl: './table-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DynControlNode],
