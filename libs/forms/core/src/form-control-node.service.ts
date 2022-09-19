@@ -488,7 +488,7 @@ implements DynNode<TParams, TControl> {
         let control: TControl;
         if (config.formControl) {
           control = config.formControl;
-          this._detached = true;
+          this._detached = this.route.length > 0; // do not detach the root dyn-form
         } else {
           control = this.formFactory.register(
             this._instance === DynInstanceType.Wrapper
