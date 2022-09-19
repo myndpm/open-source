@@ -6,7 +6,8 @@
   "workspaces": [
     "libs/forms",
     "libs/tools/*",
-    "dist/libs/demos"
+    "dist/libs/demos",
+    "dist/libs/utils"
   ],
   "engines": {
     "node": ">=16.10.0",

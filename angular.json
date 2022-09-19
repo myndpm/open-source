@@ -233,8 +233,8 @@
       "tags": ["tools"]
     },
     "utils": {
-      "root": "libs/tools/utils",
-      "sourceRoot": "libs/tools/utils/src",
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
       "projectType": "library",
       "architect": {
         "build": {
@@ -242,10 +242,10 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/utils",
-            "tsConfig": "libs/tools/utils/tsconfig.lib.json",
-            "packageJson": "libs/tools/utils/package.json",
-            "main": "libs/tools/utils/src/index.ts",
-            "assets": ["libs/tools/utils/*.md"],
+            "tsConfig": "libs/utils/tsconfig.lib.json",
+            "packageJson": "libs/utils/package.json",
+            "main": "libs/utils/src/index.ts",
+            "assets": ["libs/utils/*.md"],
             "deleteOutputPath": false
           }
         },
@@ -253,19 +253,19 @@
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["libs/tools/utils/**/*.ts"]
+            "lintFilePatterns": ["libs/utils/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/tools/utils"],
+          "outputs": ["coverage/libs/utils"],
           "options": {
-            "jestConfig": "libs/tools/utils/jest.config.js",
+            "jestConfig": "libs/utils/jest.config.js",
             "passWithNoTests": true
           }
         }
       },
-      "tags": ["tools"]
+      "tags": ["shared"]
     },
     "website": {
       "projectType": "application",
