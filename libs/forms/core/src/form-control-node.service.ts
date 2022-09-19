@@ -275,8 +275,8 @@ implements DynNode<TParams, TControl> {
   }
 
   // listen another control value changes
-  valueChanges(path: string): Observable<any>|undefined {
-    const control = this.search(path);
+  valueChanges(path?: string): Observable<any>|undefined {
+    const control = path ? this.search(path) : this.control;
     return control?.valueChanges.pipe(
       startWith(control.value),
     );
