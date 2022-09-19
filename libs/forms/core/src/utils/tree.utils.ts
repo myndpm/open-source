@@ -28,6 +28,10 @@ export function searchNode<T>(
   node: DynTree<T>,
   path: string,
 ): T|undefined {
+  if (node.detached) {
+    return undefined; // exclude leaf
+  }
+
   let selector = path.slice(); // clone the path
 
   // continue to the children if there's no name

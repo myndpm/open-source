@@ -126,6 +126,7 @@ export class DynGroupComponent extends DynControlBase<any, FormGroup> implements
       instance: DynInstanceType.Group,
       name: this.name,
       control: 'DYN-GROUP',
+      formControl: this.group,
       controls: this.controls,
       component: this,
     });

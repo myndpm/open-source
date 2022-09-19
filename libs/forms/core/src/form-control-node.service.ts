@@ -54,6 +54,9 @@ implements DynNode<TParams, TControl> {
   get control(): TControl {
     return this._node.control;
   }
+  get detached(): boolean {
+    return this._detached;
+  }
   get params(): TParams {
     return this._params;
   }
@@ -109,6 +112,7 @@ implements DynNode<TParams, TControl> {
   private _matchers?: DynMatch[];
   private _params!: TParams;
   private _initLoaded = false; // init called
+  private _detached = false; // with custom formControl
   private _formLoaded = false; // view already initialized
   private _validators?: DynConfigId[];
   private _asyncValidators?: DynConfigId[];
@@ -481,13 +485,19 @@ implements DynNode<TParams, TControl> {
       this._node = this.parent?._node.root.search(path)!;
       if (!this._node) {
         // register the control into the parent
-        const control = config.formControl || this.formFactory.register(
-          this._instance === DynInstanceType.Wrapper
-            ? this.formFactory.getInstanceFor(config.control) as any
-            : this._instance,
-          this as any,
-          config,
-        )!;
+        let control: TControl;
+        if (config.formControl) {
+          control = config.formControl;
+          this._detached = true;
+        } else {
+          control = this.formFactory.register(
+            this._instance === DynInstanceType.Wrapper
+              ? this.formFactory.getInstanceFor(config.control) as any
+              : this._instance,
+            this as any,
+            config,
+          )!;
+        }
         this._node = new DynFormNode(this.parent?._node, control, path);
       }
     } else {
