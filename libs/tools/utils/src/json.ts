@@ -32,5 +32,5 @@ export function jsonParse(content: string): any {
 }
 
 export function jsonWrite(path: string, packageJson: any): void {
-  return writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`);
+  return writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`, { encoding: 'utf8' });
 }
