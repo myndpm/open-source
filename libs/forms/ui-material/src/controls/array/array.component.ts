@@ -4,7 +4,6 @@ import {
   Component,
   HostBinding,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import {
   DynConfig,
   DynFormArray,
@@ -32,10 +31,6 @@ implements AfterViewInit {
       ...partial,
       control: DynMatArrayComponent.dynControl,
     };
-  }
-
-  get items(): FormGroup[] {
-    return this.control.controls as FormGroup[];
   }
 
   @HostBinding('class.readonly')

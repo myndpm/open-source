@@ -6,11 +6,10 @@
   </mat-card-header>
 
   <mat-card-content>
-    <div class="array-item" *ngFor="let item of items; index as i">
+    <div class="array-item" *ngFor="let item of control.controls; index as i">
       <dyn-group
         [class]="config.cssClass"
         [name]="i.toString()"
-        [group]="item"
         [controls]="config.controls"
         [modes]="config.modes"
       ></dyn-group>

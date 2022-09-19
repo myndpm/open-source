@@ -38,8 +38,8 @@ import { distinctUntilChanged, filter, map, shareReplay, tap } from 'rxjs/operat
  */
 export class DynGroupComponent extends DynControlBase<any, FormGroup> implements OnInit, AfterViewInit {
   @Input() isolated = false;
-  @Input() group!: FormGroup;
   @Input() name?: string;
+  @Input() customGroup?: FormGroup;
   @Input() controls?: DynBaseConfig[];
   @Input() modes?: DynModes;
 
@@ -126,7 +126,7 @@ export class DynGroupComponent extends DynControlBase<any, FormGroup> implements
       instance: DynInstanceType.Group,
       name: this.name,
       control: 'DYN-GROUP',
-      formControl: this.group,
+      formControl: this.customGroup,
       controls: this.controls,
       component: this,
     });
