@@ -17,12 +17,14 @@ export {
 
 export function readFile(
   filepath: string,
-  options?: { encoding?: BufferEncoding; flag?: string } | null,
+  options?: { encoding?: BufferEncoding; flag?: string } | null
 ): Observable<string> {
   return rxReadFile(filepath, options as any).pipe(
-    map(buffer => buffer?.toString()),
+    map((buffer) => buffer?.toString())
   );
 }
 
-export const renameFile: (oldPath: string, newPath: string) => Observable<void>
-  = bindNodeCallback(rename);
+export const renameFile: (
+  oldPath: string,
+  newPath: string
+) => Observable<void> = bindNodeCallback(rename);

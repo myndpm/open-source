@@ -2,7 +2,13 @@ import chalk from 'chalk';
 import { ExecOptions, SpawnOptions, SpawnSyncReturns } from 'child_process';
 import { sync as spawnSync } from 'cross-spawn';
 import { Observable, of } from 'rxjs';
-import { ExecOutput, exec as baseExec, spawn as baseSpawn, spawnEnd, trim } from 'rxjs-shell';
+import {
+  ExecOutput,
+  exec as baseExec,
+  spawn as baseSpawn,
+  spawnEnd,
+  trim,
+} from 'rxjs-shell';
 
 // everything
 
@@ -20,9 +26,21 @@ export type IExecOptions = ExecOptions & IChildProcessOptions;
 export type ISpawnOptions = Partial<SpawnOptions> & IChildProcessOptions;
 export type IExecOutput = ExecOutput;
 
-export function exec(cmd: string, args: string[], options?: IExecOptions): Observable<IExecOutput>;
-export function exec(cmd: string, args: Record<string, any>, options?: IExecOptions): Observable<IExecOutput>;
-export function exec(cmd: string, args: any, options: IExecOptions = {}): Observable<IExecOutput> {
+export function exec(
+  cmd: string,
+  args: string[],
+  options?: IExecOptions
+): Observable<IExecOutput>;
+export function exec(
+  cmd: string,
+  args: Record<string, any>,
+  options?: IExecOptions
+): Observable<IExecOutput>;
+export function exec(
+  cmd: string,
+  args: any,
+  options: IExecOptions = {}
+): Observable<IExecOutput> {
   const opts = {
     cwd: process.cwd(),
     env: process.env,
@@ -40,14 +58,26 @@ export function exec(cmd: string, args: any, options: IExecOptions = {}): Observ
     }
   }
 
-  return baseExec(
-    `${cmd} ${args2str(args).join(' ')}`, opts
-  ).pipe(trim<IExecOutput>());
+  return baseExec(`${cmd} ${args2str(args).join(' ')}`, opts).pipe(
+    trim<IExecOutput>()
+  );
 }
 
-export function spawn(cmd: string, args: string[], options?: ISpawnOptions): Observable<IExecOutput>;
-export function spawn(cmd: string, args: Record<string, any>, options?: ISpawnOptions): Observable<IExecOutput>;
-export function spawn(cmd: string, args: any, options: ISpawnOptions = {}): Observable<IExecOutput> {
+export function spawn(
+  cmd: string,
+  args: string[],
+  options?: ISpawnOptions
+): Observable<IExecOutput>;
+export function spawn(
+  cmd: string,
+  args: Record<string, any>,
+  options?: ISpawnOptions
+): Observable<IExecOutput>;
+export function spawn(
+  cmd: string,
+  args: any,
+  options: ISpawnOptions = {}
+): Observable<IExecOutput> {
   const opts: ISpawnOptions = {
     cwd: process.cwd(),
     env: process.env,
@@ -67,9 +97,9 @@ export function spawn(cmd: string, args: any, options: ISpawnOptions = {}): Obse
     }
   }
 
-  return spawnEnd(
-    baseSpawn(cmd, args2str(args), opts),
-  ).pipe(trim<IExecOutput>());
+  return spawnEnd(baseSpawn(cmd, args2str(args), opts)).pipe(
+    trim<IExecOutput>()
+  );
 }
 
 // sync
@@ -84,9 +114,21 @@ const defaultOptions: ISpawnSafeOptions = {
   throwOnError: true,
 };
 
-export function spawnSafeSync(command: string, args?: string[], options?: ISpawnSafeOptions): SpawnSyncReturns<Buffer> ;
-export function spawnSafeSync(command: string, args?: Record<string, any>, options?: ISpawnSafeOptions): SpawnSyncReturns<Buffer> ;
-export function spawnSafeSync(command: string, args?: any, options?: ISpawnSafeOptions): SpawnSyncReturns<Buffer> {
+export function spawnSafeSync(
+  command: string,
+  args?: string[],
+  options?: ISpawnSafeOptions
+): SpawnSyncReturns<Buffer>;
+export function spawnSafeSync(
+  command: string,
+  args?: Record<string, any>,
+  options?: ISpawnSafeOptions
+): SpawnSyncReturns<Buffer>;
+export function spawnSafeSync(
+  command: string,
+  args?: any,
+  options?: ISpawnSafeOptions
+): SpawnSyncReturns<Buffer> {
   const mergedOptions = Object.assign({}, defaultOptions, options);
   const result = spawnSync(command, args2str(args), options);
 
@@ -104,7 +146,7 @@ export function spawnSafeSync(command: string, args?: any, options?: ISpawnSafeO
   }
 
   return result;
-};
+}
 
 // utilities
 
@@ -113,8 +155,8 @@ function args2str(args: string[] | Record<string, any>): string[] {
     ? args
     : Object.keys(args)
         // filter truthy values only
-        .filter(key => !!args[key])
-        .map(key => `--${toKebabCase(key)} ${args[key]}`);
+        .filter((key) => !!args[key])
+        .map((key) => `--${toKebabCase(key)} ${args[key]}`);
 
   function toKebabCase(str: string) {
     return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();

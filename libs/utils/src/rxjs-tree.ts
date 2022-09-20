@@ -12,13 +12,13 @@ export function treeVisit(path: string): Observable<string> {
     mergeMap((stats) => {
       if (stats.isDirectory()) {
         return readDir(path).pipe(
-          mergeMap(files => from(files)),
-          mergeMap(file => treeVisit(join(path, file))),
+          mergeMap((files) => from(files)),
+          mergeMap((file) => treeVisit(join(path, file)))
         );
       } else if (stats.isFile()) {
         return of(path);
       }
       return throwError(`Not a directory nor file: ${path}`);
-    }),
+    })
   );
 }
