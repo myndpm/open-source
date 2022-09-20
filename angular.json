@@ -74,6 +74,9 @@
             "jestConfig": "libs/forms/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "deploy": {
+          "builder": "./dist/libs/nx:deploy-npm"
         }
       },
       "tags": ["shared"]
@@ -130,6 +133,9 @@
               }
             ]
           }
+        },
+        "deploy": {
+          "builder": "./dist/libs/nx:deploy-npm"
         }
       },
       "tags": ["plugin"]
@@ -187,6 +193,9 @@
             "jestConfig": "libs/tools/pug2html/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "deploy": {
+          "builder": "./dist/libs/nx:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -228,6 +237,9 @@
             "jestConfig": "libs/tools/stylus2scss/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "deploy": {
+          "builder": "./dist/libs/nx:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -263,6 +275,9 @@
             "jestConfig": "libs/utils/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "deploy": {
+          "builder": "./dist/libs/nx:deploy-npm"
         }
       },
       "tags": ["shared"]

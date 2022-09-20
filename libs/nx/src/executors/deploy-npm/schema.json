@@ -7,7 +7,7 @@
   "properties": {
     "build": {
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Run the build during deployment."
     },
     "target": {
