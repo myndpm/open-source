@@ -75,13 +75,13 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
-          "builder": "./dist/libs/nx:deploy-npm"
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["shared"]
     },
-    "nx": {
+    "plugin": {
       "root": "libs/nx",
       "sourceRoot": "libs/nx/src",
       "projectType": "library",
@@ -95,7 +95,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/nx"],
+          "outputs": ["coverage/plugin"],
           "options": {
             "jestConfig": "libs/nx/jest.config.js",
             "passWithNoTests": true
@@ -105,7 +105,7 @@
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/libs/nx",
+            "outputPath": "dist/plugin",
             "tsConfig": "libs/nx/tsconfig.lib.json",
             "packageJson": "libs/nx/package.json",
             "main": "libs/nx/src/index.ts",
@@ -134,8 +134,8 @@
             ]
           }
         },
-        "deploy": {
-          "builder": "./dist/libs/nx:deploy-npm"
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["plugin"]
@@ -153,8 +153,7 @@
           }
         }
       },
-      "tags": ["plugin"],
-      "implicitDependencies": ["nx"]
+      "tags": ["plugin"]
     },
     "pug2html": {
       "root": "libs/tools/pug2html",
@@ -194,8 +193,8 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
-          "builder": "./dist/libs/nx:deploy-npm"
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -238,8 +237,8 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
-          "builder": "./dist/libs/nx:deploy-npm"
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -276,8 +275,8 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
-          "builder": "./dist/libs/nx:deploy-npm"
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["shared"]
@@ -397,7 +396,7 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
+        "publish": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "baseHref": "/open-source/",
