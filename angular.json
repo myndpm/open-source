@@ -82,22 +82,22 @@
       "tags": ["shared"]
     },
     "plugin": {
-      "root": "libs/nx",
-      "sourceRoot": "libs/nx/src",
+      "root": "libs/plugin",
+      "sourceRoot": "libs/plugin/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["libs/nx/**/*.ts"]
+            "lintFilePatterns": ["libs/plugin/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/plugin"],
           "options": {
-            "jestConfig": "libs/nx/jest.config.js",
+            "jestConfig": "libs/plugin/jest.config.js",
             "passWithNoTests": true
           }
         },
@@ -106,28 +106,28 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/plugin",
-            "tsConfig": "libs/nx/tsconfig.lib.json",
-            "packageJson": "libs/nx/package.json",
-            "main": "libs/nx/src/index.ts",
+            "tsConfig": "libs/plugin/tsconfig.lib.json",
+            "packageJson": "libs/plugin/package.json",
+            "main": "libs/plugin/src/index.ts",
             "assets": [
-              "libs/nx/*.md",
+              "libs/plugin/*.md",
               {
-                "input": "./libs/nx/src",
+                "input": "./libs/plugin/src",
                 "glob": "**/!(*.ts)",
                 "output": "./src"
               },
               {
-                "input": "./libs/nx/src",
+                "input": "./libs/plugin/src",
                 "glob": "**/*.d.ts",
                 "output": "./src"
               },
               {
-                "input": "./libs/nx",
+                "input": "./libs/plugin",
                 "glob": "generators.json",
                 "output": "."
               },
               {
-                "input": "./libs/nx",
+                "input": "./libs/plugin",
                 "glob": "executors.json",
                 "output": "."
               }
@@ -136,21 +136,6 @@
         },
         "publish": {
           "builder": "./dist/plugin:deploy-npm"
-        }
-      },
-      "tags": ["plugin"]
-    },
-    "nx-e2e": {
-      "root": "apps/nx-e2e",
-      "projectType": "application",
-      "sourceRoot": "apps/nx-e2e/src",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
-          "options": {
-            "target": "nx:build",
-            "jestConfig": "apps/nx-e2e/jest.config.js"
-          }
         }
       },
       "tags": ["plugin"]

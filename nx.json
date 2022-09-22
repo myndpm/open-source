@@ -44,5 +44,8 @@
       "style": "styl",
       "changeDetection": "OnPush"
     }
+  },
+  "workspaceLayout": {
+    "libsDir": ""
   }
 }
