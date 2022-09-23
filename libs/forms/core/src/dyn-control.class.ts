@@ -89,23 +89,17 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
   @HostBinding('class')
   get cssClass(): string {
     // add classes only once to the top level component
-    if (this.config.wrappers?.length) {
-      if (this.node.dynId !== getWrapperId(this.config.wrappers[0])) {
-        if (this.config.name && this.node.instance === DynInstanceType.Control) {
-          // add a default class based on the name
-          return `dyn-control-${this.config.name}`;
-        }
-        return '';
-      }
+    if (this.config.wrappers?.length && this.node.dynId !== getWrapperId(this.config.wrappers[0])) {
+      return '';
     }
     return [
       this.config.cssClass,
       // add the visibility class
       this.node.visibility && this.node.visibility !== 'VISIBLE' ? `dyn-${this.node.visibility.toLowerCase()}` : null,
       // add a generic class
-      'dyn-component',
+      'dyn-control',
       // add a default class based on the name
-      this.config.name ? `dyn-component-${this.config.name}` : null,
+      this.config.name ? `dyn-control-${this.config.name}` : null,
       this.config.name && this.node.instance === DynInstanceType.Control ? `dyn-control-${this.config.name}` : null,
     ].filter(Boolean).join(' ');
   }

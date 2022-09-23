@@ -4,13 +4,13 @@ app-form-builder {
     display: flex;
     flex-wrap: wrap;
 
-    .dyn-component {
+    .dyn-control {
       flex: 45%;
       margin-right: 5%;
 
-      &.dyn-component-agentShowing,
-      &.dyn-component-codeBox,
-      &.dyn-component-smartLock {
+      &.dyn-control-agentShowing,
+      &.dyn-control-codeBox,
+      &.dyn-control-smartLock {
         flex: 100%;
         margin-right: 0;
       }
