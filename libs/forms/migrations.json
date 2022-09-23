@@ -8,8 +8,8 @@
     },
     "myndpm-forms-02": {
       "description": "DynFactory from component to directive",
-      "version": "12.5.0",
-      "factory": "./lib/migrations/12_5_0/index"
+      "version": "12.6.1",
+      "factory": "./lib/migrations/12_6_1/index"
     }
   }
 }
