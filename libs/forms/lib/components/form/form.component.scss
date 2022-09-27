@@ -1,10 +1,8 @@
 dyn-form {
-  ::ng-deep {
-    .dyn-invisible {
-      visibility: hidden !important;
-    }
-    .dyn-hidden {
-      display: none !important;
-    }
+  .dyn-invisible {
+    visibility: hidden !important;
+  }
+  .dyn-hidden {
+    display: none !important;
   }
 }

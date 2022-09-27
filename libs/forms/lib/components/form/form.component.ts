@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Inject,
   Injector,
   Input,
@@ -14,7 +15,7 @@ import {
   SimpleChanges,
   SkipSelf,
   Output,
-  EventEmitter,
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -41,6 +42,7 @@ import { DynFormConfig } from './form.config';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   providers: [
     DynControlNode,
     DynLogDriver,
