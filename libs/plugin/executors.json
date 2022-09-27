@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "builders": {
+    "deploy-npm": {
+      "implementation": "./src/executors/deploy-npm/executor",
+      "schema": "./src/executors/deploy-npm/schema.json",
+      "description": "Publish packages to NPM"
+    }
+  },
+  "executors": {
+    "deploy-docker": {
+      "implementation": "./src/executors/deploy-docker/executor",
+      "schema": "./src/executors/deploy-docker/schema.json",
+      "description": "Publish applications to Docker"
+    },
+    "deploy-npm": {
+      "implementation": "./src/executors/deploy-npm/executor",
+      "schema": "./src/executors/deploy-npm/schema.json",
+      "description": "Publish packages to NPM"
+    }
+  }
+}

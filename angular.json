@@ -74,9 +74,71 @@
             "jestConfig": "libs/forms/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["shared"]
+    },
+    "plugin": {
+      "root": "libs/plugin",
+      "sourceRoot": "libs/plugin/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/plugin/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/plugin"],
+          "options": {
+            "jestConfig": "libs/plugin/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/plugin",
+            "tsConfig": "libs/plugin/tsconfig.lib.json",
+            "packageJson": "libs/plugin/package.json",
+            "main": "libs/plugin/src/index.ts",
+            "assets": [
+              "libs/plugin/*.md",
+              {
+                "input": "./libs/plugin/src",
+                "glob": "**/!(*.ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/plugin/src",
+                "glob": "**/*.d.ts",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/plugin",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/plugin",
+                "glob": "executors.json",
+                "output": "."
+              }
+            ]
+          }
+        },
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
+        }
+      },
+      "tags": ["plugin"]
     },
     "pug2html": {
       "root": "libs/tools/pug2html",
@@ -98,9 +160,7 @@
         "postbuild": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "chmod +x dist/libs/pug2html/src/index.js"
-            ]
+            "commands": ["chmod +x dist/libs/pug2html/src/index.js"]
           }
         },
         "lint": {
@@ -117,6 +177,9 @@
             "jestConfig": "libs/tools/pug2html/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -141,9 +204,7 @@
         "postbuild": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "chmod +x dist/libs/stylus2scss/src/index.js"
-            ]
+            "commands": ["chmod +x dist/libs/stylus2scss/src/index.js"]
           }
         },
         "lint": {
@@ -160,13 +221,16 @@
             "jestConfig": "libs/tools/stylus2scss/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
     },
     "utils": {
-      "root": "libs/tools/utils",
-      "sourceRoot": "libs/tools/utils/src",
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
       "projectType": "library",
       "architect": {
         "build": {
@@ -174,10 +238,10 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/utils",
-            "tsConfig": "libs/tools/utils/tsconfig.lib.json",
-            "packageJson": "libs/tools/utils/package.json",
-            "main": "libs/tools/utils/src/index.ts",
-            "assets": ["libs/tools/utils/*.md"],
+            "tsConfig": "libs/utils/tsconfig.lib.json",
+            "packageJson": "libs/utils/package.json",
+            "main": "libs/utils/src/index.ts",
+            "assets": ["libs/utils/*.md"],
             "deleteOutputPath": false
           }
         },
@@ -185,19 +249,22 @@
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["libs/tools/utils/**/*.ts"]
+            "lintFilePatterns": ["libs/utils/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/tools/utils"],
+          "outputs": ["coverage/libs/utils"],
           "options": {
-            "jestConfig": "libs/tools/utils/jest.config.js",
+            "jestConfig": "libs/utils/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "publish": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
-      "tags": ["tools"]
+      "tags": ["shared"]
     },
     "website": {
       "projectType": "application",
@@ -314,7 +381,7 @@
             "passWithNoTests": true
           }
         },
-        "deploy": {
+        "publish": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "baseHref": "/open-source/",

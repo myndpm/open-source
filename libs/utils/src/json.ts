@@ -27,10 +27,17 @@ export function jsonParse(content: string): any {
     return JSON.parse(content);
   } catch (e) {
     // filter any existing comments
-    return JSON.parse(content.split('\n').filter(line => !line.match(/^\s*?\//)).join('\n'));
+    return JSON.parse(
+      content
+        .split('\n')
+        .filter((line) => !line.match(/^\s*?\//))
+        .join('\n')
+    );
   }
 }
 
 export function jsonWrite(path: string, packageJson: any): void {
-  return writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`);
+  return writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`, {
+    encoding: 'utf8',
+  });
 }

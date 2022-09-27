@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "NPM deploy executor",
+  "description": "Publish packages to a NPM registry",
+  "type": "object",
+  "properties": {
+    "build": {
+      "type": "boolean",
+      "default": false,
+      "description": "Run the build during deployment."
+    },
+    "target": {
+      "type": "string",
+      "description": "A named build target, as specified in the `configurations`. This is equivalent to calling the command `[nx|ng] build --configuration=XXX`."
+    },
+    "version": {
+      "type": "string",
+      "description": "The version that your package is going to be published. Ex: '1.3.5' '2.0.0-next.0'"
+    },
+    "tag": {
+      "type": "string",
+      "description": "Registers the published package with the given tag, such that `npm install @` will install this version. By default, `npm publish` updates and `npm install` installs the `latest` tag. See `npm-dist-tag` for details about tags."
+    },
+    "access": {
+      "type": "string",
+      "description": "Tells the registry whether this package should be published as public or restricted. Only applies to scoped packages, which default to restricted. If you don’t have a paid account, you must publish with --access public to publish scoped packages.",
+      "default": "public"
+    },
+    "otp": {
+      "type": "string",
+      "description": "If you have two-factor authentication enabled in auth-and-writes mode then you can provide a code from your authenticator with this. If you don’t include this and you’re running from a TTY then you’ll be prompted."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "For testing: Run through without making any changes. Execute with --dry-run and nothing will happen.",
+      "default": false
+    }
+  },
+  "required": []
+}
