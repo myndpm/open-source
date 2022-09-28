@@ -15,7 +15,7 @@ export default async function runExecutor(
     logger.info(`\n🚀 ${context.projectName} published successfully!`);
   } catch (e) {
     logger.error(`\n❌ error while trying to publish ${context.projectName}`);
-    logger.error(e);
+    logger.error(e.stderr);
     return { success: false };
   }
 
