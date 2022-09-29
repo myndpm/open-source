@@ -75,14 +75,24 @@
             "passWithNoTests": true
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
-        },
         "version": {
           "builder": "@jscutlery/semver:version",
           "options": {
-            "preset": "angular"
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/dyn-forms@",
+            "postTargets": ["forms:npm", "forms:github"]
           }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["shared"]
@@ -140,14 +150,24 @@
             ]
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
-        },
         "version": {
           "builder": "@jscutlery/semver:version",
           "options": {
-            "preset": "angular"
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/nx@",
+            "postTargets": ["plugin:npm", "plugin:github"]
           }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["plugin"]
@@ -196,8 +216,21 @@
         "version": {
           "builder": "@jscutlery/semver:version",
           "options": {
-            "preset": "angular"
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/pug2html@",
+            "postTargets": ["pug2html:npm", "pug2html:github"]
           }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -246,8 +279,21 @@
         "version": {
           "builder": "@jscutlery/semver:version",
           "options": {
-            "preset": "angular"
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/stylus2scss@",
+            "postTargets": ["stylus2scss:npm", "stylus2scss:github"]
           }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["tools"]
@@ -290,8 +336,22 @@
         "version": {
           "builder": "@jscutlery/semver:version",
           "options": {
-            "preset": "angular"
+            "baseBranch": "master",
+            "preset": "angular",
+            "trackDeps": true,
+            "tagPrefix": "@myndpm/utils@",
+            "postTargets": ["utils:npm", "utils:github"]
           }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm"
         }
       },
       "tags": ["shared"]

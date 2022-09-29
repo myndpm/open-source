@@ -17,6 +17,14 @@
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
+  "targetDependencies": {
+    "version": [
+      {
+        "target": "version",
+        "projects": "dependencies"
+      }
+    ]
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
