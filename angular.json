@@ -38,11 +38,12 @@
       "sourceRoot": "libs/forms/src",
       "prefix": "dyn",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/forms/tsconfig.lib.json",
-            "project": "libs/forms/ng-package.json"
+            "project": "libs/forms/ng-package.json",
+            "updateBuildableProjectDepsInPackageJson": false
           },
           "configurations": {
             "production": {
@@ -50,10 +51,12 @@
             }
           }
         },
-        "postbuild": {
+        "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
+            "parallel": false,
             "commands": [
+              "yarn nx run forms:prebuild",
               "./node_modules/.bin/tsc -p libs/forms/tsconfig.schematics.json",
               "rsync -R libs/forms/lib/schematics/*/files/**/* dist/",
               "rsync -R libs/forms/lib/schematics/*/schema.json dist/"
@@ -92,7 +95,10 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm"
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "target": "prebuild"
+          }
         }
       },
       "tags": ["shared"]
