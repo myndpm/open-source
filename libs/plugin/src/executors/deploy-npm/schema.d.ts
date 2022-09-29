@@ -4,7 +4,7 @@ export interface DeployNpmExecutorSchema {
    */
   build?: boolean;
   /**
-   * A named build target, as specified in the `configurations`. This is equivalent to calling the command `[nx|ng] build --configuration=XXX`.
+   * A named target with an optional `configuration`. This is equivalent to calling the command `nx run project:$target`.
    */
   target?: string;
   /**
