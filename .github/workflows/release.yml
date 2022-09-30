@@ -27,9 +27,11 @@ jobs:
           git config user.email "opensource@mynd.co"
       - run: yarn install --immutable --immutable-cache
 
-      - name: Version
+      - name: Build and Version
         shell: bash
-        run: yarn nx affected --base=last-release --target=version
+        run: |
+          yarn nx affected --base=last-release --target=build
+          yarn nx affected --base=last-release --target=version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
