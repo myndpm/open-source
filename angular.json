@@ -358,7 +358,6 @@
           "options": {
             "baseBranch": "master",
             "preset": "angular",
-            "trackDeps": true,
             "tagPrefix": "@myndpm/utils@",
             "postTargets": ["utils:npm", "utils:github"]
           }
