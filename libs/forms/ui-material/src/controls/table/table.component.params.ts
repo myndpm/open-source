@@ -6,3 +6,11 @@ export interface DynMatTableParams extends DynParams {
   emptyText?: string;
   headers: string[];
 }
+
+/**
+ * Hooks
+ */
+
+export interface DynMatTableAddItemHook {
+  userAction?: boolean;
+}

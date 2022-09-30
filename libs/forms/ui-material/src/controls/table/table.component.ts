@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { DynConfig, DynFormArray, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { DynMatTableParams } from './table.component.params';
+import { DynMatTableAddItemHook, DynMatTableParams } from './table.component.params';
 
 @Component({
   selector: 'dyn-mat-table',
@@ -57,8 +57,17 @@ implements OnInit {
     }
   }
 
+  saveItem(index: number): void {
+    const item = this.control.at(index);
+    if (item.dirty) {
+      const hook = this.isAdding(index) ? 'ItemAdded' : 'ItemEdited';
+      this.node.callHook({ hook, payload: item.value })
+    }
+    this.cancelItem();
+  }
+
   cancelItem(index?: number): void {
-    if (index !== undefined && this.itemIndexForAdding === this.itemIndexForEditing) {
+    if (index !== undefined && this.isAdding(index)) {
       this.removeItem(index);
     }
     this.itemIndexForEditing = this.itemIndexForAdding = undefined;
@@ -69,7 +78,9 @@ implements OnInit {
   }
 
   removeItem(index: number): void {
+    const payload = this.control.at(index).value;
     super.removeItem(index);
+    this.node.callHook({ hook: 'ItemDeleted', payload })
   }
 
   completeParams(params: Partial<DynMatTableParams>): DynMatTableParams {
@@ -85,5 +96,13 @@ implements OnInit {
     return mode !== 'display'
       ? this.itemIndexForEditing === Number(index) ? 'edit' : 'row'
       : mode;
+  }
+
+  hookAddItem(payload?: DynMatTableAddItemHook): void {
+    this.addItem(payload?.userAction ?? true);
+  }
+
+  private isAdding(index: number): boolean {
+    return index === this.itemIndexForAdding && index === this.itemIndexForEditing;
   }
 }
