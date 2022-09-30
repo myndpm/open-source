@@ -7,7 +7,7 @@
       "sourceRoot": "libs/demos/src",
       "prefix": "demo",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/demos/tsconfig.lib.json",
@@ -17,6 +17,16 @@
             "production": {
               "tsConfig": "libs/demos/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "commands": [
+              "yarn nx run demos:prebuild:production",
+              "yarn"
+            ]
           }
         },
         "lint": {
