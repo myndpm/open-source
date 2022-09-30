@@ -18,6 +18,12 @@
     "nx.json": "*"
   },
   "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
     "version": [
       {
         "target": "version",
