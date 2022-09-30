@@ -268,6 +268,7 @@
         "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
+            "parallel": false,
             "commands": [
               "yarn nx run stylus2scss:prebuild",
               "chmod +x dist/libs/stylus2scss/src/index.js"
