@@ -26,6 +26,7 @@ export interface DynNode<
   ready$: Observable<boolean>;
   mode$: Observable<string>;
   params$: Observable<TParams>;
+  hook$: Observable<DynHook>;
 
   visible(): void;
   invisible(): void;
