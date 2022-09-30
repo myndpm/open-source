@@ -26,7 +26,7 @@ export interface DeployNpmExecutorSchema {
   /**
    * If you have two-factor authentication enabled in auth-and-writes mode then you can provide a code from your authenticator with this. If you don’t include this and you’re running from a TTY then you’ll be prompted.
    */
-  otp?: string;
+  otp?: number;
   /**
    * For testing: Run through without making any changes. Execute with --dry-run and nothing will happen.
    */
