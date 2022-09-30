@@ -1,7 +1,7 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { DynParams } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export const simpleData = {
   billing: {
@@ -26,7 +26,11 @@ export const simpleData = {
 };
 
 export function simpleForm(
-  obsParams: Observable<DynParams>
+  obsParams$: Observable<DynParams>,
+  addItem$: Observable<{ userAction?: boolean }>,
+  itemAdded$: Subject<any>,
+  itemEdited$: Subject<any>,
+  itemDeleted$: Subject<any>,
 ): DynFormConfig<'edit'|'display'|'row'> { // typed mode
   return {
     modes: {
@@ -37,7 +41,7 @@ export function simpleForm(
       createMatConfig('CARD', {
         name: 'billing',
         cssClass: 'row',
-        params: obsParams,
+        params: obsParams$,
         controls: [
           createMatConfig('INPUT', {
             name: 'firstName',
@@ -148,6 +152,24 @@ export function simpleForm(
                 validators: ['required', ['min', 1]],
                 params: { label: 'Quantity', type: 'number' },
               }),
+            ],
+            match: [
+              {
+                matchers: [['CALL_HOOK', 'AddItem']],
+                when: [() => addItem$],
+              },
+              {
+                matchers: [['LISTEN_HOOK', itemAdded$]],
+                when: [['HOOK', 'ItemAdded']]
+              },
+              {
+                matchers: [['LISTEN_HOOK', itemEdited$]],
+                when: [['HOOK', 'ItemEdited']]
+              },
+              {
+                matchers: [['LISTEN_HOOK', itemDeleted$]],
+                when: [['HOOK', 'ItemDeleted']]
+              },
             ],
             modes: {
               row: {

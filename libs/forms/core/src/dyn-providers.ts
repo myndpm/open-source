@@ -1,8 +1,8 @@
 import { Type } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { path as getPath } from 'ramda';
-import { Observable, of } from 'rxjs';
-import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
+import { Observable, Subject, isObservable, of } from 'rxjs';
+import { filter, first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import { AbstractDynWrapper, DynWrapperProvider } from './dyn-control-wrapper.class';
 import { AbstractDynControl, DynControlProvider } from './dyn-control.class';
 import {
@@ -72,7 +72,7 @@ export const defaultValidators: DynValidator[] = [
 );
 
 /**
- * Default matchers
+ * Default async validators
  */
 export const defaultAsyncValidators: DynAsyncValidator[] = [
   {
@@ -180,6 +180,32 @@ export const defaultMatchers: DynMatcher[] = [
       }
     }
   },
+  {
+    id: 'CALL_HOOK',
+    fn: (hook: string): DynMatcherFn => {
+      return ({ node, hasMatch, results }) => {
+        if (!hook) {
+          console.warn(`[Hook] '${node.path.join('.')}' No hook name passed to CALL_HOOK`);
+        } else if (hasMatch) {
+          const [ payload ] = results;
+          node.callHook({ hook, payload });
+        }
+      }
+    }
+  },
+  {
+    id: 'LISTEN_HOOK',
+    fn: (observer: Subject<any>): DynMatcherFn => {
+      return ({ node, hasMatch, results }) => {
+        if (!observer || !isObservable(observer)) {
+          console.warn(`[Hook] '${node.path.join('.')}' No observer passed to LISTEN_HOOK`);
+        } else if (hasMatch) {
+          const [ payload ] = results;
+          observer.next(payload);
+        }
+      }
+    }
+  },
 ].map(
   mapPriority<DynMatcher>()
 );
@@ -198,6 +224,17 @@ export const defaultConditions: DynCondition[] = [
     fn: (mode: string): DynConditionFn => {
       return (node: DynNode) => {
         return node.mode$.pipe(map(value => value === mode));
+      }
+    },
+  },
+  {
+    id: 'HOOK',
+    fn: (name: string): DynConditionFn => {
+      return (node: DynNode) => {
+        return node.hook$.pipe(
+          filter(({ hook }) => hook === name),
+          map(({ payload }) => payload ?? {}),
+        );
       }
     },
   },
