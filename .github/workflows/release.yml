@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Use Node.js
@@ -21,9 +22,9 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config user.name "Mynd.co"
+          git config user.name "mynd.co[bot]"
           git config user.email "opensource@mynd.co"
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable --immutable-cache
 
       - name: Version
         shell: bash
@@ -34,6 +35,12 @@ jobs:
 
       - name: Tag last-release
         shell: bash
-        run: |
-          git tag -f last-release
-          git push origin last-release --force
+        run: git tag -f last-release
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+          tags: true
