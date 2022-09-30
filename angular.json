@@ -84,6 +84,7 @@
             "baseBranch": "master",
             "preset": "angular",
             "tagPrefix": "@myndpm/dyn-forms@",
+            "commitMessageFormat": "ci: release @myndpm/dyn-forms@${version}",
             "postTargets": ["forms:npm", "forms:github"]
           }
         },
@@ -162,6 +163,7 @@
             "baseBranch": "master",
             "preset": "angular",
             "tagPrefix": "@myndpm/nx@",
+            "commitMessageFormat": "ci: release @myndpm/nx@${version}",
             "postTargets": ["plugin:npm", "plugin:github"]
           }
         },
@@ -226,6 +228,7 @@
             "baseBranch": "master",
             "preset": "angular",
             "tagPrefix": "@myndpm/pug2html@",
+            "commitMessageFormat": "ci: release @myndpm/pug2html@${version}",
             "postTargets": ["pug2html:npm", "pug2html:github"]
           }
         },
@@ -292,6 +295,7 @@
             "baseBranch": "master",
             "preset": "angular",
             "tagPrefix": "@myndpm/stylus2scss@",
+            "commitMessageFormat": "ci: release @myndpm/stylus2scss@${version}",
             "postTargets": ["stylus2scss:npm", "stylus2scss:github"]
           }
         },
@@ -359,6 +363,7 @@
             "baseBranch": "master",
             "preset": "angular",
             "tagPrefix": "@myndpm/utils@",
+            "commitMessageFormat": "ci: release @myndpm/utils@${version}",
             "postTargets": ["utils:npm", "utils:github"]
           }
         },
