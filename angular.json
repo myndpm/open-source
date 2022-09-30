@@ -24,7 +24,7 @@
           "options": {
             "parallel": false,
             "commands": [
-              "yarn nx run demos:prebuild:production --with-deps",
+              "yarn nx run demos:prebuild:production",
               "yarn"
             ]
           }
