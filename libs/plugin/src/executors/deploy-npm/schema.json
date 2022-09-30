@@ -12,7 +12,7 @@
     },
     "target": {
       "type": "string",
-      "description": "A named build target, as specified in the `configurations`. This is equivalent to calling the command `[nx|ng] build --configuration=XXX`."
+      "description": "A named target with an optional `configuration`. This is equivalent to calling the command `nx run project:$target`."
     },
     "version": {
       "type": "string",

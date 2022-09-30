@@ -38,11 +38,12 @@
       "sourceRoot": "libs/forms/src",
       "prefix": "dyn",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/forms/tsconfig.lib.json",
-            "project": "libs/forms/ng-package.json"
+            "project": "libs/forms/ng-package.json",
+            "updateBuildableProjectDepsInPackageJson": false
           },
           "configurations": {
             "production": {
@@ -50,10 +51,12 @@
             }
           }
         },
-        "postbuild": {
+        "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
+            "parallel": false,
             "commands": [
+              "yarn nx run forms:prebuild:production",
               "./node_modules/.bin/tsc -p libs/forms/tsconfig.schematics.json",
               "rsync -R libs/forms/lib/schematics/*/files/**/* dist/",
               "rsync -R libs/forms/lib/schematics/*/schema.json dist/"
@@ -75,8 +78,27 @@
             "passWithNoTests": true
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/dyn-forms@",
+            "postTargets": ["forms:npm", "forms:github"]
+          }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "target": "prebuild"
+          }
         }
       },
       "tags": ["shared"]
@@ -134,7 +156,23 @@
             ]
           }
         },
-        "publish": {
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/nx@",
+            "postTargets": ["plugin:npm", "plugin:github"]
+          }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
           "builder": "./dist/plugin:deploy-npm"
         }
       },
@@ -145,7 +183,7 @@
       "sourceRoot": "libs/tools/pug2html/src",
       "projectType": "library",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
@@ -157,10 +195,14 @@
             "deleteOutputPath": false
           }
         },
-        "postbuild": {
+        "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["chmod +x dist/libs/pug2html/src/index.js"]
+            "parallel": false,
+            "commands": [
+              "yarn nx run pug2html:prebuild",
+              "chmod +x dist/libs/pug2html/src/index.js"
+            ]
           }
         },
         "lint": {
@@ -178,8 +220,27 @@
             "passWithNoTests": true
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/pug2html@",
+            "postTargets": ["pug2html:npm", "pug2html:github"]
+          }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "target": "prebuild"
+          }
         }
       },
       "tags": ["tools"]
@@ -189,7 +250,7 @@
       "sourceRoot": "libs/tools/stylus2scss/src",
       "projectType": "library",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
@@ -201,10 +262,13 @@
             "deleteOutputPath": false
           }
         },
-        "postbuild": {
+        "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["chmod +x dist/libs/stylus2scss/src/index.js"]
+            "commands": [
+              "yarn nx run stylus2scss:prebuild",
+              "chmod +x dist/libs/stylus2scss/src/index.js"
+            ]
           }
         },
         "lint": {
@@ -222,8 +286,27 @@
             "passWithNoTests": true
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "baseBranch": "master",
+            "preset": "angular",
+            "tagPrefix": "@myndpm/stylus2scss@",
+            "postTargets": ["stylus2scss:npm", "stylus2scss:github"]
+          }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "target": "prebuild"
+          }
         }
       },
       "tags": ["tools"]
@@ -233,7 +316,7 @@
       "sourceRoot": "libs/utils/src",
       "projectType": "library",
       "architect": {
-        "build": {
+        "prebuild": {
           "builder": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
@@ -243,6 +326,16 @@
             "main": "libs/utils/src/index.ts",
             "assets": ["libs/utils/*.md"],
             "deleteOutputPath": false
+          }
+        },
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "commands": [
+              "yarn nx run utils:prebuild",
+              "rimraf dist/libs/utils/node_modules/rxjs"
+            ]
           }
         },
         "lint": {
@@ -260,8 +353,28 @@
             "passWithNoTests": true
           }
         },
-        "publish": {
-          "builder": "./dist/plugin:deploy-npm"
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "baseBranch": "master",
+            "preset": "angular",
+            "trackDeps": true,
+            "tagPrefix": "@myndpm/utils@",
+            "postTargets": ["utils:npm", "utils:github"]
+          }
+        },
+        "github": {
+          "executor": "@jscutlery/semver:github",
+          "options": {
+            "tag": "${tag}",
+            "notes": "${notes}"
+          }
+        },
+        "npm": {
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "target": "prebuild"
+          }
         }
       },
       "tags": ["shared"]
@@ -379,16 +492,6 @@
           "options": {
             "jestConfig": "apps/website/jest.config.js",
             "passWithNoTests": true
-          }
-        },
-        "publish": {
-          "builder": "angular-cli-ghpages:deploy",
-          "options": {
-            "baseHref": "/open-source/",
-            "name": "Mynd Frontend Team",
-            "email": "eng.frontend@mynd.co",
-            "cname": "false",
-            "message": "build: github pages ci release"
           }
         },
         "server": {
