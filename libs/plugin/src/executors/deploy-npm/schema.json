@@ -22,6 +22,11 @@
       "type": "string",
       "description": "Registers the published package with the given tag, such that `npm install @` will install this version. By default, `npm publish` updates and `npm install` installs the `latest` tag. See `npm-dist-tag` for details about tags."
     },
+    "registry": {
+      "type": "string",
+      "description": "NPM registry URL (Defaults to https://registry.npmjs.org).",
+      "default": "https://registry.npmjs.org"
+    },
     "access": {
       "type": "string",
       "description": "Tells the registry whether this package should be published as public or restricted. Only applies to scoped packages, which default to restricted. If you don’t have a paid account, you must publish with --access public to publish scoped packages.",

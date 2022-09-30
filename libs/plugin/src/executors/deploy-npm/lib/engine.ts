@@ -51,11 +51,13 @@ function extractOnlyNPMOptions({
   tag,
   otp,
   dryRun,
+  registry,
 }: DeployNpmExecutorSchema): Record<string, any> {
   return {
     access,
     tag,
     otp,
     dryRun,
+    registry,
   };
 }

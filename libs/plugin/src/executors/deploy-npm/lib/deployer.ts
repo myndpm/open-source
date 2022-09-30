@@ -20,7 +20,7 @@ export default async function deployer(
 ) {
   const targetDescription = parseTargetString(target);
 
-  if (!options.build) {
+  if (!options.build || options.dryRun) {
     logger.info(`\n📦 Skipping build\n`);
   } else {
     await buildLibrary(context, target, targetDescription);
