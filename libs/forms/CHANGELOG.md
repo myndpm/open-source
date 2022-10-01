@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [12.7.1](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.0...@myndpm/dyn-forms@12.7.1) (2022-10-01)
+
+
+
 # [12.7.0](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.6.2...@myndpm/dyn-forms@12.7.0) (2022-09-30)
 
 
