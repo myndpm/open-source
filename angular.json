@@ -50,7 +50,7 @@
       "architect": {
         "prebuild": {
           "builder": "@nrwl/angular:package",
-          "outputs": ["{options.outputFile}"],
+          "outputs": ["dist/libs/forms"],
           "options": {
             "tsConfig": "libs/forms/tsconfig.lib.json",
             "project": "libs/forms/ng-package.json",

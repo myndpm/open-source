@@ -8,6 +8,6 @@
     "migrations.json",
     "schematics.json"
   ],
-  "deleteDestPath": false,
+  "deleteDestPath": true,
   "allowedNonPeerDependencies": ["fast-deep-equal", "is-callable", "merge", "ramda"]
 }

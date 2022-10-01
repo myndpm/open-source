@@ -2,8 +2,10 @@
 
 ## Considerations
 
-This repo uses `yarn` workspaces to let the website to consume the built libraries from the `dist` folder. Once you build them with `yarn build:libs` you will be able to run the website with `yarn start`.
+The `postinstall` script builds the `util` package and setup its workspace from the `dist` folder. There are a couple of dependencies of utils that are in the root folder to be able to build it, and needs to be synced with the package.
+
+To be able to run the website, build the demo package first with `yarn build`.
 
 ## Publishing to npm
 
-We have scripts to be executed with `npm` instead `yarn` like `npm run npm:dyn-forms` which will build the library for production, will postbuild the schematics, publish to `npmjs` and `github` and create a git tag.
+There's a `release` workflow based on GitHub actions which needs to be executed manually everytime to publish the latest changes to NPM.
