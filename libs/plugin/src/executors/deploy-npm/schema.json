@@ -10,6 +10,14 @@
       "default": false,
       "description": "Run the build during deployment."
     },
+    "outputPath": {
+      "type": "string",
+      "description": "The output path to version and publish (does override outputTarget)."
+    },
+    "outputTarget": {
+      "type": "string",
+      "description": "A named target to extract the options.outputPath (uses the same build target if not provided)"
+    },
     "target": {
       "type": "string",
       "description": "A named target with an optional `configuration`. This is equivalent to calling the command `nx run project:$target`."

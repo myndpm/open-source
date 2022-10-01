@@ -4,6 +4,14 @@ export interface DeployNpmExecutorSchema {
    */
   build?: boolean;
   /**
+   * The output path to version and publish (does override outputTarget).
+   */
+  outputPath?: string;
+  /**
+   * A named target to extract the options.outputPath (uses the same build target if not provided).
+   */
+  outputTarget?: string;
+  /**
    * A named target with an optional `configuration`. This is equivalent to calling the command `nx run project:$target`.
    */
   target?: string;

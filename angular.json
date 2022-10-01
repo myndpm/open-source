@@ -50,7 +50,7 @@
       "architect": {
         "prebuild": {
           "builder": "@nrwl/angular:package",
-          "outputs": ["dist/libs/forms"],
+          "outputs": ["{options.outputFile}"],
           "options": {
             "tsConfig": "libs/forms/tsconfig.lib.json",
             "project": "libs/forms/ng-package.json",
@@ -109,7 +109,9 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "target": "prebuild"
+            "build": true,
+            "outputTarget": "prebuild",
+            "target": "build"
           }
         }
       },
@@ -186,7 +188,11 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm"
+          "builder": "./dist/plugin:deploy-npm",
+          "options": {
+            "build": true,
+            "target": "build"
+          }
         }
       },
       "tags": ["plugin"]
@@ -253,7 +259,9 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "target": "prebuild"
+            "build": true,
+            "outputTarget": "prebuild",
+            "target": "build"
           }
         }
       },
@@ -321,7 +329,9 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "target": "prebuild"
+            "build": true,
+            "outputTarget": "prebuild",
+            "target": "build"
           }
         }
       },
@@ -389,7 +399,9 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "target": "prebuild"
+            "build": true,
+            "outputTarget": "prebuild",
+            "target": "build"
           }
         }
       },

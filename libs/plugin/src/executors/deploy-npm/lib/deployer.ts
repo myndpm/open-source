@@ -15,24 +15,33 @@ export default async function deployer(
     run: (dir: string, options: DeployNpmExecutorSchema) => Promise<void>;
   },
   context: ExecutorContext,
-  target: string,
+  buildTarget: string,
+  outputTarget: string,
   options: DeployNpmExecutorSchema
 ) {
-  const targetDescription = parseTargetString(target);
+  let targetDescription = parseTargetString(buildTarget);
 
   if (!options.build || options.dryRun) {
     logger.info(`\n📦 Skipping build\n`);
   } else {
-    await buildLibrary(context, target, targetDescription);
+    await buildLibrary(context, buildTarget, parseTargetString(buildTarget));
   }
 
-  const buildOptions = readTargetOptions(targetDescription, context);
+  let outputPath = options.outputPath;
 
-  const outputPath = await getLibOutputPath(
-    context.root,
-    buildOptions,
-    targetDescription.project
-  );
+  if (!outputPath) {
+    if (outputTarget) {
+      targetDescription = parseTargetString(outputTarget);
+    }
+
+    const buildOptions = readTargetOptions(targetDescription, context);
+
+    outputPath = await getLibOutputPath(
+      context.root,
+      buildOptions,
+      targetDescription.project
+    );
+  }
 
   await engine.run(outputPath, options);
 }
