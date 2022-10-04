@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [12.7.2](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.1...@myndpm/dyn-forms@12.7.2) (2022-10-04)
+
+
+### Bug Fixes
+
+* **forms:** do not count HIDDEN controls ([eee45b0](https://github.com/myndpm/open-source/commit/eee45b0f2c7b1cdbc8c6bc21d89f7609ff8236da))
+* **forms:** format logged path ([848454b](https://github.com/myndpm/open-source/commit/848454be182eb2e9fe6b6e0ff70c7dbad475f50c))
+
+
+
 ## [12.7.1](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.0...@myndpm/dyn-forms@12.7.1) (2022-10-01)
 
 
