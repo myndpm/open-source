@@ -6,3 +6,7 @@ export function isDynHidden(control: string | DynControlConfig): boolean {
     : control;
   return id === 'HIDDEN' || id === 'HIDDEN-GROUP';
 }
+
+export function isNotDynHidden(control: string | DynControlConfig): boolean {
+  return !isDynHidden(control);
+}

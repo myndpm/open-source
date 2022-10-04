@@ -21,6 +21,7 @@ import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
+import { isNotDynHidden } from './utils/hidden.util';
 
 @Injectable()
 // initialized by dyn-form, dyn-group, dynFactory
@@ -515,7 +516,7 @@ implements DynNode<TParams, TControl> {
       ![DynInstanceType.Array, DynInstanceType.Container].includes(this._instance)
         ? this._instance === DynInstanceType.Wrapper
           ? 1
-          : config.controls?.length ?? 0
+          : config.controls?.filter(isNotDynHidden).length ?? 0
         : 0
     );
 
