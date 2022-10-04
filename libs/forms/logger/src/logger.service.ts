@@ -153,7 +153,7 @@ export class DynLogger {
     this.driver.log({
       deep,
       level: DynLogLevel.Runtime,
-      message: `'${path}' hook "${hook}" invoked (${route.join('/')})`,
+      message: `'${path?.join('.')}' hook "${hook}" invoked (${route.join('/')})`,
       payload: payload && typeof payload === 'object' ? payload : JSON.stringify(payload),
     });
   }
