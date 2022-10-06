@@ -173,4 +173,20 @@ export class DynLogger {
       message: `[DynGroup] '${path.join('.')}${name ? `.${name}` : ''}' new mode: '${mode}' (${route.join('/')})`
     });
   }
+
+  modeTrack({ deep, path, route }: DynNode, mode: string): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Runtime,
+      message: `'${path.join('.')}' tracking mode: '${mode}' (${route.join('/')})`
+    });
+  }
+
+  modeUntrack({ deep, path, route }: DynNode, mode?: string): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Runtime,
+      message: `'${path.join('.')}' untracked mode: '${mode}' (${route.join('/')})`
+    });
+  }
 }

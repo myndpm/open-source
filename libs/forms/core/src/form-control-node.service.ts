@@ -311,16 +311,19 @@ implements DynNode<TParams, TControl> {
         if (defaultMode && !event && !this._snapshots.size) {
           // snapshot of the initial mode
           this._snapshots.set(defaultMode, this._node.control.value);
+          this.logger.modeTrack(this, defaultMode);
         } else if (!event || event.hook === 'PostPatch') {
           // updates the default snapshot or the current mode
           const mode = event?.hook === 'PostPatch' ? defaultMode || currentMode : currentMode;
           this._snapshots.set(mode, this._node.control.value);
+          this.logger.modeTrack(this, mode);
         }
       },
     );
   }
 
   untrack(mode?: DynMode): void {
+    this.logger.modeUntrack(this, mode);
     this._untrack$.next();
     if (mode && this._snapshots.has(mode)) {
       this.patchValue(this._snapshots.get(mode));
