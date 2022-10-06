@@ -143,7 +143,7 @@ implements DynNode<TParams, TControl> {
       this._children$,
       this._loaded$,
       this._loadedParams$,
-      ...this.children.map(child => child.loaded$),
+      ...this.children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.loaded$),
     ])),
     map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
@@ -168,7 +168,7 @@ implements DynNode<TParams, TControl> {
     switchMap(() => combineLatest([
       this.loaded$,
       this._loadedMatchers$,
-      ...this.children.map(child => child.ready$),
+      ...this.children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.ready$),
     ])),
     map(([loaded, loadedMatchers, ...childrenReady]) => {
       const allChildrenReady = childrenReady.every(Boolean);
@@ -523,7 +523,7 @@ implements DynNode<TParams, TControl> {
         : 0
     );
 
-    if (this.parent?.instance === DynInstanceType.Container) {
+    if (this.parent?.instance === DynInstanceType.Container && isNotDynHidden(this._dynId)) {
       this.parent.childrenIncrement();
     }
 
