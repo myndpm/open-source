@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [12.7.3](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.2...@myndpm/dyn-forms@12.7.3) (2022-10-06)
+
+
+### Bug Fixes
+
+* **forms:** exclude observables from HIDDEN controls ([782b8d0](https://github.com/myndpm/open-source/commit/782b8d08ff14e14200bed0b7d458eac05df4d54d))
+* **forms:** log track and untrack actions ([cc4e755](https://github.com/myndpm/open-source/commit/cc4e75525e9a9bd0c3aee0c5716205747e075c0c))
+* **forms:** matchers only applied to the top level component ([d3065ce](https://github.com/myndpm/open-source/commit/d3065ce1cbd412aa7a9a39c1a3a89d3dec8b6465))
+* **forms:** support Observables as arguments ([908c734](https://github.com/myndpm/open-source/commit/908c734c287f55f364e262c39f88e5ab1d232188))
+* **ui-material:** confirmDelete param for TABLE ([5d3e9df](https://github.com/myndpm/open-source/commit/5d3e9df0a3b355e358d7602bf719c8ab807f4f6e))
+
+
+
 ## [12.7.2](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.1...@myndpm/dyn-forms@12.7.2) (2022-10-04)
 
 
