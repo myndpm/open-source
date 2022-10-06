@@ -22,7 +22,6 @@ import { DynInstanceType } from './types/forms.types';
 import { DynMode } from './types/mode.types';
 import { DynParams } from './types/params.types';
 import { DynBaseProvider } from './types/provider.types';
-import { getWrapperId } from './utils/config.utils';
 import { DynControlBase } from './dyn-control-base.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
@@ -89,19 +88,19 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
   @HostBinding('class')
   get cssClass(): string {
     // add classes only once to the top level component
-    if (this.config.wrappers?.length && this.node.dynId !== getWrapperId(this.config.wrappers[0])) {
-      return '';
+    if (this.node.isTopLevel) {
+      return [
+        this.config.cssClass,
+        // add the visibility class
+        this.node.visibility && this.node.visibility !== 'VISIBLE' ? `dyn-${this.node.visibility.toLowerCase()}` : null,
+        // add a generic class
+        'dyn-control',
+        // add a default class based on the name
+        this.config.name ? `dyn-control-${this.config.name}` : null,
+        this.config.name && this.node.instance === DynInstanceType.Control ? `dyn-control-${this.config.name}` : null,
+      ].filter(Boolean).join(' ');
     }
-    return [
-      this.config.cssClass,
-      // add the visibility class
-      this.node.visibility && this.node.visibility !== 'VISIBLE' ? `dyn-${this.node.visibility.toLowerCase()}` : null,
-      // add a generic class
-      'dyn-control',
-      // add a default class based on the name
-      this.config.name ? `dyn-control-${this.config.name}` : null,
-      this.config.name && this.node.instance === DynInstanceType.Control ? `dyn-control-${this.config.name}` : null,
-    ].filter(Boolean).join(' ');
+    return '';
   }
 
   protected readonly _mode: BehaviorSubject<DynMode>;

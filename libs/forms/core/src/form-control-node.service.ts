@@ -13,6 +13,8 @@ import { DynNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynConfigId, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
+import { getWrapperId } from './utils/config.utils';
+import { isNotDynHidden } from './utils/hidden.util';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
 import { searchNode } from './utils/tree.utils';
@@ -21,7 +23,6 @@ import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
 import { DynFormHandlers } from './form-handlers.service';
 import { DYN_MODE } from './form.tokens';
-import { isNotDynHidden } from './utils/hidden.util';
 
 @Injectable()
 // initialized by dyn-form, dyn-group, dynFactory
@@ -93,6 +94,9 @@ implements DynNode<TParams, TControl> {
   get isRoot(): boolean {
     return this.isolated || !this.parent;
   }
+  get isTopLevel(): boolean {
+    return this._isTopLevel;
+  }
   get root(): DynControlNode<any, any> {
     return this.isRoot ? this : this.parent.root;
   }
@@ -112,6 +116,7 @@ implements DynNode<TParams, TControl> {
   private _node!: DynFormNode<TControl>;
   private _matchers?: DynMatch[];
   private _params!: TParams;
+  private _isTopLevel = false;
   private _initLoaded = false; // init called
   private _detached = false; // with custom formControl
   private _formLoaded = false; // view already initialized
@@ -479,6 +484,9 @@ implements DynNode<TParams, TControl> {
     // keeps a reference to the dynamic component
     this._dynCmp = config.component;
 
+    // css classes and matchers are processed only in the top level
+    this._isTopLevel = Boolean(!config.wrappers?.length || this._dynId === getWrapperId(config.wrappers[0]));
+
     this.deep = this.getDeep();
     this.route = this.getRoute();
     const path = this.getPath();
@@ -593,7 +601,7 @@ implements DynNode<TParams, TControl> {
         }
       });
 
-      if (this._matchers?.length) {
+      if (this._isTopLevel && this._matchers?.length) {
         // process the stored matchers
         this.loaded$.pipe(
           take(1),

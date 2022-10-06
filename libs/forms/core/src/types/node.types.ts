@@ -12,6 +12,7 @@ export interface DynNode<
 > {
   root: DynNode;
   isRoot: boolean;
+  isTopLevel: boolean;
   name: string|undefined;
   path: string[];
 
