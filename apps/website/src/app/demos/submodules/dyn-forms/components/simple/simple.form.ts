@@ -30,7 +30,7 @@ export function simpleForm(
   addItem$: Observable<{ userAction?: boolean }>,
   itemAdded$: Subject<any>,
   itemEdited$: Subject<any>,
-  itemDeleted$: Subject<any>,
+  itemRemoved$: Subject<any>,
 ): DynFormConfig<'edit'|'display'|'row'> { // typed mode
   return {
     modes: {
@@ -167,8 +167,8 @@ export function simpleForm(
                 when: [['HOOK', 'ItemEdited']]
               },
               {
-                matchers: [['LISTEN_HOOK', itemDeleted$]],
-                when: [['HOOK', 'ItemDeleted']]
+                matchers: [['LISTEN_HOOK', itemRemoved$]],
+                when: [['HOOK', 'ItemRemoved']]
               },
             ],
             modes: {

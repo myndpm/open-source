@@ -40,11 +40,11 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
   addItem$ = new Subject<{ userAction?: boolean }>();
   itemAdded$ = new Subject<any>();
   itemEdited$ = new Subject<any>();
-  itemDeleted$ = new Subject<any>();
+  itemRemoved$ = new Subject<any>();
   onDestroy$ = new Subject<void>();
 
   // dyn-form inputs
-  config = simpleForm(this.profileCard$, this.addItem$, this.itemAdded$, this.itemEdited$, this.itemDeleted$);
+  config = simpleForm(this.profileCard$, this.addItem$, this.itemAdded$, this.itemEdited$, this.itemRemoved$);
   form = new FormGroup({});
   mode = 'edit';
 
@@ -75,7 +75,7 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
     this.itemEdited$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((payload) => console.log('Item Edited:', payload))
-    this.itemDeleted$
+    this.itemRemoved$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((payload) => console.log('Item Deleted:', payload))
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynConfig, DynFormArray, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, first, takeUntil } from 'rxjs/operators';
 
 import { DynMatTableAddItemHook, DynMatTableParams } from './table.component.params';
 
@@ -79,8 +79,23 @@ implements OnInit {
 
   removeItem(index: number): void {
     const payload = this.control.at(index).value;
-    super.removeItem(index);
-    this.node.callHook({ hook: 'ItemDeleted', payload })
+
+    const removeIt = () => {
+      super.removeItem(index);
+      this.node.callHook({ hook: 'ItemRemoved', payload });
+    }
+
+    if (this.params.confirmDelete) {
+      this.params.confirmDelete(payload)
+        .pipe(takeUntil(this.onDestroy$), first())
+        .subscribe((result) => {
+          if (result) {
+            removeIt();
+          }
+        });
+    } else {
+      removeIt();
+    }
   }
 
   completeParams(params: Partial<DynMatTableParams>): DynMatTableParams {
@@ -100,6 +115,10 @@ implements OnInit {
 
   hookAddItem(payload?: DynMatTableAddItemHook): void {
     this.addItem(payload?.userAction ?? true);
+  }
+
+  hookRemoveItem(payload: number): void {
+    this.removeItem(payload);
   }
 
   private isAdding(index: number): boolean {
