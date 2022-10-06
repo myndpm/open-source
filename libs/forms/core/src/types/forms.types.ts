@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 // form control type
 export enum DynInstanceType {
   Wrapper = 'WRAPPER',
@@ -8,7 +10,7 @@ export enum DynInstanceType {
 }
 
 // plain/serializable arguments (non-functions)
-export type DynConfigPrimitive = undefined | string | boolean | number | Set<any> | RegExp | DynConfigPrimitive[] | { [k: string]: DynConfigPrimitive };
+export type DynConfigPrimitive = undefined | string | boolean | number | Set<any> | RegExp | DynConfigPrimitive[] | { [k: string]: DynConfigPrimitive } | Observable<any>;
 export type DynConfigArgs = DynConfigPrimitive | DynConfigPrimitive[] | null;
 
 /**
