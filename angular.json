@@ -1,14 +1,14 @@
 {
-  "version": 1,
+  "version": 2,
   "projects": {
     "demos": {
       "projectType": "library",
       "root": "libs/demos",
       "sourceRoot": "libs/demos/src",
       "prefix": "demo",
-      "architect": {
+      "targets": {
         "prebuild": {
-          "builder": "@nrwl/angular:package",
+          "executor": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/demos/tsconfig.lib.json",
             "project": "libs/demos/ng-package.json"
@@ -20,17 +20,14 @@
           }
         },
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "commands": [
-              "yarn nx run demos:prebuild:production",
-              "yarn"
-            ]
+            "commands": ["yarn nx run demos:prebuild:production", "yarn"]
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/demos/src/**/*.ts",
@@ -47,9 +44,9 @@
       "root": "libs/forms",
       "sourceRoot": "libs/forms/src",
       "prefix": "dyn",
-      "architect": {
+      "targets": {
         "prebuild": {
-          "builder": "@nrwl/angular:package",
+          "executor": "@nrwl/angular:package",
           "outputs": ["dist/libs/forms"],
           "options": {
             "tsConfig": "libs/forms/tsconfig.lib.json",
@@ -63,7 +60,7 @@
           }
         },
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "commands": [
@@ -75,14 +72,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/forms/**/*.ts", "libs/forms/**/*.html"]
           },
           "outputs": ["{options.outputFile}"]
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/forms"],
           "options": {
             "jestConfig": "libs/forms/jest.config.js",
@@ -90,7 +87,7 @@
           }
         },
         "version": {
-          "builder": "@jscutlery/semver:version",
+          "executor": "@jscutlery/semver:version",
           "options": {
             "baseBranch": "master",
             "preset": "angular",
@@ -107,7 +104,7 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm",
+          "executor": "./dist/plugin:deploy-npm",
           "options": {
             "copy": true,
             "outputTarget": "prebuild",
@@ -121,16 +118,16 @@
       "root": "libs/plugin",
       "sourceRoot": "libs/plugin/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/plugin/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/plugin"],
           "options": {
             "jestConfig": "libs/plugin/jest.config.js",
@@ -138,7 +135,7 @@
           }
         },
         "build": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/plugin",
@@ -171,7 +168,7 @@
           }
         },
         "version": {
-          "builder": "@jscutlery/semver:version",
+          "executor": "@jscutlery/semver:version",
           "options": {
             "baseBranch": "master",
             "preset": "angular",
@@ -188,7 +185,7 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm",
+          "executor": "./dist/plugin:deploy-npm",
           "options": {
             "copy": true,
             "target": "build"
@@ -201,9 +198,9 @@
       "root": "libs/tools/pug2html",
       "sourceRoot": "libs/tools/pug2html/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "prebuild": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/pug2html",
@@ -215,7 +212,7 @@
           }
         },
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "commands": [
@@ -225,14 +222,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/tools/pug2html/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/tools/pug2html"],
           "options": {
             "jestConfig": "libs/tools/pug2html/jest.config.js",
@@ -240,7 +237,7 @@
           }
         },
         "version": {
-          "builder": "@jscutlery/semver:version",
+          "executor": "@jscutlery/semver:version",
           "options": {
             "baseBranch": "master",
             "preset": "angular",
@@ -257,7 +254,7 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm",
+          "executor": "./dist/plugin:deploy-npm",
           "options": {
             "copy": true,
             "outputTarget": "prebuild",
@@ -271,9 +268,9 @@
       "root": "libs/tools/stylus2scss",
       "sourceRoot": "libs/tools/stylus2scss/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "prebuild": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/stylus2scss",
@@ -285,7 +282,7 @@
           }
         },
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "commands": [
@@ -295,14 +292,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/tools/stylus2scss/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/tools/stylus2scss"],
           "options": {
             "jestConfig": "libs/tools/stylus2scss/jest.config.js",
@@ -310,7 +307,7 @@
           }
         },
         "version": {
-          "builder": "@jscutlery/semver:version",
+          "executor": "@jscutlery/semver:version",
           "options": {
             "baseBranch": "master",
             "preset": "angular",
@@ -327,7 +324,7 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm",
+          "executor": "./dist/plugin:deploy-npm",
           "options": {
             "copy": true,
             "outputTarget": "prebuild",
@@ -341,9 +338,9 @@
       "root": "libs/utils",
       "sourceRoot": "libs/utils/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "prebuild": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/utils",
@@ -355,7 +352,7 @@
           }
         },
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "commands": [
@@ -365,14 +362,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/utils/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/utils"],
           "options": {
             "jestConfig": "libs/utils/jest.config.js",
@@ -380,7 +377,7 @@
           }
         },
         "version": {
-          "builder": "@jscutlery/semver:version",
+          "executor": "@jscutlery/semver:version",
           "options": {
             "baseBranch": "master",
             "preset": "angular",
@@ -397,7 +394,7 @@
           }
         },
         "npm": {
-          "builder": "./dist/plugin:deploy-npm",
+          "executor": "./dist/plugin:deploy-npm",
           "options": {
             "copy": true,
             "outputTarget": "prebuild",
@@ -412,9 +409,9 @@
       "root": "apps/website",
       "sourceRoot": "apps/website/src",
       "prefix": "app",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "executor": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/website/browser",
             "index": "apps/website/src/index.html",
@@ -488,7 +485,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "executor": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "website:build"
           },
@@ -499,13 +496,13 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "executor": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "website:build"
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "apps/website/src/**/*.ts",
@@ -515,7 +512,7 @@
           "outputs": ["{options.outputFile}"]
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/website"],
           "options": {
             "jestConfig": "apps/website/jest.config.js",
@@ -523,7 +520,7 @@
           }
         },
         "server": {
-          "builder": "@angular-devkit/build-angular:server",
+          "executor": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/website/server",
             "main": "apps/website/server.ts",
@@ -547,7 +544,7 @@
           "defaultConfiguration": ""
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "executor": "@nguniversal/builders:ssr-dev-server",
           "options": {
             "browserTarget": "website:build",
             "serverTarget": "website:server"
@@ -560,7 +557,7 @@
           }
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "executor": "@nguniversal/builders:prerender",
           "options": {
             "browserTarget": "website:build:production",
             "serverTarget": "website:server:production",
