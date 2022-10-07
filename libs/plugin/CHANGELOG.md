@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.1.2...@myndpm/nx@0.2.0) (2022-10-07)
+
+
+### Bug Fixes
+
+* **plugin:** use project tsConfig option ([a48d8ec](https://github.com/myndpm/open-source/commit/a48d8ecc7d3173db49e3f284f4333a5c1ca93fe3))
+
+
+### Features
+
+* **plugin:** support copy version instead build ([08149a3](https://github.com/myndpm/open-source/commit/08149a3fa18307136923df3d3ecfdc31838eda3f))
+
+
+
 ## [0.1.2](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.1.1...@myndpm/nx@0.1.2) (2022-10-01)
 
 
