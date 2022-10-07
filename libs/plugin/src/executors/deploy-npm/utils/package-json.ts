@@ -8,3 +8,9 @@ export function setPackageVersion(dir: string, version: string) {
 
   jsonWrite(path.join(dir, 'package.json'), metadata);
 }
+
+export function copyPackageVersion(origin: string, dest: string) {
+  const metadata = jsonRead(path.join(origin, 'package.json'));
+
+  setPackageVersion(dest, metadata.version);
+}

@@ -6,6 +6,22 @@ type IBuildOptions = {
   outputPath?: string;
 };
 
+export function getLibPath(
+  projectRoot: string,
+  buildOptions: IBuildOptions,
+  libName: string
+): string {
+  if (!buildOptions.project || typeof buildOptions.project !== 'string') {
+    throw new Error(
+      `Cannot read the project path option of the library '${libName}' in the workspace`
+    );
+  }
+
+  const ngPackagePath = path.join(projectRoot, buildOptions.project);
+
+  return path.dirname(ngPackagePath);
+}
+
 export async function getLibOutputPath(
   projectRoot: string,
   buildOptions: IBuildOptions,

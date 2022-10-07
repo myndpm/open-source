@@ -4,6 +4,10 @@ export interface DeployNpmExecutorSchema {
    */
   build?: boolean;
   /**
+   * Just copy the updated package.json to the already built outputPath.
+   */
+  copy?: boolean;
+  /**
    * The output path to version and publish (does override outputTarget).
    */
   outputPath?: string;

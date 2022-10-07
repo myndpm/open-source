@@ -10,6 +10,11 @@
       "default": false,
       "description": "Run the build during deployment."
     },
+    "copy": {
+      "type": "boolean",
+      "default": false,
+      "description": "Just copy the updated package.json to the already built outputPath."
+    },
     "outputPath": {
       "type": "string",
       "description": "The output path to version and publish (does override outputTarget)."

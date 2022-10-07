@@ -1,6 +1,6 @@
 import * as nxDevKit from '@nrwl/devkit';
 
-import * as getLibOutputPathModule from '../utils/get-lib-output-path';
+import * as getLibOutputPathModule from '../utils/lib-paths';
 import deployer from './deployer';
 
 describe('Deploy NPM package', () => {

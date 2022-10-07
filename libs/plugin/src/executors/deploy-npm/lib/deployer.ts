@@ -8,7 +8,7 @@ import {
 } from '@nrwl/devkit';
 
 import { DeployNpmExecutorSchema } from '../schema';
-import { getLibOutputPath } from '../utils';
+import { copyPackageVersion, getLibOutputPath, getLibPath } from '../utils';
 
 export default async function deployer(
   engine: {
@@ -29,18 +29,23 @@ export default async function deployer(
 
   let outputPath = options.outputPath;
 
+  if (outputTarget !== buildTarget) {
+    targetDescription = parseTargetString(outputTarget);
+  }
+
+  const buildOptions = readTargetOptions(targetDescription, context);
+
   if (!outputPath) {
-    if (outputTarget) {
-      targetDescription = parseTargetString(outputTarget);
-    }
-
-    const buildOptions = readTargetOptions(targetDescription, context);
-
     outputPath = await getLibOutputPath(
       context.root,
       buildOptions,
       targetDescription.project
     );
+  }
+
+  if (options.copy && !options.dryRun) {
+    const libPath = getLibPath(context.root, buildOptions, targetDescription.project);
+    copyPackageVersion(libPath, outputPath);
   }
 
   await engine.run(outputPath, options);
