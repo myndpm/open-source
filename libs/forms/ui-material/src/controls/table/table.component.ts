@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { DynConfig, DynFormArray, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { filter, first, takeUntil } from 'rxjs/operators';
 
-import { DynMatTableAddItemHook, DynMatTableParams } from './table.component.params';
+import { DynMatTableAddItemHook, DynMatTableParams, DynMatTableRemoveItemHook } from './table.component.params';
 
 @Component({
   selector: 'dyn-mat-table',
@@ -77,7 +77,7 @@ implements OnInit {
     this.itemIndexForEditing = index;
   }
 
-  removeItem(index: number): void {
+  removeItem(index: number, doConfirm: boolean = true): void {
     const payload = this.control.at(index).value;
 
     const removeIt = () => {
@@ -85,7 +85,7 @@ implements OnInit {
       this.node.callHook({ hook: 'ItemRemoved', payload });
     }
 
-    if (this.params.confirmDelete) {
+    if (doConfirm && this.params.confirmDelete) {
       this.params.confirmDelete(payload)
         .pipe(takeUntil(this.onDestroy$), first())
         .subscribe((result) => {
@@ -100,10 +100,11 @@ implements OnInit {
 
   completeParams(params: Partial<DynMatTableParams>): DynMatTableParams {
     return {
-      title: params.title!,
-      addNewButtonText: params.addNewButtonText || `Add ${ params.title!.toLowerCase() }`,
-      emptyText: params.emptyText || `No ${ params.title!.toLowerCase() }s added`,
+      ...params,
       headers: params.headers || [],
+      trackBy: params.trackBy || '',
+      title: params.title || '',
+      emptyText: params.emptyText || `No ${ (params.title || 'item').toLowerCase() }s added`,
     };
   }
 
@@ -117,8 +118,12 @@ implements OnInit {
     this.addItem(payload?.userAction ?? true);
   }
 
-  hookRemoveItem(payload: number): void {
-    this.removeItem(payload);
+  hookRemoveItem(payload: DynMatTableRemoveItemHook): void {
+    this.removeItem(payload.index, payload.doConfirm);
+  }
+
+  trackBy = (index: number, { value }: FormGroup): string => {
+    return `${index}-${this.params.trackBy ? value[this.params.trackBy] : JSON.stringify(value)}`;
   }
 
   private isAdding(index: number): boolean {

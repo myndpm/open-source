@@ -23,11 +23,12 @@
     </tr>
 
     <tr class="mat-row"
-      *ngFor="let item of items; let i = index"
+      *ngFor="let item of items; let i = index; trackBy: trackBy"
       dyn-mat-table-row
       [controls]="config.controls"
       [modes]="config.modes"
       [group]="item"
+      [params]="params"
       [name]="i.toString()"
       [mode]="modeFactory(mode, i.toString())"
       [modeFactory]="modeFactory"

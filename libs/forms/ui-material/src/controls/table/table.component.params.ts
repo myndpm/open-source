@@ -1,11 +1,12 @@
-import { DynParams } from '@myndpm/dyn-forms/core';
 import { Observable } from 'rxjs';
 
-export interface DynMatTableParams extends DynParams {
-  title: string;
-  addNewButtonText: string;
-  emptyText?: string;
+export interface DynMatTableParams {
   headers: string[];
+  trackBy: string;
+  title?: string;
+  addNewButtonText?: string;
+  emptyText?: string;
+  disableRemove?: boolean;
   confirmDelete?: (payload: any) => Observable<boolean>;
 }
 
@@ -15,4 +16,9 @@ export interface DynMatTableParams extends DynParams {
 
 export interface DynMatTableAddItemHook {
   userAction?: boolean;
+}
+
+export interface DynMatTableRemoveItemHook {
+  index: number;
+  doConfirm?: boolean;
 }

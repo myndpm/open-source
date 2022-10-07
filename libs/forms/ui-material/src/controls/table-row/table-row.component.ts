@@ -28,6 +28,7 @@ import {
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { merge, BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, tap } from 'rxjs/operators';
+import { DynMatTableParams } from '../table/table.component.params';
 
 @Component({
   selector: '[dyn-mat-table-row]',
@@ -43,6 +44,7 @@ export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> impl
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
   @Input() modes?: DynModes;
+  @Input() params!: DynMatTableParams;
 
   @Input()
   set mode(mode: DynMode) {

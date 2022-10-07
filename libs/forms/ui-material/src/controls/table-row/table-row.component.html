@@ -16,7 +16,7 @@
   ><mat-icon>edit</mat-icon></button>
 
   <button
-    *ngIf="mode !== 'edit'"
+    *ngIf="!params.disableRemove && mode !== 'edit'"
     mat-icon-button
     type="button"
     (click)="remove.emit()"
