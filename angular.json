@@ -109,7 +109,7 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "build": true,
+            "copy": true,
             "outputTarget": "prebuild",
             "target": "build"
           }
@@ -190,7 +190,7 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "build": true,
+            "copy": true,
             "target": "build"
           }
         }
@@ -259,7 +259,7 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "build": true,
+            "copy": true,
             "outputTarget": "prebuild",
             "target": "build"
           }
@@ -329,7 +329,7 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "build": true,
+            "copy": true,
             "outputTarget": "prebuild",
             "target": "build"
           }
@@ -399,7 +399,7 @@
         "npm": {
           "builder": "./dist/plugin:deploy-npm",
           "options": {
-            "build": true,
+            "copy": true,
             "outputTarget": "prebuild",
             "target": "build"
           }

@@ -46,6 +46,10 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --immutable --immutable-cache
 
+      - name: Build affected projects
+        shell: bash
+        run: yarn nx affected --base=last-release --target=build
+
       - name: Version affected projects
         shell: bash
         run: yarn nx affected --base=last-release --target=version
