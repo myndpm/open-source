@@ -1,0 +1,80 @@
+{
+  "root": "libs/plugin",
+  "sourceRoot": "libs/plugin/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugin/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/plugin"],
+      "options": {
+        "jestConfig": "libs/plugin/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/plugin",
+        "tsConfig": "libs/plugin/tsconfig.lib.json",
+        "packageJson": "libs/plugin/package.json",
+        "main": "libs/plugin/src/index.ts",
+        "assets": [
+          "libs/plugin/*.md",
+          {
+            "input": "./libs/plugin/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugin/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugin",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/plugin",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "baseBranch": "master",
+        "preset": "angular",
+        "tagPrefix": "@myndpm/nx@",
+        "commitMessageFormat": "ci: release @myndpm/nx@${version}",
+        "postTargets": ["plugin:npm"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "npm": {
+      "executor": "./dist/plugin:deploy-npm",
+      "options": {
+        "copy": true,
+        "target": "build"
+      }
+    }
+  },
+  "tags": ["plugin"]
+}

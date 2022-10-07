@@ -1,0 +1,70 @@
+{
+  "root": "libs/tools/pug2html",
+  "sourceRoot": "libs/tools/pug2html/src",
+  "projectType": "library",
+  "targets": {
+    "prebuild": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/pug2html",
+        "tsConfig": "libs/tools/pug2html/tsconfig.lib.json",
+        "packageJson": "libs/tools/pug2html/package.json",
+        "main": "libs/tools/pug2html/src/index.ts",
+        "assets": ["libs/tools/pug2html/*.md"],
+        "deleteOutputPath": false
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "yarn nx run pug2html:prebuild",
+          "chmod +x dist/libs/pug2html/src/index.js"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/tools/pug2html/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/tools/pug2html"],
+      "options": {
+        "jestConfig": "libs/tools/pug2html/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "baseBranch": "master",
+        "preset": "angular",
+        "tagPrefix": "@myndpm/pug2html@",
+        "commitMessageFormat": "ci: release @myndpm/pug2html@${version}",
+        "postTargets": ["pug2html:npm"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "npm": {
+      "executor": "./dist/plugin:deploy-npm",
+      "options": {
+        "copy": true,
+        "outputTarget": "prebuild",
+        "target": "build"
+      }
+    }
+  },
+  "tags": ["tools"]
+}

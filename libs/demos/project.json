@@ -1,0 +1,38 @@
+{
+  "projectType": "library",
+  "root": "libs/demos",
+  "sourceRoot": "libs/demos/src",
+  "prefix": "demo",
+  "targets": {
+    "prebuild": {
+      "executor": "@nrwl/angular:package",
+      "options": {
+        "tsConfig": "libs/demos/tsconfig.lib.json",
+        "project": "libs/demos/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/demos/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": ["yarn nx run demos:prebuild:production", "yarn"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/demos/src/**/*.ts",
+          "libs/demos/src/**/*.html"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}

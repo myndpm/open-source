@@ -1,0 +1,167 @@
+{
+  "projectType": "application",
+  "root": "apps/website",
+  "sourceRoot": "apps/website/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/website/browser",
+        "index": "apps/website/src/index.html",
+        "main": "apps/website/src/main.ts",
+        "polyfills": "apps/website/src/polyfills.ts",
+        "tsConfig": "apps/website/tsconfig.app.json",
+        "assets": [
+          "apps/website/src/favicon.jpg",
+          "apps/website/src/assets",
+          {
+            "glob": "**/*",
+            "input": "docs",
+            "output": "static"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/demos/dyn-forms",
+            "output": "static/dyn-forms"
+          }
+        ],
+        "styles": [
+          "node_modules/bootstrap/dist/css/bootstrap.min.css",
+          "apps/website/src/prism-mynd.css",
+          "apps/website/src/material.scss",
+          "apps/website/src/styles.scss"
+        ],
+        "scripts": [
+          "node_modules/bootstrap/dist/js/bootstrap.min.js",
+          "node_modules/prismjs/prism.js",
+          "node_modules/prismjs/components/prism-scss.min.js",
+          "node_modules/prismjs/components/prism-typescript.js",
+          "node_modules/prismjs/components/prism-bash.js"
+        ],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": false,
+        "sourceMap": true,
+        "optimization": false,
+        "namedChunks": true
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/website/src/environments/environment.ts",
+              "with": "apps/website/src/environments/environment.prod.ts"
+            }
+          ],
+          "tsConfig": "apps/website/tsconfig.app.prod.json",
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": ""
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "website:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "website:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "website:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/website/src/**/*.ts",
+          "apps/website/src/**/*.html"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/website"],
+      "options": {
+        "jestConfig": "apps/website/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/website/server",
+        "main": "apps/website/server.ts",
+        "tsConfig": "apps/website/tsconfig.server.json",
+        "sourceMap": true,
+        "optimization": false
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/website/src/environments/environment.ts",
+              "with": "apps/website/src/environments/environment.prod.ts"
+            }
+          ],
+          "sourceMap": false,
+          "optimization": true
+        }
+      },
+      "defaultConfiguration": ""
+    },
+    "serve-ssr": {
+      "executor": "@nguniversal/builders:ssr-dev-server",
+      "options": {
+        "browserTarget": "website:build",
+        "serverTarget": "website:server"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "website:build:production",
+          "serverTarget": "website:server:production"
+        }
+      }
+    },
+    "prerender": {
+      "executor": "@nguniversal/builders:prerender",
+      "options": {
+        "browserTarget": "website:build:production",
+        "serverTarget": "website:server:production",
+        "routes": ["/"]
+      },
+      "configurations": {
+        "production": {}
+      }
+    }
+  },
+  "implicitDependencies": ["demos"],
+  "tags": []
+}

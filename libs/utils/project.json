@@ -1,0 +1,70 @@
+{
+  "root": "libs/utils",
+  "sourceRoot": "libs/utils/src",
+  "projectType": "library",
+  "targets": {
+    "prebuild": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/utils",
+        "tsConfig": "libs/utils/tsconfig.lib.json",
+        "packageJson": "libs/utils/package.json",
+        "main": "libs/utils/src/index.ts",
+        "assets": ["libs/utils/*.md"],
+        "deleteOutputPath": false
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "yarn nx run utils:prebuild",
+          "rimraf dist/libs/utils/node_modules/rxjs"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/utils/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/utils"],
+      "options": {
+        "jestConfig": "libs/utils/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "baseBranch": "master",
+        "preset": "angular",
+        "tagPrefix": "@myndpm/utils@",
+        "commitMessageFormat": "ci: release @myndpm/utils@${version}",
+        "postTargets": ["utils:npm"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "npm": {
+      "executor": "./dist/plugin:deploy-npm",
+      "options": {
+        "copy": true,
+        "outputTarget": "prebuild",
+        "target": "build"
+      }
+    }
+  },
+  "tags": ["shared"]
+}
