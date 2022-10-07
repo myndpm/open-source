@@ -2,8 +2,9 @@ import { jsonRead } from '@myndpm/utils';
 import * as path from 'path';
 
 type IBuildOptions = {
-  project?: string;
   outputPath?: string;
+  tsConfig?: string;
+  project?: string;
 };
 
 export function getLibPath(
@@ -11,15 +12,15 @@ export function getLibPath(
   buildOptions: IBuildOptions,
   libName: string
 ): string {
-  if (!buildOptions.project || typeof buildOptions.project !== 'string') {
+  if (!buildOptions.tsConfig || typeof buildOptions.tsConfig !== 'string') {
     throw new Error(
-      `Cannot read the project path option of the library '${libName}' in the workspace`
+      `Cannot read the tsConfig path option of the library '${libName}' in the workspace`
     );
   }
 
-  const ngPackagePath = path.join(projectRoot, buildOptions.project);
+  const tsConfigPath = path.join(projectRoot, buildOptions.tsConfig);
 
-  return path.dirname(ngPackagePath);
+  return path.dirname(tsConfigPath);
 }
 
 export async function getLibOutputPath(
