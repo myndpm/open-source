@@ -22,6 +22,19 @@ export class DynFormFactory {
   ) {}
 
   /**
+   * Fetch a control from
+   */
+  get(parent: AbstractControl, path: string): AbstractControl | null {
+    if (parent instanceof FormArray) {
+      // check if we have a parent FormArray with node.instance
+      return parent.at(parseInt(path));
+    } else {
+      // assumes a parent FormGroup
+      return parent.get(path);
+    }
+  }
+
+  /**
    * Adds a control (via config) to the given parent.
    */
   register<FormGroup>(
@@ -53,22 +66,6 @@ export class DynFormFactory {
       throw new Error(`The parent ControlContainer doesn't have a control`);
     }
 
-    // return any existing control with this name
-    if (config.name) {
-      let control : AbstractControl|null;
-
-      if (node.parent.instance === DynInstanceType.Array) {
-        // check if we have a parent FormArray with node.instance
-        control = (node.parent.control as unknown as FormArray).at(parseInt(config.name));
-      } else {
-        // assumes a parent FormGroup
-        control = node.parent.control.get(config.name);
-      }
-      if (control) {
-        return control as T;
-      }
-    }
-
     // looks for an existing deep parent
     let controlParent = node.parent.control as AbstractControl;
     let controlName = config.name;
@@ -76,7 +73,7 @@ export class DynFormFactory {
     if (this.isDeepName(controlName)) {
       const parentNames = controlName.split('.');
       parentNames.some(parentName => {
-        const control = controlParent.get(parentName);
+        const control = this.get(controlParent, parentName);
         if (!control) {
           return true;
         }
@@ -84,7 +81,18 @@ export class DynFormFactory {
         parentNames.shift();
         return false;
       });
+      if (!parentNames.length) {
+        return controlParent as T;
+      }
       controlName = parentNames.join('.');
+    }
+
+    // return any existing control with this name
+    if (controlName) {
+      let control = this.get(controlParent, controlName);
+      if (control) {
+        return control as T;
+      }
     }
 
     // build the control with the given config

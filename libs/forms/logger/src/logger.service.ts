@@ -105,6 +105,14 @@ export class DynLogger {
     });
   }
 
+  nodeDetached({ deep, path, route }: DynNode): void {
+    this.driver.log({
+      deep,
+      level: DynLogLevel.Warning,
+      message: `'${path.join('.')}' detached with custom control (${route.join('/')})`,
+    });
+  }
+
   nodeParamsUpdated({ deep, path }: DynNode, origin: string, payload: any): void {
     this.driver.log({
       deep,

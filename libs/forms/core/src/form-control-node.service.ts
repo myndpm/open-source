@@ -492,25 +492,31 @@ implements DynNode<TParams, TControl> {
     const path = this.getPath();
 
     // check if a new hierarchy level is needed
-    if (!this.parent?._node.equivalent(path) || config.formControl) {
+    if (config.formControl || !this.parent?._node.equivalent(path)) {
       // check if the control already exists in another point in the hierarchy
       this._node = this.parent?._node.root.search(path)!;
-      if (!this._node) {
-        // register the control into the parent
-        let control: TControl;
-        if (config.formControl) {
-          control = config.formControl;
-          this._detached = this.route.length > 0; // do not detach the root dyn-form
-        } else {
-          control = this.formFactory.register(
-            this._instance === DynInstanceType.Wrapper
-              ? this.formFactory.getInstanceFor(config.control) as any
-              : this._instance,
-            this as any,
-            config,
-          )!;
+      let control: TControl | undefined;
+      if (config.formControl) {
+        // node has a different control for this path
+        if (this._node && this._node.control !== config.formControl) {
+          this.logger.nodeDetached(this);
+          this.isolated = true;
+          this.route = this.getRoute();
         }
-        this._node = new DynFormNode(this.parent?._node, control, path);
+        control = config.formControl;
+        this._detached = this.route.length > 0; // do not detach the root dyn-form
+      } else if (!this._node) {
+        // register the control into the parent
+        control = this.formFactory.register(
+          this._instance === DynInstanceType.Wrapper
+            ? this.formFactory.getInstanceFor(config.control) as any
+            : this._instance,
+          this as any,
+          config,
+        )!;
+      }
+      if (control) {
+        this._node = new DynFormNode(this.parent?._node, control, this.getPath(), this.isolated);
       }
     } else {
       // or takes the parent control

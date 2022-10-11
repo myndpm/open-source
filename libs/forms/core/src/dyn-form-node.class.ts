@@ -34,8 +34,11 @@ export class DynFormNode<TControl extends AbstractControl> {
     public readonly parent: DynFormNode<any>,
     public readonly control: TControl,
     public readonly path: string[],
+    public readonly isolated: boolean,
   ) {
-    this.parent?.addChild(this);
+    if (!isolated) {
+      this.parent?.addChild(this);
+    }
     this.name = path.slice(-1).pop() ?? '';
   }
 
