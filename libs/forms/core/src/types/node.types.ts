@@ -10,12 +10,18 @@ export interface DynNode<
   TParams extends DynParams = DynParams,
   TControl extends AbstractControl = AbstractControl,
 > {
-  root: DynNode;
+  deep: number;
+  index: number;
+  isolated: boolean;
+  detached: boolean;
   isRoot: boolean;
   isTopLevel: boolean;
-  name: string|undefined;
+  children: DynNode[];
+  root: DynNode;
   path: string[];
+  route: string[];
 
+  name?: string;
   dynId?: string;
   dynCmp: any;
 

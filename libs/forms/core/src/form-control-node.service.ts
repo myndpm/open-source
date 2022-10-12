@@ -34,13 +34,41 @@ export class DynControlNode<
 >
 implements DynNode<TParams, TControl> {
   // form hierarchy
-  isolated = false;
-  index?: number = 0;
-  deep = 0;
-  route: string[] = [];
-  children: DynControlNode[] = [];
+  get deep(): number {
+    return this._deep;
+  }
+  get index(): number {
+    return this._index;
+  }
+  get isolated(): boolean {
+    return this._isolated;
+  }
+  get detached(): boolean {
+    return this._detached;
+  }
+  get isRoot(): boolean {
+    return this._isolated || !this.parent;
+  }
+  get isTopLevel(): boolean {
+    return this._topLevel;
+  }
+  get children(): DynControlNode[] {
+    return this._children;
+  }
+  get root(): DynControlNode<any, any> {
+    return this.isRoot ? this : this.parent.root;
+  }
+  get path(): string[] {
+    return this._node?.path || this.getPath();
+  }
+  get route(): string[] {
+    return this._route;
+  }
 
   // node API
+  get name(): string|undefined {
+    return this._name;
+  }
   get dynId(): string|undefined {
     return this._dynId;
   }
@@ -50,14 +78,8 @@ implements DynNode<TParams, TControl> {
   get instance(): DynInstanceType {
     return this._instance;
   }
-  get name(): string|undefined {
-    return this._name;
-  }
   get control(): TControl {
     return this._node.control;
-  }
-  get detached(): boolean {
-    return this._detached;
   }
   get params(): TParams {
     return this._params;
@@ -90,53 +112,45 @@ implements DynNode<TParams, TControl> {
     return this._visibility$.value;
   }
 
-  // hierarchy
-  get isRoot(): boolean {
-    return this.isolated || !this.parent;
-  }
-  get isTopLevel(): boolean {
-    return this._isTopLevel;
-  }
-  get root(): DynControlNode<any, any> {
-    return this.isRoot ? this : this.parent.root;
-  }
-  get path(): string[] {
-    return this._node?.path || this.getPath();
-  }
-
   // mode$ override
   set mode(mode$: Observable<DynMode>) {
     this._modeLocal$ = mode$;
   }
 
+  private _deep = 0;
+  private _index: number = 0;
+  private _isolated = false; // do not propagate hooks
+  private _detached = false; // with custom formControl
+  private _children: DynControlNode[] = [];
+  private _route: string[] = [];
+
+  private _name?: string;
   private _dynId?: string;
   private _dynCmp?: TComponent;
-  private _name?: string;
   private _instance!: DynInstanceType;
+  private _params!: TParams;
   private _node!: DynFormNode<TControl>;
   private _matchers?: DynMatch[];
-  private _params!: TParams;
-  private _isTopLevel = false;
+  private _topLevel = false;
   private _initLoaded = false; // init called
-  private _detached = false; // with custom formControl
   private _formLoaded = false; // view already initialized
   private _validators?: DynConfigId[];
   private _asyncValidators?: DynConfigId[];
   private _errorHandlers: DynErrorHandlerFn[] = [];
 
-  private _params$!: Observable<TParams>;
   private _changed$ = new Subject<void>();
   private _children$ = new BehaviorSubject<number>(0);
+  private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
   private _loaded$ = new BehaviorSubject<boolean>(false);
   private _loadedParams$ = new BehaviorSubject<boolean>(false);
   private _loadedMatchers$ = new BehaviorSubject<boolean>(false);
-  private _errorMsg$ = new BehaviorSubject<DynErrorMessage>(null);
+  private _params$!: Observable<TParams>;
   private _unsubscribe$ = new Subject<void>();
   private _untrack$ = new Subject<void>();
 
   // listened by DynControl
-  private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _hook$ = new Subject<DynHook>();
+  private _paramsUpdates$ = new BehaviorSubject<Partial<TParams>>({});
   private _visibility$ = new BehaviorSubject<DynVisibility>('VISIBLE');
 
   private _modeLocal$?: Observable<DynMode>;
@@ -148,7 +162,7 @@ implements DynNode<TParams, TControl> {
       this._children$,
       this._loaded$,
       this._loadedParams$,
-      ...this.children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.loaded$),
+      ...this._children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.loaded$),
     ])),
     map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
@@ -470,7 +484,7 @@ implements DynNode<TParams, TControl> {
     }
 
     // disconnect this node from any parent DynControl
-    this.isolated = Boolean(config.isolated);
+    this._isolated = Boolean(config.isolated);
 
     // register the name to build the form path
     this._name = this.parent?.instance !== DynInstanceType.Wrapper ? config.name ?? '' : '';
@@ -485,10 +499,10 @@ implements DynNode<TParams, TControl> {
     this._dynCmp = config.component;
 
     // css classes and matchers are processed only in the top level
-    this._isTopLevel = Boolean(!config.wrappers?.length || this._dynId === getWrapperId(config.wrappers[0]));
+    this._topLevel = Boolean(!config.wrappers?.length || this._dynId === getWrapperId(config.wrappers[0]));
 
-    this.deep = this.getDeep();
-    this.route = this.getRoute();
+    this._deep = this.getDeep();
+    this._route = this.getRoute();
     const path = this.getPath();
 
     // check if a new hierarchy level is needed
@@ -500,8 +514,8 @@ implements DynNode<TParams, TControl> {
         // node has a different control for this path
         if (this._node && this._node.control !== config.formControl) {
           this.logger.nodeDetached(this);
-          this.isolated = true;
-          this.route = this.getRoute();
+          this._isolated = true;
+          this._route = this.getRoute();
         }
         control = config.formControl;
         this._detached = this.route.length > 0; // do not detach the root dyn-form
@@ -607,7 +621,7 @@ implements DynNode<TParams, TControl> {
         }
       });
 
-      if (this._isTopLevel && this._matchers?.length) {
+      if (this._topLevel && this._matchers?.length) {
         // process the stored matchers
         this.loaded$.pipe(
           take(1),
@@ -657,7 +671,6 @@ implements DynNode<TParams, TControl> {
 
   destroy(): void {
     // TODO test unload with routed forms
-
     if (!this.isolated) {
       this.parent?.removeChild(this);
     }
@@ -719,7 +732,7 @@ implements DynNode<TParams, TControl> {
    * Hierarchy methods
    */
   setIndex(index?: number) {
-    this.index = index;
+    this._index = index || 0;
   }
 
   getDeep(): number {
