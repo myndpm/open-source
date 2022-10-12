@@ -12,7 +12,7 @@ export function callHooks(
   children.forEach(node => {
     const fieldName = node.name;
     // validate the expected payload
-    if (!force && !plain && (!payload || fieldName && !hasPath(fieldName.split('.'), payload))) {
+    if (node.isolated || !force && !plain && (!payload || fieldName && !hasPath(fieldName.split('.'), payload))) {
       return;
     }
     node.callHook({

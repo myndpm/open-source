@@ -591,10 +591,8 @@ implements DynNode<TParams, TControl> {
       shareReplay(1),
     );
 
-    if (!this.isolated) {
-      // register the node with its parent
-      this.parent?.addChild(this);
-    }
+    // register the node with its parent for further setup
+    this.parent?.addChild(this);
   }
 
   setup(): void {
@@ -671,9 +669,7 @@ implements DynNode<TParams, TControl> {
 
   destroy(): void {
     // TODO test unload with routed forms
-    if (!this.isolated) {
-      this.parent?.removeChild(this);
-    }
+    this.parent?.removeChild(this);
 
     this._dynCmp = undefined;
     this._node?.destroy();
