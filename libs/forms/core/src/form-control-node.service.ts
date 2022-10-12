@@ -164,6 +164,7 @@ implements DynNode<TParams, TControl> {
       this._loadedParams$,
       ...this._children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.loaded$),
     ])),
+    takeUntil(this._unsubscribe$),
     map(([children, loadedComponent, loadedParams, ...childrenLoaded]) => {
       const isControl = this.instance === DynInstanceType.Control;
       const hasAllChildren = children === childrenLoaded.length;
@@ -189,6 +190,7 @@ implements DynNode<TParams, TControl> {
       this._loadedMatchers$,
       ...this.children.filter(({ dynId }) => isNotDynHidden(dynId!)).map(child => child.ready$),
     ])),
+    takeUntil(this._unsubscribe$),
     map(([loaded, loadedMatchers, ...childrenReady]) => {
       const allChildrenReady = childrenReady.every(Boolean);
       const ready: boolean = loaded && loadedMatchers && allChildrenReady;
