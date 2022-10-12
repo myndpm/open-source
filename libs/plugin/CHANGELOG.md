@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.1](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.0...@myndpm/nx@0.2.1) (2022-10-12)
+
+
+
 # [0.2.0](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.1.2...@myndpm/nx@0.2.0) (2022-10-07)
 
 
