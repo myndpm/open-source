@@ -39,6 +39,7 @@ export interface DynNode<
   invisible(): void;
   hidden(): void;
 
+  whenLoaded(): Observable<boolean>;
   whenReady(): Observable<boolean>;
   updateParams(params: Partial<TParams>, resetPrevious?: boolean): void;
   callHook(event: DynHook): void;

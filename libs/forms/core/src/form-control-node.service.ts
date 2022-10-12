@@ -3,7 +3,7 @@ import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject, Observable, Subject, combineLatest, isObservable, of } from 'rxjs';
-import { delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, first, map, scan, shareReplay, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynHook } from './types/events.types';
 import { DynConfigPrimitive, DynInstanceType, DynVisibility } from './types/forms.types';
@@ -231,6 +231,14 @@ implements DynNode<TParams, TControl> {
   /**
    * Feature methods
    */
+
+  whenLoaded(): Observable<boolean> {
+    return this.loaded$.pipe(
+      takeUntil(this._unsubscribe$),
+      filter<boolean>(Boolean),
+      first(),
+    );
+  }
 
   whenReady(): Observable<boolean> {
     return this.ready$.pipe(
@@ -621,8 +629,7 @@ implements DynNode<TParams, TControl> {
 
       if (this._topLevel && this._matchers?.length) {
         // process the stored matchers
-        this.loaded$.pipe(
-          take(1),
+        this.whenLoaded().pipe(
           switchMap(() => combineLatest(
             this._matchers!.map((config) => {
               const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));

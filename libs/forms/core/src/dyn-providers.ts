@@ -79,8 +79,7 @@ export const defaultAsyncValidators: DynAsyncValidator[] = [
     id: 'RELATED',
     fn: (node: DynNode, config: DynMatchRelation, validator: ValidatorFn = Validators.required) => {
       return (control: AbstractControl): Observable<ValidationErrors | null> => {
-        return node.root.loaded$.pipe(
-          first(Boolean),
+        return node.root.whenLoaded().pipe(
           switchMap(() => relatedConditionFn(config)(node)),
           map(hasMatch => hasMatch ? validator(control) : null),
           first(),
