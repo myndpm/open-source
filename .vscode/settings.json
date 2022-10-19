@@ -1,0 +1,4 @@
+{
+    "git.pullTags": false,
+    "git.autoStash": true
+}
