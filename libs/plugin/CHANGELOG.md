@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.3](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.2...@myndpm/nx@0.2.3) (2022-10-28)
+
+
+### Bug Fixes
+
+* **plugin:** remove default registry URL ([265141c](https://github.com/myndpm/open-source/commit/265141cbbb6cd8e12371f28ec3e9726b59a9a2d1))
+
+
+
 ## [0.2.2](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.1...@myndpm/nx@0.2.2) (2022-10-27)
 
 
