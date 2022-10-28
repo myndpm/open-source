@@ -66,6 +66,7 @@
       "executor": "./dist/plugin:deploy-npm",
       "options": {
         "copy": true,
+        "registry": "https://registry.npmjs.org",
         "outputTarget": "prebuild",
         "target": "build"
       }
