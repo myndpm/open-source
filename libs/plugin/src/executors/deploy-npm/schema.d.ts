@@ -28,7 +28,7 @@ export interface DeployNpmExecutorSchema {
    */
   tag?: string;
   /**
-   * NPM registry URL (Defaults to https://registry.npmjs.org).
+   * NPM registry URL (ie. https://registry.npmjs.org).
    */
   registry?: string;
   /**

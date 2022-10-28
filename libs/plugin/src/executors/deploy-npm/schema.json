@@ -37,8 +37,7 @@
     },
     "registry": {
       "type": "string",
-      "description": "NPM registry URL (Defaults to https://registry.npmjs.org).",
-      "default": "https://registry.npmjs.org"
+      "description": "NPM registry URL (ie. https://registry.npmjs.org)."
     },
     "access": {
       "type": "string",
