@@ -43,9 +43,9 @@ export default async function deployer(
     );
   }
 
-  if (options.copy && !options.dryRun) {
+  if (options.copy) {
     const libPath = getLibPath(context.root, buildOptions, targetDescription.project);
-    copyPackageVersion(libPath, outputPath);
+    copyPackageVersion(libPath, outputPath, options.dryRun);
   }
 
   await engine.run(outputPath, options);
