@@ -12,15 +12,15 @@ export function getLibPath(
   buildOptions: IBuildOptions,
   libName: string
 ): string {
-  if (!buildOptions.tsConfig || typeof buildOptions.tsConfig !== 'string') {
-    throw new Error(
-      `Cannot read the tsConfig path option of the library '${libName}' in the workspace`
-    );
+  if (buildOptions.project && typeof buildOptions.project === 'string') {
+    return path.dirname(path.join(projectRoot, buildOptions.project));
   }
-
-  const tsConfigPath = path.join(projectRoot, buildOptions.tsConfig);
-
-  return path.dirname(tsConfigPath);
+  if (buildOptions.tsConfig && typeof buildOptions.tsConfig === 'string') {
+    return path.dirname(path.join(projectRoot, buildOptions.tsConfig));
+  }
+  throw new Error(
+    `Cannot read the tsConfig path option of the library '${libName}' in the workspace`
+  );
 }
 
 export async function getLibOutputPath(
