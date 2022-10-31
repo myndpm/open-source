@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.5](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.4...@myndpm/nx@0.2.5) (2022-10-31)
+
+
+### Bug Fixes
+
+* **plugin:** better extraction of lib path from options ([93f175b](https://github.com/myndpm/open-source/commit/93f175be26af66a19e02ddfa92941f0d8df7b4a0))
+
+
+
 ## [0.2.4](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.3...@myndpm/nx@0.2.4) (2022-10-31)
 
 
