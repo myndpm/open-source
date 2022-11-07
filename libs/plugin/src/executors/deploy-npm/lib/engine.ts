@@ -37,7 +37,11 @@ export async function run(dir: string, options: DeployNpmExecutorSchema) {
       logger.info(stderr);
     }
   } catch (error) {
-    throw error;
+    if (options.exception) {
+      throw error;
+    } else {
+      logger.error(error);
+    }
   }
 }
 

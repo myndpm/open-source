@@ -52,6 +52,11 @@
       "type": "boolean",
       "description": "For testing: Run through without making any changes. Execute with --dry-run and nothing will happen.",
       "default": false
+    },
+    "exception": {
+      "type": "boolean",
+      "description": "Throw an exception if npm publish fails.",
+      "default": false
     }
   },
   "required": []

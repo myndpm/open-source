@@ -43,4 +43,8 @@ export interface DeployNpmExecutorSchema {
    * For testing: Run through without making any changes. Execute with --dry-run and nothing will happen.
    */
   dryRun?: boolean;
+  /**
+   * Throw an exception if npm publish fails.
+   */
+  exception?: boolean;
 }

@@ -7,7 +7,7 @@ export enum npmAccess {
 
 export type NpmPublishOptions = Pick<
   DeployNpmExecutorSchema,
-  'access' | 'tag' | 'otp' | 'dryRun'
+  'access' | 'tag' | 'otp' | 'dryRun' | 'exception'
 >;
 
 export const defaults: NpmPublishOptions = {
@@ -15,6 +15,7 @@ export const defaults: NpmPublishOptions = {
   access: npmAccess.public,
   otp: undefined,
   dryRun: false,
+  exception: false,
 };
 
 export function prepareOptions(
