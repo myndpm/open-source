@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.6](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.5...@myndpm/nx@0.2.6) (2022-11-07)
+
+
+### Bug Fixes
+
+* **plugin:** add option to handle exception on npm publish ([0ead211](https://github.com/myndpm/open-source/commit/0ead211a37d07c84a6fac6a646e9b241ba7a0e82))
+
+
+
 ## [0.2.5](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.4...@myndpm/nx@0.2.5) (2022-10-31)
 
 

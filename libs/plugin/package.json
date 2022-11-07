@@ -1,6 +1,6 @@
 {
   "name": "@myndpm/nx",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Plugin for Nx by Mynd",
   "main": "src/index.js",
   "generators": "./generators.json",
