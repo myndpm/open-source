@@ -43,6 +43,7 @@ export interface DynNode<
   whenReady(): Observable<boolean>;
   updateParams(params: Partial<TParams>, resetPrevious?: boolean): void;
   callHook(event: DynHook): void;
+  log(message: string, payload?: any): void;
 
   reset(value?: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): void;
   patchValue(value: any, options?: { onlySelf?: boolean; emitEvent?: boolean; }): Observable<void>;

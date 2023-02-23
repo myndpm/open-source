@@ -278,6 +278,10 @@ implements DynNode<TParams, TControl> {
     this._hook$.next(event);
   }
 
+  log(message: string, payload?: any): void {
+    this.logger.log(this, `'${this.path?.join('.')}' ${message} (${this.route.join('/')})`, payload);
+  }
+
   /**
    * Forms API
    */

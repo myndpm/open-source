@@ -30,10 +30,10 @@ export class DynLogDriver {
     @Inject(DYN_LOG_LEVEL) private level: DynLogLevel,
   ) {}
 
-  log(event: DynLog): any {
+  log(event: DynLog, force = false): any {
     // do not log anything on production
     // or below the configured limit
-    if (!isDevMode() || !(event.level & this.level)) {
+    if (!isDevMode() || (!force && !(event.level & this.level))) {
       return;
     }
 

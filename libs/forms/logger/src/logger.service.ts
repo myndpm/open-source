@@ -197,4 +197,13 @@ export class DynLogger {
       message: `'${path.join('.')}' untracked mode: '${mode}' (${route.join('/')})`
     });
   }
+
+  log({ deep }: DynNode, message: string, payload?: any): void {
+    this.driver.log({
+      deep,
+      message,
+      level: DynLogLevel.Runtime,
+      payload: payload && typeof payload === 'object' ? payload : JSON.stringify(payload),
+    }, true);
+  }
 }
