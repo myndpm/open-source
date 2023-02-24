@@ -645,7 +645,7 @@ implements DynNode<TParams, TControl> {
                 // build an array of observables to listen changes into
                 config.when
                   .map(condition => this.formHandlers.getCondition(condition)) // handler fn
-                  .map(fn => fn(this)) // condition observables
+                  .map(fn => fn(this, config.debug ?? false)) // condition observables
               ).pipe(
                 takeUntil(this._unsubscribe$),
                 map<any[], { hasMatch: boolean, results: any[] }>(results => ({
@@ -661,6 +661,7 @@ implements DynNode<TParams, TControl> {
                   // TODO config to run the matcher only if hasMatch? (unidirectional)
                   matchers.map(matcher => matcher({
                     node: this,
+                    debug: config.debug ?? false,
                     hasMatch: config.negate ? !hasMatch : hasMatch,
                     firstTime,
                     results,

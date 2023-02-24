@@ -109,7 +109,8 @@ export function simpleForm(
                 matchers: ['HIDE'],
                 when: [
                   { path: 'account', value: 'GUEST' },
-                ]
+                ],
+                debug: true
               },
             ],
             cssClass: 'col-sm-6 col-md-4',

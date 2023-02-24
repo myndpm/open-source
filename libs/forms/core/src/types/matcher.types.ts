@@ -11,6 +11,7 @@ export interface DynMatch {
   operator?: 'AND' | 'OR'; // triggers the matcher with all/one truthy condition
   when: Array<DynConfigProvider<DynConditionFn> | DynMatchCondition>;
   negate?: boolean; // negate the result of the conditions
+  debug?: boolean; // show debug output when the matcher is called
 }
 
 /**
@@ -37,6 +38,7 @@ export interface DynMatcherArgs {
   hasMatch: boolean;
   firstTime: boolean;
   results: any[];
+  debug?: boolean;
 };
 export type DynMatcherFn = (args: DynMatcherArgs) => void;
 export type DynMatcher = DynBaseHandler<DynMatcherFn>;
@@ -44,7 +46,7 @@ export type DynMatcher = DynBaseHandler<DynMatcherFn>;
 /**
  * condition handlers
  */
-export type DynConditionFn = (node: DynNode) => Observable<any>;
+export type DynConditionFn = (node: DynNode, debug?: boolean) => Observable<any>;
 export type DynCondition = DynBaseHandler<DynConditionFn>;
 
 /**

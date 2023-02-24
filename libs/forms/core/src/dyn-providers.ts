@@ -1,8 +1,8 @@
 import { Type } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { path as getPath } from 'ramda';
+import { difference, equals, path as getPath } from 'ramda';
 import { Observable, Subject, isObservable, of } from 'rxjs';
-import { filter, first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
+import { filter, first, map, mapTo, startWith, switchMap, tap } from 'rxjs/operators';
 import { AbstractDynWrapper, DynWrapperProvider } from './dyn-control-wrapper.class';
 import { AbstractDynControl, DynControlProvider } from './dyn-control.class';
 import {
@@ -142,7 +142,8 @@ export const defaultMatchers: DynMatcher[] = [
   {
     id: 'DISABLE',
     fn: (): DynMatcherFn => {
-      return ({ node, hasMatch }) => {
+      return ({ node, hasMatch, debug }) => {
+        if (debug) { node.log(`DISABLE matcher`, hasMatch); }
         hasMatch ? node.control.disable() : node.control.enable();
       }
     }
@@ -150,7 +151,8 @@ export const defaultMatchers: DynMatcher[] = [
   {
     id: 'ENABLE',
     fn: (): DynMatcherFn => {
-      return ({ node, hasMatch }) => {
+      return ({ node, hasMatch, debug }) => {
+        if (debug) { node.log(`ENABLE matcher`, hasMatch); }
         hasMatch ? node.control.enable() : node.control.disable();
       }
     }
@@ -158,7 +160,8 @@ export const defaultMatchers: DynMatcher[] = [
   {
     id: 'SHOW',
     fn: (): DynMatcherFn => {
-      return ({ node, hasMatch }) => {
+      return ({ node, hasMatch, debug }) => {
+        if (debug) { node.log(`SHOW matcher`, hasMatch); }
         hasMatch ? node.visible() : node.hidden();
       }
     }
@@ -166,7 +169,8 @@ export const defaultMatchers: DynMatcher[] = [
   {
     id: 'INVISIBLE',
     fn: (): DynMatcherFn => {
-      return ({ node, hasMatch }) => {
+      return ({ node, hasMatch, debug }) => {
+        if (debug) { node.log(`INVISIBLE matcher`, hasMatch); }
         hasMatch ? node.invisible() : node.visible();
       }
     }
@@ -174,7 +178,8 @@ export const defaultMatchers: DynMatcher[] = [
   {
     id: 'HIDE',
     fn: (): DynMatcherFn => {
-      return ({ node, hasMatch }) => {
+      return ({ node, hasMatch, debug }) => {
+        if (debug) { node.log(`HIDE matcher`, hasMatch); }
         hasMatch ? node.hidden() : node.visible();
       }
     }
@@ -347,7 +352,7 @@ export const defaultFunctions: DynFunction[] = [
  * Related Condition
  */
 function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): DynConditionFn {
-  return (node: DynNode) => {
+  return (node: DynNode, debug = false) => {
     const control = node.search(path);
     if (!control) {
       console.error(`Control '${path}' not found inside a Condition`)
@@ -357,6 +362,9 @@ function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): D
       // triggers with any valueChange
       return control.valueChanges.pipe(
         startWith(control.value),
+        tap(() => {
+          if (debug) { node.log(`debug condition`, { path, value: control.value }); }
+        }),
         mapTo(true),
       );
     }
@@ -368,9 +376,12 @@ function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): D
         : controlValue
       ),
       map(controlValue => {
+        if (debug) { node.log(`debug condition`, { path, value, controlValue }); }
         return Array.isArray(value)
-          ? value.includes(controlValue)
-          : value === controlValue;
+          ? Array.isArray(controlValue)
+            ? !Boolean(difference(value, controlValue).length) // value array is inside controlValue
+            : value.includes(controlValue)
+          : equals(value, controlValue);
       }),
       // negate the result if needed
       map(result => negate ? !result : result),
