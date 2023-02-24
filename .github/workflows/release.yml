@@ -23,7 +23,7 @@ jobs:
 
       - name: Yarn v1 cache
         id: yarn-cache-dir
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
         id: cache
