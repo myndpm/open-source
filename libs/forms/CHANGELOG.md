@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [12.8.0](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.6...@myndpm/dyn-forms@12.8.0) (2023-02-24)
+
+
+### Features
+
+* **forms:** debug logging in DEFAULT condition and some matchers ([8b6e8e9](https://github.com/myndpm/open-source/commit/8b6e8e9d283732e13e57f921f8b9faa25c7cfe42))
+* **forms:** force logging via DynNode.log ([048dd6e](https://github.com/myndpm/open-source/commit/048dd6ea1b0aee99187fe3d01d99fccd436b24a0))
+* **forms:** optional compareFn for DEFAULT condition ([37b190d](https://github.com/myndpm/open-source/commit/37b190d4bc8276fcc5f5f04a9ea20c482ae935e6))
+
+
+
 ## [12.7.6](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.5...@myndpm/dyn-forms@12.7.6) (2022-10-28)
 
 
