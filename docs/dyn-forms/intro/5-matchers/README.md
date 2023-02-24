@@ -14,7 +14,7 @@ To match a special requirement, we need to define one or more conditions, so whe
 
 ```typescript
 interface DynConditionFn {
-  (node: DynTreeNode): Observable<any>;
+  (node: DynTreeNode, debug?: boolean): Observable<any>;
 }
 ```
 
@@ -30,6 +30,18 @@ it streams a truthy value whenever the condition is fulfilled or not, for exampl
 
 we can join these conditions with the required operator (`AND | OR`) for our use-case, and then execute a specific `Matcher`.
 
+the `DEFAULT` condition receives these parameters to evaluate a specific sibling control:
+
+```typescript
+{
+  path: string; // query relative to the control with the matcher
+  field?: string; // field to process if the control value is an object
+  value?: DynConfigArgs;
+  compareFn?: (value: any, valueControl: any) => boolean;
+  negate?: boolean; // negate the result of the condition
+}
+```
+
 ## Matchers
 
 We define our requirement with the Matchers that we want to run when all or a single condition is satisfied:
@@ -39,8 +51,8 @@ match: [
   {
     matchers: ['DISABLE'], // one or more matchers
     when: [{
-      // the library provides a DEFAULT condition handler
-      // to process path, value and negation
+      // the library uses the DEFAULT handler
+      // if no condition id is passed in the config object
       path: 'other.field',
       value: 'expectedValue'
     }]
@@ -59,6 +71,7 @@ interface DynMatcherFn {
     hasMatch: boolean;
     firstTime: boolean;
     results: any[];
+    debug: boolean;
   }): void;
 }
 ```
@@ -69,12 +82,26 @@ For example the `DISABLE` matcher operates into the form control when the specif
 {
   id: 'DISABLE',
   fn: (): DynMatcherFn => {
-    return ({ node, hasMatch }) => {
+    return ({ node, hasMatch, debug }) => {
+      if (debug) { node.log(`HIDE matcher`, hasMatch); }
       hasMatch ? node.control.disable() : node.control.enable();
     }
   }
 },
 ```
+
+## Debugging
+
+We can debug what's going on inside the basic matchers by passing the flag into the config:
+
+```typescript
+match: [
+  {
+    matchers: [...],
+    debug: true,
+```
+
+There will be output in the console with the evaluated conditions and the result for the matcher.
 
 ## Conditional Validators
 

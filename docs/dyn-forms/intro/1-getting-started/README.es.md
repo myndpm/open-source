@@ -111,6 +111,31 @@ Puedes deducir qué pasa cuando el modo `display` sobreescribe los valores princ
 
 Puedes ver cómo funciona en el demo de [formulario dinámico simple](https://mynd.dev/demos/dyn-forms/simple-form).
 
+### Debugueando
+
+Podemos ver qué pasa denro de la libreria proveyendo `DYN_LOG_LEVEL` en el módulo que queremos revisar:
+
+```typescript
+import { DYN_LOG_LEVEL, DynLogLevel } from '@myndpm/dyn-forms/logger';
+
+  providers: [
+    {
+      provide: DYN_LOG_LEVEL,
+      useValue: DynLogLevel.All | DynLogLevel.Testing,
+    }
+  ]
+```
+
+y también podemos debuguear una sección específica de nuestro formulario deiniendo el nivel en la configuración:
+
+```typescript
+const config: DynFormConfig = {
+  debug: DynLogLevel.Runtime,
+  controls: [
+    createMatConfig('INPUT', {
+      debug: DynLogLevel.None,
+```
+
 ## A Continuación
 
 - Mira el código fuente del demo [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple).
