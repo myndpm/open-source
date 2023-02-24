@@ -351,7 +351,7 @@ export const defaultFunctions: DynFunction[] = [
 /**
  * Related Condition
  */
-function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): DynConditionFn {
+function relatedConditionFn({ path, value, field, compareFn, negate }: DynMatchRelation): DynConditionFn {
   return (node: DynNode, debug = false) => {
     const control = node.search(path);
     if (!control) {
@@ -371,17 +371,19 @@ function relatedConditionFn({ path, value, field, negate }: DynMatchRelation): D
     return control.valueChanges.pipe(
       startWith(control.value),
       // compare the configured value
-      map(controlValue => field && isPlainObject(controlValue)
-        ? getPath(field.split('.'), controlValue)
-        : controlValue
+      map(valueControl => field && isPlainObject(valueControl)
+        ? getPath(field.split('.'), valueControl)
+        : valueControl
       ),
-      map(controlValue => {
-        if (debug) { node.log(`debug condition`, { path, value, controlValue }); }
-        return Array.isArray(value)
-          ? Array.isArray(controlValue)
-            ? !Boolean(difference(value, controlValue).length) // value array is inside controlValue
-            : value.includes(controlValue)
-          : equals(value, controlValue);
+      map(valueControl => {
+        if (debug) { node.log(`debug condition`, { path, value, valueControl }); }
+        return compareFn
+          ? compareFn(value, valueControl)
+          : Array.isArray(value)
+            ? Array.isArray(valueControl)
+              ? !Boolean(difference(value, valueControl).length) // value array is inside valueControl
+              : value.includes(valueControl)
+            : equals(value, valueControl);
       }),
       // negate the result if needed
       map(result => negate ? !result : result),

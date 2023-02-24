@@ -21,6 +21,7 @@ export interface DynMatchRelation {
   path: string; // query relative to the control with the matcher
   field?: string; // field to process if the control value is an object
   value?: DynConfigArgs;
+  compareFn?: (value: any, valueControl: any) => boolean;
   negate?: boolean; // negate the result of the condition
 }
 
