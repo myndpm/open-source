@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [12.8.1](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.8.0...@myndpm/dyn-forms@12.8.1) (2023-02-25)
+
+
+### Bug Fixes
+
+* **forms:** coerce string configs to boolean values ([3d96e35](https://github.com/myndpm/open-source/commit/3d96e357c9ab69ca31fbb6cce9070e2fbdc57fac))
+
+
+
 # [12.8.0](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.7.6...@myndpm/dyn-forms@12.8.0) (2023-02-24)
 
 
