@@ -24,6 +24,7 @@ import {
   DynErrors,
   DynValidator,
 } from './types/validation.types';
+import { coerceBoolean } from './utils/config.utils';
 import { isPlainObject } from './utils/merge.util';
 
 /**
@@ -386,7 +387,7 @@ function relatedConditionFn({ path, value, field, compareFn, negate }: DynMatchR
             : equals(value, valueControl);
       }),
       // negate the result if needed
-      map(result => negate ? !result : result),
+      map(result => coerceBoolean(negate) ? !result : result),
     );
   }
 }

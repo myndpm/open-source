@@ -13,7 +13,7 @@ import { DynNode } from './types/node.types';
 import { DynFunctionFn, DynParams } from './types/params.types';
 import { DynConfigId, DynConfigMap, DynConfigProvider } from './types/provider.types';
 import { DynErrorHandlerFn, DynErrorMessage } from './types/validation.types';
-import { getWrapperId } from './utils/config.utils';
+import { coerceBoolean, getWrapperId } from './utils/config.utils';
 import { isNotDynHidden } from './utils/hidden.util';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
@@ -645,7 +645,7 @@ implements DynNode<TParams, TControl> {
                 // build an array of observables to listen changes into
                 config.when
                   .map(condition => this.formHandlers.getCondition(condition)) // handler fn
-                  .map(fn => fn(this, config.debug ?? false)) // condition observables
+                  .map(fn => fn(this, coerceBoolean(config.debug))) // condition observables
               ).pipe(
                 takeUntil(this._unsubscribe$),
                 map<any[], { hasMatch: boolean, results: any[] }>(results => ({
@@ -661,8 +661,8 @@ implements DynNode<TParams, TControl> {
                   // TODO config to run the matcher only if hasMatch? (unidirectional)
                   matchers.map(matcher => matcher({
                     node: this,
-                    debug: config.debug ?? false,
-                    hasMatch: config.negate ? !hasMatch : hasMatch,
+                    debug: coerceBoolean(config.debug),
+                    hasMatch: coerceBoolean(config.negate) ? !hasMatch : hasMatch,
                     firstTime,
                     results,
                   }));
