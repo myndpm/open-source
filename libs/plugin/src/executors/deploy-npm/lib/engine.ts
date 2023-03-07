@@ -40,7 +40,8 @@ export async function run(dir: string, options: DeployNpmExecutorSchema) {
     if (options.exception) {
       throw error;
     } else {
-      logger.error(error);
+      logger.error(`Exception while publishing to npm`);
+      logger.error(error.stderr || error);
     }
   }
 }
