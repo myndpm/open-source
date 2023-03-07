@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.7](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.6...@myndpm/nx@0.2.7) (2023-03-07)
+
+
+### Bug Fixes
+
+* **plugin:** show the stderr in the logs ([06ce0e5](https://github.com/myndpm/open-source/commit/06ce0e5c0534ec5fd5bdc5b92ab40553f5e0758e))
+
+
+
 ## [0.2.6](https://github.com/myndpm/open-source/compare/@myndpm/nx@0.2.5...@myndpm/nx@0.2.6) (2022-11-07)
 
 
