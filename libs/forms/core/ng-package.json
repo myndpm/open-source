@@ -6,7 +6,7 @@
     "umdModuleIds": {
       "fast-deep-equal": "equal",
       "is-callable": "isCallable",
-      "ramda": "ramda"
+      "ramda": "R"
     }
   }
 }
