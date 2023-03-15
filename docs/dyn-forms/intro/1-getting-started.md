@@ -4,7 +4,7 @@ Here you will find how to build Dynamic Forms for Angular.
 
 This library aims to be a quite *generic* and *lightweight* layer on the top of Angular's Reactive Forms to enable a declarative way to build our forms.
 
-It's able to build a functional form from a JSON object that could be stored in a database, or generated with some adapters or config files.
+It's able to build a functional form from a JSON object that can be imported from a config file, could be stored in a database, or generated with some adapters.
 
 ## Installation
 
@@ -36,9 +36,9 @@ import { DynFormsModule } from '@myndpm/dyn-forms';
 ```
 
 The library needs some Dynamic Controls to be provided,
-the core module doesn't provide any by default,
+and the core module doesn't provide any by default,
 so we will need to include a `ui-package` of our preference
-(or build our own module with our custom controls).
+or build our own module with our custom controls.
 
 ```typescript
 import { ReactiveFormsModule } from '@angular/forms';
@@ -84,33 +84,6 @@ const config: DynFormConfig = {
 }
 ```
 
-## Modes
-
-The vision of the library is also to reuse the form to display the data after it's edited; this is equivalent to say that the form have different modes like `edit` and `display` (for instance).
-
-The configuration is defined for a default mode, and we can override some values for a different mode. Let's consider a form to `edit` by default, and after it's submitted it changes to `display`. We could have this kind of control configuration:
-
-```typescript
-createMatConfig('INPUT', {
-  name: 'address',
-  params: {
-    label: 'What is your address'
-  },
-  modes: {
-    display: {
-      params: {
-        label: 'Your address is',
-        readonly: true,
-      }
-    }
-  }
-}),
-```
-
-Can you deduce what's going to happen then the `display` mode values override the main ones?
-
-You can check how it works in the [simple dynamic form](https://mynd.dev/demos/dyn-forms/simple-form) demo.
-
 ### Debugging
 
 We can see what's happening in the library internals by providing `DYN_LOG_LEVEL` into the module we want to check:
@@ -140,6 +113,6 @@ const config: DynFormConfig = {
 
 - Check the source code of the [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple) demo.
 - Read the release article at [dev.to/myndpm](https://dev.to/myndpm/a-new-approach-to-have-dynamic-forms-in-angular-5d11)
-- Look the [Dynamic Controls](/docs/dyn-forms/intro/dynamic-controls) sections to learn more about their configuration.
 - Share your experience and suggestions about this setup in [this GitHub thread](https://github.com/myndpm/open-source/discussions/26).
 - Join us on [Discord](https://discord.gg/XxEqkvzeXg).
+- Continue with the [Dynamic Controls](/docs/dyn-forms/intro/controls) docs to learn more about their configuration.

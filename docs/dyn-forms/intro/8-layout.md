@@ -46,3 +46,4 @@ Full example available at <https://mynd.dev/demos/dyn-forms/simple-form>.
 ## Next
 
 - How can we style the dynamic forms consistently? join [this discussion](https://github.com/myndpm/open-source/discussions/5).
+- Continue with the [Schematics](/docs/dyn-forms/intro/schematics) docs.

@@ -32,13 +32,37 @@ Validators are also referenced with an `id` connected with a (Async)Validator Fa
 ```typescript
 export interface DynValidator {
   id: string;
-  fn: (node: DynTreeNode, ...args: any[]) => ValidatorFn; // validator factory
+  fn: (node: DynNode, ...args: any[]) => ValidatorFn; // validator factory
 }
 ```
 
 ## Custom Validators
 
-As mentioned, all we need is to provide our `ValidatorFn` Factory with an id and a fn. So we can easily provide them in our module with `DynFormsModule.forFeature({ validators })`.
+All we need is to provide our `ValidatorFn` Factory with an id and a fn like:
+
+```typescript
+DynFormsModule.forFeature({
+  validators: [
+    {
+      id: 'MY_VALIDATOR',
+      fn: (node: DynNode, ...args: any[]) => {
+        return (control: AbstractControl<any, any>): ValidationErrors | null => {
+          ...
+        }
+      }
+    },
+  ],
+})
+```
+
+and consume it in our configuration:
+
+```typescript
+createMatConfig('INPUT', {
+  name: 'address',
+  validators: ['MY_VALIDATOR', ['MY_VALIDATOR', 2] ],
+}),
+```
 
 ## Async Validators
 
@@ -46,7 +70,7 @@ TODO: Reference an AsyncValidator example with a custom API call here.
 
 ## Error Messages
 
-After the validators are set, we will get an error object of the form:
+After the validators are set, we will get a `ValidationErrors` object like:
 
 ```javascript
 { required: true }
@@ -95,3 +119,4 @@ but the first handler returning a message will be taken, and you can provide you
 - Check the article about [Parametrized Validators](https://dev.to/myndpm/parametrized-validators-in-dynamic-forms-5emf) at dev.to/myndpm
 - Check the source code of the [demos](https://mynd.dev/demos) with already implemented validators.
 - Join the Validators discussion in [this GitHub thread](https://github.com/myndpm/open-source/discussions/2) if you have something to say.
+- Continue with the [Matchers](/docs/dyn-forms/intro/matchers) docs.

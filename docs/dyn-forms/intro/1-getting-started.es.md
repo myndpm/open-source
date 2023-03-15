@@ -4,7 +4,7 @@ Aquí encontrarás cómo construir Formularios Dinámicos en Angular.
 
 Esta librería pretende ser una capa muy *genérica* y *ligera* usando los Formularios Reactivos de Angular para habilitar una forma declarativa de construir nuestros formularios.
 
-Es capaz de crear un formulario funcional a partir de un objeto JSON que puede venir de la base de datos, o generado desde adaptadores o archivos de configuración.
+Es capaz de crear un formulario funcional a partir de un objeto JSON que puede importarse desde un archivo de configuración, venir de la base de datos, o generado desde adaptadores.
 
 ## Instalación
 

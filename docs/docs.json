@@ -19,26 +19,35 @@
       "es": "Primeros Pasos"
     },
     "content": {
-      "en": "dyn-forms/intro/1-getting-started/README.md",
-      "es": "dyn-forms/intro/1-getting-started/README.es.md"
+      "en": "dyn-forms/intro/1-getting-started.md",
+      "es": "dyn-forms/intro/1-getting-started.es.md"
     }
   },
-  "/docs/dyn-forms/intro/dynamic-controls": {
+  "/docs/dyn-forms/intro/controls": {
     "title": {
       "en": "Dynamic Controls",
       "es": "Controles Dinámicos"
     },
     "content": {
-      "en": "dyn-forms/intro/2-dynamic-controls/README.md"
+      "en": "dyn-forms/intro/2-controls.md"
     }
   },
-  "/docs/dyn-forms/intro/control-params": {
+  "/docs/dyn-forms/intro/params": {
     "title": {
-      "en": "Control Parameters",
-      "es": "Parámetros del Control"
+      "en": "Parameters",
+      "es": "Parámetros"
     },
     "content": {
-      "en": "dyn-forms/intro/3-control-params/README.md"
+      "en": "dyn-forms/intro/3-params.md"
+    }
+  },
+  "/docs/dyn-forms/intro/modes": {
+    "title": {
+      "en": "Modes",
+      "es": "Modos"
+    },
+    "content": {
+      "en": "dyn-forms/intro/3-modes.md"
     }
   },
   "/docs/dyn-forms/intro/validators": {
@@ -47,16 +56,34 @@
       "es": "Validadores"
     },
     "content": {
-      "en": "dyn-forms/intro/4-validators/README.md"
+      "en": "dyn-forms/intro/4-validators.md"
     }
   },
   "/docs/dyn-forms/intro/matchers": {
     "title": {
-      "en": "Matchers and Conditions",
-      "es": "Matchers y Condiciones"
+      "en": "Matchers",
+      "es": "Matchers"
     },
     "content": {
-      "en": "dyn-forms/intro/5-matchers/README.md"
+      "en": "dyn-forms/intro/5-matchers.md"
+    }
+  },
+  "/docs/dyn-forms/intro/conditions": {
+    "title": {
+      "en": "Conditions",
+      "es": "Condiciones"
+    },
+    "content": {
+      "en": "dyn-forms/intro/6-conditions.md"
+    }
+  },
+  "/docs/dyn-forms/intro/events": {
+    "title": {
+      "en": "Events",
+      "es": "Eventos"
+    },
+    "content": {
+      "en": "dyn-forms/intro/7-events.md"
     }
   },
   "/docs/dyn-forms/intro/layout": {
@@ -65,7 +92,7 @@
       "es": "Opciones de Layout"
     },
     "content": {
-      "en": "dyn-forms/intro/6-layout/README.md"
+      "en": "dyn-forms/intro/8-layout.md"
     }
   },
   "/docs/dyn-forms/intro/schematics": {
@@ -74,7 +101,7 @@
       "es": "Schematics"
     },
     "content": {
-      "en": "dyn-forms/intro/7-schematics/README.md"
+      "en": "dyn-forms/intro/9-schematics.md"
     }
   },
   "/docs/dyn-forms/ui": {

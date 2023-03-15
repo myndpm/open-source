@@ -37,4 +37,5 @@ We saved a lot of time with these ones :)
 
 ## Next
 
-- Learn about the [ui-packages](https://mynd.dev/docs/dyn-forms/ui).
+- Learn about the [ui-packages](/docs/dyn-forms/ui).
+- Check the [live examples](/docs/dyn-forms/examples).
