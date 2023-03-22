@@ -8,6 +8,7 @@ import { AbstractDynControl, DynControlProvider } from './dyn-control.class';
 import {
   DynCondition,
   DynConditionFn,
+  DynMatchCondition,
   DynMatcher,
   DynMatcherFn,
   DynMatchRelation,
@@ -241,6 +242,25 @@ export const defaultConditions: DynCondition[] = [
           map(({ payload }) => payload ?? {}),
         );
       }
+    },
+  },
+  {
+    id: 'MAP',
+    fn: ({ path, fn }: DynMatchCondition): DynConditionFn => {
+      return (node: DynNode, debug = false) => {
+        const control = node.search(path);
+        if (!control) {
+          console.error(`Control '${path}' not found inside a Condition`);
+          return of(true); // do not break AND matchers
+        }
+        return control.valueChanges.pipe(
+          startWith(control.value),
+          map((valueControl) => {
+            if (debug) { node.log('debug condition', { path, valueControl }); }
+            return fn(valueControl);
+          }),
+        );
+      };
     },
   },
 ].map(

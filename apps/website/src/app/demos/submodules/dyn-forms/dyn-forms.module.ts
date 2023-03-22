@@ -11,6 +11,7 @@ import { DYN_LOG_LEVEL, DynLogLevel } from '@myndpm/dyn-forms/logger';
 import { DynFormsMaterialModule } from '@myndpm/dyn-forms/ui-material';
 import { LayoutModule } from '../../../layout';
 import { BuilderComponent } from './components/builder/builder.component';
+import { ComboComponent } from './components/combo/combo.component';
 import { SimpleComponent } from './components/simple/simple.component';
 import { SingleComponent } from './components/single/single.component';
 import { SingleSuccessComponent } from './components/single/success.control/success.component';
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'builder',
     component: BuilderComponent,
+  },
+  {
+    path: 'combo-form',
+    component: ComboComponent,
   },
   {
     path: 'simple-form',
@@ -80,6 +85,7 @@ const routes: Routes = [
   ],
   declarations: [
     BuilderComponent,
+    ComboComponent,
     SimpleComponent,
     SingleComponent,
     SingleSuccessComponent,

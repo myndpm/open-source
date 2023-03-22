@@ -1,0 +1,30 @@
+<section class="container px-2">
+  <app-section-badges [badges]="badges"></app-section-badges>
+  <app-section-actions [actions]="actions"></app-section-actions>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h3>Combo Selectors Form</h3>
+
+    <dyn-form
+      [config]="config"
+      [form]="form"
+      [mode]="mode"
+    ></dyn-form>
+
+    <div class="form-actions" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button type="submit" mat-raised-button color="primary" *ngIf="mode === 'edit'">
+          Submit
+        </button>
+
+        <button type="button" mat-raised-button color="accent" *ngIf="mode === 'edit'" (click)="onCancel()">
+          Cancel
+        </button>
+
+        <button type="button" mat-raised-button color="accent" *ngIf="mode !== 'edit'" (click)="onEdit()">
+          Edit
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

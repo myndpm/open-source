@@ -19,6 +19,11 @@ export class IndexComponent {
       description: 'Simple dyn-forms demo with display mode.',
     },
     {
+      title: 'Combo Selectors Form',
+      link: './dyn-forms/combo-form',
+      description: 'Demo of selector updated with another selection.',
+    },
+    {
       title: 'Dynamic Stepper Form',
       link: './dyn-forms/stepper-form',
       description: 'Demo of dyn-forms under different router-outlets.',
