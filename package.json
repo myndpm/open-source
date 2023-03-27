@@ -42,7 +42,7 @@
     "help": "nx help",
     "nx": "nx",
     "prepare": "husky install",
-    "postinstall": "yarn clean:rxjs && nx build utils --skip-nx-cache && yarn install --ignore-scripts && yarn clean:rxjs && nx build plugin && node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package",
+    "postinstall": "yarn clean:rxjs && nx build utils --skip-nx-cache && yarn install --ignore-scripts && yarn clean:rxjs && nx build plugin --skip-nx-cache && node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package",
     "clean:rxjs": "rimraf libs/tools/pug2html/node_modules/rxjs libs/tools/stylus2scss/node_modules/rxjs dist/libs/utils/node_modules/rxjs dist/libs/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
   },
   "dependencies": {
