@@ -250,7 +250,7 @@ export const defaultConditions: DynCondition[] = [
       return (node: DynNode, debug = false) => {
         const control = node.search(path);
         if (!control) {
-          console.error(`Control '${path}' not found inside a Condition`);
+          console.error(`Control '${path}' not found inside MAP Condition`);
           return of(true); // do not break AND matchers
         }
         return control.valueChanges.pipe(
@@ -352,7 +352,7 @@ export const defaultFunctions: DynFunction[] = [
     fn: (): DynFunctionFn<string> => {
       return (node: DynNode) => {
         const value = node.control.value;
-        const option = node.params.options.find((o: any) => o.value === value);
+        const option = node.params.options.find((o: any) => o.key === value);
         return value && option ? option.value : value;
       }
     },
