@@ -268,6 +268,12 @@ implements DynNode<TParams, TControl> {
       ? mergeUtil(true, this._paramsUpdates$.value, params)
       : params
     );
+
+    this.children.map(child => {
+      if (this._node.equivalent(child.path)) {
+        child.updateParams(params, resetPrevious);
+      }
+    });
   }
 
   // let the ControlNode know of an incoming hook

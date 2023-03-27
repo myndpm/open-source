@@ -1,5 +1,8 @@
 import { DynFormConfig } from '@myndpm/dyn-forms';
+import { DynNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ComboService } from './combo.service';
 
 export function comboForm(
@@ -21,7 +24,6 @@ export function comboForm(
           createMatConfig('SELECT', {
             name: 'country',
             validators: ['required'],
-            cssClass: 'col-sm-6 col-md-4',
             params: {
               label: 'Country',
               options: comboService.getCountries(),
@@ -31,7 +33,6 @@ export function comboForm(
           createMatConfig('SELECT', {
             name: 'city',
             validators: ['required'],
-            cssClass: 'col-sm-6 col-md-4',
             params: { label: 'City' },
             paramFns: { getValue: 'getOptionText' },
             match: [
@@ -43,12 +44,41 @@ export function comboForm(
                     path: 'country',
                     fn: (country?: string) => ({
                       options: comboService.getCities(country)
-                    }),
-                    debug: true
+                    })
                   },
+                ],
+                debug: true,
+              },
+            ],
+          }),
+          createMatConfig('SELECT', {
+            name: 'summary',
+            params: {
+              label: 'Summary',
+              readonly: true,
+            },
+            match: [
+              {
+                matchers: ['PARAMS'],
+                when: [
+                  (node: DynNode) => combineLatest([
+                    node.valueChanges('country'),
+                    node.valueChanges('city'),
+                  ]).pipe(
+                    map(([country, city]) => {
+                      const value = `${country}${city ? ` - ${city}` : ''}`;
+                      node.patchValue(value);
+                      return {
+                        options: [{ value, key: value }]
+                      };
+                    }),
+                  ),
                 ],
               },
             ],
+            modes: {
+              edit: { params: { readonly: true } },
+            }
           }),
         ],
       }),
