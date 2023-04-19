@@ -106,6 +106,16 @@ export const defaultMatchers: DynMatcher[] = [
     }
   },
   {
+    id: 'SETVALUE',
+    fn: (value: any, options?: { emitEvent?: boolean }): DynMatcherFn => {
+      return ({ node, hasMatch }) => {
+        if (hasMatch) {
+          node.control.setValue(value, options);
+        }
+      }
+    }
+  },
+  {
     id: 'UPDATEDBY',
     fn: (): DynMatcherFn => {
       return ({ node, firstTime }) => {
