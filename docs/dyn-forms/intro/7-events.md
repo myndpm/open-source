@@ -52,4 +52,4 @@ createMatConfig('TABLE', {
 ## Next
 
 - Check the source code of the [table demo](https://mynd.dev/demos/dyn-forms/simple-form) with the `TABLE` control.
-- Continue with the [Layout Options](/docs/dyn-forms/intro/layout) docs.
+- Continue with the [Debugging Options](/docs/dyn-forms/intro/debugging) docs.

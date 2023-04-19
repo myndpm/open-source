@@ -70,19 +70,6 @@ For example the `DISABLE` matcher operates into the form control when the specif
 },
 ```
 
-## Debugging
-
-We can debug what's going on inside the basic matchers by passing the flag into the config:
-
-```typescript
-match: [
-  {
-    matchers: [...],
-    debug: true,
-```
-
-There will be output in the console with the evaluated conditions and the result for the matcher (when it implements the `debug` arg).
-
 ## Conditional Validators
 
 We have a AsyncValidator ready to be configured to conditionally validate a field depending on other control: `RELATED`. The [config-builder demo](https://mynd.dev/demos/dyn-forms/builder) uses it like this:
