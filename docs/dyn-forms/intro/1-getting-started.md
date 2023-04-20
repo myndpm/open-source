@@ -84,31 +84,6 @@ const config: DynFormConfig = {
 }
 ```
 
-### Debugging
-
-We can see what's happening in the library internals by providing `DYN_LOG_LEVEL` into the module we want to check:
-
-```typescript
-import { DYN_LOG_LEVEL, DynLogLevel } from '@myndpm/dyn-forms/logger';
-
-  providers: [
-    {
-      provide: DYN_LOG_LEVEL,
-      useValue: DynLogLevel.All | DynLogLevel.Testing,
-    }
-  ]
-```
-
-we are also able to debug a specific section of our form by defining the level in the configuration:
-
-```typescript
-const config: DynFormConfig = {
-  debug: DynLogLevel.Runtime,
-  controls: [
-    createMatConfig('INPUT', {
-      debug: DynLogLevel.None,
-```
-
 ## Next
 
 - Check the source code of the [simple-form](https://github.com/myndpm/open-source/tree/master/apps/website/src/app/demos/submodules/dyn-forms/components/simple) demo.

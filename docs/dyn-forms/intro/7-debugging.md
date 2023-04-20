@@ -1,6 +1,7 @@
 # Debugging (Draft)
 
 There's a built-in logger at `@myndpm/dyn-forms/logger` which offers different log levels to output in the console.
+With this information we can know if the configuration is getting stuck at somepoint, or get specific support.
 
 The levels are in the `DynLogLevel` enum as follows:
 
@@ -73,4 +74,5 @@ return ({ node, hasMatch, debug }) => {
 
 ## Next
 
+- Get support at [GitHub Discussions](https://github.com/myndpm/open-source/discussions/categories/support)
 - Continue with the [Layout Options](/docs/dyn-forms/intro/layout) docs.
