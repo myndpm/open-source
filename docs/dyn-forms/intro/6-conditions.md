@@ -35,7 +35,7 @@ when: [ ['MODE', 'edit'] ]
 // truthy when we receive the AddItem hook
 when: [ ['HOOK', 'AddItem'] ]
 
-// truthy when city control is 'New York'
+// truthy when city control is 'New York' (DEFAULT condition)
 when: [
   {
     path: 'city',
@@ -54,10 +54,12 @@ when: [
 
 ## DEFAULT Condition
 
-The `DEFAULT` condition takes care of listening the value of a specific control and compare it to a expected one. It receives these parameters to evaluate a specific sibling control:
+Id there's no custom `condition` specified, the `DEFAULT` condition takes care
+of listening the value of a specific control and compare it to a expected value.
+It receives these parameters to evaluate a specific sibling control:
 
 ```typescript
-{
+interface DynMatchRelation {
   path: string; // query relative to the control with the matcher
   field?: string; // field to process if the control value is an object
   value?: DynConfigArgs;
@@ -66,7 +68,15 @@ The `DEFAULT` condition takes care of listening the value of a specific control 
 }
 ```
 
-Let's suppose we want to `DISABLE` a control when `other.field` has a expected value, when we configure it like this:
+The criteria of this condition is as follows:
+
+* if `compareFn` is provided it is used first
+* if the configured `value` is an array
+  * if the control value is an array it should contain the configured values (intersection)
+  * if the control has a plain value it should be in the configured array
+* if the configured `value` is plain it should be exactly equal to the control value
+
+Let's suppose we want to `DISABLE` a control when `other.field` has a expected value, then we configure it like this:
 
 ```typescript
 match: [
@@ -82,7 +92,7 @@ match: [
 ]
 ```
 
-or if our control is a Multiselect we can expect an `Array` of values to be present in the `other.field` value:
+or if our control is a MultiSelect we can expect an `Array` of values to be present in the `user.roles` value:
 
 ```typescript
 match: [
@@ -91,7 +101,7 @@ match: [
     when: [
       {
         path: 'user.roles',
-        value: ['admin', 'editor', 'guest'] // intersects
+        value: ['admin', 'editor'] // intersects
       }
     ]
   },
@@ -106,6 +116,8 @@ match: [
   }
 ]
 ```
+
+with this config a control will be shown if the selected roles includes all the configured values (`admin` and `editor`), and also will be disabled if `guest` is included in the list of `user.roles`.
 
 ## Next
 

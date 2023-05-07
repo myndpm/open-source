@@ -1,15 +1,11 @@
 # Matchers (Draft)
 
-Here we will learn how to execute *Matchers* depending on some given *Conditions*.
+*Matchers* execute a behavior depending on some configured *Conditions*,
+like hiding a control when another one has a specific value,
+or a custom business condition triggering some form updates.
 
-In complex forms use-cases, some controls directly depend on the value or status of some other form control. Then we implement custom behaviors, like `hiding` a field when another control has some value, or `disabling` it depending on a complex condition, etc.
-
-## Definition
-
-A *Matcher* is a task that is executed when a given set of *Conditions* are fulfilled.
-They are able to manipulate the form hierarchy via the `DynNode` service attached to each control.
-
-The `DynMatcherFn` function receives this set of parameters:
+A matcher is a task that is executed when a given set of Conditions are fulfilled.
+They are basically functions (`DynMatcherFn`) that receives this set of parameters:
 
 ```typescript
 interface DynMatcherFn {
@@ -23,40 +19,13 @@ interface DynMatcherFn {
 }
 ```
 
-and can be configured for each control as follows:
-
-```typescript
-createMatConfig('INPUT', {
-  name: 'firstName',
-  match: [
-    {
-      matchers: [(args: DynMatcherArgs) => {}]
-      when: ...
-    }
-  ]
-```
-
-with these posible conditions:
-
-```typescript
-export interface DynMatch {
-    matchers: DynConfigProvider<DynMatcherFn>[];
-    operator?: 'AND' | 'OR';
-    when: Array<DynConfigProvider<DynConditionFn> | DynMatchCondition>;
-    negate?: boolean;
-    debug?: boolean;
-}
-```
-
-which means that we trigger the task inside the *Matcher* `when` a set of *Conditions* are fulfilled (all of them `AND` or just one at once `OR`).
-
-When we want to do something only when the conditions are `NOT` fulfilled, we can `negate` the result of the conditions; this is also useful when it's easier to define the opposite case in the configuration.
+They are able to manipulate the form hierarchy via the `DynNode` service attached to each control.
 
 ## Built-in Matchers
 
 The matchers included in the library are `DISABLE`, `ENABLE`, `SHOW`, `HIDE` (display: none), `INVISIBLE` (visibility: hidden), `VALIDATE`, `UPDATEDBY` (detect changes) and `PARAMS` (to update the control parameters with the result of the conditions).
 
-For example the `DISABLE` matcher operates into the form control when the specified conditions are fulfilled (has match):
+For example, the `DISABLE` matcher operates into the form control when the specified conditions are fulfilled (has match):
 
 ```typescript
 {
@@ -69,6 +38,63 @@ For example the `DISABLE` matcher operates into the form control when the specif
   }
 },
 ```
+
+## Configuration
+
+We trigger a task inside the Matcher `when` all (`AND`) or some (`OR`) the *Conditions* are truthy:
+
+```typescript
+export interface DynMatch {
+    matchers: DynConfigProvider<DynMatcherFn>[];
+    operator?: 'AND' | 'OR';
+    when: Array<DynConfigProvider<DynConditionFn> | DynMatchCondition>;
+    negate?: boolean;
+    debug?: boolean;
+}
+```
+
+like the following configuration:
+
+```typescript
+createMatConfig('INPUT', {
+  name: 'zipCode',
+  match: [
+    {
+      matchers: ['SHOW']
+      when: [
+        {
+          path: 'city',
+          value: 'New York'
+        }
+      ]
+    }
+  ]
+```
+
+## Negation
+
+When we want to do something only when the conditions are `NOT` fulfilled, we can `negate` the result of the conditions, or just one of them; this is also useful when it's easier to define the opposite case in the configuration.
+
+For example, sometimes we don't have a complete list of the values to trigger a Matcher but we know the ones that should not trigger it. So we can negate the single condition or use the opposite Matcher (like show/hide, enable/disable).
+
+```typescript
+createMatConfig('INPUT', {
+  name: 'zipCode',
+  match: [
+    {
+      matchers: ['HIDE']
+      when: [
+        {
+          path: 'city',
+          value: ['New York', 'Medellin'],
+          negate: true
+        }
+      ]
+    }
+  ]
+```
+
+Note that the `DEFAULT` condition operates arrays values, from the configuration and the control, explained in the *Conditions* section.
 
 ## Conditional Validators
 
