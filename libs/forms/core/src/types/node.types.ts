@@ -54,6 +54,8 @@ export interface DynNode<
   track(defaultMode?: string): Observable<void>;
   untrack(mode?: string): void;
 
+  findById(dynId: string): DynNode|undefined;
+  findByPath(dynId: string): DynNode|undefined;
   search(path: string): AbstractControl|undefined;
   searchUp(path: string, searchDown?: boolean): AbstractControl|undefined;
   searchDown(path: string): AbstractControl|undefined;

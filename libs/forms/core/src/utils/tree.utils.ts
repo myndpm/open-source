@@ -23,7 +23,7 @@ export function callHooks(
   });
 }
 
-/** Algorith to search in a tree by name */
+/** Algorithm to search in a tree by name */
 export function searchNode<T>(
   node: DynTree<T>,
   path: string,
@@ -49,6 +49,29 @@ export function searchNode<T>(
   let result: T|undefined = undefined;
   node.children?.some(child => {
     result = searchNode(child, selector);
+    return result ? true : false; // keep the first match
+  });
+
+  return result;
+}
+
+/** Algorithm to search in a tree by id */
+export function searchNodeById<T>(
+  node: DynTree<T>,
+  dynId: string,
+): T|undefined {
+  if (node.detached) {
+    return undefined; // exclude leaf
+  }
+
+  if (node.dynId === dynId) {
+    return node;
+  }
+
+  // propagate the query to the children
+  let result: T|undefined = undefined;
+  node.children?.some(child => {
+    result = searchNodeById(child, dynId);
     return result ? true : false; // keep the first match
   });
 

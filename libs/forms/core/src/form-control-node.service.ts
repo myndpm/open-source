@@ -17,7 +17,7 @@ import { coerceBoolean, getWrapperId } from './utils/config.utils';
 import { isNotDynHidden } from './utils/hidden.util';
 import { merge as mergeUtil } from './utils/merge.util';
 import { onComplete } from './utils/rxjs.utils';
-import { searchNode } from './utils/tree.utils';
+import { searchNode, searchNodeById } from './utils/tree.utils';
 import { AbstractDynControl } from './dyn-control.class';
 import { DynFormNode, DynFormNodeLoad } from './dyn-form-node.class';
 import { DynFormFactory } from './form-factory.service';
@@ -368,6 +368,17 @@ implements DynNode<TParams, TControl> {
       this.patchValue(this._snapshots.get(mode));
     }
     this._snapshots.clear();
+  }
+
+  /**
+   * Node querying
+   */
+  findById(dynId: string): DynNode|undefined {
+    return searchNodeById(this as DynNode, dynId);
+  }
+
+  findByPath(dynId: string): DynNode|undefined {
+    return searchNode(this as DynNode, dynId);
   }
 
   /**
