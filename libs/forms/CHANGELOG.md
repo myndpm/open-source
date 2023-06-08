@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [12.10.0](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.9.0...@myndpm/dyn-forms@12.10.0) (2023-06-07)
+
+
+### Features
+
+* **forms:** add DynNode findById and findByPath methods ([604f60b](https://github.com/myndpm/open-source/commit/604f60b1edc86f32ff44d678979ad94a0c021ceb))
+
+### Bug Fixes
+
+* **forms:** log exception when matcher do not have conditions ([64c6c05](https://github.com/myndpm/open-source/commit/64c6c0528ab4e97cfc71131d1b280e3a88dedf0c))
+
+
+
+## [12.9.0](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.8.1...@myndpm/dyn-forms@12.9.0) (2023-04-18)
+
+
+### Features
+
+* **forms:** add SETVALUE matcher ([a3290b8](https://github.com/myndpm/open-source/commit/a3290b8308f8ba53acd57afea13dc7c22ce280f1))
+
+
+
 ## [12.8.1](https://github.com/myndpm/open-source/compare/@myndpm/dyn-forms@12.8.0...@myndpm/dyn-forms@12.8.1) (2023-02-25)
 
 
