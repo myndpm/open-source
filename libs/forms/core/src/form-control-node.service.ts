@@ -647,6 +647,10 @@ implements DynNode<TParams, TControl> {
               const matchers = config.matchers.map(matcher => this.formHandlers.getMatcher(matcher));
               let count = 0;
 
+              if (!config.when?.length) {
+                throw this.logger.controlMatcherWhen(this);
+              }
+
               return combineLatest(
                 // build an array of observables to listen changes into
                 config.when

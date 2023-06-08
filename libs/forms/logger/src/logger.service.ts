@@ -131,6 +131,14 @@ export class DynLogger {
     });
   }
 
+  controlMatcherWhen({ deep, path, route }: DynNode): Error {
+    return this.driver.log({
+      deep,
+      level: DynLogLevel.Fatal,
+      message: `[dyn-config] '${path.join('.')}' missing 'when' conditions in a matcher (${route.join('/')})`
+    });
+  }
+
   controlInitializing({ deep }: DynNode, payload: any): void {
     this.driver.log({
       deep,
