@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlConfig } from './types/control.types';
 import { DynMode, DynModes } from './types/mode.types';
+import { DynParams } from './types/params.types';
 import { merge } from './utils/merge.util';
 import { DynControlNode } from './form-control-node.service';
 import { DYN_MODE_DEFAULTS } from './form.tokens';
@@ -97,7 +98,7 @@ export class DynFormResolver {
         config.params = config.params.pipe(
           map(params => merge(params, mode.params))
         );
-      } else if (isObservable(mode.params)) {
+      } else if (isObservable<DynParams>(mode.params)) {
         const params = config.params;
         config.params = mode.params.pipe(
           map(modeParams => merge(params, modeParams))
