@@ -13,7 +13,6 @@ import { DynFactoryDirective, DynFormComponent, DynGroupComponent } from './comp
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
   declarations: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
-  entryComponents: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
   exports: [DynFactoryDirective, DynFormComponent, DynGroupComponent],
   providers: [
     {

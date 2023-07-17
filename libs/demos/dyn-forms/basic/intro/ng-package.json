@@ -2,10 +2,6 @@
   "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../../../../dist/libs/demos/dyn-forms",
   "lib": {
-    "entryFile": "./index.ts",
-    "umdModuleIds": {
-      "@myndpm/dyn-forms": "myndpm.dyn-forms",
-      "@myndpm/dyn-forms/ui-material": "myndpm.dyn-forms.ui-material"
-    }
+    "entryFile": "./index.ts"
   }
 }

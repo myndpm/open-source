@@ -64,22 +64,6 @@ import {
     DynMatTableComponent,
     DynMatTableRowComponent,
   ],
-  // FIXME added for Stackblitz
-  entryComponents: [
-    DynMatFormFieldWrapper,
-    DynMatArrayComponent,
-    DynMatCardComponent,
-    DynMatCheckboxComponent,
-    DynMatContainerComponent,
-    DynMatDatepickerComponent,
-    DynMatDividerComponent,
-    DynMatInputComponent,
-    DynMatMulticheckboxComponent,
-    DynMatRadioComponent,
-    DynMatSelectComponent,
-    DynMatTableComponent,
-    DynMatTableRowComponent,
-  ],
   exports: [
     // reduce the boilerplate
     DynFormsModule,

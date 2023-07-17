@@ -1,5 +1,5 @@
-@use '~@angular/material' as mat;
-@use '~@angular/material/core/theming/palette' as palette;
+@use '@angular/material' as mat;
+@use '@angular/material/core/theming/palette' as palette;
 
 $dark-primary-text: rgba(black, 0.95);
 $light-primary-text: white;
