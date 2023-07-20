@@ -11,7 +11,7 @@ import {
   SimpleChanges,
   Type,
 } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, scan, startWith, takeUntil } from 'rxjs/operators';
@@ -40,7 +40,7 @@ export abstract class DynControl<
   TMode extends DynMode = DynMode,
   TParams extends DynParams = DynParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>,
-  TControl extends AbstractControl = FormGroup // friendlier and most-common default
+  TControl extends AbstractControl = UntypedFormGroup // friendlier and most-common default
 >
 extends DynControlBase<TParams, TControl>
 implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
@@ -61,7 +61,7 @@ implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
   get control(): TControl { // built from the config in the DynControlNode
     return this.node.control;
   }
-  get parentControl(): FormGroup { // can be used with [formGroup]="parentControl"
+  get parentControl(): UntypedFormGroup { // can be used with [formGroup]="parentControl"
     return this.node.parent.control;
   }
 

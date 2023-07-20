@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { comboForm } from './combo.form';
@@ -34,7 +34,7 @@ export class ComboComponent implements AfterViewInit, OnDestroy {
 
   // dyn-form inputs
   config = comboForm(this.comboService);
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   mode = 'edit';
 
   @ViewChild(DynFormComponent, { static: true })

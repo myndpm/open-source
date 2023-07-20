@@ -12,5 +12,5 @@
     "strictTemplates": true
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "jest.config.ts"]
 }

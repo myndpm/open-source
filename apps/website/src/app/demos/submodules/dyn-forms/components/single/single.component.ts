@@ -5,7 +5,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { actions, badges } from '../../constants/dyn-forms.links';
 import { singleForm } from './single.form';
@@ -31,7 +31,7 @@ export class SingleComponent implements OnDestroy {
 
   // dyn-form inputs
   config = singleForm();
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   mode = 'form';
 
   @ViewChild(DynFormComponent, { static: true })

@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional, SkipSelf, Type } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup, ValidationErrors } from '@angular/forms';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { BehaviorSubject, Observable, Subject, combineLatest, isObservable, of } from 'rxjs';
@@ -29,7 +29,7 @@ import { DYN_MODE } from './form.tokens';
 // and the abstract DynForm* classes
 export class DynControlNode<
   TParams extends DynParams = DynParams,
-  TControl extends AbstractControl = FormGroup,
+  TControl extends AbstractControl = UntypedFormGroup,
   TComponent extends AbstractDynControl = any,
 >
 implements DynNode<TParams, TControl> {

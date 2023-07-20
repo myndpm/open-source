@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import { DynConfig } from './types/config.types';
 import { DynHook } from './types/events.types';
 import { DynInstanceType } from './types/forms.types';
@@ -13,7 +13,7 @@ export abstract class DynFormArray<
   TParams extends DynParams = DynParams,
   TConfig extends DynConfig<TMode, TParams> = DynConfig<TMode, TParams>
 >
-extends DynControl<TMode, TParams, TConfig, FormArray>
+extends DynControl<TMode, TParams, TConfig, UntypedFormArray>
 implements OnInit {
 
   static dynInstance = DynInstanceType.Array;

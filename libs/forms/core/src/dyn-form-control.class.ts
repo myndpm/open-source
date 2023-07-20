@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynConfig } from './types/config.types';
@@ -17,7 +17,7 @@ export abstract class DynFormControl<
   TParams extends DynParams = DynParams,
   TConfig extends DynConfig<TMode, TParams> = DynConfig<TMode, TParams>
 >
-extends DynControl<TMode, TParams, TConfig, FormControl>
+extends DynControl<TMode, TParams, TConfig, UntypedFormControl>
 implements OnInit {
 
   static dynInstance = DynInstanceType.Control;

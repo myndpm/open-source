@@ -1,6 +1,6 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/forms",
   "sourceRoot": "libs/forms/src",
   "prefix": "dyn",
   "targets": {
@@ -41,7 +41,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/forms"],
       "options": {
-        "jestConfig": "libs/forms/jest.config.js",
+        "jestConfig": "libs/forms/jest.config.ts",
         "passWithNoTests": true
       }
     },

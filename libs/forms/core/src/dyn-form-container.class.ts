@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynBaseConfig } from './types/config.types';
 import { DynInstanceType } from './types/forms.types';
 import { DynMode } from './types/mode.types';
@@ -12,7 +12,7 @@ export abstract class DynFormContainer<
   TParams extends DynParams = DynParams,
   TConfig extends DynBaseConfig<TMode, TParams> = DynBaseConfig<TMode, TParams>
 >
-extends DynControl<TMode, TParams, TConfig, FormGroup>
+extends DynControl<TMode, TParams, TConfig, UntypedFormGroup>
 implements OnInit {
 
   static dynInstance = DynInstanceType.Container;

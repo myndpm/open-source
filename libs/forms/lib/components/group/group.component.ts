@@ -8,7 +8,7 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import {
   DYN_MODE,
   DYN_MODE_CHILD,
@@ -36,10 +36,10 @@ import { distinctUntilChanged, filter, map, shareReplay, tap } from 'rxjs/operat
 /**
  * This component just wraps the incoming controls in a FormGroup.
  */
-export class DynGroupComponent extends DynControlBase<any, FormGroup> implements OnInit, AfterViewInit {
+export class DynGroupComponent extends DynControlBase<any, UntypedFormGroup> implements OnInit, AfterViewInit {
   @Input() isolated = false;
   @Input() name?: string;
-  @Input() customGroup?: FormGroup;
+  @Input() customGroup?: UntypedFormGroup;
   @Input() controls?: DynBaseConfig[];
   @Input() modes?: DynModes;
 

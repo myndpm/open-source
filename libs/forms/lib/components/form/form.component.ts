@@ -17,7 +17,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import {
   DYN_MODE,
   DYN_MODE_DEFAULTS,
@@ -51,7 +51,7 @@ import { DynFormConfig } from './form.config';
 })
 export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() isolated = false;
-  @Input() form!: FormGroup;
+  @Input() form!: UntypedFormGroup;
   @Input() config?: DynFormConfig;
   @Input() mode?: DynMode;
 
@@ -106,7 +106,7 @@ export class DynFormComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       this.form = this.node.parent.control;
     } else {
       // incoming form is mandatory
-      if (!(this.form instanceof FormGroup)) {
+      if (!(this.form instanceof UntypedFormGroup)) {
         throw this.logger.rootForm();
       }
     }

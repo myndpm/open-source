@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'forms',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/index.tests.ts'],

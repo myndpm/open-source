@@ -17,7 +17,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "strict": true
+    "strict": true,
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "strictMetadataEmit": true,

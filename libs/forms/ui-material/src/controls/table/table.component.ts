@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynConfig, DynFormArray, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { filter, first, takeUntil } from 'rxjs/operators';
 
@@ -26,8 +26,8 @@ implements OnInit {
     };
   }
 
-  get items(): FormGroup[] {
-    return this.control.controls as FormGroup[];
+  get items(): UntypedFormGroup[] {
+    return this.control.controls as UntypedFormGroup[];
   }
 
   itemIndexForEditing?: number;
@@ -122,7 +122,7 @@ implements OnInit {
     this.removeItem(payload.index, payload.doConfirm);
   }
 
-  trackBy = (index: number, { value }: FormGroup): string => {
+  trackBy = (index: number, { value }: UntypedFormGroup): string => {
     return `${index}-${this.params.trackBy ? value[this.params.trackBy] : JSON.stringify(value)}`;
   }
 

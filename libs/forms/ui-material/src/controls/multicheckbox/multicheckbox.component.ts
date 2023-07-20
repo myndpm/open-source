@@ -3,7 +3,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
   DynConfig,
   DynFormControl,
@@ -26,7 +26,7 @@ implements OnInit {
 
   static dynControl: 'MULTICHECK' = 'MULTICHECK';
 
-  controls: FormControl[] = [];
+  controls: UntypedFormControl[] = [];
 
   // avoids infinite loop emiting valueChange
   private _internalValueChange = false;
@@ -60,7 +60,7 @@ implements OnInit {
       switchMap((params) => {
         // map one control to each option
         this.controls = params.options.map((option) => {
-          return new FormControl(this.hasValue(option.key))
+          return new UntypedFormControl(this.hasValue(option.key))
         });
 
         return combineLatest(

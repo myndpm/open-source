@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { actions, badges } from '../../constants/dyn-forms.links';
 
@@ -27,7 +27,7 @@ export class StepperComponent implements AfterViewInit, OnDestroy {
     ...actions,
   ];
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
 
   @ViewChild(DynFormComponent, { static: true })
   dynForm: DynFormComponent;

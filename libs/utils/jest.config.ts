@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'nx',
+/* eslint-disable */
+export default {
+  displayName: 'utils',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,6 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/nx',
-  coverageReporters: [['lcov', { projectRoot: 'libs/nx' }]],
+  coverageDirectory: '../../coverage/libs/tools/utils',
 };

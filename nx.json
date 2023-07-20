@@ -1,9 +1,7 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "myndpm",
   "defaultProject": "website",
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
   "affected": {
     "defaultBase": "master"
   },
@@ -17,19 +15,13 @@
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "version": [
-      {
-        "target": "version",
-        "projects": "dependencies"
-      }
-    ]
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "version": {
+      "dependsOn": ["^version"]
+    }
   },
   "tasksRunnerOptions": {
     "default": {

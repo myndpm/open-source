@@ -8,7 +8,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DynFormComponent, DynFormConfig } from '@myndpm/dyn-forms';
 import { startWith } from 'rxjs/operators';
@@ -36,12 +36,12 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   // unit state
-  unit = new FormGroup({ unitType: new FormControl(MyndUnitType.Normal) });
+  unit = new UntypedFormGroup({ unitType: new UntypedFormControl(MyndUnitType.Normal) });
   unitConfig = unitConfig;
 
   // dyn-form inputs
   config: DynFormConfig;
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   mode = 'edit';
 
   @ViewChildren(DynFormComponent)

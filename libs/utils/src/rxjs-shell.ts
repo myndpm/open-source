@@ -128,7 +128,7 @@ export function spawnSafeSync(
   command: string,
   args?: any,
   options?: ISpawnSafeOptions
-): SpawnSyncReturns<Buffer> {
+): SpawnSyncReturns<string | Buffer> {
   const mergedOptions = Object.assign({}, defaultOptions, options);
   const result = spawnSync(command, args2str(args), options);
 

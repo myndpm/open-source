@@ -15,8 +15,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./docs/docs.module').then((m) => m.DocsModule),
+    loadChildren: () => import('./docs/docs.module').then((m) => m.DocsModule),
   },
 ];
 
@@ -28,12 +27,12 @@ const routes: Routes = [
     }),
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, {
-      initialNavigation: 'enabled',
+      initialNavigation: 'enabledBlocking',
     }),
     LayoutModule,
     PagesModule,
   ],
   providers: [CustomBreakPointsProvider],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

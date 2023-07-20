@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { DynFormComponent } from '@myndpm/dyn-forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
 
   // dyn-form inputs
   config = simpleForm(this.profileCard$, this.addItem$, this.itemAdded$, this.itemEdited$, this.itemRemoved$);
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   mode = 'edit';
 
   @ViewChild(DynFormComponent, { static: true })
@@ -56,7 +56,7 @@ export class SimpleComponent implements AfterViewInit, OnDestroy {
     this.dynForm.valueChanges().subscribe(console.log);
 
     // simple example of how we can trigger changes into the params
-    const group = this.form.get('billing') as FormGroup;
+    const group = this.form.get('billing') as UntypedFormGroup;
     group.statusChanges
       .pipe(startWith(group.status), distinctUntilChanged())
       .subscribe((status) => {

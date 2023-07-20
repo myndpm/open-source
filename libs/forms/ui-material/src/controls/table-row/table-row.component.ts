@@ -10,7 +10,7 @@ import {
   Output,
   SkipSelf,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import {
   DYN_MODE,
   DYN_MODE_CHILD,
@@ -39,8 +39,8 @@ import { DynMatTableParams } from '../table/table.component.params';
 /**
  * This component just wraps the rows and its mat-cells.
  */
-export class DynMatTableRowComponent extends DynControlBase<any, FormGroup> implements OnInit, AfterViewInit {
-  @Input() group!: FormGroup;
+export class DynMatTableRowComponent extends DynControlBase<any, UntypedFormGroup> implements OnInit, AfterViewInit {
+  @Input() group!: UntypedFormGroup;
   @Input() name?: string;
   @Input() controls?: DynBaseConfig[];
   @Input() modes?: DynModes;
