@@ -26,16 +26,6 @@ CLI utility to convert `pug` files to `html`.
 
 [Library README](https://github.com/myndpm/open-source/blob/master/libs/tools/pug2html/README.md)
 
-### @myndpm/stylus2scss
-
-[![npm badge](https://badge.fury.io/js/%40myndpm%stylus2scss.svg)](https://www.npmjs.com/package/@myndpm/stylus2scss)
-[![npm downloads](https://img.shields.io/npm/dm/@myndpm/stylus2scss.svg?style=flat)](https://npmcharts.com/compare/@myndpm/stylus2scss?minimal=true)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/stylus2scss)](https://bundlephobia.com/result?p=@myndpm/stylus2scss)
-
-CLI utility to convert `styl` files to `scss`.
-
-[Library README](https://github.com/myndpm/open-source/blob/master/libs/tools/stylus2scss/README.md)
-
 ### @myndpm/utils
 
 [![npm badge](https://badge.fury.io/js/%40myndpm%2Futils.svg)](https://www.npmjs.com/package/@myndpm/utils)

@@ -5,7 +5,6 @@
     "forms": "libs/forms",
     "plugin": "libs/plugin",
     "pug2html": "libs/tools/pug2html",
-    "stylus2scss": "libs/tools/stylus2scss",
     "utils": "libs/utils",
     "website": "apps/website"
   }
