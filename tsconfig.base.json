@@ -25,7 +25,6 @@
       "@myndpm/dyn-forms/ui-material": ["libs/forms/ui-material"],
       "@myndpm/dyn-forms/ui-native": ["libs/forms/ui-native"],
       "@myndpm/nx": ["libs/nx/src/index.ts"],
-      "@myndpm/pug2html": ["libs/tools/pug2html/src/index.ts"],
       "@myndpm/utils": ["libs/tools/utils/src/index.ts"]
     }
   },

@@ -16,16 +16,6 @@ Abstract layer to easily generate Dynamic Forms for Angular.
 
 [Library README](https://github.com/myndpm/open-source/blob/master/libs/forms/README.md)
 
-### @myndpm/pug2html
-
-[![npm badge](https://badge.fury.io/js/%40myndpm%pug2html.svg)](https://www.npmjs.com/package/@myndpm/pug2html)
-[![npm downloads](https://img.shields.io/npm/dm/@myndpm/pug2html.svg?style=flat)](https://npmcharts.com/compare/@myndpm/pug2html?minimal=true)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@myndpm/pug2html)](https://bundlephobia.com/result?p=@myndpm/pug2html)
-
-CLI utility to convert `pug` files to `html`.
-
-[Library README](https://github.com/myndpm/open-source/blob/master/libs/tools/pug2html/README.md)
-
 ### @myndpm/utils
 
 [![npm badge](https://badge.fury.io/js/%40myndpm%2Futils.svg)](https://www.npmjs.com/package/@myndpm/utils)

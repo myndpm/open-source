@@ -4,7 +4,6 @@
     "demos": "libs/demos",
     "forms": "libs/forms",
     "plugin": "libs/plugin",
-    "pug2html": "libs/tools/pug2html",
     "utils": "libs/utils",
     "website": "apps/website"
   }

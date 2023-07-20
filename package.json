@@ -43,7 +43,7 @@
     "nx": "nx",
     "prepare": "husky install",
     "postinstall": "yarn clean:rxjs && nx build utils --skip-nx-cache && yarn install --ignore-scripts && yarn clean:rxjs && nx build plugin --skip-nx-cache && node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && patch-package",
-    "clean:rxjs": "rimraf libs/tools/pug2html/node_modules/rxjs dist/libs/utils/node_modules/rxjs dist/libs/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
+    "clean:rxjs": "rimraf dist/libs/utils/node_modules/rxjs dist/libs/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
   },
   "dependencies": {
     "@angular/animations": "13.3.12",
@@ -99,7 +99,6 @@
     "@types/jest": "27.0.2",
     "@types/marked": "^4.0.0",
     "@types/node": "14.14.33",
-    "@types/pug": "^2.0.6",
     "@types/shelljs": "~0.8.8",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
@@ -109,13 +108,12 @@
     "husky": "^8.0.0",
     "jest": "27.2.3",
     "jest-preset-angular": "11.1.1",
-    "ng-mocks": "~12.5.0",
+    "ng-mocks": "~13.5.2",
     "ng-packagr": "13.3.1",
     "nx": "13.10.6",
     "patch-package": "^6.4.7",
     "postcss-url": "^10.1.1",
     "prettier": "2.8.8",
-    "pug": "~3.0.2",
     "shelljs": "~0.8.4",
     "ts-jest": "27.0.5",
     "ts-node": "~10.4.0",
