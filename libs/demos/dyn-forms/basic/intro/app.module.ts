@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/legacy-form-field";
 import { DynFormsModule } from "@myndpm/dyn-forms";
 import { DynFormsMaterialModule } from "@myndpm/dyn-forms/ui-material";
 import { DynFormsBasicComponent } from "./app.component";

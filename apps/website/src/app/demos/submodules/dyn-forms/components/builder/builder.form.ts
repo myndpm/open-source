@@ -1,4 +1,4 @@
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DynFormConfig } from '@myndpm/dyn-forms';
 import { DynConditionFn, DynMatch, DynMatcherFn, DynTreeNode } from '@myndpm/dyn-forms/core';
 import { createMatConfig } from '@myndpm/dyn-forms/ui-material';

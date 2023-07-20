@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input, OnChanges, ViewChild } from '@angular/core';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DocsLocalized, DocsMetadata } from '../../interfaces';

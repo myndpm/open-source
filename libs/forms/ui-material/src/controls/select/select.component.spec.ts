@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';

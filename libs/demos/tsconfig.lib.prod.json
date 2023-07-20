@@ -2,7 +2,9 @@
   "extends": "./tsconfig.lib.json",
   "compilerOptions": {
     "declarationMap": false,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "target": "ES2022",
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "compilationMode": "partial"

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';

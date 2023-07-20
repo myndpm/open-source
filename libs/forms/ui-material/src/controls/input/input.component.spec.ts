@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';

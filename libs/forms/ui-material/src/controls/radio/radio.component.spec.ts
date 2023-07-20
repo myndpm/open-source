@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynControlNode } from '@myndpm/dyn-forms/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';

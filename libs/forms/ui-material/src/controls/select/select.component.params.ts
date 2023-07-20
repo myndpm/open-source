@@ -1,4 +1,4 @@
-import { MatOption } from '@angular/material/core';
+import { MatLegacyOption as MatOption } from '@angular/material/legacy-core';
 import { DynNode, DynOption } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldParams } from '../../wrappers';
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, TemplateRef, ViewChild } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { DynConfig, DynFormControl, DynMode, DynPartialControlConfig } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldWrapper } from '../../wrappers';
 import { DynMatDatepickerParams } from './datepicker.component.params';

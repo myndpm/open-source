@@ -1,4 +1,4 @@
-import { FloatLabelType } from '@angular/material/form-field';
+import { LegacyFloatLabelType as FloatLabelType } from '@angular/material/legacy-form-field';
 
 export interface DynMatFormFieldParams {
   floatLabel?: FloatLabelType; // readonly mode uses 'always' floating label

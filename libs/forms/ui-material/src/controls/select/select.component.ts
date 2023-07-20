@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core';
-import { MatOption } from '@angular/material/core';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyOption as MatOption } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import {
   DynConfig,
   DynFormControl,

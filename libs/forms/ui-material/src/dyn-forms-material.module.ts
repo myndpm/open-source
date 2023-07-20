@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule, MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacySelectModule as MatSelectModule, MAT_LEGACY_SELECT_SCROLL_STRATEGY_PROVIDER as MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/legacy-select';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynModuleProviders, getModuleProviders } from '@myndpm/dyn-forms/core';
 import {

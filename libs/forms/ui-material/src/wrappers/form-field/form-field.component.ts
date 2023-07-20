@@ -1,5 +1,5 @@
 import { Component, HostBinding, TemplateRef, ViewChild } from '@angular/core';
-import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormField as MatFormField, MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { DynTemplates, DynWrapper } from '@myndpm/dyn-forms/core';
 import { DynMatFormFieldParams } from './form-field.component.params';
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import { DynFormsModule } from '@myndpm/dyn-forms';
 import { DynControlNode } from '@myndpm/dyn-forms/core';

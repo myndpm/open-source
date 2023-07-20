@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule, LayoutWrapperComponent } from '../layout';
 import { DocsIndexComponent } from './components/docs/docs.component';

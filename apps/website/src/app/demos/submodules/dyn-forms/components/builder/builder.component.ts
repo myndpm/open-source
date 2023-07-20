@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DynFormComponent, DynFormConfig } from '@myndpm/dyn-forms';
 import { startWith } from 'rxjs/operators';
 import { actions, badges } from '../../constants/dyn-forms.links';

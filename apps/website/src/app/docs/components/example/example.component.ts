@@ -10,7 +10,7 @@ import {
   Type,
   ɵNgModuleFactory,
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { EXAMPLE_COMPONENTS, LiveExample } from '@myndpm/demos';
 import { forkJoin } from 'rxjs';
