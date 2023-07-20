@@ -20,9 +20,9 @@
     "migrations": "./migrations.json"
   },
   "peerDependencies": {
-    "@angular/common": ">=12.0.0",
-    "@angular/core": ">=12.0.0",
-    "@angular/forms": ">=12.0.0",
+    "@angular/common": ">=13.0.0",
+    "@angular/core": ">=13.0.0",
+    "@angular/forms": ">=13.0.0",
     "rxjs": "*"
   },
   "dependencies": {
