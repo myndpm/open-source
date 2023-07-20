@@ -1,6 +1,6 @@
 {
   "name": "@myndpm/dyn-forms",
-  "version": "12.10.0",
+  "version": "13.3.12",
   "description": "Abstract layer to easily generate Dynamic Forms for Angular",
   "keywords": [
     "angular",
@@ -26,12 +26,12 @@
     "rxjs": "*"
   },
   "dependencies": {
-    "ramda": "^0.28.0",
+    "ramda": "^0.29.0",
     "fast-deep-equal": "~3.1.3",
-    "is-callable": "~1.2.4",
+    "is-callable": "~1.2.7",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@types/ramda": "^0.28.15"
+    "@types/ramda": "^0.29.3"
   }
 }
