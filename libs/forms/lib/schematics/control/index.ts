@@ -18,9 +18,8 @@ import {
  import { addDeclarationToModule, addExportToModule } from '@schematics/angular/utility/ast-utils';
  import { InsertChange } from '@schematics/angular/utility/change';
  import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
- import { applyLintFix } from '@schematics/angular/utility/lint-fix';
  import { parseName } from '@schematics/angular/utility/parse-name';
- import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
+ import { validateHtmlSelector } from '@schematics/angular/utility/validation';
  import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
  import { Schema as ComponentOptions } from './schema';
 
@@ -108,12 +107,12 @@ import {
      const workspace = await getWorkspace(host);
      const project = workspace.projects.get(options.project as string);
 
-     if (options.path === undefined && project) {
-       options.path = buildDefaultPath(project);
+     if (!project) {
+       throw new SchematicsException(`Project "${options.project}" does not exist.`);
      }
 
-     if (options.prefix === undefined && project) {
-       options.prefix = project.prefix || '';
+     if (options.path === undefined) {
+       options.path = buildDefaultPath(project);
      }
 
      options.module = findModuleFromOptions(host, options);
@@ -122,9 +121,9 @@ import {
      options.name = parsedPath.name;
      options.path = parsedPath.path;
      options.selector =
-       options.selector || buildSelector(options, (project && project.prefix) || '');
+       options.selector || buildSelector(options, project.prefix || '');
 
-     validateName(options.name);
+     // validateName(options.name);
      validateHtmlSelector(options.selector);
 
      const templateSource = apply(url('./files'), [
@@ -150,7 +149,6 @@ import {
      return chain([
        addDeclarationToNgModule(options),
        mergeWith(templateSource),
-       options.lintFix ? applyLintFix(options.path) : noop(),
      ]);
    };
  }

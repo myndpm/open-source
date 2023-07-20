@@ -16,12 +16,10 @@ import {
   mergeWith,
   move,
   schematic,
-  noop,
   url,
 } from '@angular-devkit/schematics';
 import { Schema as ControlOptions } from '../control/schema';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
-import { applyLintFix } from '@schematics/angular/utility/lint-fix';
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { createDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { Schema as ModuleOptions } from './schema';
@@ -77,7 +75,6 @@ export default function (options: ModuleOptions): Rule {
     return chain([
       mergeWith(templateSource),
       schematic('control', controlOptions),
-      options.lintFix ? applyLintFix(options.path) : noop(),
     ]);
   };
 }
