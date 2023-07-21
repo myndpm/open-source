@@ -122,7 +122,7 @@ export class ExampleComponent {
     const { componentName, module } = this.exampleData;
     const moduleExports: any = await import(
       /* webpackExclude: /\.map$/ */
-    '@myndpm/demos/fesm2015/' + module.importSpecifier);
+    '@myndpm/demos/' + module.importSpecifier);
 
     this._exampleComponentType = moduleExports[componentName];
     this._exampleModuleFactory = new ɵNgModuleFactory(moduleExports[module.name]);

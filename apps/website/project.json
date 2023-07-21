@@ -40,6 +40,10 @@
           "node_modules/prismjs/components/prism-typescript.js",
           "node_modules/prismjs/components/prism-bash.js"
         ],
+        "allowedCommonJsDependencies": [
+          "is-callable",
+          "fast-deep-equal"
+        ],
         "vendorChunk": true,
         "extractLicenses": false,
         "buildOptimizer": false,

@@ -18,7 +18,7 @@
     "additionalComponents": [],
     "module": {
       "name": "DemoFormsModule",
-      "importSpecifier": "myndpm-demos-dyn-forms-basic-intro"
+      "importSpecifier": "dyn-forms/basic/intro"
     }
   }
 }

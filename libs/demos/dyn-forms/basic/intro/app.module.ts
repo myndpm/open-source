@@ -24,7 +24,6 @@ const EXAMPLES = [
     DynMaterialControls,
   ],
   declarations: EXAMPLES,
-  entryComponents: EXAMPLES,
   exports: EXAMPLES,
   providers: [
     {

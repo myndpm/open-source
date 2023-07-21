@@ -6,7 +6,7 @@ export interface NgModuleInfo {
   /**
    * Import specifier that resolves to this module. The specifier is not scoped to
    * `@myndpm/demos` because it's up to the consumer how the module is
-   * imported. For example, in the docs, modules are lazily imported from `fesm2015/`.
+   * imported. For example, in the docs, modules are lazily imported from `fesm2022/`.
    */
   importSpecifier: string;
 }
