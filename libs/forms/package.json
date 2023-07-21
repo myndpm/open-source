@@ -1,6 +1,6 @@
 {
   "name": "@myndpm/dyn-forms",
-  "version": "15.2.9",
+  "version": "16.0.0",
   "description": "Abstract layer to easily generate Dynamic Forms for Angular",
   "keywords": [
     "angular",
@@ -20,9 +20,9 @@
     "migrations": "./migrations.json"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0",
-    "@angular/core": ">=15.0.0",
-    "@angular/forms": ">=15.0.0",
+    "@angular/common": ">=16.0.0",
+    "@angular/core": ">=16.0.0",
+    "@angular/forms": ">=16.0.0",
     "rxjs": "*"
   },
   "dependencies": {

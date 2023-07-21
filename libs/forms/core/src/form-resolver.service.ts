@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { DynLogger } from '@myndpm/dyn-forms/logger';
 import deepEqual from 'fast-deep-equal';
 import { hasPath } from 'ramda';
-import { combineLatest, isObservable } from 'rxjs';
+import { Observable, combineLatest, isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DynBaseConfig } from './types/config.types';
 import { DynControlConfig } from './types/control.types';
@@ -98,9 +98,9 @@ export class DynFormResolver {
         config.params = config.params.pipe(
           map(params => merge(params, mode.params))
         );
-      } else if (isObservable<DynParams>(mode.params)) {
+      } else if (isObservable(mode.params)) {
         const params = config.params;
-        config.params = mode.params.pipe(
+        config.params = (mode.params as Observable<DynParams>).pipe(
           map(modeParams => merge(params, modeParams))
         );
       } else {
