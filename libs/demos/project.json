@@ -1,12 +1,12 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "demos",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/demos/src",
   "prefix": "demo",
   "targets": {
     "prebuild": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "tsConfig": "libs/demos/tsconfig.lib.json",
         "project": "libs/demos/ng-package.json"
@@ -25,7 +25,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/demos/src/**/*.ts",

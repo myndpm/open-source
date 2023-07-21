@@ -5,7 +5,7 @@ import {
   readTargetOptions,
   runExecutor,
   Target,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { DeployNpmExecutorSchema } from '../schema';
 import { copyPackageVersion, getLibOutputPath, getLibPath } from '../utils';
@@ -44,7 +44,11 @@ export default async function deployer(
   }
 
   if (options.copy) {
-    const libPath = getLibPath(context.root, buildOptions, targetDescription.project);
+    const libPath = getLibPath(
+      context.root,
+      buildOptions,
+      targetDescription.project
+    );
     copyPackageVersion(libPath, outputPath, options.dryRun);
   }
 

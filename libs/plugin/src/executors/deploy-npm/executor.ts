@@ -1,4 +1,4 @@
-import { ExecutorContext, logger } from '@nrwl/devkit';
+import { ExecutorContext, logger } from '@nx/devkit';
 import deployer from './lib/deployer';
 import * as engine from './lib/engine';
 import { DeployNpmExecutorSchema } from './schema';

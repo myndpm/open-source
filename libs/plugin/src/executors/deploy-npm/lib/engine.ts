@@ -1,5 +1,5 @@
 import { exec } from '@myndpm/utils';
-import { logger } from '@nrwl/devkit';
+import { logger } from '@nx/devkit';
 
 import { prepareOptions, setPackageVersion } from '../utils';
 import { DeployNpmExecutorSchema } from '../schema';

@@ -1,4 +1,4 @@
-import * as nxDevKit from '@nrwl/devkit';
+import * as nxDevKit from '@nx/devkit';
 
 import * as getLibOutputPathModule from '../utils/lib-paths';
 import deployer from './deployer';

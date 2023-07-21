@@ -17,7 +17,8 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/.eslintrc.json"
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/src/test-setup.[jt]s"
     ]
   },
   "targetDefaults": {
@@ -37,26 +38,27 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx/tasks-runners/default",
+      "runner": "nx-cloud",
       "options": {
         "cacheableOperations": ["build", "lint", "test"],
-        "parallel": 1
+        "parallel": 1,
+        "accessToken": "MGQ5NmIyYjYtNGJhOS00ZTEyLWE0NDctMjdkYzhjZmY2YTMwfHJlYWQtd3JpdGU="
       }
     }
   },
   "generators": {
-    "@nrwl/angular:application": {
+    "@nx/angular:application": {
       "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest"
     },
-    "@nrwl/angular:library": {
+    "@nx/angular:library": {
       "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest",
       "strict": true
     },
-    "@nrwl/angular:storybook-configuration": {
+    "@nx/angular:storybook-configuration": {
       "linter": "eslint"
     },
     "@schematics/angular:component": {

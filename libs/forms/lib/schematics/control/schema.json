@@ -37,7 +37,12 @@
     },
     "instance": {
       "description": "The control instance type of the new control.",
-      "enum": ["Container", "Array", "Group", "Control"],
+      "enum": [
+        "Container",
+        "Array",
+        "Group",
+        "Control"
+      ],
       "default": "Control",
       "type": "string",
       "alias": "i"
@@ -77,7 +82,12 @@
       "description": "The file extension or preprocessor to use for style files.",
       "type": "string",
       "default": "scss",
-      "enum": ["css", "scss", "sass", "less"]
+      "enum": [
+        "css",
+        "scss",
+        "sass",
+        "less"
+      ]
     },
     "displayBlock": {
       "description": "Specifies if the style will contain `:host { display: block; }`.",
@@ -87,13 +97,20 @@
     },
     "viewEncapsulation": {
       "description": "The view encapsulation strategy to use in the new component.",
-      "enum": ["Emulated", "None", "ShadowDom"],
+      "enum": [
+        "Emulated",
+        "None",
+        "ShadowDom"
+      ],
       "type": "string",
       "alias": "v"
     },
     "changeDetection": {
       "description": "The change detection strategy to use in the new control.",
-      "enum": ["Default", "OnPush"],
+      "enum": [
+        "Default",
+        "OnPush"
+      ],
       "type": "string",
       "default": "OnPush",
       "alias": "c"
@@ -108,7 +125,7 @@
       "description": "Create the new files at the top level of the current project.",
       "default": false
     },
-    "module":  {
+    "module": {
       "type": "string",
       "description": "The declaring NgModule.",
       "alias": "m"

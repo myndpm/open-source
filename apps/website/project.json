@@ -1,6 +1,6 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "website",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/website/src",
   "prefix": "app",
@@ -97,7 +97,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "apps/website/src/**/*.ts",
@@ -107,7 +107,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/website"],
       "options": {
         "jestConfig": "apps/website/jest.config.ts",
@@ -121,7 +121,8 @@
         "main": "apps/website/server.ts",
         "tsConfig": "apps/website/tsconfig.server.json",
         "sourceMap": true,
-        "optimization": false
+        "optimization": false,
+        "buildOptimizer": false
       },
       "configurations": {
         "production": {
@@ -133,7 +134,8 @@
             }
           ],
           "sourceMap": false,
-          "optimization": true
+          "optimization": true,
+          "buildOptimizer": true
         }
       },
       "defaultConfiguration": ""
