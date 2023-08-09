@@ -7,7 +7,7 @@
     "cross-spawn": "^7.0.3",
     "rxjs": "7.8.1",
     "rxjs-shell": "~3.1.3",
-    "tslib": "^2.2.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2"

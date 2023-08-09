@@ -23,6 +23,7 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
         "outputPath": "dist/plugin",
         "tsConfig": "libs/plugin/tsconfig.lib.json",
         "packageJson": "libs/plugin/package.json",

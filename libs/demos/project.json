@@ -8,6 +8,7 @@
     "prebuild": {
       "executor": "@nx/angular:package",
       "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
         "tsConfig": "libs/demos/tsconfig.lib.json",
         "project": "libs/demos/ng-package.json"
       },
