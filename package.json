@@ -41,8 +41,7 @@
     "help": "nx help",
     "nx": "nx",
     "prepare": "husky install",
-    "postinstall": "nx build utils && yarn install --ignore-scripts && nx build plugin && patch-package",
-    "clean:rxjs": "rimraf dist/libs/utils/node_modules/rxjs dist/libs/utils/node_modules/@ckapp/rxjs-node-fs/node_modules/rxjs node_modules/@types/inquirer/node_modules/rxjs node_modules/rxjs-shell/node_modules/rxjs"
+    "postinstall": "nx build utils && yarn install --ignore-scripts && nx build plugin && patch-package"
   },
   "dependencies": {
     "@angular/animations": "16.2.0",

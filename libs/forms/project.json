@@ -9,9 +9,9 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/libs/forms"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": false,
         "tsConfig": "libs/forms/tsconfig.lib.json",
-        "project": "libs/forms/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": false
+        "project": "libs/forms/ng-package.json"
       },
       "configurations": {
         "production": {

@@ -22,7 +22,10 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": ["yarn nx run demos:prebuild:production", "yarn"]
+        "commands": [
+          "yarn nx run demos:prebuild:production",
+          "yarn install --ignore-scripts"
+        ]
       }
     },
     "lint": {
@@ -36,5 +39,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": ["workspace"]
 }
