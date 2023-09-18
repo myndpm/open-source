@@ -2,6 +2,11 @@
   "name": "@myndpm/nx",
   "version": "0.2.7",
   "description": "Plugin for Nx by Mynd",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:myndpm/open-source.git",
+    "directory": "libs/plugin"
+  },
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
