@@ -118,7 +118,7 @@ implements DynNode<TParams, TControl> {
   }
 
   private _deep = 0;
-  private _index: number = 0;
+  private _index = 0;
   private _isolated = false; // do not propagate hooks
   private _detached = false; // with custom formControl
   private _children: DynControlNode[] = [];
@@ -170,7 +170,7 @@ implements DynNode<TParams, TControl> {
       const hasAllChildren = children === childrenLoaded.length;
       const allChildrenValid = childrenLoaded.every(Boolean);
       const allChildrenLoaded = isControl ? true : hasAllChildren && allChildrenValid;
-      const loaded: boolean = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
+      const loaded = Boolean(loadedComponent && loadedParams && allChildrenLoaded);
 
       this.logger.nodeLoad(this, !isControl
         ? { loaded$: loaded, loadedComponent, loadedParams, children, childrenLoaded }
@@ -539,7 +539,7 @@ implements DynNode<TParams, TControl> {
     // check if a new hierarchy level is needed
     if (config.formControl || !this.parent?._node.equivalent(path)) {
       // check if the control already exists in another point in the hierarchy
-      this._node = this.parent?._node.root.search(path)!;
+      this._node = this.parent?._node.root.search(path) as DynFormNode<TControl>;
       let control: TControl | undefined;
       if (config.formControl) {
         // node has a different control for this path

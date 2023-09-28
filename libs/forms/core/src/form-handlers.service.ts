@@ -109,7 +109,7 @@ export class DynFormHandlers {
   }
 
   getConfigIds(config?: DynConfigCollection<any>): DynConfigId[] {
-    let ids: DynConfigId[] = [];
+    const ids: DynConfigId[] = [];
     if (Array.isArray(config)) {
       // array of ids or [id, args] | F
       return config.filter(Boolean).map(id => {

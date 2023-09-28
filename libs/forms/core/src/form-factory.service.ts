@@ -89,7 +89,7 @@ export class DynFormFactory {
 
     // return any existing control with this name
     if (controlName) {
-      let control = this.get(controlParent, controlName);
+      const control = this.get(controlParent, controlName);
       if (control) {
         return control as T;
       }
