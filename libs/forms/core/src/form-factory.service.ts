@@ -116,28 +116,28 @@ export class DynFormFactory {
     instance: DynInstanceType.Container | DynInstanceType.Group,
     node: DynNode,
     config: DynBaseConfig,
-    recursively?: boolean,
+    placeholder?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: UntypedFormGroup };
   build(
     instance: DynInstanceType.Array,
     node: DynNode,
     config: DynBaseConfig,
-    recursively?: boolean,
+    placeholder?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: UntypedFormArray };
   build(
     instance: DynInstanceType.Control,
     node: DynNode,
     config: DynBaseConfig,
-    recursively?: boolean,
+    placeholder?: boolean,
     controlName?: string,
   ): { name?: string, parentControl: AbstractControl, control: UntypedFormControl };
   build<T extends AbstractControl>(
     instance: DynInstanceType,
     node: DynNode,
     config: DynBaseConfig,
-    recursively = false,
+    placeholder = false,
     controlName = config.name,
   ): { name?: string, parentControl: AbstractControl, control: T } {
 
@@ -148,10 +148,7 @@ export class DynFormFactory {
     switch (instance) {
       case DynInstanceType.Container:
       case DynInstanceType.Group: {
-        const group = new UntypedFormGroup({}, this.handlers.getControlOptions(node, config));
-        if (recursively) {
-          this.buildControls(group, node, config);
-        }
+        const group = new UntypedFormGroup({}, !placeholder ? this.handlers.getControlOptions(node, config) : undefined);
         control = group;
         break;
       }

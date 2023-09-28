@@ -79,7 +79,7 @@ implements DynNode<TParams, TControl> {
     return this._instance;
   }
   get control(): TControl {
-    return this._node.control;
+    return this._node?.control;
   }
   get params(): TParams {
     return this._params;
